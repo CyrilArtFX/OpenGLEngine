@@ -135,9 +135,11 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Rendering\shader.cpp" />
+    <ClCompile Include="Rendering\texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rendering\shader.h" />
+    <ClInclude Include="Rendering\texture.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\basic.frag" />
