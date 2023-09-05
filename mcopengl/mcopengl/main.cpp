@@ -7,6 +7,8 @@
 #include "Rendering/shader.h"
 #include "Rendering/texture.h"
 
+#include "Maths/Matrix4.h"
+
 #include <iostream>
 
 
@@ -86,7 +88,7 @@ int main()
 	glEnableVertexAttribArray(0);
 
 	//  color attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*) (3 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
 	//  texture coordinates attribute
@@ -106,6 +108,8 @@ int main()
 	textureShader.setInt("texture1", 0);
 	textureShader.setInt("texture2", 1);
 
+	Matrix4 transformMat = Matrix4::identity;
+	textureShader.setMatrix4("transform", transformMat.getAsFloatPtr());
 
 
 	//  main loop
@@ -124,15 +128,16 @@ int main()
 		//  draw
 		textureShader.use();
 
-		//double timeValue = glfwGetTime();
-
 		glActiveTexture(GL_TEXTURE0);
 		containerTex.use();
 		glActiveTexture(GL_TEXTURE1);
 		faceTex.use();
 
+		//double timeValue = glfwGetTime();
+
 		glBindVertexArray(VAO); //  select VAO to use
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
 
 
 		//  events and buffer swap

@@ -134,10 +134,21 @@
   <ItemGroup>
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Maths\Matrix4.cpp" />
+    <ClCompile Include="Maths\Quaternion.cpp" />
+    <ClCompile Include="Maths\Vector2.cpp" />
+    <ClCompile Include="Maths\Vector2Int.cpp" />
+    <ClCompile Include="Maths\Vector3.cpp" />
     <ClCompile Include="Rendering\shader.cpp" />
     <ClCompile Include="Rendering\texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Maths\Maths.h" />
+    <ClInclude Include="Maths\Matrix4.h" />
+    <ClInclude Include="Maths\Quaternion.h" />
+    <ClInclude Include="Maths\Vector2.h" />
+    <ClInclude Include="Maths\Vector2Int.h" />
+    <ClInclude Include="Maths\Vector3.h" />
     <ClInclude Include="Rendering\shader.h" />
     <ClInclude Include="Rendering\texture.h" />
   </ItemGroup>
