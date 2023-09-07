@@ -139,6 +139,7 @@
     <ClCompile Include="Maths\Vector2.cpp" />
     <ClCompile Include="Maths\Vector2Int.cpp" />
     <ClCompile Include="Maths\Vector3.cpp" />
+    <ClCompile Include="Rendering\vertexArray.cpp" />
     <ClCompile Include="Rendering\shader.cpp" />
     <ClCompile Include="Rendering\texture.cpp" />
   </ItemGroup>
@@ -149,12 +150,15 @@
     <ClInclude Include="Maths\Vector2.h" />
     <ClInclude Include="Maths\Vector2Int.h" />
     <ClInclude Include="Maths\Vector3.h" />
+    <ClInclude Include="Rendering\vertexArray.h" />
     <ClInclude Include="Rendering\shader.h" />
     <ClInclude Include="Rendering\texture.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\basic.frag" />
     <None Include="Shaders\basic.vert" />
+    <None Include="Shaders\object.frag" />
+    <None Include="Shaders\object.vert" />
     <None Include="Shaders\texture.frag" />
     <None Include="Shaders\texture.vert" />
   </ItemGroup>

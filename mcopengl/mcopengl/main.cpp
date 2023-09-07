@@ -6,6 +6,7 @@
 
 #include "Rendering/shader.h"
 #include "Rendering/texture.h"
+#include "Rendering/vertexArray.h"
 
 #include "Maths/Matrix4.h"
 
@@ -50,53 +51,63 @@ int main()
 		return -1;
 	}
 
+
+	//  configure global OpenGL properties
+	glEnable(GL_DEPTH_TEST);
+
+
 	//  build and compile shaders
 	Shader basicShader("Shaders/basic.vert", "Shaders/basic.frag");
 	Shader textureShader("Shaders/texture.vert", "Shaders/texture.frag");
+	Shader object3DShader("Shaders/object.vert", "Shaders/object.frag");
 
 
-	//  triangles vertices data
-	float vertices[] =
-	{
-		 0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-		 0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  1.0f, 0.0f,
-		-0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
-		-0.5f,  0.5f, 0.0f,  1.0f, 1.0f, 0.0f,  0.0f, 1.0f
+	//  cube vertices data
+	float cubeVertices[180] = {
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
-	unsigned int indices[] =
-	{
-		0, 1, 3,
-		1, 2, 3
-	};
 
-	//  setup vertex buffer object and vertex array object
-	unsigned int VBO, VAO, EBO;
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-
-	glBindVertexArray(VAO); //  bind the VAO before binding the vertex buffer, and before configuring vertex attributes
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-	//  position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	//  color attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
-	//  texture coordinates attribute
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
+	VertexArray cube = VertexArray(cubeVertices, 36);
 
 
 	Texture containerTex("Resources/container.jpg", GL_RGB, true);
@@ -104,12 +115,16 @@ int main()
 
 
 	//  manually set the textures unit on the shader (need to be done only once)
-	textureShader.use(); //  activate the shader on which you want to set the texture unit before doing it
-	textureShader.setInt("texture1", 0);
-	textureShader.setInt("texture2", 1);
+	object3DShader.use(); //  activate the shader on which you want to set the texture unit before doing it
+	object3DShader.setInt("texture1", 0);
+	object3DShader.setInt("texture2", 1);
 
-	Matrix4 transformMat = Matrix4::identity;
-	textureShader.setMatrix4("transform", transformMat.getAsFloatPtr());
+	//Matrix4 transformMat = Matrix4::identity;
+	//textureShader.setMatrix4("transform", transformMat.getAsFloatPtr());
+
+
+	Matrix4 view = Matrix4::createTranslation(Vector3{ 0.0f, 0.0f, 3.0f });
+	Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(45.0f), 1024, 720, 0.1f, 100.0f);
 
 
 	//  main loop
@@ -123,20 +138,29 @@ int main()
 		//  rendering part
 		// ----------------
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT); //  clear window with flat color
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //  clear window with flat color
 
 		//  draw
-		textureShader.use();
+		object3DShader.use();
 
 		glActiveTexture(GL_TEXTURE0);
 		containerTex.use();
 		glActiveTexture(GL_TEXTURE1);
 		faceTex.use();
 
-		//double timeValue = glfwGetTime();
+		float timeValue = glfwGetTime();
 
-		glBindVertexArray(VAO); //  select VAO to use
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		Vector3 rotationAxis = Vector3{ 0.5f, 1.0f, 1.0f };
+		rotationAxis.normalize();
+		Quaternion rotation = Quaternion{ rotationAxis, timeValue * Maths::toRadians(50.0f) };
+		Matrix4 model = Matrix4::createFromQuaternion(rotation);
+
+		object3DShader.setMatrix4("model", model.getAsFloatPtr());
+		object3DShader.setMatrix4("view", view.getAsFloatPtr());
+		object3DShader.setMatrix4("projection", projection.getAsFloatPtr());
+
+		cube.setActive();
+		glDrawArrays(GL_TRIANGLES, 0, cube.getNBVertices());
 
 
 
@@ -147,11 +171,10 @@ int main()
 
 
 	//  delete all resources that are not necessary anymore (optionnal)
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
+	cube.deleteObjects();
 	basicShader.deleteProgram();
 	textureShader.deleteProgram();
+	object3DShader.deleteProgram();
 
 
 	//  properly clear GLFW before closing app

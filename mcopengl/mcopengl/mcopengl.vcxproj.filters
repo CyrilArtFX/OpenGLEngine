@@ -42,6 +42,9 @@
     <ClCompile Include="Maths\Vector3.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="Rendering\vertexArray.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rendering\shader.h">
@@ -68,11 +71,16 @@
     <ClInclude Include="Maths\Vector3.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="Rendering\vertexArray.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\basic.vert" />
     <None Include="Shaders\basic.frag" />
     <None Include="Shaders\texture.frag" />
     <None Include="Shaders\texture.vert" />
+    <None Include="Shaders\object.vert" />
+    <None Include="Shaders\object.frag" />
   </ItemGroup>
 </Project>
