@@ -119,8 +119,18 @@ int main()
 	object3DShader.setInt("texture1", 0);
 	object3DShader.setInt("texture2", 1);
 
-	//Matrix4 transformMat = Matrix4::identity;
-	//textureShader.setMatrix4("transform", transformMat.getAsFloatPtr());
+	Vector3 cubePositions[] = {
+		Vector3{0.0f, 0.0f, 0.0f},
+		Vector3{2.0f, 5.0f, 15.0f},
+		Vector3{-1.5f, -2.2f, 2.5f},
+		Vector3{-3.8f, -2.0f, 12.3f},
+		Vector3{2.4f, -0.4f, 3.5f},
+		Vector3{-1.7f, 3.0f, 7.5f},
+		Vector3{1.3f, -2.0f, 2.5f},
+		Vector3{1.5f, 2.0f, 2.5f},
+		Vector3{1.5f, 0.2f, 1.5f},
+		Vector3{-1.3f, 1.0f, 1.5f}
+	};
 
 
 	Matrix4 view = Matrix4::createTranslation(Vector3{ 0.0f, 0.0f, 3.0f });
@@ -148,19 +158,28 @@ int main()
 		glActiveTexture(GL_TEXTURE1);
 		faceTex.use();
 
-		float timeValue = glfwGetTime();
 
-		Vector3 rotationAxis = Vector3{ 0.5f, 1.0f, 1.0f };
+		//float timeValue = glfwGetTime();
+
+		Vector3 rotationAxis = Vector3{ 1.0f, 0.3f, 0.5f };
 		rotationAxis.normalize();
-		Quaternion rotation = Quaternion{ rotationAxis, timeValue * Maths::toRadians(50.0f) };
-		Matrix4 model = Matrix4::createFromQuaternion(rotation);
 
-		object3DShader.setMatrix4("model", model.getAsFloatPtr());
 		object3DShader.setMatrix4("view", view.getAsFloatPtr());
 		object3DShader.setMatrix4("projection", projection.getAsFloatPtr());
 
 		cube.setActive();
 		glDrawArrays(GL_TRIANGLES, 0, cube.getNBVertices());
+
+		for (int i = 0; i < 10; i++)
+		{
+			Quaternion rotation = Quaternion{ rotationAxis, Maths::toRadians(i * 20.0f) };
+			Matrix4 model = Matrix4::createFromQuaternion(rotation) * 
+				Matrix4::createTranslation(cubePositions[i]);
+				
+			object3DShader.setMatrix4("model", model.getAsFloatPtr());
+
+			glDrawArrays(GL_TRIANGLES, 0, cube.getNBVertices());
+		}
 
 
 
