@@ -7,6 +7,7 @@
 #include "Rendering/shader.h"
 #include "Rendering/texture.h"
 #include "Rendering/vertexArray.h"
+#include "Rendering/camera.h"
 
 #include "Maths/Matrix4.h"
 
@@ -16,11 +17,28 @@
 //  declare functions
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 
 //  global settings
 const unsigned int SCR_WIDTH = 1024;
 const unsigned int SCR_HEIGHT = 720;
+
+
+//  mouse
+bool firstMouse = true;
+float lastX = SCR_WIDTH / 2.0f;
+float lastY = SCR_HEIGHT / 2.0f;
+
+
+//  time
+float deltaTime = 0.0f;
+float lastFrame = 0.0f;
+
+
+//  camera
+Camera camera;
 
 
 int main()
@@ -41,7 +59,13 @@ int main()
 		return -1;
 	}
 	glfwMakeContextCurrent(window);
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); //  link our window resize callback function
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); //  link window resize callback function
+	glfwSetCursorPosCallback(window, mouse_callback); //  link mouse pos callback function
+	glfwSetScrollCallback(window, scroll_callback); //  link mouse scroll callback function
+
+
+	//  capture mouse
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
 	//  initialize GLAD
@@ -133,13 +157,19 @@ int main()
 	};
 
 
-	Matrix4 view = Matrix4::createTranslation(Vector3{ 0.0f, 0.0f, 3.0f });
-	Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(45.0f), 1024, 720, 0.1f, 100.0f);
+	camera = Camera(Vector3{ 0.0f, 0.0f, -3.0f });
 
 
 	//  main loop
 	while (!glfwWindowShouldClose(window))
 	{
+		//  time logic
+		float currentFrame = glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
+
+
+
 		//  inputs part
 		// -------------
 		processInput(window);
@@ -159,7 +189,15 @@ int main()
 		faceTex.use();
 
 
-		//float timeValue = glfwGetTime();
+		float timeValue = glfwGetTime();
+
+		const float radius = 10.0f;
+		float camX = sin(timeValue) * radius;
+		float camZ = cos(timeValue) * radius;
+
+		Matrix4 view = camera.GetViewMatrix();
+		Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(camera.getFov()), SCR_WIDTH, SCR_HEIGHT, 0.1f, 100.0f);
+
 
 		Vector3 rotationAxis = Vector3{ 1.0f, 0.3f, 0.5f };
 		rotationAxis.normalize();
@@ -214,4 +252,39 @@ void processInput(GLFWwindow* window)
 	{
 		glfwSetWindowShouldClose(window, true);
 	}
+
+	//  move camera
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		camera.ProcessKeyboard(Forward, deltaTime);
+
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		camera.ProcessKeyboard(Backward, deltaTime);
+
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		camera.ProcessKeyboard(Left, deltaTime);
+
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		camera.ProcessKeyboard(Right, deltaTime);
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	if (firstMouse)
+	{
+		lastX = xpos;
+		lastY = ypos;
+		firstMouse = false;
+	}
+
+	float xoffset = lastX - xpos;
+	float yoffset = lastY - ypos;
+	lastX = xpos;
+	lastY = ypos;
+
+	camera.ProcessMouseMovement(xoffset, yoffset);
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	camera.ProcessMouseScroll(float(yoffset));
 }

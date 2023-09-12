@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>F:\cyyiiyOpenGL\includes;$(IncludePath)</IncludePath>
+    <IncludePath>F:\cyyiiyOpenGL\includes;F:\MinecraftOpenGL\mcopengl\mcopengl;$(IncludePath)</IncludePath>
     <LibraryPath>F:\cyyiiyOpenGL\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -139,6 +139,7 @@
     <ClCompile Include="Maths\Vector2.cpp" />
     <ClCompile Include="Maths\Vector2Int.cpp" />
     <ClCompile Include="Maths\Vector3.cpp" />
+    <ClCompile Include="Rendering\camera.cpp" />
     <ClCompile Include="Rendering\vertexArray.cpp" />
     <ClCompile Include="Rendering\shader.cpp" />
     <ClCompile Include="Rendering\texture.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="Maths\Vector2.h" />
     <ClInclude Include="Maths\Vector2Int.h" />
     <ClInclude Include="Maths\Vector3.h" />
+    <ClInclude Include="Rendering\camera.h" />
     <ClInclude Include="Rendering\vertexArray.h" />
     <ClInclude Include="Rendering\shader.h" />
     <ClInclude Include="Rendering\texture.h" />
