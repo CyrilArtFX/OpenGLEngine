@@ -143,6 +143,7 @@
     <ClCompile Include="Rendering\vertexArray.cpp" />
     <ClCompile Include="Rendering\shader.cpp" />
     <ClCompile Include="Rendering\texture.cpp" />
+    <ClCompile Include="Core\window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Maths\Maths.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="Rendering\vertexArray.h" />
     <ClInclude Include="Rendering\shader.h" />
     <ClInclude Include="Rendering\texture.h" />
+    <ClInclude Include="Core\window.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\basic.frag" />

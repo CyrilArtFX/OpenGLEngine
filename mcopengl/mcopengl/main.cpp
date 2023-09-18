@@ -4,6 +4,8 @@
 //  if this line is not here, the project don't compile (bruh)
 #define STB_IMAGE_IMPLEMENTATION
 
+#include "Core/window.h"
+
 #include "Rendering/shader.h"
 #include "Rendering/texture.h"
 #include "Rendering/vertexArray.h"
@@ -43,29 +45,20 @@ Camera camera;
 
 int main()
 {
-	//  initialize GLFW
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	//  create window and initialize glfw
+	Window window = Window(SCR_WIDTH, SCR_HEIGHT, "Minecraft OpenGL", true);
 
-
-	//  create GLFW window
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Minecraft OpenGL", NULL, NULL);
-	if (window == NULL)
+	GLFWwindow* glWindow = window.getGLFWwindow();
+	if (glWindow == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
 		return -1;
 	}
-	glfwMakeContextCurrent(window);
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); //  link window resize callback function
-	glfwSetCursorPosCallback(window, mouse_callback); //  link mouse pos callback function
-	glfwSetScrollCallback(window, scroll_callback); //  link mouse scroll callback function
 
-
-	//  capture mouse
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetFramebufferSizeCallback(glWindow, framebuffer_size_callback); //  link window resize callback function
+	glfwSetCursorPosCallback(glWindow, mouse_callback); //  link mouse pos callback function
+	glfwSetScrollCallback(glWindow, scroll_callback); //  link mouse scroll callback function
 
 
 	//  initialize GLAD
@@ -161,7 +154,7 @@ int main()
 
 
 	//  main loop
-	while (!glfwWindowShouldClose(window))
+	while (!glfwWindowShouldClose(glWindow))
 	{
 		//  time logic
 		float currentFrame = glfwGetTime();
@@ -172,7 +165,7 @@ int main()
 
 		//  inputs part
 		// -------------
-		processInput(window);
+		processInput(glWindow);
 
 
 		//  rendering part
@@ -222,7 +215,7 @@ int main()
 
 
 		//  events and buffer swap
-		glfwSwapBuffers(window);
+		glfwSwapBuffers(glWindow);
 		glfwPollEvents();
 	}
 
@@ -240,7 +233,7 @@ int main()
 }
 
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void framebuffer_size_callback(GLFWwindow* glWindow, int width, int height)
 {
 	glViewport(0, 0, width, height); //  resize OpenGL viewport when GLFW is resized
 }
@@ -267,7 +260,7 @@ void processInput(GLFWwindow* window)
 		camera.ProcessKeyboard(Right, deltaTime);
 }
 
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+void mouse_callback(GLFWwindow* glWindow, double xpos, double ypos)
 {
 	if (firstMouse)
 	{
@@ -284,7 +277,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	camera.ProcessMouseMovement(xoffset, yoffset);
 }
 
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+void scroll_callback(GLFWwindow* glWindow, double xoffset, double yoffset)
 {
 	camera.ProcessMouseScroll(float(yoffset));
 }
