@@ -94,5 +94,8 @@
     <None Include="Shaders\texture.vert" />
     <None Include="Shaders\object.vert" />
     <None Include="Shaders\object.frag" />
+    <None Include="Shaders\lightedobject.frag" />
+    <None Include="Shaders\light.frag" />
+    <None Include="Shaders\light.vert" />
   </ItemGroup>
 </Project>

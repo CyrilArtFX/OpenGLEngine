@@ -77,6 +77,8 @@ int main()
 	Shader basicShader("Shaders/basic.vert", "Shaders/basic.frag");
 	Shader textureShader("Shaders/texture.vert", "Shaders/texture.frag");
 	Shader object3DShader("Shaders/object.vert", "Shaders/object.frag");
+	Shader lightObj3DShader("Shaders/object.vert", "Shaders/lightedobject.frag");
+	Shader lightShader("Shaders/light.vert", "Shaders/light.frag");
 
 
 	//  cube vertices data
@@ -126,31 +128,23 @@ int main()
 
 	VertexArray cube = VertexArray(cubeVertices, 36);
 
+	VertexArray lightCube = VertexArray(cubeVertices, 36);
+
 
 	Texture containerTex("Resources/container.jpg", GL_RGB, true);
 	Texture faceTex("Resources/awesomeface.png", GL_RGBA, true);
 
 
 	//  manually set the textures unit on the shader (need to be done only once)
-	object3DShader.use(); //  activate the shader on which you want to set the texture unit before doing it
-	object3DShader.setInt("texture1", 0);
-	object3DShader.setInt("texture2", 1);
-
-	Vector3 cubePositions[] = {
-		Vector3{0.0f, 0.0f, 0.0f},
-		Vector3{2.0f, 5.0f, 15.0f},
-		Vector3{-1.5f, -2.2f, 2.5f},
-		Vector3{-3.8f, -2.0f, 12.3f},
-		Vector3{2.4f, -0.4f, 3.5f},
-		Vector3{-1.7f, 3.0f, 7.5f},
-		Vector3{1.3f, -2.0f, 2.5f},
-		Vector3{1.5f, 2.0f, 2.5f},
-		Vector3{1.5f, 0.2f, 1.5f},
-		Vector3{-1.3f, 1.0f, 1.5f}
-	};
+	lightObj3DShader.use(); //  activate the shader on which you want to set the texture unit before doing it
+	lightObj3DShader.setInt("texture1", 0);
+	lightObj3DShader.setInt("texture2", 1);
 
 
 	camera = Camera(Vector3{ 0.0f, 0.0f, -3.0f });
+
+	Vector3 lightColor(1.0f, 1.0f, 1.0f);
+	Vector3 lightPos(1.2f, 1.0f, 2.0f);
 
 
 	//  main loop
@@ -173,44 +167,51 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //  clear window with flat color
 
+
+
+		//float timeValue = glfwGetTime();
+
+
+
 		//  draw
-		object3DShader.use();
+		Matrix4 view = camera.GetViewMatrix();
+		Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(camera.getFov()), SCR_WIDTH, SCR_HEIGHT, 0.1f, 100.0f);
+		Matrix4 model = Matrix4::identity;
+
+		lightShader.use();
+		lightShader.setVec3("lightColor", lightColor);
+
+		model = Matrix4::createScale(Vector3{ 0.2f, 0.2f, 0.2f }) * Matrix4::createTranslation(lightPos);
+
+		lightShader.setMatrix4("view", view.getAsFloatPtr());
+		lightShader.setMatrix4("projection", projection.getAsFloatPtr());
+		lightShader.setMatrix4("model", model.getAsFloatPtr());
+
+		lightCube.setActive();
+		glDrawArrays(GL_TRIANGLES, 0, lightCube.getNBVertices());
+
+
+
+
+		lightObj3DShader.use();
 
 		glActiveTexture(GL_TEXTURE0);
 		containerTex.use();
 		glActiveTexture(GL_TEXTURE1);
 		faceTex.use();
 
+		lightObj3DShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+		lightObj3DShader.setVec3("lightColor", lightColor);
 
-		float timeValue = glfwGetTime();
+		model = Matrix4::identity;
 
-		const float radius = 10.0f;
-		float camX = sin(timeValue) * radius;
-		float camZ = cos(timeValue) * radius;
-
-		Matrix4 view = camera.GetViewMatrix();
-		Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(camera.getFov()), SCR_WIDTH, SCR_HEIGHT, 0.1f, 100.0f);
-
-
-		Vector3 rotationAxis = Vector3{ 1.0f, 0.3f, 0.5f };
-		rotationAxis.normalize();
-
-		object3DShader.setMatrix4("view", view.getAsFloatPtr());
-		object3DShader.setMatrix4("projection", projection.getAsFloatPtr());
+		lightObj3DShader.setMatrix4("view", view.getAsFloatPtr());
+		lightObj3DShader.setMatrix4("projection", projection.getAsFloatPtr());
+		lightObj3DShader.setMatrix4("model", model.getAsFloatPtr());
 
 		cube.setActive();
 		glDrawArrays(GL_TRIANGLES, 0, cube.getNBVertices());
 
-		for (int i = 0; i < 10; i++)
-		{
-			Quaternion rotation = Quaternion{ rotationAxis, Maths::toRadians(i * 20.0f) };
-			Matrix4 model = Matrix4::createFromQuaternion(rotation) * 
-				Matrix4::createTranslation(cubePositions[i]);
-				
-			object3DShader.setMatrix4("model", model.getAsFloatPtr());
-
-			glDrawArrays(GL_TRIANGLES, 0, cube.getNBVertices());
-		}
 
 
 

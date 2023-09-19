@@ -161,6 +161,9 @@
   <ItemGroup>
     <None Include="Shaders\basic.frag" />
     <None Include="Shaders\basic.vert" />
+    <None Include="Shaders\light.frag" />
+    <None Include="Shaders\light.vert" />
+    <None Include="Shaders\lightedobject.frag" />
     <None Include="Shaders\object.frag" />
     <None Include="Shaders\object.vert" />
     <None Include="Shaders\texture.frag" />
