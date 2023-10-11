@@ -22,8 +22,9 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{7bdf02e2-ab62-4176-987f-2c2b99391124}</ProjectGuid>
-    <RootNamespace>mcopengl</RootNamespace>
+    <RootNamespace>opengl_engine</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>opengl_engine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -71,7 +72,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>F:\cyyiiyOpenGL\includes;F:\MinecraftOpenGL\mcopengl\mcopengl;$(IncludePath)</IncludePath>
+    <IncludePath>F:\cyyiiyOpenGL\includes;F:\OpenGLEngine\opengl_engine;$(IncludePath)</IncludePath>
     <LibraryPath>F:\cyyiiyOpenGL\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

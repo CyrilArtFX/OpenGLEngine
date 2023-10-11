@@ -1,3 +1,3 @@
-# Minecraft Open GL
+# OpenGL Engine
 
-*A simple minecraft clone made from scratch using OpenGL and C++. The OpenGL part mainly come from learnopengl.com*
+A simple 3D game engine made with OpenGL and C++
