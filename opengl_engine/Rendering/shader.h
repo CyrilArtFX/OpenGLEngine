@@ -11,6 +11,7 @@ class Shader
 {
 public:
 	Shader(const char* vertexPath, const char* fragmentPath); //  constructor reads and build the shader
+	Shader() = default;
 
 	void use(); //  use (activate) the shader
 	void deleteProgram();

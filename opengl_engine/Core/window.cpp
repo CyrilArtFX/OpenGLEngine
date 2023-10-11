@@ -9,8 +9,11 @@ Window::Window(int width, int height, const char* windowName, bool mouseCaptured
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 
+	window_width = width;
+	window_height = height;
+
 	//  create GLFW window
-	window = glfwCreateWindow(width, height, windowName, NULL, NULL);
+	window = glfwCreateWindow(window_width, window_height, windowName, NULL, NULL);
 
 	glfwMakeContextCurrent(window);
 
@@ -19,4 +22,10 @@ Window::Window(int width, int height, const char* windowName, bool mouseCaptured
 	{
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	}
+}
+
+void Window::changeSize(int width, int height)
+{
+	window_width = width;
+	window_height = height;
 }

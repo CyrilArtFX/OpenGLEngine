@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Core\game.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Maths\Matrix4.cpp" />
@@ -147,6 +148,7 @@
     <ClCompile Include="Core\window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Core\game.h" />
     <ClInclude Include="Maths\Maths.h" />
     <ClInclude Include="Maths\Matrix4.h" />
     <ClInclude Include="Maths\Quaternion.h" />
