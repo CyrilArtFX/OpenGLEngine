@@ -6,13 +6,13 @@
 
 int main()
 {
-	auto& game = Game::instance();
-	bool is_game_init = game.initialize();
+	std::unique_ptr<Game> game = std::make_unique<Game>();
+ 	bool is_game_init = game->initialize();
 
 	if (!is_game_init) return -1;
 
-	game.loop();
-	game.close();
+	game->run();
+	game->close();
 
 	return 0;
 }

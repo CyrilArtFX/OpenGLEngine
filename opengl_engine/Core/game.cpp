@@ -1,11 +1,9 @@
 #include "game.h"
 
 
-//  declare callback functions
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-
+Game::Game()
+{
+}
 
 
 bool Game::initialize(int wndw_width, int wndw_height, std::string wndw_name, bool wndw_capturemouse)
@@ -21,9 +19,30 @@ bool Game::initialize(int wndw_width, int wndw_height, std::string wndw_name, bo
 		return false;
 	}
 
-	glfwSetFramebufferSizeCallback(glWindow, framebuffer_size_callback); //  link window resize callback function
-	glfwSetCursorPosCallback(glWindow, mouse_callback); //  link mouse pos callback function
-	glfwSetScrollCallback(glWindow, scroll_callback); //  link mouse scroll callback function
+
+	glfwSetWindowUserPointer(glWindow, this);
+
+	glfwSetFramebufferSizeCallback(glWindow, [](GLFWwindow* window, int width, int height)
+		{
+			auto self = static_cast<Game*>(glfwGetWindowUserPointer(window));
+			self->windowResize(window, width, height);
+		}
+	); //  link window resize callback function
+
+	glfwSetCursorPosCallback(glWindow, [](GLFWwindow* window, double xpos, double ypos)
+		{
+			auto self = static_cast<Game*>(glfwGetWindowUserPointer(window));
+			self->processMouse(window, xpos, ypos);
+		}
+	); //  link mouse pos callback function
+
+	glfwSetScrollCallback(glWindow, [](GLFWwindow* window, double xoffset, double yoffset)
+		{
+			auto self = static_cast<Game*>(glfwGetWindowUserPointer(window));
+			self->processScroll(window, xoffset, yoffset);
+		}
+	); //  link mouse scroll callback function
+
 
 
 	//  initialize GLAD
@@ -41,23 +60,23 @@ bool Game::initialize(int wndw_width, int wndw_height, std::string wndw_name, bo
 	lastY = wndw_height / 2;
 
 
-	//  END INITIALIZATION PART
-	//  =======================
+	return true;
+}
 
 
-
-	//  ---------------------------------------------------------------------------------------------------
-	//  Everything below this part in this function should be later implemented with a Scene loading system
-
+void Game::run()
+{
+	//  run initialization
 
 	camera = Camera(Vector3{ 0.0f, 0.0f, -3.0f });
+
 
 	//  build and compile shaders
 	//Shader basicShader("Shaders/basic.vert", "Shaders/basic.frag");
 	//Shader textureShader("Shaders/texture.vert", "Shaders/texture.frag");
 	//Shader object3DShader("Shaders/object.vert", "Shaders/object.frag");
-	lightObj3DShader = Shader("Shaders/object.vert", "Shaders/lightedobject.frag");
-	lightShader = Shader("Shaders/light.vert", "Shaders/light.frag");
+	Shader lightObj3DShader("Shaders/object.vert", "Shaders/lightedobject.frag");
+	Shader lightShader("Shaders/light.vert", "Shaders/light.frag");
 
 	//  cube vertices data
 	float cubeVertices[180] = {
@@ -104,13 +123,13 @@ bool Game::initialize(int wndw_width, int wndw_height, std::string wndw_name, bo
 		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
 
-	cube = VertexArray(cubeVertices, 36);
+	VertexArray cube(cubeVertices, 36);
 
-	lightCube = VertexArray(cubeVertices, 36);
+	VertexArray lightCube(cubeVertices, 36);
 
 
-	containerTex = Texture("Resources/container.jpg", GL_RGB, true);
-	faceTex = Texture("Resources/awesomeface.png", GL_RGBA, true);
+	Texture containerTex("Resources/container.jpg", GL_RGB, true);
+	Texture faceTex("Resources/awesomeface.png", GL_RGBA, true);
 
 	//  manually set the textures unit on the shader (need to be done only once)
 	lightObj3DShader.use(); //  activate the shader on which you want to set the texture unit before doing it
@@ -118,12 +137,11 @@ bool Game::initialize(int wndw_width, int wndw_height, std::string wndw_name, bo
 	lightObj3DShader.setInt("texture2", 1);
 
 
-	return true;
-}
+	Vector3 lightColor{ 1.0f, 1.0f, 1.0f };
+	Vector3 lightPos{ 1.2f, 1.0f, 2.0f };
 
 
-void Game::loop()
-{
+
 	//  main loop
 	while (!glfwWindowShouldClose(window.getGLFWwindow()))
 	{
@@ -194,24 +212,19 @@ void Game::loop()
 		glfwSwapBuffers(window.getGLFWwindow());
 		glfwPollEvents();
 	}
-}
 
 
-void Game::close()
-{
-	//  This should also be put in a scene logic
-	//  ----------------------------------------
-	
 	//  delete all resources that are not necessary anymore (optionnal)
 	cube.deleteObjects();
 	lightCube.deleteObjects();
 	lightObj3DShader.deleteProgram();
 	lightShader.deleteProgram();
+}
 
 
-
-
-	//  properly clear GLFW before closing app (will stay here)
+void Game::close()
+{
+	//  properly clear GLFW before closing app
 	glfwTerminate();
 }
 
@@ -242,7 +255,7 @@ void Game::processInput(GLFWwindow* glWindow)
 }
 
 
-//  class member redirected callback functions
+//  callback functions
 void Game::windowResize(GLFWwindow* glWindow, int width, int height)
 {
 	glViewport(0, 0, width, height); //  resize OpenGL viewport when GLFW is resized
@@ -269,22 +282,4 @@ void Game::processMouse(GLFWwindow* glWindow, double xpos, double ypos)
 void Game::processScroll(GLFWwindow* glWindow, double xoffset, double yoffset)
 {
 	camera.ProcessMouseScroll(float(yoffset));
-}
-
-
-
-//  redirect callback functions
-void framebuffer_size_callback(GLFWwindow* glWindow, int width, int height)
-{
-	Game::instance().windowResize(glWindow, width, height);
-}
-
-void mouse_callback(GLFWwindow* glWindow, double xpos, double ypos)
-{
-	Game::instance().processMouse(glWindow, xpos, ypos);
-}
-
-void scroll_callback(GLFWwindow* glWindow, double xoffset, double yoffset)
-{
-	Game::instance().processScroll(glWindow, xoffset, yoffset);
 }

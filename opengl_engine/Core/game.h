@@ -17,27 +17,13 @@
 
 class Game
 {
-	// Begin SINGLETON
 public:
-	static Game& instance()
-	{
-		static Game inst;
-		return inst;
-	}
-
+	Game();
 	Game(const Game&) = delete;
 	Game& operator=(const Game&) = delete;
-	Game(Game&&) = delete;
-	Game& operator=(Game&&) = delete;
 
-private:
-	Game() = default;
-	// End SINGLETON
-
-
-public:
 	bool initialize(int wndw_width = 1024, int wndw_height = 720, std::string wndw_name = "OpenGL Engine", bool wndw_capturemouse = true);
-	void loop();
+	void run();
 	void close();
 
 
@@ -68,16 +54,10 @@ private:
 
 
 	//  will be put in a scene logic when I will do that
-	VertexArray cube;
-	VertexArray lightCube;
-	Shader lightObj3DShader;
-	Shader lightShader;
-	Texture containerTex;
-	Texture faceTex;
+	
 
 
 	//  will be implemented better after finishing 'lighting' part
-	Vector3 lightColor{ 1.0f, 1.0f, 1.0f };
-	Vector3 lightPos{ 1.2f, 1.0f, 2.0f };
+	
 };
 
