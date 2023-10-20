@@ -9,7 +9,9 @@ enum Camera_Movement
 	Forward,
 	Backward,
 	Left,
-	Right
+	Right,
+	Up,
+	Down
 };
 
 

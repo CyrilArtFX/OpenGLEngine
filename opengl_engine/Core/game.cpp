@@ -87,30 +87,35 @@ void Game::run()
 		 0.5f,  0.5f, -0.5f,   0.0f,  0.0f, -1.0f,   1.0f, 1.0f,
 		-0.5f,  0.5f, -0.5f,   0.0f,  0.0f, -1.0f,   0.0f, 1.0f,
 		-0.5f, -0.5f, -0.5f,   0.0f,  0.0f, -1.0f,   0.0f, 0.0f,
+
 		-0.5f, -0.5f,  0.5f,   0.0f,  0.0f,  1.0f,   0.0f, 0.0f,
 		 0.5f, -0.5f,  0.5f,   0.0f,  0.0f,  1.0f,   1.0f, 0.0f,
 		 0.5f,  0.5f,  0.5f,   0.0f,  0.0f,  1.0f,   1.0f, 1.0f,
 		 0.5f,  0.5f,  0.5f,   0.0f,  0.0f,  1.0f,   1.0f, 1.0f,
 		-0.5f,  0.5f,  0.5f,   0.0f,  0.0f,  1.0f,   0.0f, 1.0f,
 		-0.5f, -0.5f,  0.5f,   0.0f,  0.0f,  1.0f,   0.0f, 0.0f,
+
 		-0.5f,  0.5f,  0.5f,  -1.0f,  0.0f,  0.0f,   1.0f, 0.0f,
 		-0.5f,  0.5f, -0.5f,  -1.0f,  0.0f,  0.0f,   1.0f, 1.0f,
 		-0.5f, -0.5f, -0.5f,  -1.0f,  0.0f,  0.0f,   0.0f, 1.0f,
 		-0.5f, -0.5f, -0.5f,  -1.0f,  0.0f,  0.0f,   0.0f, 1.0f,
 		-0.5f, -0.5f,  0.5f,  -1.0f,  0.0f,  0.0f,   0.0f, 0.0f,
 		-0.5f,  0.5f,  0.5f,  -1.0f,  0.0f,  0.0f,   1.0f, 0.0f,
+
 		 0.5f,  0.5f,  0.5f,   1.0f,  0.0f,  0.0f,   1.0f, 0.0f,
 		 0.5f,  0.5f, -0.5f,   1.0f,  0.0f,  0.0f,   1.0f, 1.0f,
 		 0.5f, -0.5f, -0.5f,   1.0f,  0.0f,  0.0f,   0.0f, 1.0f,
 		 0.5f, -0.5f, -0.5f,   1.0f,  0.0f,  0.0f,   0.0f, 1.0f,
 		 0.5f, -0.5f,  0.5f,   1.0f,  0.0f,  0.0f,   0.0f, 0.0f,
 		 0.5f,  0.5f,  0.5f,   1.0f,  0.0f,  0.0f,   1.0f, 0.0f,
+
 		-0.5f, -0.5f, -0.5f,   0.0f, -1.0f,  0.0f,   0.0f, 1.0f,
 		 0.5f, -0.5f, -0.5f,   0.0f, -1.0f,  0.0f,   1.0f, 1.0f,
 		 0.5f, -0.5f,  0.5f,   0.0f, -1.0f,  0.0f,   1.0f, 0.0f,
 		 0.5f, -0.5f,  0.5f,   0.0f, -1.0f,  0.0f,   1.0f, 0.0f,
 		-0.5f, -0.5f,  0.5f,   0.0f, -1.0f,  0.0f,   0.0f, 0.0f,
 		-0.5f, -0.5f, -0.5f,   0.0f, -1.0f,  0.0f,   0.0f, 1.0f,
+		
 		-0.5f,  0.5f, -0.5f,   0.0f,  1.0f,  0.0f,   0.0f, 1.0f,
 		 0.5f,  0.5f, -0.5f,   0.0f,  1.0f,  0.0f,   1.0f, 1.0f,
 		 0.5f,  0.5f,  0.5f,   0.0f,  1.0f,  0.0f,   1.0f, 0.0f,
@@ -132,7 +137,7 @@ void Game::run()
 
 
 	Vector3 lightColor{ 1.0f, 1.0f, 1.0f };
-	Vector3 lightPos{ 1.2f, 1.0f, 2.0f };
+	lightPos = Vector3{ 1.2f, 1.0f, 2.0f };
 
 
 
@@ -190,6 +195,7 @@ void Game::run()
 
 		lightObj3DShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
 		lightObj3DShader.setVec3("lightColor", lightColor);
+		lightObj3DShader.setVec3("lightPos", lightPos);
 
 		model = Matrix4::identity;
 
@@ -245,6 +251,34 @@ void Game::processInput(GLFWwindow* glWindow)
 
 	if (glfwGetKey(glWindow, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(Right, deltaTime);
+
+	if (glfwGetKey(glWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
+		camera.ProcessKeyboard(Up, deltaTime);
+
+	if (glfwGetKey(glWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+		camera.ProcessKeyboard(Down, deltaTime);
+
+
+	//  move light (temp)
+	float light_speed = 2.0f;
+
+	if (glfwGetKey(glWindow, GLFW_KEY_UP) == GLFW_PRESS)
+		lightPos += Vector3{ 0.0f, 0.0f, 1.0f } * deltaTime * light_speed;
+
+	if (glfwGetKey(glWindow, GLFW_KEY_DOWN) == GLFW_PRESS)
+		lightPos += Vector3{ 0.0f, 0.0f, -1.0f } * deltaTime * light_speed;
+
+	if (glfwGetKey(glWindow, GLFW_KEY_LEFT) == GLFW_PRESS)
+		lightPos += Vector3{ -1.0f, 0.0f, 0.0f } * deltaTime * light_speed;
+
+	if (glfwGetKey(glWindow, GLFW_KEY_RIGHT) == GLFW_PRESS)
+		lightPos += Vector3{ 1.0f, 0.0f, 0.0f } * deltaTime * light_speed;
+
+	if (glfwGetKey(glWindow, GLFW_KEY_KP_ADD) == GLFW_PRESS)
+		lightPos += Vector3{ 0.0f, 1.0f, 0.0f } * deltaTime * light_speed;
+
+	if (glfwGetKey(glWindow, GLFW_KEY_KP_SUBTRACT) == GLFW_PRESS)
+		lightPos += Vector3{ 0.0f, -1.0f, 0.0f } * deltaTime * light_speed;
 }
 
 

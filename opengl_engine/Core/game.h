@@ -54,10 +54,6 @@ private:
 
 
 	//  will be put in a scene logic when I will do that
-	
-
-
-	//  will be implemented better after finishing 'lighting' part
-	
+	Vector3 lightPos;
 };
 
