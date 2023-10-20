@@ -23,6 +23,8 @@ public:
 
 
 private:
+	const unsigned int nbDataPerVertex = 8;
+
 	unsigned int nbVertices;
 	unsigned int nbIndices;
 

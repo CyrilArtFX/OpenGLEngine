@@ -11,7 +11,7 @@ VertexArray::VertexArray(const float* vertices, unsigned int nbVertices_, const 
 	glBindVertexArray(VAO); //  bind the VAO before binding the vertex buffer, and before configuring vertex attributes
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, nbVertices * 5.0 * sizeof(float), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, nbVertices * nbDataPerVertex * sizeof(float), vertices, GL_STATIC_DRAW);
 
 	if (nbIndices > 0) //  setup EBO if specified
 	{
@@ -22,15 +22,15 @@ VertexArray::VertexArray(const float* vertices, unsigned int nbVertices_, const 
 
 
 	//  position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, nbDataPerVertex * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
 	//  normal attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, nbDataPerVertex * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
 	//  texture coordinates attribute
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, nbDataPerVertex * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 }
 
