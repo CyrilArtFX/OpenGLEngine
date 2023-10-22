@@ -130,11 +130,31 @@ void Game::run()
 		-0.5f,  0.5f, -0.5f,   0.0f,  1.0f,  0.0f,   0.0f, 1.0f
 	};
 
+	Material bronzeMat = Material
+	{
+		Vector3{0.215f, 0.1275f, 0.054f},
+		Vector3{0.714f, 0.4284f, 0.18144f},
+		Vector3{0.393548f, 0.271906f, 0.166721f},
+		25.6f
+	};
+
+	Material cyanPlasticMat = Material
+	{
+		Vector3{0.0f, 0.1f, 0.06f},
+		Vector3{0.0f, 0.50980392f, 0.50982392f},
+		Vector3{0.50196078f, 0.50196078f, 0.50196078f},
+		32.0f
+	};
+
+
+
 	Object cube(litObjectShader, cubeVertices, 36);
+	cube.setMaterial(bronzeMat);
 
 	Object cube2(litObjectShader, cubeVertices, 36);
 	cube2.setPosition(Vector3{ -2.0f, 0.8f, -0.67f });
 	cube2.setScale(Vector3{ 1.0f, 1.5f, 0.8f });
+	cube2.setMaterial(cyanPlasticMat);
 
 	Object lightCube(lightShader, cubeVertices, 36);
 	lightCube.setPosition(lightPos);
@@ -175,7 +195,10 @@ void Game::run()
 
 
 
-		//float timeValue = glfwGetTime();
+		float timeValue = glfwGetTime();
+		/*lightColor.x = sin(timeValue * 2.0f);
+		lightColor.y = sin(timeValue * 0.7f);
+		lightColor.z = sin(timeValue * 1.3f);*/
 
 
 
@@ -201,9 +224,11 @@ void Game::run()
 		glActiveTexture(GL_TEXTURE1);
 		faceTex.use();*/
 
-		litObjectShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-		litObjectShader.setVec3("lightColor", lightColor);
-		litObjectShader.setVec3("lightPos", lightPos);
+		litObjectShader.setVec3("light.ambient", lightColor * 0.1f);
+		litObjectShader.setVec3("light.diffuse", lightColor * 0.7f);
+		litObjectShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+		litObjectShader.setVec3("light.position", lightPos);
+
 		litObjectShader.setVec3("viewPos", camera->getPosition());
 
 		litObjectShader.setMatrix4("view", view.getAsFloatPtr());

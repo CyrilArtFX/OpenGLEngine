@@ -6,6 +6,15 @@
 #include <Rendering/shader.h>
 
 
+struct Material
+{
+	Vector3 ambient;
+	Vector3 diffuse;
+	Vector3 specular;
+	float shininess;
+};
+
+
 class Object
 {
 public:
@@ -13,6 +22,8 @@ public:
 
 	void draw();
 	void deleteObject();
+
+	void setMaterial(Material newMat);
 
 	void setPosition(Vector3 newPos);
 	void setScale(Vector3 newScale);
@@ -23,6 +34,14 @@ private:
 
 	Shader& shader;
 	VertexArray vertexArray;
+
+	Material material
+	{
+		Vector3{1.0f, 1.0f, 1.0f},
+		Vector3{1.0f, 1.0f, 1.0f},
+		Vector3{0.5f, 0.5f, 0.5f},
+		32.0f
+	};
 
 	Vector3 position{ Vector3::zero };
 	Vector3 scale{ Vector3::one };

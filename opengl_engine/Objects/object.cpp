@@ -14,6 +14,11 @@ void Object::draw()
 	shader.setMatrix4("model", modelMatrix.getAsFloatPtr());
 	shader.setMatrix4("normalMatrix", normalMatrix.getAsFloatPtr());
 
+	shader.setVec3("material.ambient", material.ambient);
+	shader.setVec3("material.diffuse", material.diffuse);
+	shader.setVec3("material.specular", material.specular);
+	shader.setFloat("material.shininess", material.shininess);
+
 	vertexArray.setActive();
 
 	if (vertexArray.getNBIndices() == 0)
@@ -29,6 +34,12 @@ void Object::draw()
 void Object::deleteObject()
 {
 	vertexArray.deleteObjects();
+}
+
+
+void Object::setMaterial(Material newMat)
+{
+	material = newMat;
 }
 
 
