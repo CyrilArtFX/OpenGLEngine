@@ -122,3 +122,42 @@ void Matrix4::invert()
 		}
 	}
 }
+
+void Matrix4::transpose()
+{
+	float trsp[16];
+
+	// Transpose matrix
+	// row 1 to col 1
+	trsp[0] = mat[0][0];
+	trsp[4] = mat[0][1];
+	trsp[8] = mat[0][2];
+	trsp[12] = mat[0][3];
+
+	// row 2 to col 2
+	trsp[1] = mat[1][0];
+	trsp[5] = mat[1][1];
+	trsp[9] = mat[1][2];
+	trsp[13] = mat[1][3];
+
+	// row 3 to col 3
+	trsp[2] = mat[2][0];
+	trsp[6] = mat[2][1];
+	trsp[10] = mat[2][2];
+	trsp[14] = mat[2][3];
+
+	// row 4 to col 4
+	trsp[3] = mat[3][0];
+	trsp[7] = mat[3][1];
+	trsp[11] = mat[3][2];
+	trsp[15] = mat[3][3];
+
+	// Set it back
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			mat[i][j] = trsp[i * 4 + j];
+		}
+	}
+}

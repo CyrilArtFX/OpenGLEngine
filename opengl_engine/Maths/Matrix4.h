@@ -140,9 +140,14 @@ public:
 
 	/*
 	* Invert the matrix.
-	* WARNING : Very slow
+	* WARNING : slow
 	*/
 	void invert();
+
+	/*
+	* Transpose the matrix.
+	*/
+	void transpose();
 
 	Vector3 getTranslation() const
 	{
