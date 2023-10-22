@@ -75,10 +75,7 @@ void Game::run()
 
 
 	//  build and compile shaders
-	//Shader basicShader("Shaders/basic.vert", "Shaders/basic.frag");
-	//Shader textureShader("Shaders/texture.vert", "Shaders/texture.frag");
-	//Shader object3DShader("Shaders/object.vert", "Shaders/object.frag");
-	Shader lightObj3DShader("Shaders/object.vert", "Shaders/lightedobject.frag");
+	Shader litObjectShader("Shaders/object_lit.vert", "Shaders/object_lit.frag");
 	Shader lightShader("Shaders/light.vert", "Shaders/light.frag");
 
 
@@ -133,9 +130,9 @@ void Game::run()
 		-0.5f,  0.5f, -0.5f,   0.0f,  1.0f,  0.0f,   0.0f, 1.0f
 	};
 
-	Object cube(lightObj3DShader, cubeVertices, 36);
+	Object cube(litObjectShader, cubeVertices, 36);
 
-	Object cube2(lightObj3DShader, cubeVertices, 36);
+	Object cube2(litObjectShader, cubeVertices, 36);
 	cube2.setPosition(Vector3{ -2.0f, 0.8f, -0.67f });
 	cube2.setScale(Vector3{ 1.0f, 1.5f, 0.8f });
 
@@ -197,20 +194,20 @@ void Game::run()
 
 
 
-		lightObj3DShader.use();
+		litObjectShader.use();
 
 		/*glActiveTexture(GL_TEXTURE0);
 		containerTex.use();
 		glActiveTexture(GL_TEXTURE1);
 		faceTex.use();*/
 
-		lightObj3DShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-		lightObj3DShader.setVec3("lightColor", lightColor);
-		lightObj3DShader.setVec3("lightPos", lightPos);
-		lightObj3DShader.setVec3("viewPos", camera->getPosition());
+		litObjectShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+		litObjectShader.setVec3("lightColor", lightColor);
+		litObjectShader.setVec3("lightPos", lightPos);
+		litObjectShader.setVec3("viewPos", camera->getPosition());
 
-		lightObj3DShader.setMatrix4("view", view.getAsFloatPtr());
-		lightObj3DShader.setMatrix4("projection", projection.getAsFloatPtr());
+		litObjectShader.setMatrix4("view", view.getAsFloatPtr());
+		litObjectShader.setMatrix4("projection", projection.getAsFloatPtr());
 
 		cube.draw();
 		cube2.draw();
@@ -226,7 +223,7 @@ void Game::run()
 	//  delete all resources that are not necessary anymore (optionnal)
 	cube.deleteObject();
 	lightCube.deleteObject();
-	lightObj3DShader.deleteProgram();
+	litObjectShader.deleteProgram();
 	lightShader.deleteProgram();
 }
 

@@ -100,13 +100,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\basic.vert" />
-    <None Include="Shaders\basic.frag" />
-    <None Include="Shaders\texture.frag" />
-    <None Include="Shaders\texture.vert" />
-    <None Include="Shaders\object.vert" />
-    <None Include="Shaders\object.frag" />
-    <None Include="Shaders\lightedobject.frag" />
+    <None Include="Shaders\object_lit.vert" />
+    <None Include="Shaders\object_lit.frag" />
     <None Include="Shaders\light.frag" />
     <None Include="Shaders\light.vert" />
   </ItemGroup>
