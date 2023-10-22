@@ -1,5 +1,8 @@
 #include "game.h"
 
+#include <Rendering/shader.h>
+#include <Objects/object.h>
+
 
 Game::Game()
 {
@@ -78,6 +81,12 @@ void Game::run()
 	Shader lightObj3DShader("Shaders/object.vert", "Shaders/lightedobject.frag");
 	Shader lightShader("Shaders/light.vert", "Shaders/light.frag");
 
+
+	//  light data
+	Vector3 lightColor{ 1.0f, 1.0f, 1.0f };
+	lightPos = Vector3{ 1.2f, 1.0f, 2.0f };
+
+
 	//  cube vertices data
 	float cubeVertices[] = {
 		// positions           // normals           // texture coords
@@ -124,7 +133,15 @@ void Game::run()
 		-0.5f,  0.5f, -0.5f,   0.0f,  1.0f,  0.0f,   0.0f, 1.0f
 	};
 
-	VertexArray cube(cubeVertices, 36);
+	Object cube(lightObj3DShader, cubeVertices, 36);
+
+	Object cube2(lightObj3DShader, cubeVertices, 36);
+	cube2.setPosition(Vector3{ -2.0f, 0.8f, -0.67f });
+	cube2.setScale(Vector3{ 1.0f, 1.5f, 0.8f });
+
+	Object lightCube(lightShader, cubeVertices, 36);
+	lightCube.setPosition(lightPos);
+	lightCube.setScale(0.2f);
 
 	
 	/*  the texture logic should be reimplemented later
@@ -136,10 +153,6 @@ void Game::run()
 	lightObj3DShader.setInt("texture1", 0);
 	lightObj3DShader.setInt("texture2", 1);
 	*/
-
-
-	Vector3 lightColor{ 1.0f, 1.0f, 1.0f };
-	lightPos = Vector3{ 1.2f, 1.0f, 2.0f };
 
 
 
@@ -172,19 +185,15 @@ void Game::run()
 		//  draw
 		Matrix4 view = camera->GetViewMatrix();
 		Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(camera->getFov()), window->getWidth(), window->getHeigth(), 0.1f, 100.0f);
-		Matrix4 model = Matrix4::identity;
 
 		lightShader.use();
 		lightShader.setVec3("lightColor", lightColor);
 
-		model = Matrix4::createScale(Vector3{ 0.2f, 0.2f, 0.2f }) * Matrix4::createTranslation(lightPos);
-
 		lightShader.setMatrix4("view", view.getAsFloatPtr());
 		lightShader.setMatrix4("projection", projection.getAsFloatPtr());
-		lightShader.setMatrix4("model", model.getAsFloatPtr());
 
-		cube.setActive();
-		glDrawArrays(GL_TRIANGLES, 0, cube.getNBVertices());
+		lightCube.setPosition(lightPos);
+		lightCube.draw();
 
 
 
@@ -200,18 +209,11 @@ void Game::run()
 		lightObj3DShader.setVec3("lightPos", lightPos);
 		lightObj3DShader.setVec3("viewPos", camera->getPosition());
 
-		model = Matrix4::identity;
-		Matrix4 normalMatrix = model * view;
-		normalMatrix.invert();
-		normalMatrix.transpose();
-
 		lightObj3DShader.setMatrix4("view", view.getAsFloatPtr());
 		lightObj3DShader.setMatrix4("projection", projection.getAsFloatPtr());
-		lightObj3DShader.setMatrix4("model", model.getAsFloatPtr());
-		lightObj3DShader.setMatrix4("normalMatrix", normalMatrix.getAsFloatPtr());
 
-		cube.setActive();
-		glDrawArrays(GL_TRIANGLES, 0, cube.getNBVertices());
+		cube.draw();
+		cube2.draw();
 
 
 
@@ -222,7 +224,8 @@ void Game::run()
 
 
 	//  delete all resources that are not necessary anymore (optionnal)
-	cube.deleteObjects();
+	cube.deleteObject();
+	lightCube.deleteObject();
 	lightObj3DShader.deleteProgram();
 	lightShader.deleteProgram();
 }

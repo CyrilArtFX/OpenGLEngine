@@ -2,11 +2,8 @@
 #include <GLFW/glfw3.h>
 
 #include "window.h"
-
-#include <Rendering/shader.h>
-#include <Rendering/texture.h>
-#include <Rendering/vertexArray.h>
 #include <Rendering/camera.h>
+#include <Rendering/texture.h>
 
 #include <Maths/Matrix4.h>
 #include <Maths/Vector3.h>

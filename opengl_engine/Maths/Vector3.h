@@ -166,6 +166,7 @@ public:
 	}
 
 	static const Vector3 zero;
+	static const Vector3 one;
 	static const Vector3 unitX;
 	static const Vector3 unitY;
 	static const Vector3 unitZ;

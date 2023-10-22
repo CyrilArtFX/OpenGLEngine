@@ -141,6 +141,7 @@
     <ClCompile Include="Maths\Vector2.cpp" />
     <ClCompile Include="Maths\Vector2Int.cpp" />
     <ClCompile Include="Maths\Vector3.cpp" />
+    <ClCompile Include="Objects\object.cpp" />
     <ClCompile Include="Rendering\camera.cpp" />
     <ClCompile Include="Rendering\vertexArray.cpp" />
     <ClCompile Include="Rendering\shader.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="Maths\Vector2.h" />
     <ClInclude Include="Maths\Vector2Int.h" />
     <ClInclude Include="Maths\Vector3.h" />
+    <ClInclude Include="Objects\object.h" />
     <ClInclude Include="Rendering\camera.h" />
     <ClInclude Include="Rendering\vertexArray.h" />
     <ClInclude Include="Rendering\shader.h" />
