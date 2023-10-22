@@ -1,4 +1,3 @@
-//  if this line is not here, the project don't compile (bruh)
 #define STB_IMAGE_IMPLEMENTATION
 
 #include <Core/game.h>

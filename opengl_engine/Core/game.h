@@ -37,14 +37,14 @@ public:
 
 private:
 	//  window
-	Window window;
+	std::unique_ptr<Window> window;
 
 	//  time
 	float deltaTime = 0.0f;
 	float lastFrame = 0.0f;
 
 	//  camera
-	Camera camera;
+	std::unique_ptr<Camera> camera;
 
 
 	//  mouse

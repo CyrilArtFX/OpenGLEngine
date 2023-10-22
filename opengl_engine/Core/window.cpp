@@ -1,6 +1,6 @@
 #include "window.h"
 
-Window::Window(int width, int height, const char* windowName, bool mouseCaptured)
+Window::Window(int width, int height, std::string windowName, bool mouseCaptured)
 {
 	//  initialize GLFW
 	glfwInit();
@@ -13,7 +13,7 @@ Window::Window(int width, int height, const char* windowName, bool mouseCaptured
 	window_height = height;
 
 	//  create GLFW window
-	window = glfwCreateWindow(window_width, window_height, windowName, NULL, NULL);
+	window = glfwCreateWindow(window_width, window_height, windowName.c_str(), NULL, NULL);
 
 	glfwMakeContextCurrent(window);
 

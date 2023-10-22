@@ -9,9 +9,9 @@ Game::Game()
 bool Game::initialize(int wndw_width, int wndw_height, std::string wndw_name, bool wndw_capturemouse)
 {
 	//  create window and initialize glfw
-	window = Window(wndw_width, wndw_height, wndw_name.c_str(), wndw_capturemouse);
+	window = std::make_unique<Window>(wndw_width, wndw_height, wndw_name, wndw_capturemouse);
 
-	GLFWwindow* glWindow = window.getGLFWwindow();
+	GLFWwindow* glWindow = window->getGLFWwindow();
 	if (glWindow == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -68,7 +68,7 @@ void Game::run()
 {
 	//  run initialization
 
-	camera = Camera(Vector3{ 0.0f, 0.0f, -3.0f });
+	camera = std::make_unique<Camera>(Vector3{ 0.0f, 0.0f, -3.0f });
 
 
 	//  build and compile shaders
@@ -126,7 +126,8 @@ void Game::run()
 
 	VertexArray cube(cubeVertices, 36);
 
-
+	
+	/*  the texture logic should be reimplemented later
 	Texture containerTex("Resources/container.jpg", GL_RGB, true);
 	Texture faceTex("Resources/awesomeface.png", GL_RGBA, true);
 
@@ -134,6 +135,7 @@ void Game::run()
 	lightObj3DShader.use(); //  activate the shader on which you want to set the texture unit before doing it
 	lightObj3DShader.setInt("texture1", 0);
 	lightObj3DShader.setInt("texture2", 1);
+	*/
 
 
 	Vector3 lightColor{ 1.0f, 1.0f, 1.0f };
@@ -142,7 +144,7 @@ void Game::run()
 
 
 	//  main loop
-	while (!glfwWindowShouldClose(window.getGLFWwindow()))
+	while (!glfwWindowShouldClose(window->getGLFWwindow()))
 	{
 		//  time logic
 		float currentFrame = glfwGetTime();
@@ -153,7 +155,7 @@ void Game::run()
 
 		//  inputs part
 		// -------------
-		processInput(window.getGLFWwindow());
+		processInput(window->getGLFWwindow());
 
 
 		//  rendering part
@@ -168,8 +170,8 @@ void Game::run()
 
 
 		//  draw
-		Matrix4 view = camera.GetViewMatrix();
-		Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(camera.getFov()), window.getWidth(), window.getHeigth(), 0.1f, 100.0f);
+		Matrix4 view = camera->GetViewMatrix();
+		Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(camera->getFov()), window->getWidth(), window->getHeigth(), 0.1f, 100.0f);
 		Matrix4 model = Matrix4::identity;
 
 		lightShader.use();
@@ -188,15 +190,15 @@ void Game::run()
 
 		lightObj3DShader.use();
 
-		glActiveTexture(GL_TEXTURE0);
+		/*glActiveTexture(GL_TEXTURE0);
 		containerTex.use();
 		glActiveTexture(GL_TEXTURE1);
-		faceTex.use();
+		faceTex.use();*/
 
 		lightObj3DShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
 		lightObj3DShader.setVec3("lightColor", lightColor);
 		lightObj3DShader.setVec3("lightPos", lightPos);
-		lightObj3DShader.setVec3("viewPos", camera.getPosition());
+		lightObj3DShader.setVec3("viewPos", camera->getPosition());
 
 		model = Matrix4::identity;
 		Matrix4 normalMatrix = model * view;
@@ -214,7 +216,7 @@ void Game::run()
 
 
 		//  events and buffer swap
-		glfwSwapBuffers(window.getGLFWwindow());
+		glfwSwapBuffers(window->getGLFWwindow());
 		glfwPollEvents();
 	}
 
@@ -246,22 +248,22 @@ void Game::processInput(GLFWwindow* glWindow)
 
 	//  move camera
 	if (glfwGetKey(glWindow, GLFW_KEY_W) == GLFW_PRESS)
-		camera.ProcessKeyboard(Forward, deltaTime);
+		camera->ProcessKeyboard(Forward, deltaTime);
 
 	if (glfwGetKey(glWindow, GLFW_KEY_S) == GLFW_PRESS)
-		camera.ProcessKeyboard(Backward, deltaTime);
+		camera->ProcessKeyboard(Backward, deltaTime);
 
 	if (glfwGetKey(glWindow, GLFW_KEY_A) == GLFW_PRESS)
-		camera.ProcessKeyboard(Left, deltaTime);
+		camera->ProcessKeyboard(Left, deltaTime);
 
 	if (glfwGetKey(glWindow, GLFW_KEY_D) == GLFW_PRESS)
-		camera.ProcessKeyboard(Right, deltaTime);
+		camera->ProcessKeyboard(Right, deltaTime);
 
 	if (glfwGetKey(glWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
-		camera.ProcessKeyboard(Up, deltaTime);
+		camera->ProcessKeyboard(Up, deltaTime);
 
 	if (glfwGetKey(glWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-		camera.ProcessKeyboard(Down, deltaTime);
+		camera->ProcessKeyboard(Down, deltaTime);
 
 
 	//  move light (temp)
@@ -291,7 +293,7 @@ void Game::processInput(GLFWwindow* glWindow)
 void Game::windowResize(GLFWwindow* glWindow, int width, int height)
 {
 	glViewport(0, 0, width, height); //  resize OpenGL viewport when GLFW is resized
-	window.changeSize(width, height);
+	window->changeSize(width, height);
 }
 
 void Game::processMouse(GLFWwindow* glWindow, double xpos, double ypos)
@@ -308,10 +310,10 @@ void Game::processMouse(GLFWwindow* glWindow, double xpos, double ypos)
 	lastX = xpos;
 	lastY = ypos;
 
-	camera.ProcessMouseMovement(xoffset, yoffset);
+	camera->ProcessMouseMovement(xoffset, yoffset);
 }
 
 void Game::processScroll(GLFWwindow* glWindow, double xoffset, double yoffset)
 {
-	camera.ProcessMouseScroll(float(yoffset));
+	camera->ProcessMouseScroll(float(yoffset));
 }

@@ -34,6 +34,9 @@ class Camera
 {
 public:
 	Camera(Vector3 position_ = POSITION, Vector3 front_ = FRONT, float yaw_ = YAW, float pitch_ = PITCH, float fov_ = FOV);
+	Camera() = delete;
+	Camera(const Camera&) = delete;
+	Camera& operator=(const Camera&) = delete;
 
 	Matrix4 GetViewMatrix();
 	

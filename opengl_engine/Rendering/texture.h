@@ -10,7 +10,6 @@ class Texture
 {
 public:
 	Texture(const char* texturePath, unsigned int glFormat, bool flipVertical); //  constructor builds texture
-	Texture() = default;
 
 	void use(); //  use (bind) the texture
 

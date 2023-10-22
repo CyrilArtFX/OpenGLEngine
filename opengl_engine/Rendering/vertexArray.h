@@ -9,7 +9,6 @@ public:
 		* Give vertices with 3 spatial coordinates, 3 normal coordinates and 2 textures coordinates per vertex.
 	*/
 	VertexArray(const float* vertices, unsigned int nbVertices_, const unsigned int* indices = 0, unsigned int nbIndices_ = 0);
-	VertexArray() = default;
 
 	void setActive();
 	void deleteObjects();
