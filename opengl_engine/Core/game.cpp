@@ -196,6 +196,7 @@ void Game::run()
 		lightObj3DShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
 		lightObj3DShader.setVec3("lightColor", lightColor);
 		lightObj3DShader.setVec3("lightPos", lightPos);
+		lightObj3DShader.setVec3("viewPos", camera.getPosition());
 
 		model = Matrix4::identity;
 
