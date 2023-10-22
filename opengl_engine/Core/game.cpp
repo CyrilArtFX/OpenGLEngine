@@ -199,10 +199,14 @@ void Game::run()
 		lightObj3DShader.setVec3("viewPos", camera.getPosition());
 
 		model = Matrix4::identity;
+		Matrix4 normalMatrix = model * view;
+		normalMatrix.invert();
+		normalMatrix.transpose();
 
 		lightObj3DShader.setMatrix4("view", view.getAsFloatPtr());
 		lightObj3DShader.setMatrix4("projection", projection.getAsFloatPtr());
 		lightObj3DShader.setMatrix4("model", model.getAsFloatPtr());
+		lightObj3DShader.setMatrix4("normalMatrix", normalMatrix.getAsFloatPtr());
 
 		cube.setActive();
 		glDrawArrays(GL_TRIANGLES, 0, cube.getNBVertices());

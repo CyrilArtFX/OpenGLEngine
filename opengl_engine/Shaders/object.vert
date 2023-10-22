@@ -12,6 +12,7 @@ out vec3 tLightPos;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+uniform mat4 normalMatrix;
 uniform vec3 lightPos;
 
 void main()
@@ -19,8 +20,7 @@ void main()
 	gl_Position = vec4(aPos, 1.0f) * model * view * projection;
 	tFragPos = vec3(vec4(aPos, 1.0f) * model * view);
 
-	//  huge cost for gpu, should be done on gpu and send here with uniform
-	tNormal = aNormal * mat3(transpose(inverse(model * view)));
+	tNormal = aNormal * mat3(normalMatrix);
 	
 	tTexCoord = aTexCoord;
 
