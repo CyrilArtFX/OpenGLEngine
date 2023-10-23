@@ -1,7 +1,7 @@
 #include "object.h"
 
-Object::Object(Shader& shaderUsed, const float* vertices, unsigned int nbVertices, const unsigned int* indices, unsigned int nbIndices)
-	: shader(shaderUsed), vertexArray(vertices, nbVertices, indices, nbIndices)
+Object::Object(std::weak_ptr<Material> material_, const float* vertices, unsigned int nbVertices, const unsigned int* indices, unsigned int nbIndices)
+	: material(material_.lock()), vertexArray(vertices, nbVertices, indices, nbIndices)
 {
 	computeMatrix();
 }
@@ -11,13 +11,10 @@ void Object::draw()
 {
 	//  we assume that the shader is already in usage, because the renderer that call this function should already have set some uniforms on it
 
-	shader.setMatrix4("model", modelMatrix.getAsFloatPtr());
-	shader.setMatrix4("normalMatrix", normalMatrix.getAsFloatPtr());
+	material->getShader().setMatrix4("model", modelMatrix.getAsFloatPtr());
+	material->getShader().setMatrix4("normalMatrix", normalMatrix.getAsFloatPtr());
 
-	shader.setVec3("material.ambient", material.ambient);
-	shader.setVec3("material.diffuse", material.diffuse);
-	shader.setVec3("material.specular", material.specular);
-	shader.setFloat("material.shininess", material.shininess);
+	material->use();
 
 	vertexArray.setActive();
 
@@ -37,9 +34,9 @@ void Object::deleteObject()
 }
 
 
-void Object::setMaterial(Material newMat)
+void Object::setMaterial(std::weak_ptr<Material> newMat)
 {
-	material = newMat;
+	material = newMat.lock();
 }
 
 

@@ -9,7 +9,7 @@
 class Texture
 {
 public:
-	Texture(const char* texturePath, unsigned int glFormat, bool flipVertical); //  constructor builds texture
+	Texture(const char* texturePath = "Resources/Default/notexture.png", unsigned int glFormat = GL_RGBA, bool flipVertical = false); //  constructor builds texture
 
 	void use(); //  use (bind) the texture
 

@@ -3,6 +3,9 @@
 #include <Rendering/shader.h>
 #include <Objects/object.h>
 
+#include <Materials/litMaterial.h>
+#include <Materials/flatEmissiveMaterial.h>
+
 
 Game::Game()
 {
@@ -76,7 +79,19 @@ void Game::run()
 
 	//  build and compile shaders
 	Shader litObjectShader("Shaders/object_lit.vert", "Shaders/object_lit.frag");
-	Shader lightShader("Shaders/light.vert", "Shaders/light.frag");
+	Shader flatEmissiveShader("Shaders/flat_emissive.vert", "Shaders/flat_emissive.frag");
+
+	//  manually set the textures unit on the shader (need to be done only once)
+	litObjectShader.use(); //  activate the shader on which you want to set the texture unit before doing it
+	litObjectShader.setInt("material.diffuse", 0);
+	litObjectShader.setInt("material.specular", 1);
+	litObjectShader.setInt("material.emissive", 2);
+
+
+	//  create textures
+	std::shared_ptr<Texture> container_diffuse = std::make_shared<Texture>("Resources/container2.png", GL_RGBA, false);
+	std::shared_ptr<Texture> container_specular = std::make_shared<Texture>("Resources/container2_specular.png", GL_RGBA, false);
+	std::shared_ptr<Texture> container_emissive = std::make_shared<Texture>("Resources/matrix.jpg", GL_RGB, false);
 
 
 	//  light data
@@ -130,46 +145,15 @@ void Game::run()
 		-0.5f,  0.5f, -0.5f,   0.0f,  1.0f,  0.0f,   0.0f, 1.0f
 	};
 
-	Material bronzeMat = Material
-	{
-		Vector3{0.215f, 0.1275f, 0.054f},
-		Vector3{0.714f, 0.4284f, 0.18144f},
-		Vector3{0.393548f, 0.271906f, 0.166721f},
-		25.6f
-	};
+	std::shared_ptr<LitMaterial> containerMat = std::make_shared<LitMaterial>(litObjectShader, container_diffuse, container_specular);
+	std::shared_ptr<FlatEmissiveMaterial> lightSourceMat = std::make_shared<FlatEmissiveMaterial>(flatEmissiveShader, lightColor);
 
-	Material cyanPlasticMat = Material
-	{
-		Vector3{0.0f, 0.1f, 0.06f},
-		Vector3{0.0f, 0.50980392f, 0.50982392f},
-		Vector3{0.50196078f, 0.50196078f, 0.50196078f},
-		32.0f
-	};
+	Object cube(containerMat, cubeVertices, 36);
 
-
-
-	Object cube(litObjectShader, cubeVertices, 36);
-	cube.setMaterial(bronzeMat);
-
-	Object cube2(litObjectShader, cubeVertices, 36);
-	cube2.setPosition(Vector3{ -2.0f, 0.8f, -0.67f });
-	cube2.setScale(Vector3{ 1.0f, 1.5f, 0.8f });
-	cube2.setMaterial(cyanPlasticMat);
-
-	Object lightCube(lightShader, cubeVertices, 36);
+	Object lightCube(lightSourceMat, cubeVertices, 36);
 	lightCube.setPosition(lightPos);
 	lightCube.setScale(0.2f);
-
 	
-	/*  the texture logic should be reimplemented later
-	Texture containerTex("Resources/container.jpg", GL_RGB, true);
-	Texture faceTex("Resources/awesomeface.png", GL_RGBA, true);
-
-	//  manually set the textures unit on the shader (need to be done only once)
-	lightObj3DShader.use(); //  activate the shader on which you want to set the texture unit before doing it
-	lightObj3DShader.setInt("texture1", 0);
-	lightObj3DShader.setInt("texture2", 1);
-	*/
 
 
 
@@ -206,23 +190,18 @@ void Game::run()
 		Matrix4 view = camera->GetViewMatrix();
 		Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(camera->getFov()), window->getWidth(), window->getHeigth(), 0.1f, 100.0f);
 
-		lightShader.use();
-		lightShader.setVec3("lightColor", lightColor);
+		flatEmissiveShader.use();
 
-		lightShader.setMatrix4("view", view.getAsFloatPtr());
-		lightShader.setMatrix4("projection", projection.getAsFloatPtr());
+		flatEmissiveShader.setMatrix4("view", view.getAsFloatPtr());
+		flatEmissiveShader.setMatrix4("projection", projection.getAsFloatPtr());
 
+		lightSourceMat->setEmissiveColor(lightColor);
 		lightCube.setPosition(lightPos);
 		lightCube.draw();
 
 
 
 		litObjectShader.use();
-
-		/*glActiveTexture(GL_TEXTURE0);
-		containerTex.use();
-		glActiveTexture(GL_TEXTURE1);
-		faceTex.use();*/
 
 		litObjectShader.setVec3("light.ambient", lightColor * 0.1f);
 		litObjectShader.setVec3("light.diffuse", lightColor * 0.7f);
@@ -235,7 +214,6 @@ void Game::run()
 		litObjectShader.setMatrix4("projection", projection.getAsFloatPtr());
 
 		cube.draw();
-		cube2.draw();
 
 
 
@@ -249,7 +227,7 @@ void Game::run()
 	cube.deleteObject();
 	lightCube.deleteObject();
 	litObjectShader.deleteProgram();
-	lightShader.deleteProgram();
+	flatEmissiveShader.deleteProgram();
 }
 
 
