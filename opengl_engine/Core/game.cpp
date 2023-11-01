@@ -78,14 +78,15 @@ void Game::run()
 
 
 	//  build and compile shaders
-	Shader litObjectShader("Shaders/object_lit.vert", "Shaders/object_lit.frag");
+	//Shader litObjectShader("Shaders/object_lit.vert", "Shaders/object_lit.frag");
+	Shader litObjectShaderDirLight("Shaders/object_lit.vert", "Shaders/object_lit_dirlight.frag");
 	Shader flatEmissiveShader("Shaders/flat_emissive.vert", "Shaders/flat_emissive.frag");
 
 	//  manually set the textures unit on the shader (need to be done only once)
-	litObjectShader.use(); //  activate the shader on which you want to set the texture unit before doing it
-	litObjectShader.setInt("material.diffuse", 0);
-	litObjectShader.setInt("material.specular", 1);
-	litObjectShader.setInt("material.emissive", 2);
+	litObjectShaderDirLight.use(); //  activate the shader on which you want to set the texture unit before doing it
+	litObjectShaderDirLight.setInt("material.diffuse", 0);
+	litObjectShaderDirLight.setInt("material.specular", 1);
+	litObjectShaderDirLight.setInt("material.emissive", 2);
 
 
 	//  create textures
@@ -145,15 +146,30 @@ void Game::run()
 		-0.5f,  0.5f, -0.5f,   0.0f,  1.0f,  0.0f,   0.0f, 1.0f
 	};
 
-	std::shared_ptr<LitMaterial> containerMat = std::make_shared<LitMaterial>(litObjectShader, container_diffuse, container_specular);
+	std::shared_ptr<LitMaterial> containerMat = std::make_shared<LitMaterial>(litObjectShaderDirLight, container_diffuse, container_specular);
 	std::shared_ptr<FlatEmissiveMaterial> lightSourceMat = std::make_shared<FlatEmissiveMaterial>(flatEmissiveShader, lightColor);
 
-	Object cube(containerMat, cubeVertices, 36);
+
+	//  TODO : change the vertex array - object relation system
+	//  actually, the engine creates 3 differents VAO and VBO for this 3 cubes
+	//  but those three differents objects could use the same VAO and VBO
+
+	Object cube_1(containerMat, cubeVertices, 36);
+	Object cube_2(containerMat, cubeVertices, 36);
+	Object cube_3(containerMat, cubeVertices, 36);
+
 
 	Object lightCube(lightSourceMat, cubeVertices, 36);
 	lightCube.setPosition(lightPos);
 	lightCube.setScale(0.2f);
+
+
+	cube_1.setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
+	cube_2.setPosition(Vector3{ 2.0f, 1.5f, 2.0f });
+	cube_3.setPosition(Vector3{ 2.0f, -1.0f, -1.0f });
 	
+
+	Vector3 dirLight{ -0.4f, -0.5f, 1.0f };
 
 
 
@@ -201,19 +217,21 @@ void Game::run()
 
 
 
-		litObjectShader.use();
+		litObjectShaderDirLight.use();
 
-		litObjectShader.setVec3("light.ambient", lightColor * 0.1f);
-		litObjectShader.setVec3("light.diffuse", lightColor * 0.7f);
-		litObjectShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-		litObjectShader.setVec3("light.position", lightPos);
+		litObjectShaderDirLight.setVec3("light.ambient", lightColor * 0.1f);
+		litObjectShaderDirLight.setVec3("light.diffuse", lightColor * 0.7f);
+		litObjectShaderDirLight.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+		litObjectShaderDirLight.setVec3("light.direction", dirLight);
 
-		litObjectShader.setVec3("viewPos", camera->getPosition());
+		litObjectShaderDirLight.setVec3("viewPos", camera->getPosition());
 
-		litObjectShader.setMatrix4("view", view.getAsFloatPtr());
-		litObjectShader.setMatrix4("projection", projection.getAsFloatPtr());
+		litObjectShaderDirLight.setMatrix4("view", view.getAsFloatPtr());
+		litObjectShaderDirLight.setMatrix4("projection", projection.getAsFloatPtr());
 
-		cube.draw();
+		cube_1.draw();
+		cube_2.draw();
+		cube_3.draw();
 
 
 
@@ -224,9 +242,11 @@ void Game::run()
 
 
 	//  delete all resources that are not necessary anymore (optionnal)
-	cube.deleteObject();
+	cube_1.deleteObject();
+	cube_2.deleteObject();
+	cube_3.deleteObject();
 	lightCube.deleteObject();
-	litObjectShader.deleteProgram();
+	litObjectShaderDirLight.deleteProgram();
 	flatEmissiveShader.deleteProgram();
 }
 

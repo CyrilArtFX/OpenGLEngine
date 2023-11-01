@@ -173,6 +173,7 @@
     <None Include="Shaders\flat_emissive.vert" />
     <None Include="Shaders\object_lit.frag" />
     <None Include="Shaders\object_lit.vert" />
+    <None Include="Shaders\object_lit_dirlight.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
