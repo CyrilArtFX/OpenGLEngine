@@ -174,6 +174,7 @@
     <None Include="Shaders\object_lit.frag" />
     <None Include="Shaders\object_lit.vert" />
     <None Include="Shaders\object_lit_dirlight.frag" />
+    <None Include="Shaders\object_lit_pointlight.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

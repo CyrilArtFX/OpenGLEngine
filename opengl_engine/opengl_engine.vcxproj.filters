@@ -120,5 +120,6 @@
     <None Include="Shaders\flat_emissive.frag" />
     <None Include="Shaders\flat_emissive.vert" />
     <None Include="Shaders\object_lit_dirlight.frag" />
+    <None Include="Shaders\object_lit_pointlight.frag" />
   </ItemGroup>
 </Project>
