@@ -80,14 +80,15 @@ void Game::run()
 	//  build and compile shaders
 	//Shader litObjectShader("Shaders/object_lit.vert", "Shaders/object_lit.frag");
 	//Shader litObjectShaderDirLight("Shaders/object_lit.vert", "Shaders/object_lit_dirlight.frag");
-	Shader litObjectShaderPointLight("Shaders/object_lit.vert", "Shaders/object_lit_pointlight.frag");
+	//Shader litObjectShaderPointLight("Shaders/object_lit.vert", "Shaders/object_lit_pointlight.frag");
+	Shader litObjectShaderSpotLight("Shaders/object_lit.vert", "Shaders/object_lit_spotlight.frag");
 	Shader flatEmissiveShader("Shaders/flat_emissive.vert", "Shaders/flat_emissive.frag");
 
 	//  manually set the textures unit on the shader (need to be done only once)
-	litObjectShaderPointLight.use(); //  activate the shader on which you want to set the texture unit before doing it
-	litObjectShaderPointLight.setInt("material.diffuse", 0);
-	litObjectShaderPointLight.setInt("material.specular", 1);
-	litObjectShaderPointLight.setInt("material.emissive", 2);
+	litObjectShaderSpotLight.use(); //  activate the shader on which you want to set the texture unit before doing it
+	litObjectShaderSpotLight.setInt("material.diffuse", 0);
+	litObjectShaderSpotLight.setInt("material.specular", 1);
+	litObjectShaderSpotLight.setInt("material.emissive", 2);
 
 
 	//  create textures
@@ -147,7 +148,7 @@ void Game::run()
 		-0.5f,  0.5f, -0.5f,   0.0f,  1.0f,  0.0f,   0.0f, 1.0f
 	};
 
-	std::shared_ptr<LitMaterial> containerMat = std::make_shared<LitMaterial>(litObjectShaderPointLight, container_diffuse, container_specular);
+	std::shared_ptr<LitMaterial> containerMat = std::make_shared<LitMaterial>(litObjectShaderSpotLight, container_diffuse, container_specular);
 	std::shared_ptr<FlatEmissiveMaterial> lightSourceMat = std::make_shared<FlatEmissiveMaterial>(flatEmissiveShader, lightColor);
 
 
@@ -197,9 +198,6 @@ void Game::run()
 
 
 		float timeValue = glfwGetTime();
-		/*lightColor.x = sin(timeValue * 2.0f);
-		lightColor.y = sin(timeValue * 0.7f);
-		lightColor.z = sin(timeValue * 1.3f);*/
 
 
 
@@ -218,20 +216,23 @@ void Game::run()
 
 
 
-		litObjectShaderPointLight.use();
+		litObjectShaderSpotLight.use();
 
-		litObjectShaderPointLight.setVec3("light.ambient", lightColor * 0.1f);
-		litObjectShaderPointLight.setVec3("light.diffuse", lightColor * 0.7f);
-		litObjectShaderPointLight.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-		litObjectShaderPointLight.setVec3("light.position", lightPos);
-		litObjectShaderPointLight.setFloat("light.constant", 1.0f);
-		litObjectShaderPointLight.setFloat("light.linear", 0.09f);
-		litObjectShaderPointLight.setFloat("light.quadratic", 0.032f);
+		litObjectShaderSpotLight.setVec3("light.ambient", lightColor * 0.1f);
+		litObjectShaderSpotLight.setVec3("light.diffuse", lightColor * 0.7f);
+		litObjectShaderSpotLight.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+		litObjectShaderSpotLight.setVec3("light.position", camera->getPosition());
+		litObjectShaderSpotLight.setVec3("light.direction", camera->getFront());
+		litObjectShaderSpotLight.setFloat("light.cutOff", Maths::cos(Maths::toRadians(12.5f)));
+		litObjectShaderSpotLight.setFloat("light.outerCutOff", Maths::cos(Maths::toRadians(17.5f)));
+		litObjectShaderSpotLight.setFloat("light.constant", 1.0f); 
+		litObjectShaderSpotLight.setFloat("light.linear", 0.09f);
+		litObjectShaderSpotLight.setFloat("light.quadratic", 0.032f); 
 
-		litObjectShaderPointLight.setVec3("viewPos", camera->getPosition());
+		litObjectShaderSpotLight.setVec3("viewPos", camera->getPosition());
 
-		litObjectShaderPointLight.setMatrix4("view", view.getAsFloatPtr());
-		litObjectShaderPointLight.setMatrix4("projection", projection.getAsFloatPtr());
+		litObjectShaderSpotLight.setMatrix4("view", view.getAsFloatPtr());
+		litObjectShaderSpotLight.setMatrix4("projection", projection.getAsFloatPtr());
 
 		cube_1.draw();
 		cube_2.draw();
@@ -250,7 +251,7 @@ void Game::run()
 	cube_2.deleteObject();
 	cube_3.deleteObject();
 	lightCube.deleteObject();
-	litObjectShaderPointLight.deleteProgram();
+	litObjectShaderSpotLight.deleteProgram();
 	flatEmissiveShader.deleteProgram();
 }
 
