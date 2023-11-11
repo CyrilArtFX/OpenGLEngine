@@ -21,6 +21,8 @@ public:
 	void setScale(Vector3 newScale);
 	void setScale(float newUniformScale);
 
+	Vector3 getPosition() { return position; }
+
 private:
 	void computeMatrix();
 

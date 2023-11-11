@@ -48,9 +48,5 @@ private:
 	bool firstMouse = true;
 	float lastX = 0;
 	float lastY = 0;
-
-
-	//  will be put in a scene logic when I will do that
-	Vector3 lightPos;
 };
 

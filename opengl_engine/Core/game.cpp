@@ -78,17 +78,14 @@ void Game::run()
 
 
 	//  build and compile shaders
-	//Shader litObjectShader("Shaders/object_lit.vert", "Shaders/object_lit.frag");
-	//Shader litObjectShaderDirLight("Shaders/object_lit.vert", "Shaders/object_lit_dirlight.frag");
-	//Shader litObjectShaderPointLight("Shaders/object_lit.vert", "Shaders/object_lit_pointlight.frag");
-	Shader litObjectShaderSpotLight("Shaders/object_lit.vert", "Shaders/object_lit_spotlight.frag");
+	Shader litObjectShader("Shaders/object_lit.vert", "Shaders/object_lit.frag");
 	Shader flatEmissiveShader("Shaders/flat_emissive.vert", "Shaders/flat_emissive.frag");
 
 	//  manually set the textures unit on the shader (need to be done only once)
-	litObjectShaderSpotLight.use(); //  activate the shader on which you want to set the texture unit before doing it
-	litObjectShaderSpotLight.setInt("material.diffuse", 0);
-	litObjectShaderSpotLight.setInt("material.specular", 1);
-	litObjectShaderSpotLight.setInt("material.emissive", 2);
+	litObjectShader.use(); //  activate the shader on which you want to set the texture unit before doing it
+	litObjectShader.setInt("material.diffuse", 0);
+	litObjectShader.setInt("material.specular", 1);
+	litObjectShader.setInt("material.emissive", 2);
 
 
 	//  create textures
@@ -97,9 +94,9 @@ void Game::run()
 	std::shared_ptr<Texture> container_emissive = std::make_shared<Texture>("Resources/matrix.jpg", GL_RGB, false);
 
 
-	//  light data
+	//  light data (temp)
 	Vector3 lightColor{ 1.0f, 1.0f, 1.0f };
-	lightPos = Vector3{ 1.2f, 1.0f, 2.0f };
+	Vector3 dirLight{ -0.4f, -0.5f, 1.0f }; 
 
 
 	//  cube vertices data
@@ -148,7 +145,7 @@ void Game::run()
 		-0.5f,  0.5f, -0.5f,   0.0f,  1.0f,  0.0f,   0.0f, 1.0f
 	};
 
-	std::shared_ptr<LitMaterial> containerMat = std::make_shared<LitMaterial>(litObjectShaderSpotLight, container_diffuse, container_specular);
+	std::shared_ptr<LitMaterial> containerMat = std::make_shared<LitMaterial>(litObjectShader, container_diffuse, container_specular);
 	std::shared_ptr<FlatEmissiveMaterial> lightSourceMat = std::make_shared<FlatEmissiveMaterial>(flatEmissiveShader, lightColor);
 
 
@@ -161,17 +158,18 @@ void Game::run()
 	Object cube_3(containerMat, cubeVertices, 36);
 
 
-	Object lightCube(lightSourceMat, cubeVertices, 36);
-	lightCube.setPosition(lightPos);
-	lightCube.setScale(0.2f);
+	Object lightCube_1(lightSourceMat, cubeVertices, 36);
+	Object lightCube_2(lightSourceMat, cubeVertices, 36);
+
+	lightCube_1.setPosition(Vector3{1.0f, 2.0f, 1.0f}); 
+	lightCube_1.setScale(0.2f); 
+	lightCube_2.setPosition(Vector3{ 1.5f, 1.0f, -0.5f });
+	lightCube_2.setScale(0.2f);
 
 
 	cube_1.setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
 	cube_2.setPosition(Vector3{ 2.0f, 1.5f, 2.0f });
 	cube_3.setPosition(Vector3{ 2.0f, -1.0f, -1.0f });
-	
-
-	Vector3 dirLight{ -0.4f, -0.5f, 1.0f };
 
 
 
@@ -211,28 +209,54 @@ void Game::run()
 		flatEmissiveShader.setMatrix4("projection", projection.getAsFloatPtr());
 
 		lightSourceMat->setEmissiveColor(lightColor);
-		lightCube.setPosition(lightPos);
-		lightCube.draw();
+
+		lightCube_1.draw();
+		lightCube_2.draw();
 
 
 
-		litObjectShaderSpotLight.use();
+		litObjectShader.use();
 
-		litObjectShaderSpotLight.setVec3("light.ambient", lightColor * 0.1f);
-		litObjectShaderSpotLight.setVec3("light.diffuse", lightColor * 0.7f);
-		litObjectShaderSpotLight.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-		litObjectShaderSpotLight.setVec3("light.position", camera->getPosition());
-		litObjectShaderSpotLight.setVec3("light.direction", camera->getFront());
-		litObjectShaderSpotLight.setFloat("light.cutOff", Maths::cos(Maths::toRadians(12.5f)));
-		litObjectShaderSpotLight.setFloat("light.outerCutOff", Maths::cos(Maths::toRadians(17.5f)));
-		litObjectShaderSpotLight.setFloat("light.constant", 1.0f); 
-		litObjectShaderSpotLight.setFloat("light.linear", 0.09f);
-		litObjectShaderSpotLight.setFloat("light.quadratic", 0.032f); 
+		//  directional light
+		litObjectShader.setVec3("dirLight.direction", dirLight);
+		litObjectShader.setVec3("dirLight.ambient", lightColor * 0.1f);
+		litObjectShader.setVec3("dirLight.diffuse", lightColor * 0.7f); 
+		litObjectShader.setVec3("dirLight.specular", 1.0f, 1.0f, 1.0f); 
 
-		litObjectShaderSpotLight.setVec3("viewPos", camera->getPosition());
+		//  points lights
+		litObjectShader.setVec3("pointLights[0].position", lightCube_1.getPosition());
+		litObjectShader.setVec3("pointLights[0].ambient", lightColor * 0.01f);
+		litObjectShader.setVec3("pointLights[0].diffuse", lightColor * 0.7f);
+		litObjectShader.setVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
+		litObjectShader.setFloat("pointLights[0].constant", 1.0f);
+		litObjectShader.setFloat("pointLights[0].linear", 0.09f);
+		litObjectShader.setFloat("pointLights[0].quadratic", 0.032f);
+		litObjectShader.setVec3("pointLights[1].position", lightCube_2.getPosition());
+		litObjectShader.setVec3("pointLights[1].ambient", lightColor * 0.01f);
+		litObjectShader.setVec3("pointLights[1].diffuse", lightColor * 0.7f);
+		litObjectShader.setVec3("pointLights[1].specular", 1.0f, 1.0f, 1.0f);
+		litObjectShader.setFloat("pointLights[1].constant", 1.0f);
+		litObjectShader.setFloat("pointLights[1].linear", 0.09f);
+		litObjectShader.setFloat("pointLights[1].quadratic", 0.032f);
+		litObjectShader.setInt("nbPointLights", 2);
 
-		litObjectShaderSpotLight.setMatrix4("view", view.getAsFloatPtr());
-		litObjectShaderSpotLight.setMatrix4("projection", projection.getAsFloatPtr());
+		//  spot lights
+		litObjectShader.setVec3("spotLights[0].position", camera->getPosition());
+		litObjectShader.setVec3("spotLights[0].direction", camera->getFront());
+		litObjectShader.setVec3("spotLights[0].ambient", lightColor * 0.05f);
+		litObjectShader.setVec3("spotLights[0].diffuse", lightColor * 0.7f);
+		litObjectShader.setVec3("spotLights[0].specular", 1.0f, 1.0f, 1.0f);
+		litObjectShader.setFloat("spotLights[0].cutOff", Maths::cos(Maths::toRadians(12.5f)));
+		litObjectShader.setFloat("spotLights[0].outerCutOff", Maths::cos(Maths::toRadians(17.5f)));
+		litObjectShader.setFloat("spotLights[0].constant", 1.0f);
+		litObjectShader.setFloat("spotLights[0].linear", 0.09f);
+		litObjectShader.setFloat("spotLights[0].quadratic", 0.032f);
+		litObjectShader.setInt("nbSpotLights", 1);
+
+		litObjectShader.setVec3("viewPos", camera->getPosition());
+
+		litObjectShader.setMatrix4("view", view.getAsFloatPtr());
+		litObjectShader.setMatrix4("projection", projection.getAsFloatPtr());
 
 		cube_1.draw();
 		cube_2.draw();
@@ -250,8 +274,9 @@ void Game::run()
 	cube_1.deleteObject();
 	cube_2.deleteObject();
 	cube_3.deleteObject();
-	lightCube.deleteObject();
-	litObjectShaderSpotLight.deleteProgram();
+	lightCube_1.deleteObject();
+	lightCube_2.deleteObject();
+	litObjectShader.deleteProgram();
 	flatEmissiveShader.deleteProgram();
 }
 
@@ -292,28 +317,6 @@ void Game::processInput(GLFWwindow* glWindow)
 
 	if (glfwGetKey(glWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 		camera->ProcessKeyboard(Down, deltaTime);
-
-
-	//  move light (temp)
-	float light_speed = 2.0f;
-
-	if (glfwGetKey(glWindow, GLFW_KEY_UP) == GLFW_PRESS)
-		lightPos += Vector3{ 0.0f, 0.0f, 1.0f } * deltaTime * light_speed;
-
-	if (glfwGetKey(glWindow, GLFW_KEY_DOWN) == GLFW_PRESS)
-		lightPos += Vector3{ 0.0f, 0.0f, -1.0f } * deltaTime * light_speed;
-
-	if (glfwGetKey(glWindow, GLFW_KEY_LEFT) == GLFW_PRESS)
-		lightPos += Vector3{ -1.0f, 0.0f, 0.0f } * deltaTime * light_speed;
-
-	if (glfwGetKey(glWindow, GLFW_KEY_RIGHT) == GLFW_PRESS)
-		lightPos += Vector3{ 1.0f, 0.0f, 0.0f } * deltaTime * light_speed;
-
-	if (glfwGetKey(glWindow, GLFW_KEY_KP_ADD) == GLFW_PRESS)
-		lightPos += Vector3{ 0.0f, 1.0f, 0.0f } * deltaTime * light_speed;
-
-	if (glfwGetKey(glWindow, GLFW_KEY_KP_SUBTRACT) == GLFW_PRESS)
-		lightPos += Vector3{ 0.0f, -1.0f, 0.0f } * deltaTime * light_speed;
 }
 
 
