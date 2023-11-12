@@ -1,6 +1,7 @@
 #include "game.h"
 
 #include <Rendering/shader.h>
+#include <Rendering/vertexArray.h>
 #include <Objects/object.h>
 
 #include <Materials/litMaterial.h>
@@ -144,22 +145,19 @@ void Game::run()
 		-0.5f,  0.5f,  0.5f,   0.0f,  1.0f,  0.0f,   0.0f, 0.0f,
 		-0.5f,  0.5f, -0.5f,   0.0f,  1.0f,  0.0f,   0.0f, 1.0f
 	};
+	std::shared_ptr<VertexArray> vaCube = std::make_shared<VertexArray>(cubeVertices, 36);
 
 	std::shared_ptr<LitMaterial> containerMat = std::make_shared<LitMaterial>(litObjectShader, container_diffuse, container_specular);
 	std::shared_ptr<FlatEmissiveMaterial> lightSourceMat = std::make_shared<FlatEmissiveMaterial>(flatEmissiveShader, lightColor);
 
 
-	//  TODO : change the vertex array - object relation system
-	//  actually, the engine creates 3 differents VAO and VBO for this 3 cubes
-	//  but those three differents objects could use the same VAO and VBO
-
-	Object cube_1(containerMat, cubeVertices, 36);
-	Object cube_2(containerMat, cubeVertices, 36);
-	Object cube_3(containerMat, cubeVertices, 36);
+	Object cube_1(containerMat, vaCube);
+	Object cube_2(containerMat, vaCube);
+	Object cube_3(containerMat, vaCube);
 
 
-	Object lightCube_1(lightSourceMat, cubeVertices, 36);
-	Object lightCube_2(lightSourceMat, cubeVertices, 36);
+	Object lightCube_1(lightSourceMat, vaCube);
+	Object lightCube_2(lightSourceMat, vaCube);
 
 	lightCube_1.setPosition(Vector3{1.0f, 2.0f, 1.0f}); 
 	lightCube_1.setScale(0.2f); 

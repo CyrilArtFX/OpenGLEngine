@@ -10,7 +10,7 @@
 class Object
 {
 public:
-	Object(std::weak_ptr<Material> material_, const float* vertices, unsigned int nbVertices, const unsigned int* indices = 0, unsigned int nbIndices = 0);
+	Object(std::weak_ptr<Material> material_, std::weak_ptr<VertexArray> vertexArray_);
 
 	void draw();
 	void deleteObject();
@@ -26,8 +26,7 @@ public:
 private:
 	void computeMatrix();
 
-	VertexArray vertexArray;
-
+	std::shared_ptr<VertexArray> vertexArray;
 	std::shared_ptr<Material> material;
 
 	Vector3 position{ Vector3::zero };

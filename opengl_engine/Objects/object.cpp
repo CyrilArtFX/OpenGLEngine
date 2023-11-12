@@ -1,7 +1,7 @@
 #include "object.h"
 
-Object::Object(std::weak_ptr<Material> material_, const float* vertices, unsigned int nbVertices, const unsigned int* indices, unsigned int nbIndices)
-	: material(material_.lock()), vertexArray(vertices, nbVertices, indices, nbIndices)
+Object::Object(std::weak_ptr<Material> material_, std::weak_ptr<VertexArray> vertexArray_)
+	: material(material_.lock()), vertexArray(vertexArray_.lock())
 {
 	computeMatrix();
 }
@@ -16,21 +16,21 @@ void Object::draw()
 
 	material->use();
 
-	vertexArray.setActive();
+	vertexArray->setActive();
 
-	if (vertexArray.getNBIndices() == 0)
+	if (vertexArray->getNBIndices() == 0)
 	{
-		glDrawArrays(GL_TRIANGLES, 0, vertexArray.getNBVertices());
+		glDrawArrays(GL_TRIANGLES, 0, vertexArray->getNBVertices());
 	}
 	else
 	{
-		glDrawElements(GL_TRIANGLES, vertexArray.getNBIndices(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, vertexArray->getNBIndices(), GL_UNSIGNED_INT, 0);
 	}
 }
 
 void Object::deleteObject()
 {
-	vertexArray.deleteObjects();
+	vertexArray->deleteObjects();
 }
 
 
