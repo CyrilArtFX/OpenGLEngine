@@ -198,6 +198,8 @@ void Game::run()
 
 
 		//  draw
+
+		//  those two matrix should be put in the renderer logic later
 		Matrix4 view = camera->GetViewMatrix();
 		Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(camera->getFov()), window->getWidth(), window->getHeigth(), 0.1f, 100.0f);
 
