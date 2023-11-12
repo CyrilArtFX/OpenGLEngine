@@ -15,6 +15,7 @@ class Renderer
 {
 public:
 	Renderer(Color clearColor_);
+	Renderer() = delete;
 	Renderer(const Renderer&) = delete;
 	Renderer operator=(const Renderer&) = delete;
 
@@ -22,7 +23,7 @@ public:
 
 
 	void addLight(std::weak_ptr<Light> light, LightType type);
-	void addObject(std::weak_ptr<Object> object, Material& mat);
+	void addObject(std::weak_ptr<Object> object, std::shared_ptr<Material>);
 
 
 	inline void setClearColor(Color newClearColor) { clearColor = newClearColor; }
@@ -30,7 +31,7 @@ public:
 
 private:
 	std::unordered_map<LightType, std::vector<std::shared_ptr<Light>>> lights;
-	std::unordered_map<Material&, std::vector<std::shared_ptr<Object>>> objects;
+	std::unordered_map<std::shared_ptr<Material>, std::vector<std::shared_ptr<Object>>> objects;
 
 	Color clearColor;
 

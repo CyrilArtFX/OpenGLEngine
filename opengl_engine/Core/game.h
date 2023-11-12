@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 
 #include "window.h"
+#include <Rendering/Renderer.h>
 #include <Rendering/camera.h>
 #include <Rendering/texture.h>
 
@@ -35,6 +36,9 @@ public:
 private:
 	//  window
 	std::unique_ptr<Window> window;
+
+	//  renderer
+	std::unique_ptr<Renderer> renderer;
 
 	//  time
 	float deltaTime = 0.0f;

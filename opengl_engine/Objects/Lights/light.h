@@ -15,9 +15,10 @@ class Light
 {
 public:
 	Light(LightType lightType_): lightType(lightType_) {}
+	Light() = delete;
 	virtual ~Light() {}
 
-	virtual void use(Shader& litShader) = 0;
+	virtual void use(Shader& litShader, int lightIndex) = 0;
 
 
 	inline void setColor(Color newColor) { lightColor = newColor; }

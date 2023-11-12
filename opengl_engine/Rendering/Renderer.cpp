@@ -10,19 +10,19 @@ Renderer::Renderer(Color clearColor_) : clearColor(clearColor_)
 void Renderer::draw(Matrix4 view, Matrix4 projection, Vector3 viewPos)
 {
 	//  clear with flat color
-	glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
+	glClearColor(clearColor.r / 255.0f, clearColor.g / 255.0f, clearColor.b / 255.0f, clearColor.a / 255.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
 	//  draw objects depending of their materials
 	for (auto mat : objects)
 	{
-		Shader& shader = mat.first.getShader();
+		Shader& shader = mat.first->getShader();
 		shader.use();
 		shader.setMatrix4("view", view.getAsFloatPtr());
 		shader.setMatrix4("projection", projection.getAsFloatPtr());
 
-		MaterialType mat_type = mat.first.getMatType();
+		MaterialType mat_type = mat.first->getMatType();
 		switch (mat_type) //  feels a bit hardcoded, should be cool to find a better way to do this
 		{
 		case Lit:
@@ -34,13 +34,23 @@ void Renderer::draw(Matrix4 view, Matrix4 projection, Vector3 viewPos)
 				int light_type_used = 0;
 				for (auto light : light_t.second)
 				{
-					light->use(shader);
+					light->use(shader, light_type_used);
 
 					light_type_used++;
 					if (light_type_used >= lights_limits.at(light_type))
 					{
 						break;
 					}
+				}
+
+				switch (light_type)
+				{
+				case Point:
+					shader.setInt("nbPointLights", light_type_used++);
+				break;
+				case Spot:
+					shader.setInt("nbSpotLights", light_type_used++);
+				break;
 				}
 			}
 
@@ -71,7 +81,7 @@ void Renderer::addLight(std::weak_ptr<Light> light, LightType type)
 	}
 }
 
-void Renderer::addObject(std::weak_ptr<Object> object, Material& mat)
+void Renderer::addObject(std::weak_ptr<Object> object, std::shared_ptr<Material> mat)
 {
 	objects[mat].push_back(object.lock());
 }
