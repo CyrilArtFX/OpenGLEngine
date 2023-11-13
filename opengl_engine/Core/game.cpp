@@ -57,7 +57,7 @@ bool Game::initialize(int wndw_width, int wndw_height, std::string wndw_name, bo
 
 
 	//  create renderer
-	renderer = std::make_unique<Renderer>(Color{ 50, 75, 75, 255 });
+	renderer = std::make_unique<Renderer>(Color{ 50, 75, 75, 255 }, *window);
 
 
 	//  initialize GLAD
@@ -83,7 +83,8 @@ void Game::run()
 {
 	//  run initialization
 
-	camera = std::make_unique<Camera>(Vector3{ 0.0f, 0.0f, -3.0f });
+	camera = std::make_shared<Camera>(Vector3{ 0.0f, 0.0f, -3.0f });
+	renderer->setCamera(camera);
 
 
 	//  build and compile shaders
@@ -202,18 +203,14 @@ void Game::run()
 		// -------------
 		processInput(window->getGLFWwindow());
 
+		flashLight->setPosition(camera->getPosition());
+		flashLight->setDirection(camera->getFront());
+
 
 		//  rendering part
 		// ----------------
 
-		//  those two matrix should be put in the renderer logic later
-		Matrix4 view = camera->GetViewMatrix(); 
-		Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(camera->getFov()), window->getWidth(), window->getHeigth(), 0.1f, 100.0f); 
-
-		flashLight->setPosition(camera->getPosition());
-		flashLight->setDirection(camera->getFront());
-
-		renderer->draw(view, projection, camera->getPosition());
+		renderer->draw();
 
 
 

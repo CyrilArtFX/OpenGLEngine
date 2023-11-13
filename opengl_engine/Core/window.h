@@ -20,8 +20,8 @@ public:
 
 	GLFWwindow* getGLFWwindow() { return window; }
 
-	int getWidth() { return window_width; }
-	int getHeigth() { return window_height; }
+	int getWidth() const { return window_width; }
+	int getHeigth() const { return window_height; }
 
 	void changeSize(int width, int height);
 

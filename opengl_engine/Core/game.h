@@ -45,7 +45,7 @@ private:
 	float lastFrame = 0.0f;
 
 	//  camera
-	std::unique_ptr<Camera> camera;
+	std::shared_ptr<Camera> camera;
 
 
 	//  mouse

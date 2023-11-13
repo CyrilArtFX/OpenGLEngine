@@ -3,6 +3,8 @@
 #include <Maths/Matrix4.h>
 #include <Maths/Vector3.h>
 
+#include "camera.h"
+#include <Core/window.h>
 #include <Objects/object.h>
 #include <Objects/Lights/light.h>
 #include "material.h"
@@ -14,13 +16,15 @@
 class Renderer
 {
 public:
-	Renderer(Color clearColor_);
+	Renderer(Color clearColor_, const Window& window);
 	Renderer() = delete;
 	Renderer(const Renderer&) = delete;
 	Renderer operator=(const Renderer&) = delete;
 
-	void draw(Matrix4 view, Matrix4 projection, Vector3 viewPos);
+	void draw();
 
+
+	void setCamera(std::weak_ptr<Camera> camera);
 
 	void addLight(std::weak_ptr<Light> light, LightType type);
 	void addObject(std::weak_ptr<Object> object, std::shared_ptr<Material>);
@@ -35,6 +39,8 @@ private:
 
 	Color clearColor;
 
+	std::shared_ptr<Camera> currentCam;
+	const Window& windowRef;
 
 	//  would be cool if I find a better way to do this but it works for now
 	const std::unordered_map<LightType, int> lights_limits
