@@ -1,9 +1,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "scene.h"
 #include "window.h"
 #include <Rendering/Renderer.h>
-#include <Rendering/camera.h>
 #include <Rendering/texture.h>
 
 #include <Maths/Matrix4.h>
@@ -24,6 +24,9 @@ public:
 	void run();
 	void close();
 
+	void loadScene(std::weak_ptr<Scene> scene_);
+	void unloadScene();
+
 
 
 	//  functions redirected
@@ -34,18 +37,18 @@ public:
 	void processInput(GLFWwindow* glWindow);
 
 private:
+	//  scene
+	std::shared_ptr<Scene> scene;
+
 	//  window
 	std::unique_ptr<Window> window;
 
 	//  renderer
-	std::unique_ptr<Renderer> renderer;
+	std::shared_ptr<Renderer> renderer;
 
 	//  time
 	float deltaTime = 0.0f;
 	float lastFrame = 0.0f;
-
-	//  camera
-	std::shared_ptr<Camera> camera;
 
 
 	//  mouse

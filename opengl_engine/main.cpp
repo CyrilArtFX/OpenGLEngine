@@ -1,6 +1,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 
 #include <Core/game.h>
+#include <DefaultScenes/expositionScene.h>
 
 
 int main()
@@ -9,6 +10,8 @@ int main()
  	bool is_game_init = game->initialize();
 
 	if (!is_game_init) return -1;
+
+	game->loadScene(std::make_shared<ExpositionScene>());
 
 	game->run();
 	game->close();

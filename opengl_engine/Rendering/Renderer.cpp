@@ -9,13 +9,15 @@ Renderer::Renderer(Color clearColor_, const Window& window) : clearColor(clearCo
 
 void Renderer::draw()
 {
-	Matrix4 view = currentCam->GetViewMatrix();
-	Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(currentCam->getFov()), windowRef.getWidth(), windowRef.getHeigth(), 0.1f, 100.0f);
-
 	//  clear with flat color
 	glClearColor(clearColor.r / 255.0f, clearColor.g / 255.0f, clearColor.b / 255.0f, clearColor.a / 255.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	
+	if (!currentCam) return;
+
+	Matrix4 view = currentCam->GetViewMatrix();
+	Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(currentCam->getFov()), windowRef.getWidth(), windowRef.getHeigth(), 0.1f, 100.0f);
 
 	//  draw objects depending of their materials
 	for (auto mat : objects)

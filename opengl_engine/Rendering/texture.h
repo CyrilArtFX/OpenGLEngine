@@ -1,10 +1,11 @@
 #pragma once
 
 #include <glad/glad.h>
-
+#include <GLFW/glfw3.h>
 #include <stb_image.h>
 
 #include <iostream>
+
 
 class Texture
 {
@@ -19,6 +20,6 @@ public:
 	unsigned int getTextureID() { return ID; }
 
 private:
-	unsigned int ID; //  texture ID
+	unsigned int ID{ 0 }; //  texture ID
 };
 

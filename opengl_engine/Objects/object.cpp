@@ -30,7 +30,6 @@ void Object::draw()
 
 void Object::deleteObject()
 {
-	vertexArray->deleteObjects();
 }
 
 
