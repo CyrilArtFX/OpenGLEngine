@@ -134,6 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Core\game.cpp" />
+    <ClCompile Include="DefaultScenes\expositionScene.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Materials\flatEmissiveMaterial.cpp" />
@@ -153,10 +154,12 @@
     <ClCompile Include="Rendering\shader.cpp" />
     <ClCompile Include="Rendering\texture.cpp" />
     <ClCompile Include="Core\window.cpp" />
-    <ClCompile Include="Utils\Color.cpp" />
+    <ClCompile Include="Utils\color.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\game.h" />
+    <ClInclude Include="Core\scene.h" />
+    <ClInclude Include="DefaultScenes\expositionScene.h" />
     <ClInclude Include="Materials\flatEmissiveMaterial.h" />
     <ClInclude Include="Materials\litMaterial.h" />
     <ClInclude Include="Maths\Maths.h" />
@@ -177,7 +180,7 @@
     <ClInclude Include="Rendering\shader.h" />
     <ClInclude Include="Rendering\texture.h" />
     <ClInclude Include="Core\window.h" />
-    <ClInclude Include="Utils\Color.h" />
+    <ClInclude Include="Utils\color.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\flat_emissive.frag" />

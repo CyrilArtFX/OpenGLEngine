@@ -1,5 +1,5 @@
 #pragma once
-#include <Utils/Color.h>
+#include <Utils/color.h>
 #include <Maths/Matrix4.h>
 #include <Maths/Vector3.h>
 

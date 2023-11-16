@@ -3,7 +3,7 @@
 #include <Rendering/shader.h>
 #include <Rendering/vertexArray.h>
 #include <Objects/object.h>
-#include <Utils/Color.h>
+#include <Utils/color.h>
 
 #include <Objects/Lights/DirectionalLight.h>
 #include <Objects/Lights/PointLight.h>
