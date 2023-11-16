@@ -1,6 +1,6 @@
 #include "litMaterial.h"
 
-LitMaterial::LitMaterial(Shader& shaderUsed, std::weak_ptr<Texture> diffuseMap_, std::weak_ptr<Texture> specularMap_, std::weak_ptr<Texture> emissiveMap_, float shininess_)
+LitMaterial::LitMaterial(std::weak_ptr<Shader> shaderUsed, std::weak_ptr<Texture> diffuseMap_, std::weak_ptr<Texture> specularMap_, std::weak_ptr<Texture> emissiveMap_, float shininess_)
 	: diffuseMap(diffuseMap_.lock()), specularMap(specularMap_.lock()), emissiveMap(emissiveMap_.lock()), shininess(shininess_), Material(shaderUsed, Lit)
 {}
 
@@ -17,7 +17,7 @@ void LitMaterial::use()
 	glActiveTexture(GL_TEXTURE2);
 	emissiveMap->use();
 
-	shader.setFloat("material.shininess", shininess);
+	shader->setFloat("material.shininess", shininess);
 }
 
 

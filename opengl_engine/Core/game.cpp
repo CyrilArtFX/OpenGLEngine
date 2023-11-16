@@ -88,14 +88,14 @@ void Game::run()
 
 
 	//  build and compile shaders
-	Shader litObjectShader("Shaders/object_lit.vert", "Shaders/object_lit.frag");
-	Shader flatEmissiveShader("Shaders/flat_emissive.vert", "Shaders/flat_emissive.frag");
+	std::shared_ptr<Shader> litObjectShader = std::make_shared<Shader>("Shaders/object_lit.vert", "Shaders/object_lit.frag");
+	std::shared_ptr<Shader> flatEmissiveShader = std::make_shared<Shader>("Shaders/flat_emissive.vert", "Shaders/flat_emissive.frag");
 
 	//  manually set the textures unit on the shader (need to be done only once)
-	litObjectShader.use(); //  activate the shader on which you want to set the texture unit before doing it
-	litObjectShader.setInt("material.diffuse", 0);
-	litObjectShader.setInt("material.specular", 1);
-	litObjectShader.setInt("material.emissive", 2);
+	litObjectShader->use(); //  activate the shader on which you want to set the texture unit before doing it
+	litObjectShader->setInt("material.diffuse", 0);
+	litObjectShader->setInt("material.specular", 1);
+	litObjectShader->setInt("material.emissive", 2);
 
 
 	//  create textures
@@ -226,8 +226,8 @@ void Game::run()
 	cube_3->deleteObject();  
 	lightCube_1->deleteObject();  
 	lightCube_2->deleteObject(); 
-	litObjectShader.deleteProgram();
-	flatEmissiveShader.deleteProgram();
+	litObjectShader->deleteProgram();
+	flatEmissiveShader->deleteProgram();
 }
 
 

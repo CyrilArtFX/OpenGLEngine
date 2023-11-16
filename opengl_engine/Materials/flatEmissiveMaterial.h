@@ -6,7 +6,7 @@
 class FlatEmissiveMaterial : public Material
 {
 public:
-	FlatEmissiveMaterial(Shader& shaderUsed, Vector3 emissiveColor_ = Vector3::one);
+	FlatEmissiveMaterial(std::weak_ptr<Shader> shaderUsed, Vector3 emissiveColor_ = Vector3::one);
 
 	void use() override;
 
