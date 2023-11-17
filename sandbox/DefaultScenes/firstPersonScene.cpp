@@ -1,14 +1,11 @@
-#include "ExpositionScene.h"
+#include "firstPersonScene.h"
 
-#include <GLFW/glfw3.h>
-
-
-ExpositionScene::ExpositionScene() : Scene()
+FirstPersonScene::FirstPersonScene() : Scene()
 {
 }
 
 
-void ExpositionScene::load(std::weak_ptr<Renderer> renderer_)
+void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 {
 	renderer = renderer_.lock();
 
@@ -19,23 +16,20 @@ void ExpositionScene::load(std::weak_ptr<Renderer> renderer_)
 
 	//  shaders, textures and materials
 	litObjectShader = std::make_shared<Shader>("object_lit.vert", "object_lit.frag");
-	flatEmissiveShader = std::make_shared<Shader>("flat_emissive.vert", "flat_emissive.frag");
 
 	litObjectShader->use(); //  activate the shader on which you want to set the texture unit before doing it
 	litObjectShader->setInt("material.diffuse", 0);
 	litObjectShader->setInt("material.specular", 1);
 	litObjectShader->setInt("material.emissive", 2);
 
-	std::shared_ptr<Texture> container_diffuse = std::make_shared<Texture>("container2.png", GL_RGBA, false);
+	std::shared_ptr<Texture> container_diffuse = std::make_shared<Texture>("container2.png", GL_RGBA, false); 
 	std::shared_ptr<Texture> container_specular = std::make_shared<Texture>("container2_specular.png", GL_RGBA, false);
-	std::shared_ptr<Texture> container_emissive = std::make_shared<Texture>("matrix.jpg", GL_RGB, false);
 
-	containerMat = std::make_shared<LitMaterial>(litObjectShader, container_diffuse, container_specular);
-	lightSourceMat = std::make_shared<FlatEmissiveMaterial>(flatEmissiveShader, Vector3(1.0f, 1.0f, 1.0f));
+	crateMat = std::make_shared<LitMaterial>(litObjectShader, container_diffuse, container_specular);
 
 
-	//  vertex arrays and objects
-	float cube_vertices[] = 
+	//  vertex arrays
+	float cube_vertices[] =
 	{
 		// positions           // normals           // texture coords
 		-0.5f, -0.5f, -0.5f,   0.0f,  0.0f, -1.0f,   0.0f, 0.0f,
@@ -82,60 +76,50 @@ void ExpositionScene::load(std::weak_ptr<Renderer> renderer_)
 	};
 	vaCube = std::make_shared<VertexArray>(cube_vertices, 36);
 
-	cube1 = std::make_shared<Object>(containerMat, vaCube);
-	cube2 = std::make_shared<Object>(containerMat, vaCube);
-	cube3 = std::make_shared<Object>(containerMat, vaCube);
-	lightCube1 = std::make_shared<Object>(lightSourceMat, vaCube);
-	lightCube2 = std::make_shared<Object>(lightSourceMat, vaCube);
+	float plane_vertices[] =
+	{
+		// positions           // normals           // texture coords
+		-5.0f,  0.0f, -5.0f,   0.0f,  1.0f,  0.0f,   0.0f, 10.0f,
+		 5.0f,  0.0f, -5.0f,   0.0f,  1.0f,  0.0f,   10.0f, 10.0f,
+		 5.0f,  0.0f,  5.0f,   0.0f,  1.0f,  0.0f,   10.0f, 0.0f,
+		 5.0f,  0.0f,  5.0f,   0.0f,  1.0f,  0.0f,   10.0f, 0.0f,
+		-5.0f,  0.0f,  5.0f,   0.0f,  1.0f,  0.0f,   0.0f, 0.0f,
+		-5.0f,  0.0f, -5.0f,   0.0f,  1.0f,  0.0f,   0.0f, 10.0f
+	};
+	vaPlane = std::make_shared<VertexArray>(plane_vertices, 6);
 
-	renderer->addObject(cube1, containerMat);
-	renderer->addObject(cube2, containerMat);
-	renderer->addObject(cube3, containerMat);
-	renderer->addObject(lightCube1, lightSourceMat);
-	renderer->addObject(lightCube2, lightSourceMat);
 
-	cube1->setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
-	cube1->setRotation(Quaternion{ Vector3::unitY, Maths::toRadians(45.0f) });
-	cube2->setPosition(Vector3{ 2.0f, 1.5f, 2.0f });
-	cube3->setPosition(Vector3{ 2.0f, -1.0f, -1.0f });
-	lightCube1->setPosition(Vector3{ 1.0f, 2.0f, 1.0f });
-	lightCube1->setScale(0.2f);
-	lightCube2->setPosition(Vector3{ 1.5f, 1.0f, -0.5f });
-	lightCube2->setScale(0.2f);
+	//  objects
+	ground = std::make_shared<Object>(crateMat, vaPlane);
+	
+	renderer->addObject(ground, crateMat);
+
+	ground->setPosition(Vector3{ 0.0f, -2.0f, 0.0f });
 
 
 	//  lights
-	flashLight = std::make_shared<SpotLight>(Spot, Color::white, Vector3::zero, Vector3::unitX);
-
-	renderer->addLight(std::make_shared<DirectionalLight>(Directionnal, Color::white, Vector3{ -0.4f, -0.5f, 1.0f }), Directionnal);
-	renderer->addLight(std::make_shared<PointLight>(Point, Color::white, Vector3{ 1.0f, 2.0f, 1.0f }), Point);
-	renderer->addLight(std::make_shared<PointLight>(Point, Color::white, Vector3{ 1.5f, 1.0f, -0.5f }), Point);
-	renderer->addLight(flashLight, Spot);
+	renderer->addLight(std::make_shared<DirectionalLight>(Directionnal, Color::white, Vector3{ 0.0f, -1.0f, 0.0f }), Directionnal);
 }
 
-
-void ExpositionScene::unload()
+void FirstPersonScene::unload()
 {
-	cube1->deleteObject();
-	cube2->deleteObject();
-	cube3->deleteObject();
-	lightCube1->deleteObject();
-	lightCube2->deleteObject();
+	crate1->deleteObject();
+	crate2->deleteObject();
+	crate3->deleteObject();
+	ground->deleteObject();
 	vaCube->deleteObjects();
+	vaPlane->deleteObjects();
 	litObjectShader->deleteProgram();
-	flatEmissiveShader->deleteProgram();
 }
 
 
-void ExpositionScene::update(float dt)
+void FirstPersonScene::update(float dt)
 {
-	flashLight->setPosition(camera->getPosition());
-	flashLight->setDirection(camera->getFront());
 
-	cube3->incrementRotation(Quaternion{ Vector3::unitX, Maths::toRadians(90.0f) * dt });
 }
 
-void ExpositionScene::processInputs(GLFWwindow* glWindow, float dt)
+
+void FirstPersonScene::processInputs(GLFWwindow* glWindow, float dt)
 {
 	//  move camera
 	if (glfwGetKey(glWindow, GLFW_KEY_W) == GLFW_PRESS)
@@ -155,15 +139,14 @@ void ExpositionScene::processInputs(GLFWwindow* glWindow, float dt)
 
 	if (glfwGetKey(glWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
 		camera->ProcessKeyboard(Down, dt);
-
 }
 
-void ExpositionScene::processMouse(float xOffset, float yOffset)
+void FirstPersonScene::processMouse(float xOffset, float yOffset)
 {
 	camera->ProcessMouseMovement(xOffset, yOffset);
 }
 
-void ExpositionScene::processScroll(float scrollOffset)
+void FirstPersonScene::processScroll(float scrollOffset)
 {
 	camera->ProcessMouseScroll(scrollOffset);
 }

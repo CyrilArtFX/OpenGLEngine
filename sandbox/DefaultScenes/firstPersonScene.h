@@ -2,11 +2,11 @@
 #include <Core/scene.h>
 
 #include <Rendering/shader.h>
+#include <Rendering/texture.h>
 #include <Rendering/vertexArray.h>
 #include <Objects/object.h>
 
 #include <Rendering/camera.h>
-#include <Rendering/texture.h>
 
 #include <Maths/Vector3.h>
 #include <Utils/color.h>
@@ -16,13 +16,12 @@
 #include <Objects/Lights/SpotLight.h>
 
 #include <Materials/litMaterial.h>
-#include <Materials/flatEmissiveMaterial.h>
 
 
-class ExpositionScene : public Scene
+class FirstPersonScene : public Scene
 {
 public:
-	ExpositionScene();
+	FirstPersonScene();
 
 	void load(std::weak_ptr<Renderer> renderer_) override;
 	void unload() override;
@@ -33,6 +32,7 @@ public:
 	void processMouse(float xOffset, float yOffset) override;
 	void processScroll(float scrollOffset) override;
 
+
 private:
 	//  camera
 	std::shared_ptr<Camera> camera;
@@ -42,19 +42,16 @@ private:
 	//-----------------
 
 	std::shared_ptr<Shader> litObjectShader;
-	std::shared_ptr<Shader> flatEmissiveShader;
 
 	std::shared_ptr<VertexArray> vaCube;
+	std::shared_ptr<VertexArray> vaPlane;
 
-	std::shared_ptr<LitMaterial> containerMat;
-	std::shared_ptr<FlatEmissiveMaterial> lightSourceMat;
+	std::shared_ptr<LitMaterial> crateMat;
+	std::shared_ptr<LitMaterial> groundMat;
 
-	std::shared_ptr<Object> cube1;
-	std::shared_ptr<Object> cube2;
-	std::shared_ptr<Object> cube3;
-	std::shared_ptr<Object> lightCube1;
-	std::shared_ptr<Object> lightCube2;
-
-	std::shared_ptr<SpotLight> flashLight;
+	std::shared_ptr<Object> crate1;
+	std::shared_ptr<Object> crate2;
+	std::shared_ptr<Object> crate3;
+	std::shared_ptr<Object> ground;
 };
 
