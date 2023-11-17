@@ -80,3 +80,19 @@ void Object::computeMatrix()
 	normalMatrix.invert();
 	normalMatrix.transpose();
 }
+
+
+Vector3 Object::getForward()
+{
+	return Vector3::transform(Vector3::unitX, rotation);
+}
+
+Vector3 Object::getUp()
+{
+	return Vector3::transform(Vector3::unitY, rotation);
+}
+
+Vector3 Object::getRight()
+{
+	return Vector3::transform(Vector3::unitZ, rotation);
+}

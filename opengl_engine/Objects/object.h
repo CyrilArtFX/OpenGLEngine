@@ -29,6 +29,10 @@ public:
 	Vector3 getScale() { return scale; }
 	Quaternion getRotation() { return rotation; }
 
+	Vector3 getForward();
+	Vector3 getUp();
+	Vector3 getRight();
+
 private:
 	void computeMatrix();
 
