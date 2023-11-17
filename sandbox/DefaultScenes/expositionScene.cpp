@@ -95,6 +95,7 @@ void ExpositionScene::load(std::weak_ptr<Renderer> renderer_)
 	renderer->addObject(lightCube2, lightSourceMat);
 
 	cube1->setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
+	cube1->setRotation(Quaternion{ Vector3::unitY, Maths::toRadians(45.0f) });
 	cube2->setPosition(Vector3{ 2.0f, 1.5f, 2.0f });
 	cube3->setPosition(Vector3{ 2.0f, -1.0f, -1.0f });
 	lightCube1->setPosition(Vector3{ 1.0f, 2.0f, 1.0f });
@@ -130,6 +131,8 @@ void ExpositionScene::update(float dt)
 {
 	flashLight->setPosition(camera->getPosition());
 	flashLight->setDirection(camera->getFront());
+
+	cube3->incrementRotation(Quaternion{ Vector3::unitX, Maths::toRadians(90.0f) * dt });
 }
 
 void ExpositionScene::processInputs(GLFWwindow* glWindow, float dt)

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Maths/Vector3.h>
+#include <Maths/Quaternion.h>
 #include <Maths/Matrix4.h>
 
 #include <Rendering/vertexArray.h>
@@ -20,8 +22,12 @@ public:
 	void setPosition(Vector3 newPos);
 	void setScale(Vector3 newScale);
 	void setScale(float newUniformScale);
+	void setRotation(Quaternion newRotation);
+	void incrementRotation(Quaternion increment);
 
 	Vector3 getPosition() { return position; }
+	Vector3 getScale() { return scale; }
+	Quaternion getRotation() { return rotation; }
 
 private:
 	void computeMatrix();
@@ -31,6 +37,7 @@ private:
 
 	Vector3 position{ Vector3::zero };
 	Vector3 scale{ Vector3::one };
+	Quaternion rotation{ Quaternion::identity };
 	Matrix4 modelMatrix{ Matrix4::identity };
 	Matrix4 normalMatrix{ Matrix4::identity };
 };

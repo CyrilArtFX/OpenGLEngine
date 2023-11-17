@@ -56,11 +56,24 @@ void Object::setScale(float newUniformScale)
 	setScale(Vector3{ newUniformScale, newUniformScale, newUniformScale });
 }
 
+void Object::setRotation(Quaternion newRotation)
+{
+	rotation = newRotation;
+	computeMatrix();
+}
+
+void Object::incrementRotation(Quaternion increment)
+{
+	rotation = Quaternion::concatenate(rotation, increment);
+	computeMatrix();
+}
+
 
 void Object::computeMatrix()
 {
 	modelMatrix =
 		Matrix4::createScale(scale) *
+		Matrix4::createFromQuaternion(rotation) *
 		Matrix4::createTranslation(position);
 
 	normalMatrix = modelMatrix;
