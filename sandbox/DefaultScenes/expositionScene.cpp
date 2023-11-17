@@ -18,17 +18,17 @@ void ExpositionScene::load(std::weak_ptr<Renderer> renderer_)
 
 
 	//  shaders, textures and materials
-	litObjectShader = std::make_shared<Shader>("Shaders/object_lit.vert", "Shaders/object_lit.frag");
-	flatEmissiveShader = std::make_shared<Shader>("Shaders/flat_emissive.vert", "Shaders/flat_emissive.frag");
+	litObjectShader = std::make_shared<Shader>("object_lit.vert", "object_lit.frag");
+	flatEmissiveShader = std::make_shared<Shader>("flat_emissive.vert", "flat_emissive.frag");
 
 	litObjectShader->use(); //  activate the shader on which you want to set the texture unit before doing it
 	litObjectShader->setInt("material.diffuse", 0);
 	litObjectShader->setInt("material.specular", 1);
 	litObjectShader->setInt("material.emissive", 2);
 
-	containerDiffuse = std::make_shared<Texture>("Resources/container2.png", GL_RGBA, false);
-	containerSpecular = std::make_shared<Texture>("Resources/container2_specular.png", GL_RGBA, false);
-	containerEmissive = std::make_shared<Texture>("Resources/matrix.jpg", GL_RGB, false);
+	containerDiffuse = std::make_shared<Texture>("container2.png", GL_RGBA, false);
+	containerSpecular = std::make_shared<Texture>("container2_specular.png", GL_RGBA, false);
+	containerEmissive = std::make_shared<Texture>("matrix.jpg", GL_RGB, false);
 
 	containerMat = std::make_shared<LitMaterial>(litObjectShader, containerDiffuse, containerSpecular);
 	lightSourceMat = std::make_shared<FlatEmissiveMaterial>(flatEmissiveShader, Vector3(1.0f, 1.0f, 1.0f));

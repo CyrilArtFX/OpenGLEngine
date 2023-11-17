@@ -41,7 +41,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -134,9 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Core\game.cpp" />
-    <ClCompile Include="DefaultScenes\expositionScene.cpp" />
     <ClCompile Include="glad.c" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="Materials\flatEmissiveMaterial.cpp" />
     <ClCompile Include="Materials\litMaterial.cpp" />
     <ClCompile Include="Maths\Matrix4.cpp" />
@@ -159,7 +157,6 @@
   <ItemGroup>
     <ClInclude Include="Core\game.h" />
     <ClInclude Include="Core\scene.h" />
-    <ClInclude Include="DefaultScenes\expositionScene.h" />
     <ClInclude Include="Materials\flatEmissiveMaterial.h" />
     <ClInclude Include="Materials\litMaterial.h" />
     <ClInclude Include="Maths\Maths.h" />

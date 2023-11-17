@@ -7,7 +7,7 @@ class LitMaterial : public Material
 {
 public:
 	LitMaterial(std::weak_ptr <Shader> shaderUsed, std::weak_ptr<Texture> diffuseMap_, std::weak_ptr<Texture> specularMap_,
-		std::weak_ptr<Texture> emissiveMap_ = std::make_shared<Texture>("Resources/Default/black.png"), float shininess_ = 32.0f);
+		std::weak_ptr<Texture> emissiveMap_ = std::make_shared<Texture>("Default/black.png"), float shininess_ = 32.0f);
 
 	void use() override;
 

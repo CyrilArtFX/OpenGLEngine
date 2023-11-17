@@ -2,10 +2,14 @@
 
 #include <Maths/Vector3.h>
 
-Shader::Shader(const char* vertexPath, const char* fragmentPath)
+Shader::Shader(const std::string vertexName, const std::string fragmentName)
 {
 	//  Step 1 : retrieve the shaders source code from filePaths
 	//  ========================================================
+
+	std::string vertexPath = shaderPath + vertexName;
+	std::string fragmentPath = shaderPath + fragmentName;
+
 
 	std::string vertexCode;
 	std::string fragmentCode;
