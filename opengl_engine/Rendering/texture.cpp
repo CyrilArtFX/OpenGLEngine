@@ -23,6 +23,7 @@ Texture::Texture(const std::string texturePath, unsigned int glFormat, bool flip
 	if (data)
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, glFormat, width, height, 0, glFormat, GL_UNSIGNED_BYTE, data);
+		//  in some cases, the glGenerateMipmap function can cause crashes (it's related to the size of the image, but I don't know exactly what causes this problem)
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else
