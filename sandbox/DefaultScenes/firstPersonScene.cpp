@@ -9,11 +9,6 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 {
 	renderer = renderer_.lock();
 
-	//  camera
-	camera = std::make_shared<Camera>(Vector3{ 0.0f, 0.0f, -3.0f });
-	renderer->setCamera(camera);
-
-
 	//  shaders, textures and materials
 	litObjectShader = std::make_shared<Shader>("object_lit.vert", "object_lit.frag");
 
@@ -29,6 +24,11 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 
 	crateMat = std::make_shared<LitMaterial>(litObjectShader, crate_diffuse, crate_specular);
 	groundMat = std::make_shared<LitMaterial>(litObjectShader, ground_diffuse, ground_specular);
+
+
+	//  player (camera)
+	player = std::make_unique<Player>(1.5f, groundMat); 
+	renderer->setCamera(player->getCamera());
 
 
 	//  vertex arrays
@@ -103,10 +103,10 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 	renderer->addObject(crate2, crateMat);
 	renderer->addObject(crate3, crateMat);
 
-	ground->setPosition(Vector3{ 0.0f, -2.0f, 0.0f });
-	crate1->setPosition(Vector3{ 2.0f, -1.5f, 0.0f });
-	crate2->setPosition(Vector3{ -1.0f, -1.5f, 3.0f });
-	crate3->setPosition(Vector3{ -3.5f, -1.5f, -1.0f });
+	ground->setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
+	crate1->setPosition(Vector3{ 2.0f, 0.5f, 0.0f });
+	crate2->setPosition(Vector3{ -1.0f, 0.5f, 3.0f });
+	crate3->setPosition(Vector3{ -3.5f, 0.5f, -1.0f });
 
 
 	//  lights
@@ -129,38 +129,21 @@ void FirstPersonScene::unload()
 
 void FirstPersonScene::update(float dt)
 {
-
+	player->update(dt);
 }
 
 
 void FirstPersonScene::processInputs(GLFWwindow* glWindow, float dt)
 {
-	//  move camera
-	if (glfwGetKey(glWindow, GLFW_KEY_W) == GLFW_PRESS)
-		camera->ProcessKeyboard(Forward, dt);
-
-	if (glfwGetKey(glWindow, GLFW_KEY_S) == GLFW_PRESS)
-		camera->ProcessKeyboard(Backward, dt);
-
-	if (glfwGetKey(glWindow, GLFW_KEY_A) == GLFW_PRESS)
-		camera->ProcessKeyboard(Left, dt);
-
-	if (glfwGetKey(glWindow, GLFW_KEY_D) == GLFW_PRESS)
-		camera->ProcessKeyboard(Right, dt);
-
-	if (glfwGetKey(glWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
-		camera->ProcessKeyboard(Up, dt);
-
-	if (glfwGetKey(glWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-		camera->ProcessKeyboard(Down, dt);
+	player->processInputs(glWindow, dt);
 }
 
 void FirstPersonScene::processMouse(float xOffset, float yOffset)
 {
-	camera->ProcessMouseMovement(xOffset, yOffset);
+	player->processMouse(xOffset, yOffset);
 }
 
 void FirstPersonScene::processScroll(float scrollOffset)
 {
-	camera->ProcessMouseScroll(scrollOffset);
+	player->processScroll(scrollOffset);
 }

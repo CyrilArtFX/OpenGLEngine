@@ -73,7 +73,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PublicIncludeDirectories>
     </PublicIncludeDirectories>
-    <IncludePath>$(SolutionDir)\opengl_engine;$(SolutionDir)\..\cyyiiyOpenGL\includes;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\opengl_engine;$(ProjectDir);$(SolutionDir)\..\cyyiiyOpenGL\includes;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\..\cyyiiyOpenGL\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

@@ -6,7 +6,7 @@
 #include <Rendering/vertexArray.h>
 #include <Objects/object.h>
 
-#include <Rendering/camera.h>
+#include <Actors/Player.h>
 
 #include <Maths/Vector3.h>
 #include <Utils/color.h>
@@ -34,8 +34,8 @@ public:
 
 
 private:
-	//  camera
-	std::shared_ptr<Camera> camera;
+	//  player
+	std::unique_ptr<Player> player;
 
 
 	//  scene objects
