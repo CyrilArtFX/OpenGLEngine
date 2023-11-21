@@ -20,6 +20,7 @@ public:
 	void setMaterial(std::weak_ptr<Material> newMat);
 
 	void setPosition(Vector3 newPos);
+	void setPosition(float newPosX, float newPosY, float newPosZ);
 	void setScale(Vector3 newScale);
 	void setScale(float newUniformScale);
 	void setRotation(Quaternion newRotation);

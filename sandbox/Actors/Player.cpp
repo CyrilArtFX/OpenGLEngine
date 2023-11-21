@@ -19,7 +19,7 @@ void Player::update(float dt)
 
 	//  fake jump
 	height = Maths::max(height + (jumpVelocity + fakeGravity) * dt, 0.0f);
-	blankObject->setPosition(Vector3{ blankObject->getPosition().x, height, blankObject->getPosition().z });
+	blankObject->setPosition(blankObject->getPosition().x, height, blankObject->getPosition().z);
 
 	jumpVelocity *= 0.9f;
 	if (jumpVelocity < 0.1f || height == 0.0f)

@@ -45,6 +45,11 @@ void Object::setPosition(Vector3 newPos)
 	computeMatrix();
 }
 
+void Object::setPosition(float newPosX, float newPosY, float newPosZ)
+{
+	setPosition(Vector3{ newPosX, newPosY, newPosZ });
+}
+
 void Object::setScale(Vector3 newScale)
 {
 	scale = newScale;
