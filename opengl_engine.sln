@@ -7,6 +7,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opengl_engine", "opengl_eng
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sandbox", "sandbox\sandbox.vcxproj", "{3106E1EA-6A7A-40FF-B1A6-4593F7473AD2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{74A139B5-5FD8-431D-9676-7F37965B4E5E}"
+	ProjectSection(SolutionItems) = preProject
+		Shaders\flat_emissive.frag = Shaders\flat_emissive.frag
+		Shaders\flat_emissive.vert = Shaders\flat_emissive.vert
+		Shaders\object_lit.frag = Shaders\object_lit.frag
+		Shaders\object_lit.vert = Shaders\object_lit.vert
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

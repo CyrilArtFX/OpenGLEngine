@@ -36,7 +36,7 @@ public:
 private:
 	unsigned int ID; //  program ID
 
-	const std::string shaderPath = "opengl_engine/Shaders/";
+	const std::string shaderPath = "Shaders/";
 
 	ShaderType type;
 };

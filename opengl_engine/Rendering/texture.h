@@ -22,6 +22,6 @@ public:
 
 private:
 	unsigned int ID{ 0 }; //  texture ID
-	const std::string resourcesPath = "opengl_engine/Resources/";
+	const std::string resourcesPath = "Resources/";
 };
 

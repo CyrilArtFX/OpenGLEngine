@@ -147,10 +147,4 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Shaders\object_lit.vert" />
-    <None Include="Shaders\object_lit.frag" />
-    <None Include="Shaders\flat_emissive.frag" />
-    <None Include="Shaders\flat_emissive.vert" />
-  </ItemGroup>
 </Project>
