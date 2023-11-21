@@ -12,6 +12,10 @@ Question : quand l'ECS sera intégré, ça sera engine ou game qui appellera les
 
 ~ Changer le système d'objet pour séparer la logique 'transform' et la logique 'mesh renderer' (ça sera amené à être dans 2 composants différents avec l'ECS)
 
+~ Mettre un système de physique basique pour le doomlike
+
+~ Faire le doomlike (omg ?)
+
 
 == MOYEN TERME ==
 
@@ -23,3 +27,4 @@ Question : quand l'ECS sera intégré, ça sera engine ou game qui appellera les
 
 ~ Faire le système des ombres
 
+~ Mettre un vrai système de physique
