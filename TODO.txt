@@ -1,7 +1,5 @@
 == COURT TERME ==
 
-~ Faire un peu de nettoyage dans le nommage du moteur (et mettre les ressources dans un dossier externe jpp)
-
 ~ Optimiser le renderer pour trier les objets par shader et pas par material (plusieurs materials utilisent le même shader = pas opti actuellement)
 
 ~ Intégrer le système de lecture de meshs (tuto learnopengl)
