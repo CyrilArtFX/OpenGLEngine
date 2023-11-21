@@ -7,10 +7,16 @@
 #include <sstream>
 #include <iostream>
 
+enum ShaderType
+{
+	Lit,
+	Unlit
+};
+
 class Shader
 {
 public:
-	Shader(const std::string vertexName, const std::string fragmentName); //  constructor reads and build the shader
+	Shader(const std::string vertexName, const std::string fragmentName, ShaderType shaderType); //  constructor reads and build the shader
 
 	void use(); //  use (activate) the shader
 	void deleteProgram();
@@ -25,8 +31,12 @@ public:
 
 	unsigned int getProgram() { return ID; }
 
+	ShaderType getShaderType() { return type; }
+
 private:
 	unsigned int ID; //  program ID
 
 	const std::string shaderPath = "opengl_engine/Shaders/";
+
+	ShaderType type;
 };

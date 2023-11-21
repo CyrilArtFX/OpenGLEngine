@@ -2,7 +2,7 @@
 
 #include <Maths/vector3.h>
 
-Shader::Shader(const std::string vertexName, const std::string fragmentName)
+Shader::Shader(const std::string vertexName, const std::string fragmentName, ShaderType shaderType) : type(shaderType)
 {
 	//  Step 1 : retrieve the shaders source code from filePaths
 	//  ========================================================

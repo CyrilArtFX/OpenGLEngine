@@ -1,7 +1,7 @@
 #include "flatEmissiveMaterial.h"
 
 FlatEmissiveMaterial::FlatEmissiveMaterial(std::weak_ptr<Shader> shaderUsed, Vector3 emissiveColor_)
-	: emissiveColor(emissiveColor_), Material(shaderUsed, Unlit)
+	: emissiveColor(emissiveColor_), Material(shaderUsed)
 {}
 
 void FlatEmissiveMaterial::use()

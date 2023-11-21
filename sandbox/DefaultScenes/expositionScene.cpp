@@ -18,8 +18,8 @@ void ExpositionScene::load(std::weak_ptr<Renderer> renderer_)
 
 
 	//  shaders, textures and materials
-	litObjectShader = std::make_shared<Shader>("object_lit.vert", "object_lit.frag");
-	flatEmissiveShader = std::make_shared<Shader>("flat_emissive.vert", "flat_emissive.frag");
+	litObjectShader = std::make_shared<Shader>("object_lit.vert", "object_lit.frag", Lit);
+	flatEmissiveShader = std::make_shared<Shader>("flat_emissive.vert", "flat_emissive.frag", Unlit);
 
 	litObjectShader->use(); //  activate the shader on which you want to set the texture unit before doing it
 	litObjectShader->setInt("material.diffuse", 0);
@@ -88,11 +88,11 @@ void ExpositionScene::load(std::weak_ptr<Renderer> renderer_)
 	lightCube1 = std::make_shared<Object>(lightSourceMat, vaCube);
 	lightCube2 = std::make_shared<Object>(lightSourceMat, vaCube);
 
-	renderer->addObject(cube1, containerMat);
-	renderer->addObject(cube2, containerMat);
-	renderer->addObject(cube3, containerMat);
-	renderer->addObject(lightCube1, lightSourceMat);
-	renderer->addObject(lightCube2, lightSourceMat);
+	renderer->addObject(cube1, litObjectShader);
+	renderer->addObject(cube2, litObjectShader);
+	renderer->addObject(cube3, litObjectShader);
+	renderer->addObject(lightCube1, flatEmissiveShader);
+	renderer->addObject(lightCube2, flatEmissiveShader);
 
 	cube1->setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
 	cube1->setRotation(Quaternion{ Vector3::unitY, Maths::toRadians(45.0f) });

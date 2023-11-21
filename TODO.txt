@@ -1,7 +1,5 @@
 == COURT TERME ==
 
-~ Optimiser le renderer pour trier les objets par shader et pas par material (plusieurs materials utilisent le même shader = pas opti actuellement)
-
 ~ Intégrer le système de lecture de meshs (tuto learnopengl)
 
 ~ Changer le duo game/scene en un trio engine/game/scene où :

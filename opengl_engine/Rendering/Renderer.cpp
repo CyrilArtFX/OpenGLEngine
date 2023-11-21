@@ -20,15 +20,15 @@ void Renderer::draw()
 	Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(currentCam->getFov()), windowRef.getWidth(), windowRef.getHeigth(), 0.1f, 100.0f);
 
 	//  draw objects depending of their materials
-	for (auto mat : objects)
+	for (auto objs_by_shader : objects)
 	{
-		Shader& shader = mat.first->getShader();
-		shader.use();
-		shader.setMatrix4("view", view.getAsFloatPtr());
-		shader.setMatrix4("projection", projection.getAsFloatPtr());
+		std::shared_ptr<Shader> shader = objs_by_shader.first;
+		shader->use();
+		shader->setMatrix4("view", view.getAsFloatPtr());
+		shader->setMatrix4("projection", projection.getAsFloatPtr());
 
-		MaterialType mat_type = mat.first->getMatType();
-		switch (mat_type) //  feels a bit hardcoded, should be cool to find a better way to do this
+		ShaderType shader_type = shader->getShaderType();
+		switch (shader_type) //  feels a bit hardcoded, should be cool to find a better way to do this
 		{
 		case Lit:
 			//  use lights
@@ -39,7 +39,7 @@ void Renderer::draw()
 				int light_type_used = 0;
 				for (auto light : light_t.second)
 				{
-					light->use(shader, light_type_used);
+					light->use(*shader, light_type_used);
 
 					light_type_used++;
 					if (light_type_used >= lightsLimits.at(light_type))
@@ -51,15 +51,15 @@ void Renderer::draw()
 				switch (light_type)
 				{
 				case Point:
-					shader.setInt("nbPointLights", light_type_used++);
+					shader->setInt("nbPointLights", light_type_used++);
 				break;
 				case Spot:
-					shader.setInt("nbSpotLights", light_type_used++);
+					shader->setInt("nbSpotLights", light_type_used++);
 				break;
 				}
 			}
 
-			shader.setVec3("viewPos", currentCam->getPosition());
+			shader->setVec3("viewPos", currentCam->getPosition());
 
 		break;
 
@@ -68,7 +68,7 @@ void Renderer::draw()
 		break;
 		}
 			
-		for (auto object : mat.second)
+		for (auto object : objs_by_shader.second)
 		{
 			object->draw();
 		}
@@ -91,7 +91,7 @@ void Renderer::addLight(std::weak_ptr<Light> light, LightType type)
 	}
 }
 
-void Renderer::addObject(std::weak_ptr<Object> object, std::shared_ptr<Material> mat)
+void Renderer::addObject(std::weak_ptr<Object> object, std::shared_ptr<Shader> shader)
 {
-	objects[mat].push_back(object.lock());
+	objects[shader].push_back(object.lock());
 }

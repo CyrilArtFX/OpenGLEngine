@@ -10,7 +10,7 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 	renderer = renderer_.lock();
 
 	//  shaders, textures and materials
-	litObjectShader = std::make_shared<Shader>("object_lit.vert", "object_lit.frag");
+	litObjectShader = std::make_shared<Shader>("object_lit.vert", "object_lit.frag", Lit);
 
 	litObjectShader->use(); //  activate the shader on which you want to set the texture unit before doing it
 	litObjectShader->setInt("material.diffuse", 0);
@@ -98,10 +98,10 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 	crate2 = std::make_shared<Object>(crateMat, vaCube);
 	crate3 = std::make_shared<Object>(crateMat, vaCube);
 	
-	renderer->addObject(ground, groundMat);
-	renderer->addObject(crate1, crateMat);
-	renderer->addObject(crate2, crateMat);
-	renderer->addObject(crate3, crateMat);
+	renderer->addObject(ground, litObjectShader);
+	renderer->addObject(crate1, litObjectShader);
+	renderer->addObject(crate2, litObjectShader);
+	renderer->addObject(crate3, litObjectShader);
 
 	ground->setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
 	crate1->setPosition(Vector3{ 2.0f, 0.5f, 0.0f });
