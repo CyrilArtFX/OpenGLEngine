@@ -1,16 +1,16 @@
 #pragma once
 
 #include <Rendering/camera.h>
-#include <Objects/object.h>
+#include <Objects/transform.h>
+
+#include <memory>
 #include <GLFW/glfw3.h>
 
 
 class Player
 {
 public:
-	Player(float height, float speed, std::weak_ptr<Material> materialToUse);
-
-	void unload();
+	Player(float height, float speed);
 
 	void update(float dt);
 
@@ -23,8 +23,7 @@ public:
 
 private:
 	std::shared_ptr<Camera> camera;
-	std::shared_ptr<VertexArray> vaBlank;
-	std::unique_ptr<Object> blankObject;
+	Transform transform;
 
 	float camHeight;
 	float moveSpeed;

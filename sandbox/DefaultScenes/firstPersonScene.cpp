@@ -9,6 +9,11 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 {
 	renderer = renderer_.lock();
 
+	//  player (camera)
+	player = std::make_unique<Player>(1.5f, 5.0f);
+	renderer->setCamera(player->getCamera());
+
+
 	//  shaders, textures and materials
 	litObjectShader = std::make_shared<Shader>("Lit/object_lit.vert", "Lit/object_lit.frag", Lit);
 
@@ -24,11 +29,6 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 
 	crateMat = std::make_shared<LitMaterial>(litObjectShader, crate_diffuse, crate_specular);
 	groundMat = std::make_shared<LitMaterial>(litObjectShader, ground_diffuse, ground_specular);
-
-
-	//  player (camera)
-	player = std::make_unique<Player>(1.5f, 5.0f, groundMat); 
-	renderer->setCamera(player->getCamera());
 
 
 	//  vertex arrays

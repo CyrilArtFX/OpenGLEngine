@@ -146,6 +146,7 @@
     <ClCompile Include="Objects\Lights\pointLight.cpp" />
     <ClCompile Include="Objects\Lights\spotLight.cpp" />
     <ClCompile Include="Objects\object.cpp" />
+    <ClCompile Include="Objects\transform.cpp" />
     <ClCompile Include="Rendering\camera.cpp" />
     <ClCompile Include="Rendering\renderer.cpp" />
     <ClCompile Include="Rendering\vertexArray.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="Objects\Lights\pointLight.h" />
     <ClInclude Include="Objects\Lights\spotLight.h" />
     <ClInclude Include="Objects\object.h" />
+    <ClInclude Include="Objects\transform.h" />
     <ClInclude Include="Rendering\camera.h" />
     <ClInclude Include="Rendering\material.h" />
     <ClInclude Include="Rendering\renderer.h" />
