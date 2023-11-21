@@ -18,8 +18,8 @@ void ExpositionScene::load(std::weak_ptr<Renderer> renderer_)
 
 
 	//  shaders, textures and materials
-	litObjectShader = std::make_shared<Shader>("object_lit.vert", "object_lit.frag", Lit);
-	flatEmissiveShader = std::make_shared<Shader>("flat_emissive.vert", "flat_emissive.frag", Unlit);
+	litObjectShader = std::make_shared<Shader>("Lit/object_lit.vert", "Lit/object_lit.frag", Lit);
+	flatEmissiveShader = std::make_shared<Shader>("Unlit/flat_emissive.vert", "Unlit/flat_emissive.frag", Unlit);
 
 	litObjectShader->use(); //  activate the shader on which you want to set the texture unit before doing it
 	litObjectShader->setInt("material.diffuse", 0);

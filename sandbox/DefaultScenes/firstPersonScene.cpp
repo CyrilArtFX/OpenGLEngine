@@ -10,7 +10,7 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 	renderer = renderer_.lock();
 
 	//  shaders, textures and materials
-	litObjectShader = std::make_shared<Shader>("object_lit.vert", "object_lit.frag", Lit);
+	litObjectShader = std::make_shared<Shader>("Lit/object_lit.vert", "Lit/object_lit.frag", Lit);
 
 	litObjectShader->use(); //  activate the shader on which you want to set the texture unit before doing it
 	litObjectShader->setInt("material.diffuse", 0);
