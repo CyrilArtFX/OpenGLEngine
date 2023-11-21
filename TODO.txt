@@ -1,5 +1,7 @@
 == COURT TERME ==
 
+~ Changer le système d'objet pour séparer la logique 'transform' et la logique 'mesh renderer' (ça sera amené à être dans 2 composants différents avec l'ECS)
+
 ~ Intégrer le système de lecture de meshs (tuto learnopengl)
 
 ~ Changer le duo game/scene en un trio engine/game/scene où :
@@ -7,8 +9,6 @@
 	- game correspond à la partie logique de scene actuel et contiendra la logique propre à chaque jeu (game contiendra un pointeur vers l'interface scene)
 	- scene correspond à la partie load de scene actuel et s'occupera de charger/décharger les objets
 Question : quand l'ECS sera intégré, ça sera engine ou game qui appellera les components ? et quand ces components seront créé dans scene du coup, comment ils se renseigneront ?
-
-~ Changer le système d'objet pour séparer la logique 'transform' et la logique 'mesh renderer' (ça sera amené à être dans 2 composants différents avec l'ECS)
 
 ~ Mettre un système de physique basique pour le doomlike
 
