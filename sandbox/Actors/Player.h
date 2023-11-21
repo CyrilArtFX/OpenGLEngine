@@ -8,7 +8,7 @@
 class Player
 {
 public:
-	Player(float height, std::weak_ptr<Material> materialToUse);
+	Player(float height, float speed, std::weak_ptr<Material> materialToUse);
 
 	void unload();
 
@@ -25,5 +25,13 @@ private:
 	std::shared_ptr<Camera> camera;
 	std::shared_ptr<VertexArray> vaBlank;
 	std::unique_ptr<Object> blankObject;
+
+	float camHeight;
+	float moveSpeed;
+
+	//  fake jump
+	float fakeGravity{ -9.0f };
+	float height{ 0.0f };
+	float jumpVelocity{ 0.0f };
 };
 

@@ -27,7 +27,7 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 
 
 	//  player (camera)
-	player = std::make_unique<Player>(1.5f, groundMat); 
+	player = std::make_unique<Player>(1.5f, 5.0f, groundMat); 
 	renderer->setCamera(player->getCamera());
 
 

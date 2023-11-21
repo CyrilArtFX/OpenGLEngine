@@ -73,6 +73,13 @@ void Camera::setPosition(Vector3 newPos)
 	position = newPos;
 }
 
+Vector3 Camera::getFlatFront()
+{
+	Vector3 flat_front{ front.x, 0.0f, front.z };
+	flat_front.normalize();
+	return flat_front;
+}
+
 void Camera::setSpeed(float newSpeed)
 {
 	camSpeed = newSpeed;

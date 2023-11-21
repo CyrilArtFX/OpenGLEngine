@@ -51,6 +51,7 @@ public:
 	Vector3 getFront() { return front; }
 	Vector3 getUp() { return up; }
 	Vector3 getRight() { return right; }
+	Vector3 getFlatFront();
 
 	void setSpeed(float newSpeed);
 	void setSensitivity(float newSensitivity);
