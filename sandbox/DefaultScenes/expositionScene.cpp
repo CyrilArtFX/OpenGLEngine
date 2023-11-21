@@ -139,31 +139,31 @@ void ExpositionScene::processInputs(GLFWwindow* glWindow, float dt)
 {
 	//  move camera
 	if (glfwGetKey(glWindow, GLFW_KEY_W) == GLFW_PRESS)
-		camera->ProcessKeyboard(Forward, dt);
+		camera->processKeyboard(Forward, dt);
 
 	if (glfwGetKey(glWindow, GLFW_KEY_S) == GLFW_PRESS)
-		camera->ProcessKeyboard(Backward, dt);
+		camera->processKeyboard(Backward, dt);
 
 	if (glfwGetKey(glWindow, GLFW_KEY_A) == GLFW_PRESS)
-		camera->ProcessKeyboard(Left, dt);
+		camera->processKeyboard(Left, dt);
 
 	if (glfwGetKey(glWindow, GLFW_KEY_D) == GLFW_PRESS)
-		camera->ProcessKeyboard(Right, dt);
+		camera->processKeyboard(Right, dt);
 
 	if (glfwGetKey(glWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
-		camera->ProcessKeyboard(Up, dt);
+		camera->processKeyboard(Up, dt);
 
 	if (glfwGetKey(glWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-		camera->ProcessKeyboard(Down, dt);
+		camera->processKeyboard(Down, dt);
 
 }
 
 void ExpositionScene::processMouse(float xOffset, float yOffset)
 {
-	camera->ProcessMouseMovement(xOffset, yOffset);
+	camera->processMouseMovement(xOffset, yOffset);
 }
 
 void ExpositionScene::processScroll(float scrollOffset)
 {
-	camera->ProcessMouseScroll(scrollOffset);
+	camera->processMouseScroll(scrollOffset);
 }

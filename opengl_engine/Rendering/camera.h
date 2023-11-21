@@ -38,11 +38,11 @@ public:
 	Camera(const Camera&) = delete;
 	Camera& operator=(const Camera&) = delete;
 
-	Matrix4 GetViewMatrix();
+	Matrix4 getViewMatrix();
 	
-	void ProcessKeyboard(Camera_Movement direction, float deltaTime);
-	void ProcessMouseMovement(float xoffset, float yoffset);
-	void ProcessMouseScroll(float yoffset);
+	void processKeyboard(Camera_Movement direction, float deltaTime);
+	void processMouseMovement(float xoffset, float yoffset);
+	void processMouseScroll(float yoffset);
 
 
 	void setPosition(Vector3 newPos);

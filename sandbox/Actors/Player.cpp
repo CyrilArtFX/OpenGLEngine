@@ -50,7 +50,7 @@ void Player::processInputs(GLFWwindow* glWindow, float dt)
 
 void Player::processMouse(float xOffset, float yOffset)
 {
-	camera->ProcessMouseMovement(xOffset, yOffset);
+	camera->processMouseMovement(xOffset, yOffset);
 }
 
 void Player::processScroll(float scrollOffset)

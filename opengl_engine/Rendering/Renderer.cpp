@@ -16,7 +16,7 @@ void Renderer::draw()
 	
 	if (!currentCam) return;
 
-	Matrix4 view = currentCam->GetViewMatrix();
+	Matrix4 view = currentCam->getViewMatrix();
 	Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(currentCam->getFov()), windowRef.getWidth(), windowRef.getHeigth(), 0.1f, 100.0f);
 
 	//  draw objects depending of their materials
@@ -42,7 +42,7 @@ void Renderer::draw()
 					light->use(shader, light_type_used);
 
 					light_type_used++;
-					if (light_type_used >= lights_limits.at(light_type))
+					if (light_type_used >= lightsLimits.at(light_type))
 					{
 						break;
 					}
@@ -85,7 +85,7 @@ void Renderer::addLight(std::weak_ptr<Light> light, LightType type)
 {
 	lights[type].push_back(light.lock());
 
-	if (lights[type].size() > lights_limits.at(type))
+	if (lights[type].size() > lightsLimits.at(type))
 	{
 		std::cout << "Renderer Warning : A light has been added but will not be used as the lit shader array has a too small size.\n";
 	}

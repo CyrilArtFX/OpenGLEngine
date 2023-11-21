@@ -9,13 +9,13 @@ Camera::Camera(Vector3 position_, Vector3 front_, float yaw_, float pitch_, floa
 }
 
 
-Matrix4 Camera::GetViewMatrix()
+Matrix4 Camera::getViewMatrix()
 {
 	return Matrix4::createLookAt(position, position + front, up);
 }
 
 
-void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
+void Camera::processKeyboard(Camera_Movement direction, float deltaTime)
 {
 	float velocity = camSpeed * deltaTime;
 
@@ -38,7 +38,7 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
 		position -= Vector3::unitY * velocity;
 }
 
-void Camera::ProcessMouseMovement(float xoffset, float yoffset)
+void Camera::processMouseMovement(float xoffset, float yoffset)
 {
 	xoffset *= sensitivity;
 	yoffset *= sensitivity;
@@ -49,7 +49,7 @@ void Camera::ProcessMouseMovement(float xoffset, float yoffset)
 	updateCameraVectors();
 }
 
-void Camera::ProcessMouseScroll(float yoffset)
+void Camera::processMouseScroll(float yoffset)
 {
 	fov = Maths::clamp(fov - yoffset, fovMin, fovMax);
 }

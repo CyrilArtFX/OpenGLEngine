@@ -2,7 +2,7 @@
 
 Texture::Texture(const std::string texturePath, unsigned int glFormat, bool flipVertical)
 {
-	std::string texPath = resourcesPath + texturePath;
+	std::string tex_path = resourcesPath + texturePath;
 
 	//  create texture
 	glGenTextures(1, &ID);
@@ -16,9 +16,9 @@ Texture::Texture(const std::string texturePath, unsigned int glFormat, bool flip
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 
-	int width, height, nrChannels;
+	int width, height, nr_channels;
 	stbi_set_flip_vertically_on_load(flipVertical);
-	unsigned char* data = stbi_load(texPath.c_str(), &width, &height, &nrChannels, 0);
+	unsigned char* data = stbi_load(tex_path.c_str(), &width, &height, &nr_channels, 0);
 
 	if (data)
 	{
@@ -28,11 +28,11 @@ Texture::Texture(const std::string texturePath, unsigned int glFormat, bool flip
 	}
 	else
 	{
-		std::cout << "Failed to load texture at path " << texPath << std::endl;
+		std::cout << "Failed to load texture at path " << tex_path << std::endl;
 
 		stbi_set_flip_vertically_on_load(false);
 		std::string notex_path = resourcesPath + "Default/notexture.png";
-		data = stbi_load(notex_path.c_str(), &width, &height, &nrChannels, 0);
+		data = stbi_load(notex_path.c_str(), &width, &height, &nr_channels, 0);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}

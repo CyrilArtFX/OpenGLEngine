@@ -43,7 +43,7 @@ private:
 	const Window& windowRef;
 
 	//  would be cool if I find a better way to do this but it works for now
-	const std::unordered_map<LightType, int> lights_limits
+	const std::unordered_map<LightType, int> lightsLimits
 	{
 		{Directionnal, 1},
 		{Point, 16},
