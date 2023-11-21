@@ -1,7 +1,7 @@
 #pragma once
 #include <Utils/color.h>
-#include <Maths/Matrix4.h>
-#include <Maths/Vector3.h>
+#include <Maths/matrix4.h>
+#include <Maths/vector3.h>
 
 #include "camera.h"
 #include <Core/window.h>

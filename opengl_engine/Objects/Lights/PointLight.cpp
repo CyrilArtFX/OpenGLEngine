@@ -1,4 +1,4 @@
-#include "PointLight.h"
+#include "pointLight.h"
 
 PointLight::PointLight(LightType lightType_, Color lightColor_, Vector3 position_, float ambientStrength_, float diffuseStrength_,
 	float constant_, float linear_, float quadratic_) : position(position_), constant(constant_), linear(linear_), quadratic(quadratic_), Light(lightType_)

@@ -1,4 +1,4 @@
-#include "Matrix4.h"
+#include "matrix4.h"
 
 static float m4Ident[4][4] =
 {

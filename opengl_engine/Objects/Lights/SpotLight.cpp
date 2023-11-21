@@ -1,4 +1,4 @@
-#include "SpotLight.h"
+#include "spotLight.h"
 
 SpotLight::SpotLight(LightType lightType_, Color lightColor_, Vector3 position_, Vector3 direction_, 
 	float ambientStrength_, float diffuseStrength_, float cutOff_, float outerCutOff_, 

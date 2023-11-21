@@ -1,6 +1,6 @@
 #include "shader.h"
 
-#include <Maths/Vector3.h>
+#include <Maths/vector3.h>
 
 Shader::Shader(const std::string vertexName, const std::string fragmentName)
 {

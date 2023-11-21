@@ -1,6 +1,6 @@
 #pragma once
 #include "light.h"
-#include <Maths/Vector3.h>
+#include <Maths/vector3.h>
 
 
 class DirectionalLight : public Light

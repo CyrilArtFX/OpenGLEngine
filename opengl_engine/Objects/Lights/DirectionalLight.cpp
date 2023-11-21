@@ -1,4 +1,4 @@
-#include "DirectionalLight.h"
+#include "directionalLight.h"
 
 DirectionalLight::DirectionalLight(LightType lightType_, Color lightColor_, Vector3 direction_, float ambientStrength_, float diffuseStrength_) :
 	direction(direction_), Light(lightType_)

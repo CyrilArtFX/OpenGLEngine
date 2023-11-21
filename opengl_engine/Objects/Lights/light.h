@@ -1,6 +1,6 @@
 #pragma once
 #include <Rendering/shader.h>
-#include <Utils/Color.h>
+#include <Utils/color.h>
 
 
 enum LightType

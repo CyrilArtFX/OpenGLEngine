@@ -1,7 +1,7 @@
 #pragma once
 #include "light.h"
-#include <Maths/Vector3.h>
-#include <Maths/Maths.h>
+#include <Maths/vector3.h>
+#include <Maths/maths.h>
 
 
 class SpotLight : public Light

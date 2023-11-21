@@ -1,7 +1,7 @@
 #pragma once
 #include <memory.h>
-#include "Vector3.h"
-#include "Quaternion.h"
+#include "vector3.h"
+#include "quaternion.h"
 #include <string>
 
 class Matrix4

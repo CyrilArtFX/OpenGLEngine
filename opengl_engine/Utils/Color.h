@@ -1,5 +1,5 @@
 #pragma once
-#include <Maths/Vector3.h>
+#include <Maths/vector3.h>
 
 struct Color
 {

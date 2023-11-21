@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Rendering/material.h>
-#include <Maths/Vector3.h>
+#include <Maths/vector3.h>
 
 class FlatEmissiveMaterial : public Material
 {

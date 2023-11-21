@@ -1,7 +1,7 @@
-#include "Vector2.h"
-#include "Maths.h"
-#include "Vector3.h"
-#include "Vector2Int.h"
+#include "vector2.h"
+#include "maths.h"
+#include "vector3.h"
+#include "vector2Int.h"
 
 const Vector2 Vector2::zero{ 0.0f, 0.0f };
 const Vector2 Vector2::unitX{ 1.0f, 0.0f };

@@ -1,7 +1,7 @@
-#include "Vector3.h"
-#include "Matrix4.h"
-#include "Quaternion.h"
-#include "Vector2.h"
+#include "vector3.h"
+#include "matrix4.h"
+#include "quaternion.h"
+#include "vector2.h"
 
 const Vector3 Vector3::zero(0.0f, 0.0f, 0.f);
 const Vector3 Vector3::one(1.0f, 1.0f, 1.0f);

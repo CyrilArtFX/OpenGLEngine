@@ -1,5 +1,5 @@
 #include "Player.h"
-#include <Maths/Maths.h>
+#include <Maths/maths.h>
 
 Player::Player(float height, float speed, std::weak_ptr<Material> materialToUse) : camHeight(height), moveSpeed(speed)
 {

@@ -3,11 +3,11 @@
 
 #include "scene.h"
 #include "window.h"
-#include <Rendering/Renderer.h>
+#include <Rendering/renderer.h>
 #include <Rendering/texture.h>
 
-#include <Maths/Matrix4.h>
-#include <Maths/Vector3.h>
+#include <Maths/matrix4.h>
+#include <Maths/vector3.h>
 
 #include <string>
 #include <iostream>

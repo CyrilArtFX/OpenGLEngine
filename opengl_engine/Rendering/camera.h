@@ -1,7 +1,7 @@
 #pragma once
 
 #include <glad/glad.h>
-#include <Maths/Matrix4.h>
+#include <Maths/matrix4.h>
 
 
 enum Camera_Movement

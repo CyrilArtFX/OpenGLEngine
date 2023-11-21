@@ -1,4 +1,4 @@
-#include "Color.h"
+#include "color.h"
 #include <iostream>
 
 const Color Color::black{ 0, 0, 0, 255 };

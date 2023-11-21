@@ -1,6 +1,6 @@
-#include "Vector2Int.h"
-#include "Maths.h"
-#include "Vector2.h"
+#include "vector2Int.h"
+#include "maths.h"
+#include "vector2.h"
 
 const Vector2Int Vector2Int::zero{ 0, 0 };
 const Vector2Int Vector2Int::unitX{ 1, 0 };

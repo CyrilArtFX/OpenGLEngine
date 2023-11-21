@@ -1,5 +1,5 @@
 #pragma once
-#include "Maths.h"
+#include "maths.h"
 #include <string>
 
 class Vector3

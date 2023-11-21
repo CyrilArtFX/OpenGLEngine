@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Maths/Vector3.h>
-#include <Maths/Quaternion.h>
-#include <Maths/Matrix4.h>
+#include <Maths/vector3.h>
+#include <Maths/quaternion.h>
+#include <Maths/matrix4.h>
 
 #include <Rendering/vertexArray.h>
 #include <Rendering/material.h>

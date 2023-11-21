@@ -24,19 +24,19 @@
     <ClCompile Include="Rendering\texture.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Maths\Matrix4.cpp">
+    <ClCompile Include="Maths\matrix4.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Maths\Quaternion.cpp">
+    <ClCompile Include="Maths\quaternion.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Maths\Vector2.cpp">
+    <ClCompile Include="Maths\vector2.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Maths\Vector2Int.cpp">
+    <ClCompile Include="Maths\vector2Int.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Maths\Vector3.cpp">
+    <ClCompile Include="Maths\vector3.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Rendering\vertexArray.cpp">
@@ -60,19 +60,19 @@
     <ClCompile Include="Materials\flatEmissiveMaterial.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Rendering\Renderer.cpp">
+    <ClCompile Include="Rendering\renderer.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Utils\color.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\Lights\DirectionalLight.cpp">
+    <ClCompile Include="Objects\Lights\directionalLight.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\Lights\PointLight.cpp">
+    <ClCompile Include="Objects\Lights\pointLight.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Objects\Lights\SpotLight.cpp">
+    <ClCompile Include="Objects\Lights\spotLight.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,22 +83,22 @@
     <ClInclude Include="Rendering\texture.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Maths\Maths.h">
+    <ClInclude Include="Maths\maths.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Maths\Matrix4.h">
+    <ClInclude Include="Maths\matrix4.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Maths\Quaternion.h">
+    <ClInclude Include="Maths\quaternion.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Maths\Vector2.h">
+    <ClInclude Include="Maths\vector2.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Maths\Vector2Int.h">
+    <ClInclude Include="Maths\vector2Int.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Maths\Vector3.h">
+    <ClInclude Include="Maths\vector3.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Rendering\vertexArray.h">
@@ -125,7 +125,7 @@
     <ClInclude Include="Materials\flatEmissiveMaterial.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering\Renderer.h">
+    <ClInclude Include="Rendering\renderer.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Lights\light.h">
@@ -134,13 +134,13 @@
     <ClInclude Include="Utils\color.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Lights\DirectionalLight.h">
+    <ClInclude Include="Objects\Lights\directionalLight.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Lights\PointLight.h">
+    <ClInclude Include="Objects\Lights\pointLight.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Objects\Lights\SpotLight.h">
+    <ClInclude Include="Objects\Lights\spotLight.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Core\scene.h">

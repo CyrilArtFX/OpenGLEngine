@@ -8,12 +8,12 @@
 #include <Rendering/camera.h>
 #include <Rendering/texture.h>
 
-#include <Maths/Vector3.h>
+#include <Maths/vector3.h>
 #include <Utils/color.h>
 
-#include <Objects/Lights/DirectionalLight.h>
-#include <Objects/Lights/PointLight.h>
-#include <Objects/Lights/SpotLight.h>
+#include <Objects/Lights/directionalLight.h>
+#include <Objects/Lights/pointLight.h>
+#include <Objects/Lights/spotLight.h>
 
 #include <Materials/litMaterial.h>
 #include <Materials/flatEmissiveMaterial.h>
