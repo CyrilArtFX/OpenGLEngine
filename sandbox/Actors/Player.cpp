@@ -1,7 +1,8 @@
 #include "Player.h"
 #include <Maths/maths.h>
+#include <iostream>
 
-Player::Player(float height, float speed) : camHeight(height), moveSpeed(speed)
+Player::Player(float height, float speed, std::weak_ptr<class Renderer> renderer, std::weak_ptr<class Material> bulletMat) : camHeight(height), moveSpeed(speed), rendererWeak(renderer), bulletMaterial(bulletMat.lock())
 {
 	transform.setPosition(0.0f, 0.0f, 0.0f);
 	camera = std::make_shared<Camera>(Vector3{ 0.0f, camHeight, 0.0f });
@@ -23,6 +24,40 @@ void Player::update(float dt)
 	{
 		jumpVelocity = 0.0f;
 	}
+
+
+	//  fake shoot
+	inCooldown -= dt;
+
+	for (auto& bullet : bullets)
+	{
+		bullet->update(dt);
+	}
+
+	for (int i = 0; i < bullets.size(); i++)
+	{
+		if (bullets[i]->isLTOver())
+		{
+			bullets[i]->destroy();
+
+			auto iter = std::find(bullets.begin(), bullets.end(), bullets[i]);
+			if (iter != bullets.end())
+			{
+				std::iter_swap(iter, bullets.end() - 1);
+				bullets.pop_back();
+			}
+
+			i = 0;
+		}
+	}
+}
+
+void Player::unload()
+{
+	for (auto& bullet : bullets)
+	{
+		bullet->destroy();
+	}
 }
 
 void Player::processInputs(GLFWwindow* glWindow, float dt)
@@ -42,7 +77,14 @@ void Player::processInputs(GLFWwindow* glWindow, float dt)
 
 	//  fake jump
 	if (glfwGetKey(glWindow, GLFW_KEY_SPACE) == GLFW_PRESS && height == 0.0f)
-		jumpVelocity = 30.0f;
+		jumpVelocity = 40.0f;
+
+	//  fake shoot
+	if (glfwGetKey(glWindow, GLFW_KEY_Q) == GLFW_PRESS && inCooldown <= 0.0f)
+	{
+		bullets.push_back(std::make_unique<Bullet>(camera->getPosition(), camera->getFront(), shootVelocity, bulletLifeTime, rendererWeak, bulletMaterial));
+		inCooldown = cooldown;
+	}
 }
 
 void Player::processMouse(float xOffset, float yOffset)

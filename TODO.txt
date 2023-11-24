@@ -26,3 +26,8 @@ Question : quand l'ECS sera intégré, ça sera engine ou game qui appellera les
 ~ Faire le système des ombres
 
 ~ Mettre un vrai système de physique
+
+
+== REFLEXIONS ==
+
+~ Mettre une classe statiques pour stocker/récupérer les meshs, shaders et materials ?

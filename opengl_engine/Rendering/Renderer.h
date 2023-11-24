@@ -28,6 +28,8 @@ public:
 
 	void addLight(std::weak_ptr<Light> light, LightType type);
 	void addObject(std::weak_ptr<Object> object, std::shared_ptr<Shader> shader);
+	void removeLight(std::weak_ptr<Light> light, LightType type);
+	void removeObject(std::weak_ptr<Object> object, std::shared_ptr<Shader> shader);
 
 
 	inline void setClearColor(Color newClearColor) { clearColor = newClearColor; }

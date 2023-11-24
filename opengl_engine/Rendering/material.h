@@ -11,6 +11,7 @@ public:
 	virtual void use() = 0;
 
 	Shader& getShader() { return *shader; }
+	std::shared_ptr<Shader> getShrdShader() { return shader; }
 
 protected:
 	std::shared_ptr<Shader> shader;

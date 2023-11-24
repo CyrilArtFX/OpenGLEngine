@@ -95,3 +95,29 @@ void Renderer::addObject(std::weak_ptr<Object> object, std::shared_ptr<Shader> s
 {
 	objects[shader].push_back(object.lock());
 }
+
+void Renderer::removeLight(std::weak_ptr<Light> light, LightType type)
+{
+	auto iter = std::find(lights[type].begin(), lights[type].end(), light.lock());
+	if (iter == lights[type].end())
+	{
+		std::cout << "Renderer can't remove a light that doesn't exist.\n";
+		return;
+	}
+
+	std::iter_swap(iter, lights[type].end() - 1);
+	lights[type].pop_back();
+}
+
+void Renderer::removeObject(std::weak_ptr<Object> object, std::shared_ptr<Shader> shader)
+{
+	auto iter = std::find(objects[shader].begin(), objects[shader].end(), object.lock());
+	if (iter == objects[shader].end())
+	{
+		std::cout << "Renderer can't remove an object that doesn't exist.\n";
+		return;
+	}
+
+	std::iter_swap(iter, objects[shader].end() - 1);
+	objects[shader].pop_back();
+}

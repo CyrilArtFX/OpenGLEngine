@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Actors\bullet.cpp" />
     <ClCompile Include="Actors\player.cpp" />
     <ClCompile Include="DefaultScenes\expositionScene.cpp" />
     <ClCompile Include="DefaultScenes\firstPersonScene.cpp" />
@@ -145,6 +146,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actors\bullet.h" />
     <ClInclude Include="Actors\player.h" />
     <ClInclude Include="DefaultScenes\expositionScene.h" />
     <ClInclude Include="DefaultScenes\firstPersonScene.h" />

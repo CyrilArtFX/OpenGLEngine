@@ -42,6 +42,7 @@ private:
 	//-----------------
 
 	std::shared_ptr<Shader> litObjectShader;
+	std::shared_ptr<Shader> bulletShader;
 
 	std::shared_ptr<VertexArray> vaCube;
 	std::shared_ptr<VertexArray> vaPlane;
