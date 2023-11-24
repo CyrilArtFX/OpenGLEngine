@@ -1,6 +1,7 @@
 #include "Player.h"
 #include <Maths/maths.h>
 #include <iostream>
+#include <algorithm>
 
 Player::Player(float height, float speed, std::weak_ptr<class Renderer> renderer, std::weak_ptr<class Material> bulletMat) : camHeight(height), moveSpeed(speed), rendererWeak(renderer), bulletMaterial(bulletMat.lock())
 {

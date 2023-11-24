@@ -1,5 +1,6 @@
 #include "renderer.h"
 #include <iostream>
+#include <algorithm>
 
 
 Renderer::Renderer(Color clearColor_, const Window& window) : clearColor(clearColor_), windowRef(window)
