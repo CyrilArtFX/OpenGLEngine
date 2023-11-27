@@ -36,6 +36,16 @@ public:
 		return Maths::sqrt(lengthSq());
 	}
 
+	// Return a quaternion created from euler angles (angles in radian).
+	static Quaternion fromEuler(const float yaw, const float pitch, const float roll);
+
+	// Return a quaternion created from euler angles(angles in radian). x for yaw, y for pitch and z for roll. 
+	static Quaternion fromEuler(const Vector3& euler);
+	
+	// Return a Vector3 with x for yaw, y for pitch and z for roll.
+	// Don't work for now.
+	static Vector3 toEuler(const Quaternion& quat);
+
 	// Normalize the provided quaternion
 	static Quaternion normalize(const Quaternion& q)
 	{

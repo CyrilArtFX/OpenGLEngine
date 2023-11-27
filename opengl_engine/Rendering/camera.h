@@ -1,7 +1,7 @@
 #pragma once
 
 #include <glad/glad.h>
-#include <Maths/matrix4.h>
+#include <Objects/transform.h>
 
 
 enum Camera_Movement
@@ -17,7 +17,6 @@ enum Camera_Movement
 
 //  default values
 const Vector3 POSITION = Vector3::zero;
-const Vector3 FRONT = Vector3::unitZ;
 const float YAW = 90.0f;
 const float PITCH = 0.0f;
 const float SPEED = 2.5f;
@@ -30,27 +29,20 @@ const float FOV_MIN = 1.0f;
 const float FOV_MAX = 45.0f;
 
 
-class Camera
+class Camera : public Transform
 {
 public:
-	Camera(Vector3 position_ = POSITION, Vector3 front_ = FRONT, float yaw_ = YAW, float pitch_ = PITCH, float fov_ = FOV);
+	Camera(Vector3 position_ = POSITION, float yaw_ = YAW, float pitch_ = PITCH, float fov_ = FOV);
 	Camera() = delete;
 	Camera(const Camera&) = delete;
 	Camera& operator=(const Camera&) = delete;
 
 	Matrix4 getViewMatrix();
 	
-	void processKeyboard(Camera_Movement direction, float deltaTime);
-	void processMouseMovement(float xoffset, float yoffset);
-	void processMouseScroll(float yoffset);
+	void freecamKeyboard(Camera_Movement direction, float deltaTime);
+	void freecamMouseMovement(float xoffset, float yoffset);
+	void freecamMouseScroll(float yoffset);
 
-
-	void setPosition(Vector3 newPos);
-
-	Vector3 getPosition() { return position; }
-	Vector3 getFront() { return front; }
-	Vector3 getUp() { return up; }
-	Vector3 getRight() { return right; }
 	Vector3 getFlatFront();
 
 	void setSpeed(float newSpeed);
@@ -63,15 +55,11 @@ public:
 
 
 private:
-	void updateCameraVectors();
-
-	Vector3 position;
-	Vector3 front;
-	Vector3 up;
-	Vector3 right;
+	void computeYawPitch();
 
 	float yaw;
 	float pitch;
+
 	float camSpeed;
 	float sensitivity;
 	float fov;

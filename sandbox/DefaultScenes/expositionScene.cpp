@@ -130,7 +130,7 @@ void ExpositionScene::unload()
 void ExpositionScene::update(float dt)
 {
 	flashLight->setPosition(camera->getPosition());
-	flashLight->setDirection(camera->getFront());
+	flashLight->setDirection(camera->getForward());
 
 	cube3->incrementRotation(Quaternion{ Vector3::unitX, Maths::toRadians(90.0f) * dt });
 }
@@ -139,31 +139,31 @@ void ExpositionScene::processInputs(GLFWwindow* glWindow, float dt)
 {
 	//  move camera
 	if (glfwGetKey(glWindow, GLFW_KEY_W) == GLFW_PRESS)
-		camera->processKeyboard(Forward, dt);
+		camera->freecamKeyboard(Forward, dt);
 
 	if (glfwGetKey(glWindow, GLFW_KEY_S) == GLFW_PRESS)
-		camera->processKeyboard(Backward, dt);
+		camera->freecamKeyboard(Backward, dt);
 
 	if (glfwGetKey(glWindow, GLFW_KEY_A) == GLFW_PRESS)
-		camera->processKeyboard(Left, dt);
+		camera->freecamKeyboard(Left, dt);
 
 	if (glfwGetKey(glWindow, GLFW_KEY_D) == GLFW_PRESS)
-		camera->processKeyboard(Right, dt);
+		camera->freecamKeyboard(Right, dt);
 
 	if (glfwGetKey(glWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
-		camera->processKeyboard(Up, dt);
+		camera->freecamKeyboard(Up, dt);
 
 	if (glfwGetKey(glWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-		camera->processKeyboard(Down, dt);
+		camera->freecamKeyboard(Down, dt);
 
 }
 
 void ExpositionScene::processMouse(float xOffset, float yOffset)
 {
-	camera->processMouseMovement(xOffset, yOffset);
+	camera->freecamMouseMovement(xOffset, yOffset);
 }
 
 void ExpositionScene::processScroll(float scrollOffset)
 {
-	camera->processMouseScroll(scrollOffset);
+	camera->freecamMouseScroll(scrollOffset);
 }

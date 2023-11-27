@@ -83,14 +83,14 @@ void Player::processInputs(GLFWwindow* glWindow, float dt)
 	//  fake shoot
 	if (glfwGetKey(glWindow, GLFW_KEY_Q) == GLFW_PRESS && inCooldown <= 0.0f)
 	{
-		bullets.push_back(std::make_unique<Bullet>(camera->getPosition(), camera->getFront(), shootVelocity, bulletLifeTime, rendererWeak, bulletMaterial));
+		bullets.push_back(std::make_unique<Bullet>(camera->getPosition(), camera->getForward(), shootVelocity, bulletLifeTime, rendererWeak, bulletMaterial));
 		inCooldown = cooldown;
 	}
 }
 
 void Player::processMouse(float xOffset, float yOffset)
 {
-	camera->processMouseMovement(xOffset, yOffset);
+	camera->freecamMouseMovement(xOffset, yOffset);
 }
 
 void Player::processScroll(float scrollOffset)

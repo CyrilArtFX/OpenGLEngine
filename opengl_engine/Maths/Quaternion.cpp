@@ -39,3 +39,23 @@ void Quaternion::normalize()
 	z /= len;
 	w /= len;
 }
+
+Quaternion Quaternion::fromEuler(const float yaw, const float pitch, const float roll)
+{
+	Quaternion quat;
+	quat.x = Maths::cos(yaw / 2) * Maths::sin(pitch / 2) * Maths::cos(roll / 2) + Maths::sin(yaw / 2) * Maths::cos(pitch / 2) * Maths::sin(roll / 2);
+	quat.y = Maths::sin(yaw / 2) * Maths::cos(pitch / 2) * Maths::cos(roll / 2) - Maths::cos(yaw / 2) * Maths::sin(pitch / 2) * Maths::sin(roll / 2);
+	quat.z = Maths::cos(yaw / 2) * Maths::cos(pitch / 2) * Maths::sin(roll / 2) - Maths::sin(yaw / 2) * Maths::sin(pitch / 2) * Maths::cos(roll / 2);
+	quat.w = Maths::cos(yaw / 2) * Maths::cos(pitch / 2) * Maths::cos(roll / 2) + Maths::sin(yaw / 2) * Maths::sin(pitch / 2) * Maths::sin(roll / 2);
+	return quat;
+}
+
+Quaternion Quaternion::fromEuler(const Vector3& euler)
+{
+	return fromEuler(euler.x, euler.y, euler.z);
+}
+
+Vector3 Quaternion::toEuler(const Quaternion& quat)
+{
+	return Vector3::zero;
+}
