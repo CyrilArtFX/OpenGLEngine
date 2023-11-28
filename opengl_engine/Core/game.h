@@ -50,6 +50,16 @@ private:
 	float deltaTime = 0.0f;
 	float lastFrame = 0.0f;
 
+	//  pause and freecam
+	bool gamePaused{ false };
+	bool freecamMode{ false };
+	bool pauseInptPrsd{ false };
+	bool freecamInptPrsd{ false };
+	void pauseGame();
+	void unpauseGame();
+	void enableFreecam();
+	void disableFreecam();
+
 
 	//  mouse
 	bool firstMouse = true;

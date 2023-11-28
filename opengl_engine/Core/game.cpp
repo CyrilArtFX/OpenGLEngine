@@ -83,7 +83,10 @@ void Game::run()
 		processInput(window->getGLFWwindow());
 
 
-		if (scene) scene->update(deltaTime);
+		if (!gamePaused)
+		{
+			if (scene) scene->update(deltaTime);
+		}
 
 
 		//  rendering part
@@ -132,7 +135,56 @@ void Game::processInput(GLFWwindow* glWindow)
 		glfwSetWindowShouldClose(glWindow, true);
 	}
 
-	if (scene) scene->processInputs(glWindow, deltaTime);
+	//  pause/unpause the game when p is pressed
+	if (glfwGetKey(glWindow, GLFW_KEY_P) == GLFW_PRESS && !pauseInptPrsd)
+	{
+		pauseInptPrsd = true;
+		if (!gamePaused) pauseGame();
+		else unpauseGame();
+	}
+	if (glfwGetKey(glWindow, GLFW_KEY_P) == GLFW_RELEASE)
+	{
+		pauseInptPrsd = false;
+	}
+
+	//  active/desactive the freecam mode when m is pressed
+	if (glfwGetKey(glWindow, GLFW_KEY_M) == GLFW_PRESS && !freecamInptPrsd)
+	{
+		freecamInptPrsd = true;
+		if (!freecamMode) enableFreecam();
+		else disableFreecam();
+	}
+	if (glfwGetKey(glWindow, GLFW_KEY_M) == GLFW_RELEASE)
+	{
+		freecamInptPrsd = false;
+	}
+
+
+	if (!gamePaused)
+	{
+		if (scene) scene->processInputs(glWindow, deltaTime);
+	}
+}
+
+void Game::pauseGame()
+{
+	gamePaused = true;
+}
+
+void Game::unpauseGame()
+{
+	gamePaused = false;
+	disableFreecam();
+}
+
+void Game::enableFreecam()
+{
+	freecamMode = true;
+}
+
+void Game::disableFreecam()
+{
+	freecamMode = false;
 }
 
 
@@ -157,12 +209,18 @@ void Game::processMouse(GLFWwindow* glWindow, double xpos, double ypos)
 	lastX = xpos;
 	lastY = ypos;
 
-	if (scene) scene->processMouse(x_offset, y_offset);
+	if (!gamePaused)
+	{
+		if (scene) scene->processMouse(x_offset, y_offset);
+	}
 }
 
 void Game::processScroll(GLFWwindow* glWindow, double xoffset, double yoffset)
 {
 	float scroll_offset = float(yoffset);
 
-	if (scene) scene->processScroll(scroll_offset);
+	if (!gamePaused)
+	{
+		if (scene) scene->processScroll(scroll_offset);
+	}
 }
