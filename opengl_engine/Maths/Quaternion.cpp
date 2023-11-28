@@ -40,13 +40,13 @@ void Quaternion::normalize()
 	w /= len;
 }
 
-Quaternion Quaternion::fromEuler(const float yaw, const float pitch, const float roll)
+Quaternion Quaternion::fromEuler(const float yaw, const float roll, const float pitch)
 {
 	Quaternion quat;
-	quat.x = Maths::cos(yaw / 2) * Maths::sin(pitch / 2) * Maths::cos(roll / 2) + Maths::sin(yaw / 2) * Maths::cos(pitch / 2) * Maths::sin(roll / 2);
-	quat.y = Maths::sin(yaw / 2) * Maths::cos(pitch / 2) * Maths::cos(roll / 2) - Maths::cos(yaw / 2) * Maths::sin(pitch / 2) * Maths::sin(roll / 2);
-	quat.z = Maths::cos(yaw / 2) * Maths::cos(pitch / 2) * Maths::sin(roll / 2) - Maths::sin(yaw / 2) * Maths::sin(pitch / 2) * Maths::cos(roll / 2);
-	quat.w = Maths::cos(yaw / 2) * Maths::cos(pitch / 2) * Maths::cos(roll / 2) + Maths::sin(yaw / 2) * Maths::sin(pitch / 2) * Maths::sin(roll / 2);
+	quat.x = Maths::cos(yaw / 2) * Maths::sin(roll / 2) * Maths::cos(pitch / 2) + Maths::sin(yaw / 2) * Maths::cos(roll / 2) * Maths::sin(pitch / 2);
+	quat.y = Maths::sin(yaw / 2) * Maths::cos(roll / 2) * Maths::cos(pitch / 2) - Maths::cos(yaw / 2) * Maths::sin(roll / 2) * Maths::sin(pitch / 2);
+	quat.z = Maths::cos(yaw / 2) * Maths::cos(roll / 2) * Maths::sin(pitch / 2) - Maths::sin(yaw / 2) * Maths::sin(roll / 2) * Maths::cos(pitch / 2);
+	quat.w = Maths::cos(yaw / 2) * Maths::cos(roll / 2) * Maths::cos(pitch / 2) + Maths::sin(yaw / 2) * Maths::sin(roll / 2) * Maths::sin(pitch / 2);
 	return quat;
 }
 

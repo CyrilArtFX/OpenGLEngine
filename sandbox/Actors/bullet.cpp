@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-Bullet::Bullet(Vector3 spawnPos, Vector3 direction_, float velocity_, float lifetime_, std::weak_ptr<Renderer> renderer_, std::weak_ptr<Material> material_) :
+Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_, std::weak_ptr<Renderer> renderer_, std::weak_ptr<Material> material_) :
 	direction(direction_), velocity(velocity_), lifetime(lifetime_), renderer(renderer_.lock()), material(material_.lock())
 {
 	//  vertex arrays
@@ -59,7 +59,7 @@ Bullet::Bullet(Vector3 spawnPos, Vector3 direction_, float velocity_, float life
 	object = std::make_shared<Object>(material, va);
 
 	object->setPosition(spawnPos);
-	//  how can I make bullets rotate properly ?
+	object->setRotation(spawnRot);
 	object->setScale(0.1f, 0.1f, 0.2f);
 
 	renderer->addObject(object, material->getShrdShader());

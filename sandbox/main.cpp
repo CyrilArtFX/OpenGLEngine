@@ -12,7 +12,7 @@ int main()
 
 	if (!is_game_init) return -1;
 
-	game->loadScene(std::make_shared<ExpositionScene>());
+	game->loadScene(std::make_shared<FirstPersonScene>());
 
 	game->run();
 	game->close();

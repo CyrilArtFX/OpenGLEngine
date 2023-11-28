@@ -41,13 +41,12 @@ void Camera::freecamKeyboard(Camera_Movement direction, float deltaTime)
 
 void Camera::freecamMouseMovement(float xoffset, float yoffset)
 {
-	/*xoffset *= sensitivity;
+	xoffset *= sensitivity;
 	yoffset *= sensitivity;
-	std::cout << "Bruh\n";
 
-	yaw += xoffset;
+	yaw -= xoffset;
 	pitch = Maths::clamp(pitch + yoffset, pitchMin, pitchMax);
-	computeYawPitch();*/
+	computeYawPitch();
 }
 
 void Camera::freecamMouseScroll(float yoffset)
@@ -87,6 +86,5 @@ void Camera::setFovClamp(float min, float max)
 
 void Camera::computeYawPitch()
 {
-	std::cout << "Yaw : " << yaw << " | Pitch : " << pitch << std::endl;
-	setRotation(Quaternion::fromEuler(Maths::toRadians(yaw), 0.0f, 0.0f));
+	setRotation(Quaternion::fromEuler(Maths::toRadians(yaw), 0.0f, Maths::toRadians(pitch)));
 }
