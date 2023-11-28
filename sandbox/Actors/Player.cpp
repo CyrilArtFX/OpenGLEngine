@@ -84,7 +84,7 @@ void Player::processInputs(GLFWwindow* glWindow, float dt)
 	if (glfwGetKey(glWindow, GLFW_KEY_Q) == GLFW_PRESS && inCooldown <= 0.0f)
 	{
 		Quaternion bullet_rotation = camera->getRotation();
-		bullet_rotation = Quaternion::concatenate(bullet_rotation, Quaternion{ camera->getUp(), Maths::toDegrees(90.0f) });
+		bullet_rotation = Quaternion::concatenate(bullet_rotation, Quaternion{ camera->getUp(), Maths::toRadians(90.0f) });
 		bullets.push_back(std::make_unique<Bullet>(camera->getPosition(), bullet_rotation, camera->getForward(), shootVelocity, bulletLifeTime, rendererWeak, bulletMaterial));
 		inCooldown = cooldown;
 	}
