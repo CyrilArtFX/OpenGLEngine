@@ -25,6 +25,7 @@ public:
 
 
 	void setCamera(std::weak_ptr<Camera> camera);
+	inline const Camera& getCamera() const { return *currentCam; }
 
 	void addLight(std::weak_ptr<Light> light, LightType type);
 	void addObject(std::weak_ptr<Object> object, std::shared_ptr<Shader> shader);

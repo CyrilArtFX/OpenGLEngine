@@ -13,8 +13,8 @@ void ExpositionScene::load(std::weak_ptr<Renderer> renderer_)
 	renderer = renderer_.lock();
 
 	//  camera
-	camera = std::make_shared<Camera>(Vector3{ 0.0f, 0.0f, -3.0f });
-	renderer->setCamera(camera);
+	currentCam = std::make_shared<Camera>(Vector3{ 0.0f, 0.0f, -3.0f });
+	renderer->setCamera(currentCam);
 
 
 	//  shaders, textures and materials
@@ -129,8 +129,8 @@ void ExpositionScene::unload()
 
 void ExpositionScene::update(float dt)
 {
-	flashLight->setPosition(camera->getPosition());
-	flashLight->setDirection(camera->getForward());
+	flashLight->setPosition(currentCam->getPosition());
+	flashLight->setDirection(currentCam->getForward());
 
 	cube3->incrementRotation(Quaternion{ Vector3::unitX, Maths::toRadians(90.0f) * dt });
 }
@@ -139,31 +139,31 @@ void ExpositionScene::processInputs(GLFWwindow* glWindow, float dt)
 {
 	//  move camera
 	if (glfwGetKey(glWindow, GLFW_KEY_W) == GLFW_PRESS)
-		camera->freecamKeyboard(Forward, dt);
+		currentCam->freecamKeyboard(Forward, dt);
 
 	if (glfwGetKey(glWindow, GLFW_KEY_S) == GLFW_PRESS)
-		camera->freecamKeyboard(Backward, dt);
+		currentCam->freecamKeyboard(Backward, dt);
 
 	if (glfwGetKey(glWindow, GLFW_KEY_A) == GLFW_PRESS)
-		camera->freecamKeyboard(Left, dt);
+		currentCam->freecamKeyboard(Left, dt);
 
 	if (glfwGetKey(glWindow, GLFW_KEY_D) == GLFW_PRESS)
-		camera->freecamKeyboard(Right, dt);
+		currentCam->freecamKeyboard(Right, dt);
 
 	if (glfwGetKey(glWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
-		camera->freecamKeyboard(Up, dt);
+		currentCam->freecamKeyboard(Up, dt);
 
 	if (glfwGetKey(glWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-		camera->freecamKeyboard(Down, dt);
+		currentCam->freecamKeyboard(Down, dt);
 
 }
 
 void ExpositionScene::processMouse(float xOffset, float yOffset)
 {
-	camera->freecamMouseMovement(xOffset, yOffset);
+	currentCam->freecamMouseMovement(xOffset, yOffset);
 }
 
 void ExpositionScene::processScroll(float scrollOffset)
 {
-	camera->freecamMouseScroll(scrollOffset);
+	currentCam->freecamMouseScroll(scrollOffset);
 }

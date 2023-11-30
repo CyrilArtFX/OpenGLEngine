@@ -31,6 +31,7 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 
 	//  player (camera)
 	player = std::make_unique<Player>(1.5f, 5.0f, renderer_, bullet_mat);
+	currentCam = player->getCamera().lock();
 	renderer->setCamera(player->getCamera());
 
 

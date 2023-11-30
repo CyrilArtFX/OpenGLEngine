@@ -47,6 +47,9 @@ bool Game::initialize(int wndw_width, int wndw_height, std::string wndw_name, bo
 	//  create renderer
 	renderer = std::make_shared<Renderer>(Color{ 50, 75, 75, 255 }, *window);
 
+	//  create freecam
+	freecam = std::make_shared<Camera>(Vector3::zero);
+
 
 	//  initialize GLAD
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -148,13 +151,13 @@ void Game::processInput(GLFWwindow* glWindow)
 	}
 
 	//  active/desactive the freecam mode when m is pressed
-	if (glfwGetKey(glWindow, GLFW_KEY_M) == GLFW_PRESS && !freecamInptPrsd)
+	if (glfwGetKey(glWindow, GLFW_KEY_SEMICOLON) == GLFW_PRESS && !freecamInptPrsd)
 	{
 		freecamInptPrsd = true;
 		if (!freecamMode) enableFreecam();
 		else disableFreecam();
 	}
-	if (glfwGetKey(glWindow, GLFW_KEY_M) == GLFW_RELEASE)
+	if (glfwGetKey(glWindow, GLFW_KEY_SEMICOLON) == GLFW_RELEASE)
 	{
 		freecamInptPrsd = false;
 	}
@@ -164,27 +167,58 @@ void Game::processInput(GLFWwindow* glWindow)
 	{
 		if (scene) scene->processInputs(glWindow, deltaTime);
 	}
+
+	if (freecamMode)
+	{
+		//  move freecam
+		if (glfwGetKey(glWindow, GLFW_KEY_W) == GLFW_PRESS)
+			freecam->freecamKeyboard(Forward, deltaTime);
+
+		if (glfwGetKey(glWindow, GLFW_KEY_S) == GLFW_PRESS)
+			freecam->freecamKeyboard(Backward, deltaTime);
+
+		if (glfwGetKey(glWindow, GLFW_KEY_A) == GLFW_PRESS)
+			freecam->freecamKeyboard(Left, deltaTime);
+
+		if (glfwGetKey(glWindow, GLFW_KEY_D) == GLFW_PRESS)
+			freecam->freecamKeyboard(Right, deltaTime);
+
+		if (glfwGetKey(glWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
+			freecam->freecamKeyboard(Up, deltaTime);
+
+		if (glfwGetKey(glWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+			freecam->freecamKeyboard(Down, deltaTime);
+	}
 }
 
 void Game::pauseGame()
 {
 	gamePaused = true;
+	std::cout << "Game paused.\n";
 }
 
 void Game::unpauseGame()
 {
 	gamePaused = false;
-	disableFreecam();
+	if(freecamMode) disableFreecam();
+	std::cout << "Game unpaused.\n";
 }
 
 void Game::enableFreecam()
 {
 	freecamMode = true;
+	if (!gamePaused) pauseGame();
+	std::cout << "Freecam mode enabled.\n";
+	freecam->setPosition(scene->getCamera().lock()->getPosition());
+	freecam->setRotation(scene->getCamera().lock()->getRotation());
+	renderer->setCamera(freecam);
 }
 
 void Game::disableFreecam()
 {
 	freecamMode = false;
+	std::cout << "Freecam mode disabled.\n";
+	renderer->setCamera(scene->getCamera());
 }
 
 
@@ -213,6 +247,11 @@ void Game::processMouse(GLFWwindow* glWindow, double xpos, double ypos)
 	{
 		if (scene) scene->processMouse(x_offset, y_offset);
 	}
+
+	if (freecamMode)
+	{
+		freecam->freecamMouseMovement(x_offset, y_offset);
+	}
 }
 
 void Game::processScroll(GLFWwindow* glWindow, double xoffset, double yoffset)
@@ -222,5 +261,10 @@ void Game::processScroll(GLFWwindow* glWindow, double xoffset, double yoffset)
 	if (!gamePaused)
 	{
 		if (scene) scene->processScroll(scroll_offset);
+	}
+
+	if (freecamMode)
+	{
+		freecam->freecamMouseScroll(scroll_offset);
 	}
 }

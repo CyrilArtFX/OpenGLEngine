@@ -5,7 +5,6 @@
 #include <Rendering/vertexArray.h>
 #include <Objects/object.h>
 
-#include <Rendering/camera.h>
 #include <Rendering/texture.h>
 
 #include <Maths/vector3.h>
@@ -34,10 +33,6 @@ public:
 	void processScroll(float scrollOffset) override;
 
 private:
-	//  camera
-	std::shared_ptr<Camera> camera;
-
-
 	//  scene objects
 	//-----------------
 

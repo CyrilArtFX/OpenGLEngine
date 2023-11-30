@@ -4,6 +4,7 @@
 #include "scene.h"
 #include "window.h"
 #include <Rendering/renderer.h>
+#include <Rendering/camera.h>
 #include <Rendering/texture.h>
 
 #include <Maths/matrix4.h>
@@ -45,6 +46,9 @@ private:
 
 	//  renderer
 	std::shared_ptr<Renderer> renderer;
+
+	//  freecam
+	std::shared_ptr<Camera> freecam;
 
 	//  time
 	float deltaTime = 0.0f;
