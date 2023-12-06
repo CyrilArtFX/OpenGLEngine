@@ -148,8 +148,9 @@
     <ClCompile Include="Objects\object.cpp" />
     <ClCompile Include="Objects\transform.cpp" />
     <ClCompile Include="Rendering\camera.cpp" />
+    <ClCompile Include="Rendering\material.cpp" />
     <ClCompile Include="Rendering\renderer.cpp" />
-    <ClCompile Include="Rendering\vertexArray.cpp" />
+    <ClCompile Include="Rendering\Model\vertexArray.cpp" />
     <ClCompile Include="Rendering\shader.cpp" />
     <ClCompile Include="Rendering\texture.cpp" />
     <ClCompile Include="Core\window.cpp" />
@@ -175,11 +176,12 @@
     <ClInclude Include="Rendering\camera.h" />
     <ClInclude Include="Rendering\material.h" />
     <ClInclude Include="Rendering\renderer.h" />
-    <ClInclude Include="Rendering\vertexArray.h" />
+    <ClInclude Include="Rendering\Model\vertexArray.h" />
     <ClInclude Include="Rendering\shader.h" />
     <ClInclude Include="Rendering\texture.h" />
     <ClInclude Include="Core\window.h" />
     <ClInclude Include="Utils\color.h" />
+    <ClInclude Include="Utils\defines.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,14 +1,15 @@
 #include "shader.h"
 
 #include <Maths/vector3.h>
+#include <Utils/defines.h>
 
 Shader::Shader(const std::string vertexName, const std::string fragmentName, ShaderType shaderType) : type(shaderType)
 {
 	//  Step 1 : retrieve the shaders source code from filePaths
 	//  ========================================================
 
-	std::string vertex_path = shaderPath + vertexName;
-	std::string fragment_path = shaderPath + fragmentName;
+	std::string vertex_path = SHADER_PATH + vertexName;
+	std::string fragment_path = SHADER_PATH + fragmentName;
 
 
 	std::string vertex_code;

@@ -3,7 +3,7 @@
 
 #include <Rendering/shader.h>
 #include <Rendering/texture.h>
-#include <Rendering/vertexArray.h>
+#include <Rendering/Model/vertexArray.h>
 #include <Objects/object.h>
 
 #include <Actors/player.h>

@@ -2,7 +2,7 @@
 #include <Core/scene.h>
 
 #include <Rendering/shader.h>
-#include <Rendering/vertexArray.h>
+#include <Rendering/Model/vertexArray.h>
 #include <Objects/object.h>
 
 #include <Rendering/texture.h>

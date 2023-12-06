@@ -36,7 +36,5 @@ public:
 private:
 	unsigned int ID; //  program ID
 
-	const std::string shaderPath = "Shaders/";
-
 	ShaderType type;
 };

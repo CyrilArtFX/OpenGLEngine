@@ -1,6 +1,6 @@
 #pragma once
 #include <Maths/vector3.h>
-#include <Rendering/vertexArray.h>
+#include <Rendering/Model/vertexArray.h>
 #include <Objects/object.h>
 #include <Rendering/material.h>
 

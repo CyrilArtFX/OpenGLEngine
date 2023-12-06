@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Rendering/vertexArray.h>
+#include <Rendering/Model/vertexArray.h>
 #include <Rendering/material.h>
 
 #include "transform.h"
