@@ -3,7 +3,10 @@
 
 #include <Rendering/shader.h>
 #include <Rendering/texture.h>
-#include <Rendering/Model/vertexArray.h>
+#include <Rendering/material.h>
+
+#include <Rendering/Model/Mesh.h>
+#include <Rendering/Model/Model.h>
 #include <Objects/object.h>
 
 #include <Actors/player.h>
@@ -14,8 +17,6 @@
 #include <Objects/Lights/directionalLight.h>
 #include <Objects/Lights/pointLight.h>
 #include <Objects/Lights/spotLight.h>
-
-#include <Materials/litMaterial.h>
 
 
 class FirstPersonScene : public Scene
@@ -44,11 +45,15 @@ private:
 	std::shared_ptr<Shader> litObjectShader;
 	std::shared_ptr<Shader> bulletShader;
 
-	std::shared_ptr<VertexArray> vaCube;
-	std::shared_ptr<VertexArray> vaPlane;
+	std::shared_ptr<Mesh> meshCube;
+	std::shared_ptr<Mesh> meshPlane;
 
-	std::shared_ptr<LitMaterial> crateMat;
-	std::shared_ptr<LitMaterial> groundMat;
+	std::shared_ptr<Model> modelCrate;
+	std::shared_ptr<Model> modelGround;
+	std::shared_ptr<Model> modelBullet;
+
+	std::shared_ptr<Material> crateMat;
+	std::shared_ptr<Material> groundMat;
 
 	std::shared_ptr<Object> crate1;
 	std::shared_ptr<Object> crate2;

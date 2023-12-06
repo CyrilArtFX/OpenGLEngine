@@ -20,10 +20,13 @@ void Renderer::draw()
 	Matrix4 view = currentCam->getViewMatrix();
 	Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(currentCam->getFov()), windowRef.getWidth(), windowRef.getHeigth(), 0.1f, 100.0f);
 
-	//  draw objects depending of their materials
-	for (auto objs_by_shader : objects)
+	//  loop through all shaders
+	for (auto materials_by_shaders : materials)
 	{
-		std::shared_ptr<Shader> shader = objs_by_shader.first;
+		//  retrieve the shader
+		std::shared_ptr<Shader> shader = materials_by_shaders.first;
+
+		//  activate the shader and set the primary uniforms
 		shader->use();
 		shader->setMatrix4("view", view.getAsFloatPtr());
 		shader->setMatrix4("projection", projection.getAsFloatPtr());
@@ -53,25 +56,32 @@ void Renderer::draw()
 				{
 				case Point:
 					shader->setInt("nbPointLights", light_type_used++);
-				break;
+					break;
 				case Spot:
 					shader->setInt("nbSpotLights", light_type_used++);
-				break;
+					break;
 				}
 			}
 
 			shader->setVec3("viewPos", currentCam->getPosition());
 
-		break;
+			break;
 
 		case Unlit:
 			//  nothing else to do
-		break;
+			break;
 		}
-			
-		for (auto object : objs_by_shader.second)
+		
+		//  loop through all materials that use the shader
+		for (auto material : materials_by_shaders.second)
 		{
-			object->draw();
+			material->use();
+
+			//  loop through all objects to draw all meshes that uses the material
+			for (auto object : objects)
+			{
+				object->draw(material);
+			}
 		}
 	}
 }
@@ -80,6 +90,11 @@ void Renderer::draw()
 void Renderer::setCamera(std::weak_ptr<Camera> camera)
 {
 	currentCam = camera.lock();
+}
+
+void Renderer::addMaterial(std::weak_ptr<Material> material)
+{
+	materials[material.lock()->getShrdShader()].push_back(material.lock());
 }
 
 void Renderer::addLight(std::weak_ptr<Light> light, LightType type)
@@ -92,9 +107,9 @@ void Renderer::addLight(std::weak_ptr<Light> light, LightType type)
 	}
 }
 
-void Renderer::addObject(std::weak_ptr<Object> object, std::shared_ptr<Shader> shader)
+void Renderer::addObject(std::weak_ptr<Object> object)
 {
-	objects[shader].push_back(object.lock());
+	objects.push_back(object.lock());
 }
 
 void Renderer::removeLight(std::weak_ptr<Light> light, LightType type)
@@ -110,15 +125,15 @@ void Renderer::removeLight(std::weak_ptr<Light> light, LightType type)
 	lights[type].pop_back();
 }
 
-void Renderer::removeObject(std::weak_ptr<Object> object, std::shared_ptr<Shader> shader)
+void Renderer::removeObject(std::weak_ptr<Object> object)
 {
-	auto iter = std::find(objects[shader].begin(), objects[shader].end(), object.lock());
-	if (iter == objects[shader].end())
+	auto iter = std::find(objects.begin(), objects.end(), object.lock());
+	if (iter == objects.end())
 	{
 		std::cout << "Renderer can't remove an object that doesn't exist.\n";
 		return;
 	}
 
-	std::iter_swap(iter, objects[shader].end() - 1);
-	objects[shader].pop_back();
+	std::iter_swap(iter, objects.end() - 1);
+	objects.pop_back();
 }

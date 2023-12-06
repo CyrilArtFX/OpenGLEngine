@@ -7,7 +7,7 @@
 class Bullet
 {
 public:
-	Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_, std::weak_ptr<class Renderer> renderer_, std::weak_ptr<Material> material_);
+	Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_, std::weak_ptr<class Renderer> renderer_, std::weak_ptr<Model> model_);
 	Bullet() = delete;
 	Bullet(const Bullet&) = delete;
 	Bullet& operator=(const Bullet&) = delete;
@@ -23,9 +23,7 @@ private:
 	float velocity;
 	float lifetime;
 	std::shared_ptr<class Renderer> renderer;
-	std::shared_ptr<class Material> material;
 
-	std::shared_ptr<VertexArray> va;
 	std::shared_ptr<Object> object;
 };
 

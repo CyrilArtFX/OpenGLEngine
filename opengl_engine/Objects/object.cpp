@@ -1,38 +1,23 @@
 #include "object.h"
 
-Object::Object(std::weak_ptr<Material> material_, std::weak_ptr<VertexArray> vertexArray_)
-	: material(material_.lock()), vertexArray(vertexArray_.lock()), Transform()
+Object::Object() : Transform()
 {
 }
 
 
-void Object::draw()
+void Object::draw(std::shared_ptr<Material> materialInUsage)
 {
-	//  we assume that the shader is already in usage, because the renderer that call this function should already have set some uniforms on it
+	materialInUsage->getShader().setMatrix4("model", getModelMatrix().getAsFloatPtr());
+	materialInUsage->getShader().setMatrix4("normalMatrix", getNormalMatrix().getAsFloatPtr());
 
-	material->getShader().setMatrix4("model", getModelMatrix().getAsFloatPtr());
-	material->getShader().setMatrix4("normalMatrix", getNormalMatrix().getAsFloatPtr());
-
-	material->use();
-
-	vertexArray->setActive();
-
-	if (vertexArray->getNBIndices() == 0)
+	for (auto model : models)
 	{
-		glDrawArrays(GL_TRIANGLES, 0, vertexArray->getNBVertices());
-	}
-	else
-	{
-		glDrawElements(GL_TRIANGLES, vertexArray->getNBIndices(), GL_UNSIGNED_INT, 0);
+		model->draw(materialInUsage);
 	}
 }
 
-void Object::deleteObject()
-{
-}
 
-
-void Object::setMaterial(std::weak_ptr<Material> newMat)
+void Object::addModel(std::weak_ptr<Model> model)
 {
-	material = newMat.lock();
+	models.push_back(model.lock());
 }

@@ -135,8 +135,6 @@
   <ItemGroup>
     <ClCompile Include="Core\game.cpp" />
     <ClCompile Include="glad.c" />
-    <ClCompile Include="Materials\flatEmissiveMaterial.cpp" />
-    <ClCompile Include="Materials\litMaterial.cpp" />
     <ClCompile Include="Maths\matrix4.cpp" />
     <ClCompile Include="Maths\quaternion.cpp" />
     <ClCompile Include="Maths\vector2.cpp" />
@@ -149,6 +147,8 @@
     <ClCompile Include="Objects\transform.cpp" />
     <ClCompile Include="Rendering\camera.cpp" />
     <ClCompile Include="Rendering\material.cpp" />
+    <ClCompile Include="Rendering\Model\mesh.cpp" />
+    <ClCompile Include="Rendering\Model\model.cpp" />
     <ClCompile Include="Rendering\renderer.cpp" />
     <ClCompile Include="Rendering\Model\vertexArray.cpp" />
     <ClCompile Include="Rendering\shader.cpp" />
@@ -159,8 +159,6 @@
   <ItemGroup>
     <ClInclude Include="Core\game.h" />
     <ClInclude Include="Core\scene.h" />
-    <ClInclude Include="Materials\flatEmissiveMaterial.h" />
-    <ClInclude Include="Materials\litMaterial.h" />
     <ClInclude Include="Maths\maths.h" />
     <ClInclude Include="Maths\matrix4.h" />
     <ClInclude Include="Maths\quaternion.h" />
@@ -175,6 +173,8 @@
     <ClInclude Include="Objects\transform.h" />
     <ClInclude Include="Rendering\camera.h" />
     <ClInclude Include="Rendering\material.h" />
+    <ClInclude Include="Rendering\Model\mesh.h" />
+    <ClInclude Include="Rendering\Model\model.h" />
     <ClInclude Include="Rendering\renderer.h" />
     <ClInclude Include="Rendering\Model\vertexArray.h" />
     <ClInclude Include="Rendering\shader.h" />

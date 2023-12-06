@@ -25,7 +25,7 @@ public:
 	/**
 	* Simplified version of the constructor using vectors and the Vertex struct.
 	*/
-	VertexArray(std::vector<Vertex> vertices, std::vector<unsigned int> indices = {});
+	VertexArray(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
 
 	void setActive();
 	void deleteObjects();

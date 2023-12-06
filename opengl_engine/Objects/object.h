@@ -1,23 +1,20 @@
 #pragma once
 
-#include <Rendering/Model/vertexArray.h>
-#include <Rendering/material.h>
-
+#include <Rendering/Model/model.h>
 #include "transform.h"
 
+#include <vector>
 
 class Object : public Transform
 {
 public:
-	Object(std::weak_ptr<Material> material_, std::weak_ptr<VertexArray> vertexArray_);
+	Object();
 
-	void draw();
-	void deleteObject();
+	void draw(std::shared_ptr<Material> materialInUsage);
 
-	void setMaterial(std::weak_ptr<Material> newMat);
+	void addModel(std::weak_ptr<Model> model);
 
 private:
-	std::shared_ptr<VertexArray> vertexArray;
-	std::shared_ptr<Material> material;
+	std::vector<std::shared_ptr<Model>> models;
 };
 
