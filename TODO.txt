@@ -1,12 +1,18 @@
+== PETITS FIXS ==
+
+~ Les emissive maps font n'importe quoi aled (je crois que c'est ça mais tout est plus sombre qu'avant)
+
+~ Mettre un système de dirty sur les matrices dans transform pour les recalculer uniquement quand c'est nécessaire
+
+
 == COURT TERME ==
 
-~ Intégrer le système de lecture de meshs (tuto learnopengl)
+~ Intégrer le système de lecture de meshs (tuto learnopengl) - en cours
 
 ~ Changer le duo game/scene en un trio engine/game/scene où :
 	- engine correspond globalement au game actuel et s'occupe de gérer les events globaux et de dispatch l'update, le draw et les inputs (engine contiendra un pointeur vers l'interface game et plus l'interface scene)
 	- game correspond à la partie logique de scene actuel et contiendra la logique propre à chaque jeu (game contiendra un pointeur vers l'interface scene)
 	- scene correspond à la partie load de scene actuel et s'occupera de charger/décharger les objets
-Question : quand l'ECS sera intégré, ça sera engine ou game qui appellera les components ? et quand ces components seront créé dans scene du coup, comment ils se renseigneront ?
 
 ~ Mettre le système d'inputs propre
 
