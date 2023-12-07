@@ -12,9 +12,9 @@ public:
 
 	void draw(std::shared_ptr<Material> materialInUsage);
 
-	void addModel(std::weak_ptr<Model> model);
+	void addModel(Model* model);
 
 private:
-	std::vector<std::shared_ptr<Model>> models;
+	std::vector<Model*> models;
 };
 

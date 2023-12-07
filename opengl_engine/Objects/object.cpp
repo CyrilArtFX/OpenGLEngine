@@ -17,7 +17,7 @@ void Object::draw(std::shared_ptr<Material> materialInUsage)
 }
 
 
-void Object::addModel(std::weak_ptr<Model> model)
+void Object::addModel(Model* model)
 {
-	models.push_back(model.lock());
+	models.push_back(model);
 }

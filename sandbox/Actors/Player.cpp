@@ -2,7 +2,7 @@
 #include <Maths/maths.h>
 #include <algorithm>
 
-Player::Player(float height, float speed, std::weak_ptr<class Renderer> renderer, std::weak_ptr<class Model> bulletModel_) : camHeight(height), moveSpeed(speed), rendererWeak(renderer), bulletModel(bulletModel_.lock())
+Player::Player(float height, float speed, std::weak_ptr<class Renderer> renderer) : camHeight(height), moveSpeed(speed), rendererWeak(renderer)
 {
 	transform.setPosition(0.0f, 0.0f, 0.0f);
 	camera = std::make_shared<Camera>(Vector3{ 0.0f, camHeight, 0.0f });
@@ -84,7 +84,7 @@ void Player::processInputs(GLFWwindow* glWindow, float dt)
 	{
 		Quaternion bullet_rotation = camera->getRotation();
 		bullet_rotation = Quaternion::concatenate(bullet_rotation, Quaternion{ camera->getUp(), Maths::toRadians(90.0f) });
-		bullets.push_back(std::make_unique<Bullet>(camera->getPosition(), bullet_rotation, camera->getForward(), shootVelocity, bulletLifeTime, rendererWeak, bulletModel));
+		bullets.push_back(std::make_unique<Bullet>(camera->getPosition(), bullet_rotation, camera->getForward(), shootVelocity, bulletLifeTime, rendererWeak));
 		inCooldown = cooldown;
 	}
 }

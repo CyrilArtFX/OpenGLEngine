@@ -12,7 +12,7 @@
 class Player
 {
 public:
-	Player(float height, float speed, std::weak_ptr<class Renderer> renderer, std::weak_ptr<class Model> bulletModel_);
+	Player(float height, float speed, std::weak_ptr<class Renderer> renderer);
 
 	void update(float dt);
 
@@ -30,7 +30,6 @@ private:
 	Transform transform;
 
 	std::weak_ptr<class Renderer> rendererWeak;
-	std::shared_ptr<class Model> bulletModel;
 
 	float camHeight;
 	float moveSpeed;

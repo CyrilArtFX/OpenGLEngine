@@ -5,6 +5,7 @@
 std::unordered_map<std::string, Texture> AssetManager::textures;
 std::unordered_map<std::string, Mesh> AssetManager::meshesSingle;
 std::unordered_map<std::string, MeshCollection> AssetManager::meshesCollection;
+std::unordered_map<std::string, Model> AssetManager::models;
 
 
 void AssetManager::LoadTexture(std::string name, const std::string texturePath, TextureType textureType, unsigned int glFormat, bool flipVertical)
@@ -83,6 +84,30 @@ MeshCollection& AssetManager::GetMeshCollection(std::string name)
 	}
 
 	return meshesCollection[name];
+}
+
+
+void AssetManager::CreateModel(std::string name)
+{
+	if (models.find(name) != models.end())
+	{
+		std::cout << "Asset Manager Error: Tried to create a model with a name that already exists. Name is " << name << ".\n";
+		return;
+	}
+
+	models[name] = Model();
+}
+
+Model& AssetManager::GetModel(std::string name)
+{
+	if (models.find(name) == models.end())
+	{
+		std::cout << "Asset Manager Error: Tried to get a model with a name that doesn't exists. Name is " << name << ".\n";
+		Model null_model;
+		return null_model;
+	}
+
+	return models[name];
 }
 
 

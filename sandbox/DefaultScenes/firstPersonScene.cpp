@@ -99,25 +99,25 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 	};
 	AssetManager::LoadSingleMesh("plane", plane_vertices);
 
-	modelCrate = std::make_shared<Model>();
-	modelCrate->addMesh(&AssetManager::GetSingleMesh("cube"), crateMat);
+	AssetManager::CreateModel("crate");
+	AssetManager::GetModel("crate").addMesh(&AssetManager::GetSingleMesh("cube"), crateMat);
 
-	modelGround = std::make_shared<Model>();
-	modelGround->addMesh(&AssetManager::GetSingleMesh("plane"), groundMat);
+	AssetManager::CreateModel("ground");
+	AssetManager::GetModel("ground").addMesh(&AssetManager::GetSingleMesh("plane"), groundMat);
 
-	modelBullet = std::make_shared<Model>();
-	modelBullet->addMesh(&AssetManager::GetSingleMesh("cube"), bullet_mat);
+	AssetManager::CreateModel("bullet");
+	AssetManager::GetModel("bullet").addMesh(&AssetManager::GetSingleMesh("cube"), bullet_mat);
 
 
 	//  objects
 	ground = std::make_shared<Object>();
-	ground->addModel(modelGround);
+	ground->addModel(&AssetManager::GetModel("ground"));
 	crate1 = std::make_shared<Object>();
-	crate1->addModel(modelCrate);
+	crate1->addModel(&AssetManager::GetModel("crate"));
 	crate2 = std::make_shared<Object>();
-	crate2->addModel(modelCrate);
+	crate2->addModel(&AssetManager::GetModel("crate"));
 	crate3 = std::make_shared<Object>();
-	crate3->addModel(modelCrate);
+	crate3->addModel(&AssetManager::GetModel("crate"));
 	
 	renderer->addObject(ground);
 	renderer->addObject(crate1);
@@ -131,7 +131,7 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 
 
 	//  player (camera)
-	player = std::make_unique<Player>(1.5f, 5.0f, renderer_, modelBullet);
+	player = std::make_unique<Player>(1.5f, 5.0f, renderer_);
 	currentCam = player->getCamera().lock();
 	renderer->setCamera(player->getCamera());
 

@@ -2,11 +2,9 @@
 #include <Core/scene.h>
 
 #include <Rendering/shader.h>
-#include <Rendering/texture.h>
 #include <Rendering/material.h>
 
 #include <Assets/assetManager.h>
-#include <Rendering/Model/model.h>
 #include <Objects/object.h>
 
 #include <Actors/player.h>
@@ -44,10 +42,6 @@ private:
 
 	std::shared_ptr<Shader> litObjectShader;
 	std::shared_ptr<Shader> bulletShader;
-
-	std::shared_ptr<Model> modelCrate;
-	std::shared_ptr<Model> modelGround;
-	std::shared_ptr<Model> modelBullet;
 
 	std::shared_ptr<Material> crateMat;
 	std::shared_ptr<Material> groundMat;

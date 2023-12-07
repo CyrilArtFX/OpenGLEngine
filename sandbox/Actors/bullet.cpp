@@ -3,12 +3,14 @@
 #include <Rendering/renderer.h>
 #include <Rendering/shader.h>
 
+#include <Assets/assetManager.h>
 
-Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_, std::weak_ptr<Renderer> renderer_, std::weak_ptr<Model> model_) :
+
+Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_, std::weak_ptr<Renderer> renderer_) :
 	direction(direction_), velocity(velocity_), lifetime(lifetime_), renderer(renderer_.lock())
 {
 	object = std::make_shared<Object>();
-	object->addModel(model_.lock());
+	object->addModel(&AssetManager::GetModel("bullet"));
 
 	object->setPosition(spawnPos);
 	object->setRotation(spawnRot);

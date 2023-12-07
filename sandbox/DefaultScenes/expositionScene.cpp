@@ -87,23 +87,23 @@ void ExpositionScene::load(std::weak_ptr<Renderer> renderer_)
 	};
 	AssetManager::LoadSingleMesh("cube", cube_vertices);
 
-	modelContainer = std::make_shared<Model>();
-	modelContainer->addMesh(&AssetManager::GetSingleMesh("cube"), containerMat);
+	AssetManager::CreateModel("container");
+	AssetManager::GetModel("container").addMesh(&AssetManager::GetSingleMesh("cube"), containerMat);
 
-	modelLightCube = std::make_shared<Model>();
-	modelLightCube->addMesh(&AssetManager::GetSingleMesh("cube"), lightSourceMat);
+	AssetManager::CreateModel("light_cube");
+	AssetManager::GetModel("light_cube").addMesh(&AssetManager::GetSingleMesh("cube"), lightSourceMat);
 
 	cube1 = std::make_shared<Object>();
-	cube1->addModel(modelContainer);
+	cube1->addModel(&AssetManager::GetModel("container"));
 	cube2 = std::make_shared<Object>();
-	cube2->addModel(modelContainer);
+	cube2->addModel(&AssetManager::GetModel("container"));
 	cube3 = std::make_shared<Object>();
-	cube3->addModel(modelContainer);
+	cube3->addModel(&AssetManager::GetModel("container"));
 
 	lightCube1 = std::make_shared<Object>();
-	lightCube1->addModel(modelLightCube);
+	lightCube1->addModel(&AssetManager::GetModel("light_cube"));
 	lightCube2 = std::make_shared<Object>();
-	lightCube2->addModel(modelLightCube);
+	lightCube2->addModel(&AssetManager::GetModel("light_cube"));
 
 	renderer->addObject(cube1);
 	renderer->addObject(cube2);

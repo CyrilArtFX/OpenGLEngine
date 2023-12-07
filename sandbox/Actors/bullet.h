@@ -7,7 +7,7 @@
 class Bullet
 {
 public:
-	Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_, std::weak_ptr<class Renderer> renderer_, std::weak_ptr<Model> model_);
+	Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_, std::weak_ptr<class Renderer> renderer_);
 	Bullet() = delete;
 	Bullet(const Bullet&) = delete;
 	Bullet& operator=(const Bullet&) = delete;

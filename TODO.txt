@@ -2,6 +2,8 @@
 
 ~ Intégrer le système de lecture de meshs (tuto learnopengl) - en cours
 
+~ Ajouter les shaders et les materials à l'AssetManager
+
 ~ Changer le duo game/scene en un trio engine/game/scene où :
 	- engine correspond globalement au game actuel et s'occupe de gérer les events globaux et de dispatch l'update, le draw et les inputs (engine contiendra un pointeur vers l'interface game et plus l'interface scene)
 	- game correspond à la partie logique de scene actuel et contiendra la logique propre à chaque jeu (game contiendra un pointeur vers l'interface scene)
@@ -9,7 +11,7 @@
 
 ~ Mettre le système d'inputs propre
 
-~ Mettre un système de physique basique pour le doomlike
+~ Mettre un système de physique basique pour le doomlike (collisions cubes AABB, gravité, raycasts)
 
 ~ Faire le doomlike (omg ?)
 
@@ -28,8 +30,3 @@
 
 
 == REFLEXIONS ==
-
-~ Mettre une classe statiques pour stocker/récupérer les meshs, shaders et materials ?
-
-DEMANDER A GAETAN :
-~ C'est bien de récupérer les mesh via référence avec l'asset manager, mais est-ce que ça en créé pas une copie quand on les met dans model ? Est-ce que c'est grave ?
