@@ -85,13 +85,13 @@ void ExpositionScene::load(std::weak_ptr<Renderer> renderer_)
 		Vertex{Vector3{-0.5f,  0.5f,  0.5f},   Vector3{ 0.0f,  1.0f,  0.0f},   Vector2{0.0f, 0.0f}},
 		Vertex{Vector3{-0.5f,  0.5f, -0.5f},   Vector3{ 0.0f,  1.0f,  0.0f},   Vector2{0.0f, 1.0f}}
 	};
-	meshCube = std::make_shared<Mesh>(cube_vertices);
+	AssetManager::LoadSingleMesh("cube", cube_vertices);
 
 	modelContainer = std::make_shared<Model>();
-	modelContainer->addMesh(meshCube, containerMat);
+	modelContainer->addMesh(AssetManager::GetSingleMesh("cube"), containerMat);
 
 	modelLightCube = std::make_shared<Model>();
-	modelLightCube->addMesh(meshCube, lightSourceMat);
+	modelLightCube->addMesh(AssetManager::GetSingleMesh("cube"), lightSourceMat);
 
 	cube1 = std::make_shared<Object>();
 	cube1->addModel(modelContainer);
@@ -133,7 +133,6 @@ void ExpositionScene::load(std::weak_ptr<Renderer> renderer_)
 
 void ExpositionScene::unload()
 {
-	meshCube->deleteObjects();
 	litObjectShader->deleteProgram();
 	flatEmissiveShader->deleteProgram();
 }

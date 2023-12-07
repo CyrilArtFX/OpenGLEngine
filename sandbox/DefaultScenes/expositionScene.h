@@ -5,7 +5,7 @@
 #include <Rendering/texture.h>
 #include <Rendering/material.h>
 
-#include <Rendering/Model/Mesh.h>
+#include <Assets/assetManager.h>
 #include <Rendering/Model/Model.h>
 #include <Objects/object.h>
 
@@ -38,7 +38,6 @@ private:
 	std::shared_ptr<Shader> litObjectShader;
 	std::shared_ptr<Shader> flatEmissiveShader;
 
-	std::shared_ptr<Mesh> meshCube;
 	std::shared_ptr<Model> modelContainer;
 	std::shared_ptr<Model> modelLightCube;
 

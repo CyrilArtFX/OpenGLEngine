@@ -133,6 +133,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Assets\assetManager.cpp" />
+    <ClCompile Include="Assets\assetMesh.cpp" />
+    <ClCompile Include="Assets\assetTexture.cpp" />
     <ClCompile Include="Core\game.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Maths\matrix4.cpp" />
@@ -157,6 +160,9 @@
     <ClCompile Include="Utils\color.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Assets\assetManager.h" />
+    <ClInclude Include="Assets\assetMesh.h" />
+    <ClInclude Include="Assets\assetTexture.h" />
     <ClInclude Include="Core\game.h" />
     <ClInclude Include="Core\scene.h" />
     <ClInclude Include="Maths\maths.h" />

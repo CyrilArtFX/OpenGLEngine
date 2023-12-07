@@ -1,4 +1,5 @@
 #include "game.h"
+#include <Assets/assetManager.h>
 
 
 Game::Game()
@@ -106,6 +107,7 @@ void Game::run()
 
 
 	unloadScene();
+	AssetManager::DeleteObjects();
 }
 
 

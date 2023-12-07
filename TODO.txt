@@ -30,3 +30,6 @@
 == REFLEXIONS ==
 
 ~ Mettre une classe statiques pour stocker/récupérer les meshs, shaders et materials ?
+
+DEMANDER A GAETAN :
+~ C'est bien de récupérer les mesh via référence avec l'asset manager, mais est-ce que ça en créé pas une copie quand on les met dans model ? Est-ce que c'est grave ?

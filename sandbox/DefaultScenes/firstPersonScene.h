@@ -5,8 +5,8 @@
 #include <Rendering/texture.h>
 #include <Rendering/material.h>
 
-#include <Rendering/Model/Mesh.h>
-#include <Rendering/Model/Model.h>
+#include <Assets/assetManager.h>
+#include <Rendering/Model/model.h>
 #include <Objects/object.h>
 
 #include <Actors/player.h>
@@ -44,9 +44,6 @@ private:
 
 	std::shared_ptr<Shader> litObjectShader;
 	std::shared_ptr<Shader> bulletShader;
-
-	std::shared_ptr<Mesh> meshCube;
-	std::shared_ptr<Mesh> meshPlane;
 
 	std::shared_ptr<Model> modelCrate;
 	std::shared_ptr<Model> modelGround;

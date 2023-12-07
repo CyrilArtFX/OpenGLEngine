@@ -85,7 +85,7 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 		Vertex{Vector3{-0.5f,  0.5f,  0.5f},   Vector3{ 0.0f,  1.0f,  0.0f},   Vector2{0.0f, 0.0f}},
 		Vertex{Vector3{-0.5f,  0.5f, -0.5f},   Vector3{ 0.0f,  1.0f,  0.0f},   Vector2{0.0f, 1.0f}}
 	};
-	meshCube = std::make_shared<Mesh>(cube_vertices);
+	AssetManager::LoadSingleMesh("cube", cube_vertices);
 
 	std::vector<Vertex> plane_vertices
 	{
@@ -97,16 +97,16 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 		Vertex{Vector3{-5.0f, 0.0f,  5.0f},  Vector3{ 0.0f, 1.0f, 0.0f},  Vector2{ 0.0f, 10.0f}},
 		Vertex{Vector3{-5.0f, 0.0f, -5.0f},  Vector3{ 0.0f, 1.0f, 0.0f},  Vector2{ 0.0f,  0.0f}}
 	};
-	meshPlane = std::make_shared<Mesh>(plane_vertices);
+	AssetManager::LoadSingleMesh("plane", plane_vertices);
 
 	modelCrate = std::make_shared<Model>();
-	modelCrate->addMesh(meshCube, crateMat);
+	modelCrate->addMesh(AssetManager::GetSingleMesh("cube"), crateMat);
 
 	modelGround = std::make_shared<Model>();
-	modelGround->addMesh(meshPlane, groundMat);
+	modelGround->addMesh(AssetManager::GetSingleMesh("plane"), groundMat); 
 
 	modelBullet = std::make_shared<Model>();
-	modelBullet->addMesh(meshCube, bullet_mat);
+	modelBullet->addMesh(AssetManager::GetSingleMesh("cube"), bullet_mat);
 
 
 	//  objects
@@ -144,8 +144,6 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 
 void FirstPersonScene::unload()
 {
-	meshCube->deleteObjects();
-	meshPlane->deleteObjects();
 	player->unload();
 	litObjectShader->deleteProgram();
 	bulletShader->deleteProgram();

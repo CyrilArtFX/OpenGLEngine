@@ -18,14 +18,8 @@ struct Vertex
 class VertexArray
 {
 public:
-	/**
-	* Give vertices with 3 spatial coordinates, 3 normal coordinates and 2 textures coordinates per vertex.
-	*/
-	VertexArray(const float* vertices, unsigned int nbVertices_, const unsigned int* indices = 0, unsigned int nbIndices_ = 0);
-	/**
-	* Simplified version of the constructor using vectors and the Vertex struct.
-	*/
-	VertexArray(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
+	VertexArray();
+	void load(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
 
 	void setActive();
 	void deleteObjects();
@@ -39,14 +33,16 @@ public:
 
 	bool getUseEBO() const { return useEBO; }
 
+	bool isLoaded() const { return loaded; }
+
 
 private:
-	const unsigned int nbDataPerVertex = 8;
+	bool loaded = false;
 
-	unsigned int nbVertices;
-	unsigned int nbIndices;
+	unsigned int nbVertices = 0;
+	unsigned int nbIndices = 0;
 
-	bool useEBO;
+	bool useEBO = false;
 
 	unsigned int VAO = 0; //  OpenGL ID
 	unsigned int VBO = 0; //  OpenGL ID
