@@ -13,11 +13,6 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 	litObjectShader = std::make_shared<Shader>("Lit/object_lit.vert", "Lit/object_lit.frag", Lit);
 	bulletShader = std::make_shared<Shader>("Unlit/flat_emissive.vert", "Unlit/flat_emissive.frag", Unlit);
 
-	litObjectShader->use(); //  activate the shader on which you want to set the texture unit before doing it
-	litObjectShader->setInt("material.diffuse", 0);
-	litObjectShader->setInt("material.specular", 1);
-	litObjectShader->setInt("material.emissive", 2);
-
 	std::shared_ptr<Texture> crate_diffuse = std::make_shared<Texture>("container2.png", TextureType::Diffuse, GL_RGBA, false); 
 	std::shared_ptr<Texture> crate_specular = std::make_shared<Texture>("container2_specular.png", TextureType::Specular, GL_RGBA, false);
 	std::shared_ptr<Texture> ground_diffuse = std::make_shared<Texture>("pavement.jpg", TextureType::Diffuse, GL_RGB, false);
@@ -95,12 +90,12 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 	std::vector<Vertex> plane_vertices
 	{
 		// positions                         // normals                   // tex coords
-		Vertex{Vector3{-5.0f, 0.0f, -5.0f},  Vector3{ 0.0f, 1.0f, 1.0f},  Vector2{ 0.0f,  0.0f}},
-		Vertex{Vector3{ 5.0f, 0.0f, -5.0f},  Vector3{ 0.0f, 1.0f, 1.0f},  Vector2{10.0f,  0.0f}},
-		Vertex{Vector3{ 5.0f, 0.0f,  5.0f},  Vector3{ 0.0f, 1.0f, 1.0f},  Vector2{10.0f, 10.0f}},
-		Vertex{Vector3{ 5.0f, 0.0f,  5.0f},  Vector3{ 0.0f, 1.0f, 1.0f},  Vector2{10.0f, 10.0f}},
-		Vertex{Vector3{-5.0f, 0.0f,  5.0f},  Vector3{ 0.0f, 1.0f, 1.0f},  Vector2{ 0.0f, 10.0f}},
-		Vertex{Vector3{-5.0f, 0.0f, -5.0f},  Vector3{ 0.0f, 1.0f, 1.0f},  Vector2{ 0.0f,  0.0f}}
+		Vertex{Vector3{-5.0f, 0.0f, -5.0f},  Vector3{ 0.0f, 1.0f, 0.0f},  Vector2{ 0.0f,  0.0f}},
+		Vertex{Vector3{ 5.0f, 0.0f, -5.0f},  Vector3{ 0.0f, 1.0f, 0.0f},  Vector2{10.0f,  0.0f}},
+		Vertex{Vector3{ 5.0f, 0.0f,  5.0f},  Vector3{ 0.0f, 1.0f, 0.0f},  Vector2{10.0f, 10.0f}},
+		Vertex{Vector3{ 5.0f, 0.0f,  5.0f},  Vector3{ 0.0f, 1.0f, 0.0f},  Vector2{10.0f, 10.0f}},
+		Vertex{Vector3{-5.0f, 0.0f,  5.0f},  Vector3{ 0.0f, 1.0f, 0.0f},  Vector2{ 0.0f, 10.0f}},
+		Vertex{Vector3{-5.0f, 0.0f, -5.0f},  Vector3{ 0.0f, 1.0f, 0.0f},  Vector2{ 0.0f,  0.0f}}
 	};
 	meshPlane = std::make_shared<Mesh>(plane_vertices);
 
@@ -144,7 +139,7 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 	//  lights
 	Vector3 dir_light{ 0.5f, -1.0f, 0.75f };
 	dir_light.normalize();
-	renderer->addLight(std::make_shared<DirectionalLight>(Directionnal, Color::white, dir_light), Directionnal);
+	renderer->addLight(std::make_shared<DirectionalLight>(Directionnal, Color::white, dir_light, 0.1f, 0.7f), Directionnal);
 }
 
 void FirstPersonScene::unload()
