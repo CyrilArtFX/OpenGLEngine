@@ -50,9 +50,9 @@ void Material::use()
 }
 
 
-void Material::addTexture(std::weak_ptr<Texture> texture)
+void Material::addTexture(Texture* texture)
 {
-	textures.push_back(texture.lock());
+	textures.push_back(texture);
 }
 
 void Material::addParameter(std::string name, bool boolParameter)

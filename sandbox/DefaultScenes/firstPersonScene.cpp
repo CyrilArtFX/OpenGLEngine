@@ -13,22 +13,22 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 	litObjectShader = std::make_shared<Shader>("Lit/object_lit.vert", "Lit/object_lit.frag", Lit);
 	bulletShader = std::make_shared<Shader>("Unlit/flat_emissive.vert", "Unlit/flat_emissive.frag", Unlit);
 
-	std::shared_ptr<Texture> crate_diffuse = std::make_shared<Texture>("container2.png", TextureType::Diffuse, GL_RGBA, false); 
-	std::shared_ptr<Texture> crate_specular = std::make_shared<Texture>("container2_specular.png", TextureType::Specular, GL_RGBA, false);
-	std::shared_ptr<Texture> ground_diffuse = std::make_shared<Texture>("pavement.jpg", TextureType::Diffuse, GL_RGB, false);
-	std::shared_ptr<Texture> ground_specular = std::make_shared<Texture>("Default/black.png", TextureType::Specular, GL_RGBA, false);
-	std::shared_ptr<Texture> black_emissive = std::make_shared<Texture>("Default/black.png", TextureType::Emissive, GL_RGBA, false);
+	AssetManager::LoadTexture("crate_diffuse", "container2.png", TextureType::Diffuse, GL_RGBA, false);
+	AssetManager::LoadTexture("crate_specular", "container2_specular.png", TextureType::Specular, GL_RGBA, false);
+	AssetManager::LoadTexture("ground_diffuse", "pavement.jpg", TextureType::Diffuse, GL_RGB, false);
+	AssetManager::LoadTexture("ground_specular", "Default/black.png", TextureType::Specular, GL_RGBA, false);
+	AssetManager::LoadTexture("black_emissive", "Default/black.png", TextureType::Emissive, GL_RGBA, false);
 
 	crateMat = std::make_shared<Material>(litObjectShader);
-	crateMat->addTexture(crate_diffuse);
-	crateMat->addTexture(crate_specular);
-	crateMat->addTexture(black_emissive);
+	crateMat->addTexture(&AssetManager::GetTexture("crate_diffuse"));
+	crateMat->addTexture(&AssetManager::GetTexture("crate_specular"));
+	crateMat->addTexture(&AssetManager::GetTexture("black_emissive"));
 	crateMat->addParameter("material.shininess", 32.0f);
 
 	groundMat = std::make_shared<Material>(litObjectShader);
-	groundMat->addTexture(ground_diffuse);
-	groundMat->addTexture(ground_specular);
-	groundMat->addTexture(black_emissive);
+	groundMat->addTexture(&AssetManager::GetTexture("ground_diffuse"));
+	groundMat->addTexture(&AssetManager::GetTexture("ground_specular"));
+	groundMat->addTexture(&AssetManager::GetTexture("black_emissive"));
 	groundMat->addParameter("material.shininess", 32.0f);
 
 	std::shared_ptr<Material> bullet_mat = std::make_shared<Material>(bulletShader);
@@ -100,13 +100,13 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 	AssetManager::LoadSingleMesh("plane", plane_vertices);
 
 	modelCrate = std::make_shared<Model>();
-	modelCrate->addMesh(AssetManager::GetSingleMesh("cube"), crateMat);
+	modelCrate->addMesh(&AssetManager::GetSingleMesh("cube"), crateMat);
 
 	modelGround = std::make_shared<Model>();
-	modelGround->addMesh(AssetManager::GetSingleMesh("plane"), groundMat); 
+	modelGround->addMesh(&AssetManager::GetSingleMesh("plane"), groundMat);
 
 	modelBullet = std::make_shared<Model>();
-	modelBullet->addMesh(AssetManager::GetSingleMesh("cube"), bullet_mat);
+	modelBullet->addMesh(&AssetManager::GetSingleMesh("cube"), bullet_mat);
 
 
 	//  objects

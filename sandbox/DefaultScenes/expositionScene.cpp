@@ -21,15 +21,15 @@ void ExpositionScene::load(std::weak_ptr<Renderer> renderer_)
 	litObjectShader = std::make_shared<Shader>("Lit/object_lit.vert", "Lit/object_lit.frag", Lit);
 	flatEmissiveShader = std::make_shared<Shader>("Unlit/flat_emissive.vert", "Unlit/flat_emissive.frag", Unlit);
 
-	std::shared_ptr<Texture> container_diffuse = std::make_shared<Texture>("container2.png", TextureType::Diffuse, GL_RGBA, false);
-	std::shared_ptr<Texture> container_specular = std::make_shared<Texture>("container2_specular.png", TextureType::Specular, GL_RGBA, false);
-	//std::shared_ptr<Texture> container_emissive = std::make_shared<Texture>("matrix.jpg", TextureType::Emissive, GL_RGB, false);
-	std::shared_ptr<Texture> container_emissive = std::make_shared<Texture>("Default/black.png", TextureType::Emissive, GL_RGBA, false);
+	AssetManager::LoadTexture("container_diffuse", "container2.png", TextureType::Diffuse, GL_RGBA, false);
+	AssetManager::LoadTexture("container_specular", "container2_specular.png", TextureType::Specular, GL_RGBA, false);
+	AssetManager::LoadTexture("container_emissive", "matrix.jpg", TextureType::Emissive, GL_RGB, false);
+	AssetManager::LoadTexture("black_emissive", "Default/black.png", TextureType::Emissive, GL_RGBA, false);
 
 	containerMat = std::make_shared<Material>(litObjectShader);
-	containerMat->addTexture(container_diffuse);
-	containerMat->addTexture(container_specular);
-	containerMat->addTexture(container_emissive);
+	containerMat->addTexture(&AssetManager::GetTexture("container_diffuse"));
+	containerMat->addTexture(&AssetManager::GetTexture("container_specular"));
+	containerMat->addTexture(&AssetManager::GetTexture("black_emissive"));
 	containerMat->addParameter("material.shininess", 32.0f);
 
 	lightSourceMat = std::make_shared<Material>(flatEmissiveShader);
@@ -88,10 +88,10 @@ void ExpositionScene::load(std::weak_ptr<Renderer> renderer_)
 	AssetManager::LoadSingleMesh("cube", cube_vertices);
 
 	modelContainer = std::make_shared<Model>();
-	modelContainer->addMesh(AssetManager::GetSingleMesh("cube"), containerMat);
+	modelContainer->addMesh(&AssetManager::GetSingleMesh("cube"), containerMat);
 
 	modelLightCube = std::make_shared<Model>();
-	modelLightCube->addMesh(AssetManager::GetSingleMesh("cube"), lightSourceMat);
+	modelLightCube->addMesh(&AssetManager::GetSingleMesh("cube"), lightSourceMat);
 
 	cube1 = std::make_shared<Object>();
 	cube1->addModel(modelContainer);

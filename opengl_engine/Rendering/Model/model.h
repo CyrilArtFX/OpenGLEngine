@@ -13,9 +13,9 @@ public:
 
 	void draw(std::shared_ptr<Material> materialInUsage);
 
-	void addMesh(Mesh& mesh, std::shared_ptr<Material> material);
+	void addMesh(Mesh* mesh, std::shared_ptr<Material> material);
 
 private:
-	std::unordered_map<std::shared_ptr<Material>, std::vector<Mesh>> meshMaterials;
+	std::unordered_map<std::shared_ptr<Material>, std::vector<Mesh*>> meshMaterials;
 };
 

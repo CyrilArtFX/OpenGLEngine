@@ -16,6 +16,17 @@ public:
 
 
 	/**
+	* Load a texture from file using stbi.
+	*/
+	static void LoadTexture(std::string name, const std::string texturePath, TextureType textureType, unsigned int glFormat = GL_RGBA, bool flipVertical = false);
+
+	/**
+	* Retrieve a texture from the asset storage.
+	*/
+	static Texture& GetTexture(std::string name);
+
+
+	/**
 	* Load a single mesh from handcoded vertices.
 	* Name = the name you want to give to this mesh in the asset storage.
 	*/
@@ -47,6 +58,7 @@ public:
 
 
 private:
+	static std::unordered_map<std::string, Texture> textures;
 	static std::unordered_map<std::string, Mesh> meshesSingle;
 	static std::unordered_map<std::string, MeshCollection> meshesCollection;
 };

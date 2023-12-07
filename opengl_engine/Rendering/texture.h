@@ -20,7 +20,8 @@ enum class TextureType : uint8_t
 class Texture
 {
 public:
-	Texture(const std::string texturePath = "Default/notexture.png", TextureType textureType = TextureType::Undefined, unsigned int glFormat = GL_RGBA, bool flipVertical = false); //  constructor builds texture
+	Texture();
+	void load(const std::string texturePath = "Default/notexture.png", TextureType textureType = TextureType::Undefined, unsigned int glFormat = GL_RGBA, bool flipVertical = false);
 
 	void use(); //  use (bind) the texture
 
@@ -31,11 +32,15 @@ public:
 	TextureType getTextureType() const { return type; }
 	std::string getTextureTypeAsString() const { return TypeToString(type); }
 
+	bool isLoaded() const { return loaded; }
+
 
 	static std::string TypeToString(TextureType textureType);
 
 private:
-	unsigned int ID{ 0 }; //  texture ID
-	TextureType type;
+	bool loaded = false;
+
+	unsigned int ID = 0; //  texture ID
+	TextureType type = TextureType::Undefined;
 };
 

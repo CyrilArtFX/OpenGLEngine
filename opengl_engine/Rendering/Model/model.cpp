@@ -12,15 +12,15 @@ void Model::draw(std::shared_ptr<Material> materialInUsage)
 	{
 		if (mesh_material.first != materialInUsage) continue;
 
-		for (Mesh mesh : mesh_material.second)
+		for (auto mesh : mesh_material.second)
 		{
-			mesh.draw();
+			mesh->draw();
 		}
 	}
 }
 
 
-void Model::addMesh(Mesh& mesh, std::shared_ptr<Material> material)
+void Model::addMesh(Mesh* mesh, std::shared_ptr<Material> material)
 {
 	meshMaterials[material].push_back(mesh);
 }

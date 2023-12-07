@@ -1,9 +1,14 @@
 #include "texture.h"
 #include <Utils/defines.h>
 
-
-Texture::Texture(const std::string texturePath, TextureType textureType, unsigned int glFormat, bool flipVertical) : type(textureType)
+Texture::Texture()
 {
+}
+
+void Texture::load(const std::string texturePath, TextureType textureType, unsigned int glFormat, bool flipVertical)
+{
+	type = textureType;
+
 	std::string tex_path = RESOURCES_PATH + texturePath;
 
 	//  create texture
@@ -42,16 +47,22 @@ Texture::Texture(const std::string texturePath, TextureType textureType, unsigne
 	}
 
 	stbi_image_free(data);
+
+	loaded = true;
 }
 
 
 void Texture::use()
 {
+	if (!loaded) return;
+
 	glBindTexture(GL_TEXTURE_2D, ID);
 }
 
 void Texture::setWrappingParameters(unsigned int sAxis, unsigned int tAxis)
 {
+	if (!loaded) return;
+
 	use();
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, sAxis);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, tAxis);
@@ -59,6 +70,8 @@ void Texture::setWrappingParameters(unsigned int sAxis, unsigned int tAxis)
 
 void Texture::setFilteringParameters(unsigned int minifying, unsigned int magnifying)
 {
+	if (!loaded) return;
+
 	use();
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minifying);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magnifying);

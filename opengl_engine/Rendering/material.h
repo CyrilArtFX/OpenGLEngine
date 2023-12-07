@@ -19,7 +19,7 @@ public:
 	Shader& getShader() { return *shader; }
 	std::shared_ptr<Shader> getShrdShader() { return shader; }
 
-	void addTexture(std::weak_ptr<Texture> texture);
+	void addTexture(Texture* texture);
 
 	void addParameter(std::string name, bool boolParameter);
 	void addParameter(std::string name, int intParameter);
@@ -30,7 +30,7 @@ public:
 
 private:
 	std::shared_ptr<Shader> shader;
-	std::vector<std::shared_ptr<Texture>> textures;
+	std::vector<Texture*> textures;
 
 	std::unordered_map<std::string, bool> boolParameters;
 	std::unordered_map<std::string, int> intParameters;
