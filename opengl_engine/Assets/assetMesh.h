@@ -1,6 +1,10 @@
 #pragma once
 #include <Rendering/Model/mesh.h>
 
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 #include <vector>
 #include <string>
 
@@ -30,4 +34,9 @@ public:
 	* Will return the meshes in a vector.
 	*/
 	static MeshCollection LoadMeshCollection(std::string filepath);
+
+private:
+	static void processNodeSingle(aiNode* node, const aiScene* scene, Mesh& singleMesh);
+	static void processNodeCollection(aiNode* node, const aiScene* scene, MeshCollection& meshCollection);
+	static Mesh processMesh(aiMesh* mesh, const aiScene* scene);
 };

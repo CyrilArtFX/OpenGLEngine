@@ -4,12 +4,12 @@
 
 ~ Ajouter les shaders et les materials à l'AssetManager
 
+~ Mettre le système d'inputs propre
+
 ~ Changer le duo game/scene en un trio engine/game/scene où :
 	- engine correspond globalement au game actuel et s'occupe de gérer les events globaux et de dispatch l'update, le draw et les inputs (engine contiendra un pointeur vers l'interface game et plus l'interface scene)
 	- game correspond à la partie logique de scene actuel et contiendra la logique propre à chaque jeu (game contiendra un pointeur vers l'interface scene)
 	- scene correspond à la partie load de scene actuel et s'occupera de charger/décharger les objets
-
-~ Mettre le système d'inputs propre
 
 ~ Mettre un système de physique basique pour le doomlike (collisions cubes AABB, gravité, raycasts)
 
