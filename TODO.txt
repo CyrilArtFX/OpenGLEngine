@@ -1,8 +1,6 @@
 == COURT TERME ==
 
-~ Intégrer le système de lecture de meshs (tuto learnopengl) - en cours
-
-~ Ajouter les shaders et les materials à l'AssetManager
+~ Ajouter les shaders et les materials à l'AssetManager et ne plus utiliser des shared_ptr pour les objets
 
 ~ Mettre le système d'inputs propre
 
