@@ -9,12 +9,6 @@
 #include <string>
 
 
-struct MeshCollection
-{
-	std::vector<Mesh> collection;
-};
-
-
 class AssetMesh
 {
 public:

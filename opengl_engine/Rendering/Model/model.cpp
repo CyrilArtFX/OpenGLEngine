@@ -24,3 +24,11 @@ void Model::addMesh(Mesh* mesh, std::shared_ptr<Material> material)
 {
 	meshMaterials[material].push_back(mesh);
 }
+
+void Model::addMeshes(MeshCollection* meshes, std::shared_ptr<Material> material)
+{
+	for (int i = 0; i < meshes->collection.size(); i++)
+	{
+		meshMaterials[material].push_back(&meshes->collection[i]);
+	}
+}

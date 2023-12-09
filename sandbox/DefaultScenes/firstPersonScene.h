@@ -45,10 +45,12 @@ private:
 
 	std::shared_ptr<Material> crateMat;
 	std::shared_ptr<Material> groundMat;
+	std::shared_ptr<Material> taxiMat;
 
 	std::shared_ptr<Object> crate1;
 	std::shared_ptr<Object> crate2;
 	std::shared_ptr<Object> crate3;
 	std::shared_ptr<Object> ground;
+	std::shared_ptr<Object> testMesh;
 };
 

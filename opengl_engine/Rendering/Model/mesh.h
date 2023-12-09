@@ -14,3 +14,9 @@ public:
 private:
 	VertexArray vertexArray;
 };
+
+
+struct MeshCollection
+{
+	std::vector<Mesh> collection;
+};

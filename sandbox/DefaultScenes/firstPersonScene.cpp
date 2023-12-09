@@ -16,8 +16,10 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 	AssetManager::LoadTexture("crate_diffuse", "container2.png", TextureType::Diffuse, GL_RGBA, false);
 	AssetManager::LoadTexture("crate_specular", "container2_specular.png", TextureType::Specular, GL_RGBA, false);
 	AssetManager::LoadTexture("ground_diffuse", "pavement.jpg", TextureType::Diffuse, GL_RGB, false);
-	AssetManager::LoadTexture("ground_specular", "Default/black.png", TextureType::Specular, GL_RGBA, false);
+	AssetManager::LoadTexture("black_specular", "Default/black.png", TextureType::Specular, GL_RGBA, false);
 	AssetManager::LoadTexture("black_emissive", "Default/black.png", TextureType::Emissive, GL_RGBA, false);
+	AssetManager::LoadTexture("taxi_diffuse", "taxi/taxi_basecolor.png", TextureType::Diffuse, GL_RGBA, false);
+	//AssetManager::LoadTexture("taxi_emissive", "taxi/taxi_emissive.png", TextureType::Emissive, GL_RGBA, false); //  just why does it crashes with this texture ??
 
 	crateMat = std::make_shared<Material>(litObjectShader);
 	crateMat->addTexture(&AssetManager::GetTexture("crate_diffuse"));
@@ -27,9 +29,15 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 
 	groundMat = std::make_shared<Material>(litObjectShader);
 	groundMat->addTexture(&AssetManager::GetTexture("ground_diffuse"));
-	groundMat->addTexture(&AssetManager::GetTexture("ground_specular"));
+	groundMat->addTexture(&AssetManager::GetTexture("black_specular"));
 	groundMat->addTexture(&AssetManager::GetTexture("black_emissive"));
 	groundMat->addParameter("material.shininess", 32.0f);
+
+	taxiMat = std::make_shared<Material>(litObjectShader);
+	taxiMat->addTexture(&AssetManager::GetTexture("taxi_diffuse"));
+	taxiMat->addTexture(&AssetManager::GetTexture("black_specular"));
+	taxiMat->addTexture(&AssetManager::GetTexture("black_emissive"));
+	taxiMat->addParameter("material.shininess", 32.0f);
 
 	std::shared_ptr<Material> bullet_mat = std::make_shared<Material>(bulletShader);
 	bullet_mat->addParameter("emissive", 1.0f, 1.0f, 1.0f);
@@ -37,6 +45,7 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 	renderer->addMaterial(crateMat);
 	renderer->addMaterial(groundMat);
 	renderer->addMaterial(bullet_mat);
+	renderer->addMaterial(taxiMat);
 
 
 	//  meshes, models and objects
@@ -99,6 +108,8 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 	};
 	AssetManager::LoadSingleMesh("plane", plane_vertices);
 
+	AssetManager::LoadMeshCollection("taxi", "taxi/taxi.fbx");
+
 	AssetManager::CreateModel("crate");
 	AssetManager::GetModel("crate").addMesh(&AssetManager::GetSingleMesh("cube"), crateMat);
 
@@ -107,6 +118,9 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 
 	AssetManager::CreateModel("bullet");
 	AssetManager::GetModel("bullet").addMesh(&AssetManager::GetSingleMesh("cube"), bullet_mat);
+
+	AssetManager::CreateModel("taxi");
+	AssetManager::GetModel("taxi").addMeshes(&AssetManager::GetMeshCollection("taxi"), taxiMat);
 
 
 	//  objects
@@ -118,16 +132,22 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 	crate2->addModel(&AssetManager::GetModel("crate"));
 	crate3 = std::make_shared<Object>();
 	crate3->addModel(&AssetManager::GetModel("crate"));
+	testMesh = std::make_shared<Object>();
+	testMesh->addModel(&AssetManager::GetModel("taxi"));
 	
 	renderer->addObject(ground);
 	renderer->addObject(crate1);
 	renderer->addObject(crate2);
 	renderer->addObject(crate3);
+	renderer->addObject(testMesh);
 
 	ground->setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
 	crate1->setPosition(Vector3{ 2.0f, 0.5f, 0.0f });
 	crate2->setPosition(Vector3{ -1.0f, 0.5f, 3.0f });
 	crate3->setPosition(Vector3{ -3.5f, 0.5f, -1.0f });
+	testMesh->setPosition(Vector3{ -7.0f, 1.0f, 0.0f });
+	testMesh->setScale(0.01f);
+	testMesh->setRotation(Quaternion{ Vector3::unitX, Maths::toRadians(-90.0f) });
 
 
 	//  player (camera)

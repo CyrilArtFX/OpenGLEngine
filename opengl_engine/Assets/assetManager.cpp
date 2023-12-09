@@ -51,6 +51,8 @@ void AssetManager::LoadSingleMesh(std::string name, std::string filepath)
 		std::cout << "Asset Manager Error: Tried to load a single mesh with a name that already exists. Name is " << name << ".\n";
 		return;
 	}
+
+	meshesSingle[name] = AssetMesh::LoadSingleMesh(filepath);
 }
 
 void AssetManager::LoadMeshCollection(std::string name, std::string filepath)
@@ -60,6 +62,8 @@ void AssetManager::LoadMeshCollection(std::string name, std::string filepath)
 		std::cout << "Asset Manager Error: Tried to load a mesh collection with a name that already exists. Name is " << name << ".\n";
 		return;
 	}
+
+	meshesCollection[name] = AssetMesh::LoadMeshCollection(filepath);
 }
 
 Mesh& AssetManager::GetSingleMesh(std::string name)

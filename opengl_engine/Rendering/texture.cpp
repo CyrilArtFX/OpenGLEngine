@@ -29,6 +29,7 @@ void Texture::load(const std::string texturePath, TextureType textureType, unsig
 
 	if (data)
 	{
+		//  this can also cause crashes but I have absolutely no idea why
 		glTexImage2D(GL_TEXTURE_2D, 0, glFormat, width, height, 0, glFormat, GL_UNSIGNED_BYTE, data);
 		//  in some cases, the glGenerateMipmap function can cause crashes (it's related to the size of the image, but I don't know exactly what causes this problem)
 		glGenerateMipmap(GL_TEXTURE_2D);

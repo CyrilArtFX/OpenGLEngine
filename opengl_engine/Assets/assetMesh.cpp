@@ -62,6 +62,8 @@ void AssetMesh::processNodeSingle(aiNode* node, const aiScene* scene, Mesh& sing
         aiMesh* mesh = scene->mMeshes[node->mMeshes[0]];
         singleMesh = processMesh(mesh, scene);
     }
+
+    //  this part may be changed to get the first mesh it encounters
 }
 
 void AssetMesh::processNodeCollection(aiNode* node, const aiScene* scene, MeshCollection& meshCollection)
