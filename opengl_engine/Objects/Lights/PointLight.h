@@ -6,9 +6,10 @@
 class PointLight : public Light
 {
 public:
-	PointLight(LightType lightType_, Color lightColor_, Vector3 position_, float ambientStrength_ = 0.01f, float diffuseStrength_ = 0.7f,
+	PointLight();
+
+	void load(Color lightColor_, Vector3 position_, float ambientStrength_ = 0.01f, float diffuseStrength_ = 0.7f,
 		float constant_ = 1.0f, float linear_ = 0.09f, float quadratic_ = 0.032f);
-	PointLight() = delete;
 
 	void use(Shader& litShader, int lightIndex) override;
 
@@ -26,10 +27,10 @@ public:
 	inline float getQuadratic() { return quadratic; }
 
 private:
-	Vector3 position;
+	Vector3 position{ Vector3::zero };
 
-	float constant;
-	float linear;
-	float quadratic;
+	float constant{ 0.0f };
+	float linear{ 0.0f };
+	float quadratic{ 0.0f };
 };
 

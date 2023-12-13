@@ -25,7 +25,7 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 	AssetManager::LoadTexture("black_specular", "Default/black.png", TextureType::Specular, GL_RGBA, false);
 	AssetManager::LoadTexture("black_emissive", "Default/black.png", TextureType::Emissive, GL_RGBA, false);
 	AssetManager::LoadTexture("taxi_diffuse", "taxi/taxi_basecolor.png", TextureType::Diffuse, GL_RGBA, false);
-	//AssetManager::LoadTexture("taxi_emissive", "taxi/taxi_emissive.png", TextureType::Emissive, GL_RGBA, false); //  just why does it crashes with this texture ??
+	AssetManager::LoadTexture("taxi_emissive", "taxi/taxi_emissive.png", TextureType::Emissive, GL_RGB, false);
 
 	Material& crate_mat = AssetManager::CreateMaterial("crate", &AssetManager::GetShader("lit_object"));
 	crate_mat.addTexture(&AssetManager::GetTexture("crate_diffuse")); 
@@ -42,7 +42,7 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 	Material& taxi_mat = AssetManager::CreateMaterial("taxi", &AssetManager::GetShader("lit_object")); 
 	taxi_mat.addTexture(&AssetManager::GetTexture("taxi_diffuse"));
 	taxi_mat.addTexture(&AssetManager::GetTexture("black_specular"));
-	taxi_mat.addTexture(&AssetManager::GetTexture("black_emissive")); 
+	taxi_mat.addTexture(&AssetManager::GetTexture("taxi_emissive")); 
 	taxi_mat.addParameter("material.shininess", 32.0f); 
 
 	Material& bullet_mat = AssetManager::CreateMaterial("bullet", &AssetManager::GetShader("bullet"));
@@ -130,36 +130,32 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 
 
 	//  objects
-	ground = std::make_shared<Object>();
-	ground->addModel(&AssetManager::GetModel("ground"));
-	crate1 = std::make_shared<Object>();
-	crate1->addModel(&AssetManager::GetModel("crate"));
-	crate2 = std::make_shared<Object>();
-	crate2->addModel(&AssetManager::GetModel("crate"));
-	crate3 = std::make_shared<Object>();
-	crate3->addModel(&AssetManager::GetModel("crate"));
-	testMesh = std::make_shared<Object>();
-	testMesh->addModel(&AssetManager::GetModel("taxi"));
+	ground.addModel(&AssetManager::GetModel("ground"));
+	crate1.addModel(&AssetManager::GetModel("crate"));
+	crate2.addModel(&AssetManager::GetModel("crate"));
+	crate3.addModel(&AssetManager::GetModel("crate"));
+	testMesh.addModel(&AssetManager::GetModel("taxi"));
 	
-	renderer->addObject(ground);
-	renderer->addObject(crate1);
-	renderer->addObject(crate2);
-	renderer->addObject(crate3);
-	renderer->addObject(testMesh);
+	renderer->addObject(&ground);
+	renderer->addObject(&crate1);
+	renderer->addObject(&crate2);
+	renderer->addObject(&crate3);
+	renderer->addObject(&testMesh);
 
-	ground->setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
-	crate1->setPosition(Vector3{ 2.0f, 0.5f, 0.0f });
-	crate2->setPosition(Vector3{ -1.0f, 0.5f, 3.0f });
-	crate3->setPosition(Vector3{ -3.5f, 0.5f, -1.0f });
-	testMesh->setPosition(Vector3{ -7.0f, 1.0f, 0.0f });
-	testMesh->setScale(0.01f);
-	testMesh->setRotation(Quaternion{ Vector3::unitX, Maths::toRadians(-90.0f) });
+	ground.setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
+	crate1.setPosition(Vector3{ 2.0f, 0.5f, 0.0f });
+	crate2.setPosition(Vector3{ -1.0f, 0.5f, 3.0f });
+	crate3.setPosition(Vector3{ -3.5f, 0.5f, -1.0f });
+	testMesh.setPosition(Vector3{ -7.0f, 1.0f, 0.0f });
+	testMesh.setScale(0.01f);
+	testMesh.setRotation(Quaternion{ Vector3::unitX, Maths::toRadians(-90.0f) });
 
 
 	//  lights
 	Vector3 dir_light{ 0.5f, -1.0f, 0.75f };
 	dir_light.normalize();
-	renderer->addLight(std::make_shared<DirectionalLight>(Directionnal, Color::white, dir_light, 0.1f, 0.7f), Directionnal);
+	dirLight.load(Color::white, dir_light, 0.1f, 0.7f);
+	renderer->addLight(&dirLight);
 }
 
 void FirstPersonScene::unload()

@@ -7,10 +7,11 @@
 class SpotLight : public Light
 {
 public:
-	SpotLight(LightType lightType_, Color lightColor_, Vector3 position_, Vector3 direction_, float ambientStrength_ = 0.01f, float diffuseStrength_ = 0.7f,
+	SpotLight();
+
+	void load(Color lightColor_, Vector3 position_, Vector3 direction_, float ambientStrength_ = 0.01f, float diffuseStrength_ = 0.7f,
 		float cutOff_ = Maths::cos(Maths::toRadians(12.5f)), float outerCutOff_ = Maths::cos(Maths::toRadians(17.5f)), 
 		float constant_ = 1.0f, float linear_ = 0.09f, float quadratic_ = 0.032f);
-	SpotLight() = delete;
 
 	void use(Shader& litShader, int lightIndex) override;
 
@@ -37,14 +38,14 @@ public:
 	inline float getQuadratic() { return quadratic; }
 
 private:
-	Vector3 position;
-	Vector3 direction;
+	Vector3 position{ Vector3::zero };
+	Vector3 direction{ Vector3::unitX };
 
-	float cutOff;
-	float outerCutOff;
+	float cutOff{ 0.0f };
+	float outerCutOff{ 0.0f };
 
-	float constant;
-	float linear;
-	float quadratic;
+	float constant{ 0.0f };
+	float linear{ 0.0f };
+	float quadratic{ 0.0f };
 };
 

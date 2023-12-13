@@ -30,12 +30,15 @@ private:
 	//  scene objects
 	//-----------------
 
-	std::shared_ptr<Object> cube1;
-	std::shared_ptr<Object> cube2;
-	std::shared_ptr<Object> cube3;
-	std::shared_ptr<Object> lightCube1;
-	std::shared_ptr<Object> lightCube2;
+	Object cube1;
+	Object cube2;
+	Object cube3;
+	Object lightCube1;
+	Object lightCube2;
 
-	std::shared_ptr<SpotLight> flashLight;
+	DirectionalLight sunLight;
+	PointLight pointLight1;
+	PointLight pointLight2;
+	SpotLight flashLight;
 };
 

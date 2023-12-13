@@ -24,6 +24,6 @@ private:
 	float lifetime;
 	std::shared_ptr<class Renderer> renderer;
 
-	std::shared_ptr<Object> object;
+	Object object;
 };
 

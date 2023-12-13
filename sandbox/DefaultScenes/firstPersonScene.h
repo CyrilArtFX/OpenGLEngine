@@ -37,10 +37,12 @@ private:
 	//  scene objects
 	//-----------------
 
-	std::shared_ptr<Object> crate1;
-	std::shared_ptr<Object> crate2;
-	std::shared_ptr<Object> crate3;
-	std::shared_ptr<Object> ground;
-	std::shared_ptr<Object> testMesh;
+	Object crate1;
+	Object crate2;
+	Object crate3;
+	Object ground;
+	Object testMesh;
+
+	DirectionalLight dirLight;
 };
 

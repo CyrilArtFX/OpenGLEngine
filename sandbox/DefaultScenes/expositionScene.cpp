@@ -93,41 +93,39 @@ void ExpositionScene::load(std::weak_ptr<Renderer> renderer_)
 	AssetManager::CreateModel("light_cube");
 	AssetManager::GetModel("light_cube").addMesh(&AssetManager::GetSingleMesh("cube"), &AssetManager::GetMaterial("light_source"));
 
-	cube1 = std::make_shared<Object>();
-	cube1->addModel(&AssetManager::GetModel("container"));
-	cube2 = std::make_shared<Object>();
-	cube2->addModel(&AssetManager::GetModel("container"));
-	cube3 = std::make_shared<Object>();
-	cube3->addModel(&AssetManager::GetModel("container"));
+	cube1.addModel(&AssetManager::GetModel("container"));
+	cube2.addModel(&AssetManager::GetModel("container"));
+	cube3.addModel(&AssetManager::GetModel("container"));
 
-	lightCube1 = std::make_shared<Object>();
-	lightCube1->addModel(&AssetManager::GetModel("light_cube"));
-	lightCube2 = std::make_shared<Object>();
-	lightCube2->addModel(&AssetManager::GetModel("light_cube"));
+	lightCube1.addModel(&AssetManager::GetModel("light_cube"));
+	lightCube2.addModel(&AssetManager::GetModel("light_cube"));
 
-	renderer->addObject(cube1);
-	renderer->addObject(cube2);
-	renderer->addObject(cube3);
-	renderer->addObject(lightCube1);
-	renderer->addObject(lightCube2);
+	renderer->addObject(&cube1);
+	renderer->addObject(&cube2);
+	renderer->addObject(&cube3);
+	renderer->addObject(&lightCube1);
+	renderer->addObject(&lightCube2);
 
-	cube1->setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
-	cube1->setRotation(Quaternion{ Vector3::unitY, Maths::toRadians(45.0f) });
-	cube2->setPosition(Vector3{ 2.0f, 1.5f, 2.0f });
-	cube3->setPosition(Vector3{ 2.0f, -1.0f, -1.0f });
-	lightCube1->setPosition(Vector3{ 1.0f, 2.0f, 1.0f });
-	lightCube1->setScale(0.2f);
-	lightCube2->setPosition(Vector3{ 1.5f, 1.0f, -0.5f });
-	lightCube2->setScale(0.2f);
+	cube1.setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
+	cube1.setRotation(Quaternion{ Vector3::unitY, Maths::toRadians(45.0f) });
+	cube2.setPosition(Vector3{ 2.0f, 1.5f, 2.0f });
+	cube3.setPosition(Vector3{ 2.0f, -1.0f, -1.0f });
+	lightCube1.setPosition(Vector3{ 1.0f, 2.0f, 1.0f });
+	lightCube1.setScale(0.2f);
+	lightCube2.setPosition(Vector3{ 1.5f, 1.0f, -0.5f });
+	lightCube2.setScale(0.2f);
 
 
 	//  lights
-	flashLight = std::make_shared<SpotLight>(Spot, Color::white, Vector3::zero, Vector3::unitX);
+	sunLight.load(Color::white, Vector3{ -0.4f, -0.5f, 1.0f });
+	pointLight1.load(Color::white, Vector3{ 1.0f, 2.0f, 1.0f });
+	pointLight2.load(Color::white, Vector3{ 1.5f, 1.0f, -0.5f });
+	flashLight.load(Color::white, Vector3::zero, Vector3::unitX);
 
-	renderer->addLight(std::make_shared<DirectionalLight>(Directionnal, Color::white, Vector3{ -0.4f, -0.5f, 1.0f }), Directionnal);
-	renderer->addLight(std::make_shared<PointLight>(Point, Color::white, Vector3{ 1.0f, 2.0f, 1.0f }), Point);
-	renderer->addLight(std::make_shared<PointLight>(Point, Color::white, Vector3{ 1.5f, 1.0f, -0.5f }), Point);
-	renderer->addLight(flashLight, Spot);
+	renderer->addLight(&sunLight);
+	renderer->addLight(&pointLight1);
+	renderer->addLight(&pointLight2);
+	renderer->addLight(&flashLight);
 }
 
 
@@ -138,10 +136,10 @@ void ExpositionScene::unload()
 
 void ExpositionScene::update(float dt)
 {
-	flashLight->setPosition(currentCam->getPosition());
-	flashLight->setDirection(currentCam->getForward());
+	flashLight.setPosition(currentCam->getPosition());
+	flashLight.setDirection(currentCam->getForward());
 
-	cube3->incrementRotation(Quaternion{ Vector3::unitX, Maths::toRadians(90.0f) * dt });
+	cube3.incrementRotation(Quaternion{ Vector3::unitX, Maths::toRadians(90.0f) * dt });
 }
 
 void ExpositionScene::processInputs(GLFWwindow* glWindow, float dt)

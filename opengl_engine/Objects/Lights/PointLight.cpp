@@ -1,16 +1,31 @@
 #include "pointLight.h"
 
-PointLight::PointLight(LightType lightType_, Color lightColor_, Vector3 position_, float ambientStrength_, float diffuseStrength_,
-	float constant_, float linear_, float quadratic_) : position(position_), constant(constant_), linear(linear_), quadratic(quadratic_), Light(lightType_)
+PointLight::PointLight() : Light()
 {
+}
+
+void PointLight::load(Color lightColor_, Vector3 position_, float ambientStrength_, float diffuseStrength_,
+	float constant_, float linear_, float quadratic_)
+{
+	position = position_;
+	
+	constant = constant_;
+	linear = linear_;
+	quadratic = quadratic_;
+
 	lightColor = lightColor_;
 	ambientStrength = ambientStrength_;
 	diffuseStrength = diffuseStrength_;
+
+	lightType = Point;
+	loaded = true;
 }
 
 
 void PointLight::use(Shader& litShader, int lightIndex)
 {
+	if (!loaded) return;
+
 	litShader.setVec3("pointLights[" + std::to_string(lightIndex) + "].position", position);
 
 	litShader.setVec3("pointLights[" + std::to_string(lightIndex) + "].ambient", lightColor.toVector() * ambientStrength); 

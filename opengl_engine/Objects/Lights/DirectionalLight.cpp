@@ -1,16 +1,26 @@
 #include "directionalLight.h"
 
-DirectionalLight::DirectionalLight(LightType lightType_, Color lightColor_, Vector3 direction_, float ambientStrength_, float diffuseStrength_) :
-	direction(direction_), Light(lightType_)
+DirectionalLight::DirectionalLight() : Light()
 {
+}
+
+void DirectionalLight::load(Color lightColor_, Vector3 direction_, float ambientStrength_, float diffuseStrength_)
+{
+	direction = direction_;
+
 	lightColor = lightColor_;
 	ambientStrength = ambientStrength_;
 	diffuseStrength = diffuseStrength_;
+
+	lightType = Directionnal;
+	loaded = true;
 }
 
 
 void DirectionalLight::use(Shader& litShader, int lightIndex)
 {
+	if (!loaded) return;
+
 	litShader.setVec3("dirLight.direction", direction);
 
 	litShader.setVec3("dirLight.ambient", lightColor.toVector() * ambientStrength);

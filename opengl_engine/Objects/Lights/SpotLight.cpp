@@ -1,19 +1,36 @@
 #include "spotLight.h"
 
-SpotLight::SpotLight(LightType lightType_, Color lightColor_, Vector3 position_, Vector3 direction_, 
-	float ambientStrength_, float diffuseStrength_, float cutOff_, float outerCutOff_, 
-	float constant_, float linear_, float quadratic_) : position(position_), direction(direction_),
-	constant(constant_), linear(linear_), quadratic(quadratic_),
-	cutOff(cutOff_), outerCutOff(outerCutOff_), Light(lightType_)
+SpotLight::SpotLight() : Light()
 {
+}
+
+void SpotLight::load(Color lightColor_, Vector3 position_, Vector3 direction_, 
+	float ambientStrength_, float diffuseStrength_, float cutOff_, float outerCutOff_, 
+	float constant_, float linear_, float quadratic_)
+{
+	position = position_;
+	direction = direction_;
+
+	constant = constant_;
+	linear = linear_;
+	quadratic = quadratic_;
+
+	cutOff = cutOff_;
+	outerCutOff = outerCutOff_;
+
 	lightColor = lightColor_;
 	ambientStrength = ambientStrength_;
 	diffuseStrength = diffuseStrength_;
+
+	lightType = Spot;
+	loaded = true;
 }
 
 
 void SpotLight::use(Shader& litShader, int lightIndex)
 {
+	if (!loaded) return;
+
 	litShader.setVec3("spotLights[" + std::to_string(lightIndex) + "].position", position);
 	litShader.setVec3("spotLights[" + std::to_string(lightIndex) + "].direction", direction);
 

@@ -9,20 +9,19 @@
 Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_, std::weak_ptr<Renderer> renderer_) :
 	direction(direction_), velocity(velocity_), lifetime(lifetime_), renderer(renderer_.lock())
 {
-	object = std::make_shared<Object>();
-	object->addModel(&AssetManager::GetModel("bullet"));
+	object.addModel(&AssetManager::GetModel("bullet"));
 
-	object->setPosition(spawnPos);
-	object->setRotation(spawnRot);
-	object->setScale(0.1f, 0.1f, 0.2f);
+	object.setPosition(spawnPos);
+	object.setRotation(spawnRot);
+	object.setScale(0.1f, 0.1f, 0.2f);
 
-	renderer->addObject(object);
+	renderer->addObject(&object);
 }
 
 
 void Bullet::destroy()
 {
-	renderer->removeObject(object);
+	renderer->removeObject(&object);
 }
 
 
@@ -30,5 +29,5 @@ void Bullet::update(float dt)
 {
 	lifetime -= dt;
 
-	object->setPosition(object->getPosition() + direction * velocity * dt);
+	object.setPosition(object.getPosition() + direction * velocity * dt);
 }

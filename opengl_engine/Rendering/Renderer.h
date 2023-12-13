@@ -29,18 +29,18 @@ public:
 
 	void addMaterial(Material* material);
 
-	void addLight(std::weak_ptr<Light> light, LightType type);
-	void addObject(std::weak_ptr<Object> object);
-	void removeLight(std::weak_ptr<Light> light, LightType type);
-	void removeObject(std::weak_ptr<Object> object);
+	void addLight(Light* light);
+	void addObject(Object* object);
+	void removeLight(Light* light);
+	void removeObject(Object* object);
 
 
 	inline void setClearColor(Color newClearColor) { clearColor = newClearColor; }
 	inline Color getClearColor() { return clearColor; }
 
 private:
-	std::unordered_map<LightType, std::vector<std::shared_ptr<Light>>> lights;
-	std::vector<std::shared_ptr<Object>> objects;
+	std::unordered_map<LightType, std::vector<Light*>> lights;
+	std::vector<Object*> objects;
 	std::unordered_map<Shader*, std::vector<Material*>> materials;
 
 	Color clearColor;

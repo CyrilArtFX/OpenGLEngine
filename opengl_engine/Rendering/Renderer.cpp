@@ -45,6 +45,8 @@ void Renderer::draw()
 				int light_type_used = 0;
 				for (auto light : light_t.second)
 				{
+					if (!light->isLoaded()) continue;
+
 					light->use(*shader, light_type_used);
 
 					light_type_used++;
@@ -99,37 +101,37 @@ void Renderer::addMaterial(Material* material)
 	materials[material->getShaderPtr()].push_back(material);
 }
 
-void Renderer::addLight(std::weak_ptr<Light> light, LightType type)
+void Renderer::addLight(Light* light)
 {
-	lights[type].push_back(light.lock());
+	lights[light->getLightType()].push_back(light);
 
-	if (lights[type].size() > lightsLimits.at(type))
+	if (lights[light->getLightType()].size() > lightsLimits.at(light->getLightType()))
 	{
 		std::cout << "Renderer Warning : A light has been added but will not be used as the lit shader array has a too small size.\n";
 	}
 }
 
-void Renderer::addObject(std::weak_ptr<Object> object)
+void Renderer::addObject(Object* object)
 {
-	objects.push_back(object.lock());
+	objects.push_back(object);
 }
 
-void Renderer::removeLight(std::weak_ptr<Light> light, LightType type)
+void Renderer::removeLight(Light* light)
 {
-	auto iter = std::find(lights[type].begin(), lights[type].end(), light.lock());
-	if (iter == lights[type].end())
+	auto iter = std::find(lights[light->getLightType()].begin(), lights[light->getLightType()].end(), light);
+	if (iter == lights[light->getLightType()].end())
 	{
 		std::cout << "Renderer can't remove a light that doesn't exist.\n";
 		return;
 	}
 
-	std::iter_swap(iter, lights[type].end() - 1);
-	lights[type].pop_back();
+	std::iter_swap(iter, lights[light->getLightType()].end() - 1);
+	lights[light->getLightType()].pop_back();
 }
 
-void Renderer::removeObject(std::weak_ptr<Object> object)
+void Renderer::removeObject(Object* object)
 {
-	auto iter = std::find(objects.begin(), objects.end(), object.lock());
+	auto iter = std::find(objects.begin(), objects.end(), object);
 	if (iter == objects.end())
 	{
 		std::cout << "Renderer can't remove an object that doesn't exist.\n";

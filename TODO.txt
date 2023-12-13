@@ -1,7 +1,5 @@
 == COURT TERME ==
 
-~ Ajouter les shaders et les materials à l'AssetManager et ne plus utiliser des shared_ptr pour les objets et les lights (en cours)
-
 ~ Mettre le système d'inputs propre
 
 ~ Changer le duo game/scene en un trio engine/game/scene où :
@@ -29,4 +27,6 @@
 
 == REFLEXIONS ==
 
-~ Mettre le renderer en classe statique ? permettrait d'assigner certains assets (comme les materiaux) directement à la création par exemple
+~ Mettre le renderer en classe statique ? permettrait d'assigner certains assets (comme les materiaux) directement à la création par exemple + de ne pas avoir à le passer en paramètre pour le joueur qui va devoir créer des balles
+
+~ Mettre un système pour détecter automatiquement la profondeur de couleur au chargement de la texture pour éviter les problèmes (si la profondeur de couleur est 24, pas d'alpha (même avec un .png), donc charger avec GL_RGBA va faire un crash) -> regarder comment gregory a fait pour xenity

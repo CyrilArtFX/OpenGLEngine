@@ -5,6 +5,7 @@
 
 enum LightType
 {
+	Undefined,
 	Directionnal,
 	Point,
 	Spot
@@ -14,8 +15,7 @@ enum LightType
 class Light
 {
 public:
-	Light(LightType lightType_): lightType(lightType_) {}
-	Light() = delete;
+	Light() {}
 	virtual ~Light() {}
 
 	virtual void use(Shader& litShader, int lightIndex) = 0;
@@ -33,11 +33,15 @@ public:
 
 	inline LightType getLightType() { return lightType; }
 		 
+	inline bool isLoaded() { return loaded; }
+
+
 protected:
+	bool loaded{ false };
+
 	Color lightColor{ Color::white };
 	float ambientStrength{ 0.01f };
 	float diffuseStrength{ 0.7f };
 
-private:
-	LightType lightType;
+	LightType lightType{ Undefined };
 };
