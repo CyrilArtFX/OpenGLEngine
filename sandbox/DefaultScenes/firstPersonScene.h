@@ -1,9 +1,6 @@
 #pragma once
 #include <Core/scene.h>
 
-#include <Rendering/shader.h>
-#include <Rendering/material.h>
-
 #include <Assets/assetManager.h>
 #include <Objects/object.h>
 
@@ -39,13 +36,6 @@ private:
 
 	//  scene objects
 	//-----------------
-
-	std::shared_ptr<Shader> litObjectShader;
-	std::shared_ptr<Shader> bulletShader;
-
-	std::shared_ptr<Material> crateMat;
-	std::shared_ptr<Material> groundMat;
-	std::shared_ptr<Material> taxiMat;
 
 	std::shared_ptr<Object> crate1;
 	std::shared_ptr<Object> crate2;

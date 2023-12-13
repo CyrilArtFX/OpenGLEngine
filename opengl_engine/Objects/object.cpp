@@ -5,7 +5,7 @@ Object::Object() : Transform()
 }
 
 
-void Object::draw(std::shared_ptr<Material> materialInUsage)
+void Object::draw(Material* materialInUsage)
 {
 	materialInUsage->getShader().setMatrix4("model", getModelMatrix().getAsFloatPtr());
 	materialInUsage->getShader().setMatrix4("normalMatrix", getNormalMatrix().getAsFloatPtr());

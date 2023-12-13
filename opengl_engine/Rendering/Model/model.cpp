@@ -4,7 +4,7 @@ Model::Model()
 {
 }
 
-void Model::draw(std::shared_ptr<Material> materialInUsage)
+void Model::draw(Material* materialInUsage)
 {
 	//  assume the shader is already in use (the rendering process should have done it)
 
@@ -20,12 +20,12 @@ void Model::draw(std::shared_ptr<Material> materialInUsage)
 }
 
 
-void Model::addMesh(Mesh* mesh, std::shared_ptr<Material> material)
+void Model::addMesh(Mesh* mesh, Material* material)
 {
 	meshMaterials[material].push_back(mesh);
 }
 
-void Model::addMeshes(MeshCollection* meshes, std::shared_ptr<Material> material)
+void Model::addMeshes(MeshCollection* meshes, Material* material)
 {
 	for (int i = 0; i < meshes->collection.size(); i++)
 	{

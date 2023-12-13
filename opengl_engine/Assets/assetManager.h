@@ -1,6 +1,7 @@
 #pragma once
 #include "assetMesh.h"
 #include "assetTexture.h"
+#include "assetMaterial.h"
 #include <Rendering/Model/model.h>
 
 #include <unordered_map>
@@ -71,10 +72,36 @@ public:
 	static Model& GetModel(std::string name);
 
 
+	/**
+	* Create a shader and stores it.
+	* Name = the name you want to give to this shader in the asset storage.
+	*/
+	static void CreateShaderProgram(std::string name, const std::string vertexName, const std::string fragmentName, ShaderType shaderType);
+
+	/**
+	* Retrieve a shader from the asset storage.
+	*/
+	static Shader& GetShader(std::string name);
+
+
+	/**
+	* Create a material and stores it.
+	* Name = the name you want to give to this material in the asset storage.
+	*/
+	static Material& CreateMaterial(std::string name, Shader* shaderUsed);
+
+	/**
+	* Retrieve a material from the asset storage.
+	*/
+	static Material& GetMaterial(std::string name);
+
+
 private:
 	static std::unordered_map<std::string, Texture> textures;
 	static std::unordered_map<std::string, Mesh> meshesSingle;
 	static std::unordered_map<std::string, MeshCollection> meshesCollection;
 	static std::unordered_map<std::string, Model> models;
+	static std::unordered_map<std::string, Shader> shaders;
+	static std::unordered_map<std::string, Material> materials;
 };
 

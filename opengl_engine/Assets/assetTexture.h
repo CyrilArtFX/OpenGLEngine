@@ -1,7 +1,7 @@
 #pragma once
 #include <Rendering/texture.h>
 
-class assetTexture
+class AssetTexture
 {
 public:
 	/**

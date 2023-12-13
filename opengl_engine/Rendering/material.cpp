@@ -2,12 +2,19 @@
 
 #include <string>
 
-Material::Material(std::weak_ptr<Shader> shaderUsed) : shader(shaderUsed.lock())
+Material::Material()
 {
+}
+
+void Material::load(Shader* shaderUsed)
+{
+	shader = shaderUsed;
 }
 
 void Material::use()
 {
+	if (!shader->isLoaded()) return;
+
 	//  assume the shader is already in use (the rendering process should have done it)
 
 	unsigned int diffuse_nr = 1;

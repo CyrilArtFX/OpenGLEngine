@@ -9,6 +9,7 @@
 
 enum ShaderType
 {
+	Null,
 	Lit,
 	Unlit
 };
@@ -16,7 +17,9 @@ enum ShaderType
 class Shader
 {
 public:
-	Shader(const std::string vertexName, const std::string fragmentName, ShaderType shaderType); //  constructor reads and build the shader
+	Shader();
+	//  reads and builds the shader program
+	void load(const std::string vertexName, const std::string fragmentName, ShaderType shaderType);
 
 	void use(); //  use (activate) the shader
 	void deleteProgram();
@@ -33,8 +36,12 @@ public:
 
 	ShaderType getShaderType() { return type; }
 
-private:
-	unsigned int ID; //  program ID
+	bool isLoaded() const { return loaded; }
 
-	ShaderType type;
+private:
+	bool loaded = false;
+
+	unsigned int ID = 0; //  program ID
+
+	ShaderType type = ShaderType::Null;
 };

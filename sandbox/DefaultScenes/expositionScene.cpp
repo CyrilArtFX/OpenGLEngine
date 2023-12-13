@@ -18,25 +18,25 @@ void ExpositionScene::load(std::weak_ptr<Renderer> renderer_)
 
 
 	//  shaders, textures and materials
-	litObjectShader = std::make_shared<Shader>("Lit/object_lit.vert", "Lit/object_lit.frag", Lit);
-	flatEmissiveShader = std::make_shared<Shader>("Unlit/flat_emissive.vert", "Unlit/flat_emissive.frag", Unlit);
+	AssetManager::CreateShaderProgram("lit_object", "Lit/object_lit.vert", "Lit/object_lit.frag", ShaderType::Lit);
+	AssetManager::CreateShaderProgram("flat_emissive", "Unlit/flat_emissive.vert", "Unlit/flat_emissive.frag", ShaderType::Unlit);
 
 	AssetManager::LoadTexture("container_diffuse", "container2.png", TextureType::Diffuse, GL_RGBA, false);
 	AssetManager::LoadTexture("container_specular", "container2_specular.png", TextureType::Specular, GL_RGBA, false);
 	AssetManager::LoadTexture("container_emissive", "matrix.jpg", TextureType::Emissive, GL_RGB, false);
 	AssetManager::LoadTexture("black_emissive", "Default/black.png", TextureType::Emissive, GL_RGBA, false);
 
-	containerMat = std::make_shared<Material>(litObjectShader);
-	containerMat->addTexture(&AssetManager::GetTexture("container_diffuse"));
-	containerMat->addTexture(&AssetManager::GetTexture("container_specular"));
-	containerMat->addTexture(&AssetManager::GetTexture("black_emissive"));
-	containerMat->addParameter("material.shininess", 32.0f);
+	Material& container_mat = AssetManager::CreateMaterial("container", &AssetManager::GetShader("lit_object"));
+	container_mat.addTexture(&AssetManager::GetTexture("container_diffuse"));
+	container_mat.addTexture(&AssetManager::GetTexture("container_specular"));
+	container_mat.addTexture(&AssetManager::GetTexture("black_emissive"));
+	container_mat.addParameter("material.shininess", 32.0f);
 
-	lightSourceMat = std::make_shared<Material>(flatEmissiveShader);
-	lightSourceMat->addParameter("emissive", 1.0f, 1.0f, 1.0f);
+	Material& light_source_mat = AssetManager::CreateMaterial("light_source", &AssetManager::GetShader("flat_emissive"));
+	light_source_mat.addParameter("emissive", 1.0f, 1.0f, 1.0f);
 
-	renderer->addMaterial(containerMat);
-	renderer->addMaterial(lightSourceMat);
+	renderer->addMaterial(&AssetManager::GetMaterial("container"));
+	renderer->addMaterial(&AssetManager::GetMaterial("light_source"));
 
 
 	//  meshes, models and objects
@@ -88,10 +88,10 @@ void ExpositionScene::load(std::weak_ptr<Renderer> renderer_)
 	AssetManager::LoadSingleMesh("cube", cube_vertices);
 
 	AssetManager::CreateModel("container");
-	AssetManager::GetModel("container").addMesh(&AssetManager::GetSingleMesh("cube"), containerMat);
+	AssetManager::GetModel("container").addMesh(&AssetManager::GetSingleMesh("cube"), &AssetManager::GetMaterial("container"));
 
 	AssetManager::CreateModel("light_cube");
-	AssetManager::GetModel("light_cube").addMesh(&AssetManager::GetSingleMesh("cube"), lightSourceMat);
+	AssetManager::GetModel("light_cube").addMesh(&AssetManager::GetSingleMesh("cube"), &AssetManager::GetMaterial("light_source"));
 
 	cube1 = std::make_shared<Object>();
 	cube1->addModel(&AssetManager::GetModel("container"));
@@ -133,8 +133,6 @@ void ExpositionScene::load(std::weak_ptr<Renderer> renderer_)
 
 void ExpositionScene::unload()
 {
-	litObjectShader->deleteProgram();
-	flatEmissiveShader->deleteProgram();
 }
 
 

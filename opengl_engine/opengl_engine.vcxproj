@@ -135,6 +135,7 @@
   <ItemGroup>
     <ClCompile Include="Assets\assetManager.cpp" />
     <ClCompile Include="Assets\assetMesh.cpp" />
+    <ClCompile Include="Assets\assetMaterial.cpp" />
     <ClCompile Include="Assets\assetTexture.cpp" />
     <ClCompile Include="Core\game.cpp" />
     <ClCompile Include="glad.c" />
@@ -162,6 +163,7 @@
   <ItemGroup>
     <ClInclude Include="Assets\assetManager.h" />
     <ClInclude Include="Assets\assetMesh.h" />
+    <ClInclude Include="Assets\assetMaterial.h" />
     <ClInclude Include="Assets\assetTexture.h" />
     <ClInclude Include="Core\game.h" />
     <ClInclude Include="Core\scene.h" />

@@ -6,6 +6,8 @@ std::unordered_map<std::string, Texture> AssetManager::textures;
 std::unordered_map<std::string, Mesh> AssetManager::meshesSingle;
 std::unordered_map<std::string, MeshCollection> AssetManager::meshesCollection;
 std::unordered_map<std::string, Model> AssetManager::models;
+std::unordered_map<std::string, Shader> AssetManager::shaders;
+std::unordered_map<std::string, Material> AssetManager::materials;
 
 
 void AssetManager::LoadTexture(std::string name, const std::string texturePath, TextureType textureType, unsigned int glFormat, bool flipVertical)
@@ -15,8 +17,8 @@ void AssetManager::LoadTexture(std::string name, const std::string texturePath, 
 		std::cout << "Asset Manager Error: Tried to load a texture with a name that already exists. Name is " << name << ".\n";
 		return;
 	}
-
-	textures[name] = assetTexture::LoadTexture(texturePath, textureType, glFormat, flipVertical);
+	
+	textures[name] = AssetTexture::LoadTexture(texturePath, textureType, glFormat, flipVertical);
 }
 
 Texture& AssetManager::GetTexture(std::string name)
@@ -114,6 +116,54 @@ Model& AssetManager::GetModel(std::string name)
 	return models[name];
 }
 
+void AssetManager::CreateShaderProgram(std::string name, const std::string vertexName, const std::string fragmentName, ShaderType shaderType)
+{
+	if (shaders.find(name) != shaders.end())
+	{
+		std::cout << "Asset Manager Error: Tried to create a shader with a name that already exists. Name is " << name << ".\n";
+		return;
+	}
+
+	shaders[name] = AssetMaterial::LoadShaderProgram(vertexName, fragmentName, shaderType);
+}
+
+Shader& AssetManager::GetShader(std::string name)
+{
+	if (shaders.find(name) == shaders.end())
+	{
+		std::cout << "Asset Manager Error: Tried to get a shader with a name that doesn't exists. Name is " << name << ".\n";
+		Shader null_shader;
+		return null_shader; 
+	}
+
+	return shaders[name];
+}
+
+Material& AssetManager::CreateMaterial(std::string name, Shader* shaderUsed)
+{
+	if (materials.find(name) != materials.end())
+	{
+		std::cout << "Asset Manager Error: Tried to create a material with a name that already exists. Name is " << name << ".\n";
+		Material null_material;
+		return null_material;
+	}
+
+	materials[name] = AssetMaterial::LoadMaterial(shaderUsed);
+	return materials[name];
+}
+
+Material& AssetManager::GetMaterial(std::string name)
+{
+	if (materials.find(name) == materials.end())
+	{
+		std::cout << "Asset Manager Error: Tried to get a material with a name that doesn't exists. Name is " << name << ".\n";
+		Material null_material;
+		return null_material;
+	}
+
+	return materials[name];
+}
+
 
 
 
@@ -131,5 +181,10 @@ void AssetManager::DeleteObjects()
 	for (auto mesh : meshesSingle) 
 	{
 		mesh.second.deleteObjects();
+	}
+
+	for (auto shader : shaders)
+	{
+		shader.second.deleteProgram();
 	}
 }

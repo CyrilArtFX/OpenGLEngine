@@ -10,7 +10,7 @@ class Object : public Transform
 public:
 	Object();
 
-	void draw(std::shared_ptr<Material> materialInUsage);
+	void draw(Material* materialInUsage);
 
 	void addModel(Model* model);
 

@@ -1,9 +1,6 @@
 #pragma once
 #include <Core/scene.h>
 
-#include <Rendering/shader.h>
-#include <Rendering/material.h>
-
 #include <Assets/assetManager.h>
 #include <Objects/object.h>
 
@@ -32,12 +29,6 @@ public:
 private:
 	//  scene objects
 	//-----------------
-
-	std::shared_ptr<Shader> litObjectShader;
-	std::shared_ptr<Shader> flatEmissiveShader;
-
-	std::shared_ptr<Material> containerMat;
-	std::shared_ptr<Material> lightSourceMat;
 
 	std::shared_ptr<Object> cube1;
 	std::shared_ptr<Object> cube2;

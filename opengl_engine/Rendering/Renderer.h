@@ -27,7 +27,7 @@ public:
 	void setCamera(std::weak_ptr<Camera> camera);
 	inline const Camera& getCamera() const { return *currentCam; }
 
-	void addMaterial(std::weak_ptr<Material> material);
+	void addMaterial(Material* material);
 
 	void addLight(std::weak_ptr<Light> light, LightType type);
 	void addObject(std::weak_ptr<Object> object);
@@ -41,7 +41,7 @@ public:
 private:
 	std::unordered_map<LightType, std::vector<std::shared_ptr<Light>>> lights;
 	std::vector<std::shared_ptr<Object>> objects;
-	std::unordered_map<std::shared_ptr<Shader>, std::vector<std::shared_ptr<Material>>> materials;
+	std::unordered_map<Shader*, std::vector<Material*>> materials;
 
 	Color clearColor;
 

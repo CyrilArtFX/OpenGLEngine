@@ -3,8 +3,15 @@
 #include <Maths/vector3.h>
 #include <Utils/defines.h>
 
-Shader::Shader(const std::string vertexName, const std::string fragmentName, ShaderType shaderType) : type(shaderType)
+
+Shader::Shader()
 {
+}
+
+void Shader::load(const std::string vertexName, const std::string fragmentName, ShaderType shaderType)
+{
+	type = shaderType;
+
 	//  Step 1 : retrieve the shaders source code from filePaths
 	//  ========================================================
 
@@ -96,46 +103,63 @@ Shader::Shader(const std::string vertexName, const std::string fragmentName, Sha
 	//  delete shaders once they're link into the program
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);
-}
 
+	loaded = true;
+}
 
 void Shader::use()
 {
+	if (!loaded) return;
+
 	glUseProgram(ID);
 }
 
 void Shader::deleteProgram()
 {
+	if (!loaded) return;
+
 	glDeleteProgram(ID);
 }
 
 
 void Shader::setBool(const std::string& name, bool value) const
 {
+	if (!loaded) return;
+
 	glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
 }
 
 void Shader::setInt(const std::string& name, int value) const
 {
+	if (!loaded) return;
+
 	glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
 }
 
 void Shader::setFloat(const std::string& name, float value) const
 {
+	if (!loaded) return;
+
 	glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
 }
 
 void Shader::setVec3(const std::string& name, Vector3 value) const
 {
+	if (!loaded) return;
+
 	setVec3(name, value.x, value.y, value.z);
 }
 
 void Shader::setVec3(const std::string& name, float xValue, float yValue, float zValue) const
 {
+	if (!loaded) return;
+
 	glUniform3f(glGetUniformLocation(ID, name.c_str()), xValue, yValue, zValue);
 }
 
 void Shader::setMatrix4(const std::string& name, const float* value) const
 {
+	if (!loaded) return;
+
 	glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_TRUE, value);
 }

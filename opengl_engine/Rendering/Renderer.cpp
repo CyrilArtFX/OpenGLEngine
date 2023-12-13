@@ -24,7 +24,9 @@ void Renderer::draw()
 	for (auto materials_by_shaders : materials)
 	{
 		//  retrieve the shader
-		std::shared_ptr<Shader> shader = materials_by_shaders.first;
+		Shader* shader = materials_by_shaders.first;
+
+		if (!shader->isLoaded()) continue;
 
 		//  activate the shader and set the primary uniforms
 		shader->use();
@@ -92,9 +94,9 @@ void Renderer::setCamera(std::weak_ptr<Camera> camera)
 	currentCam = camera.lock();
 }
 
-void Renderer::addMaterial(std::weak_ptr<Material> material)
+void Renderer::addMaterial(Material* material)
 {
-	materials[material.lock()->getShrdShader()].push_back(material.lock());
+	materials[material->getShaderPtr()].push_back(material);
 }
 
 void Renderer::addLight(std::weak_ptr<Light> light, LightType type)

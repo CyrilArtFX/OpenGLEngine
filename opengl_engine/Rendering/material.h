@@ -12,12 +12,13 @@
 class Material
 {
 public:
-	Material(std::weak_ptr<Shader>shaderUsed);
+	Material();
+	void load(Shader* shaderUsed);
 
 	void use();
 
 	Shader& getShader() { return *shader; }
-	std::shared_ptr<Shader> getShrdShader() { return shader; }
+	Shader* getShaderPtr() { return shader; } 
 
 	void addTexture(Texture* texture);
 
@@ -29,7 +30,7 @@ public:
 
 
 private:
-	std::shared_ptr<Shader> shader;
+	Shader* shader;
 	std::vector<Texture*> textures;
 
 	std::unordered_map<std::string, bool> boolParameters;

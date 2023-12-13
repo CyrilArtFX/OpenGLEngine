@@ -9,9 +9,15 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 {
 	renderer = renderer_.lock();
 
+	//  player (camera)
+	player = std::make_unique<Player>(1.5f, 5.0f, renderer_); 
+	currentCam = player->getCamera().lock(); 
+	renderer->setCamera(player->getCamera());
+
+
 	//  shaders, textures and materials
-	litObjectShader = std::make_shared<Shader>("Lit/object_lit.vert", "Lit/object_lit.frag", Lit);
-	bulletShader = std::make_shared<Shader>("Unlit/flat_emissive.vert", "Unlit/flat_emissive.frag", Unlit);
+	AssetManager::CreateShaderProgram("lit_object", "Lit/object_lit.vert", "Lit/object_lit.frag", Lit);
+	AssetManager::CreateShaderProgram("bullet", "Unlit/flat_emissive.vert", "Unlit/flat_emissive.frag", Unlit);
 
 	AssetManager::LoadTexture("crate_diffuse", "container2.png", TextureType::Diffuse, GL_RGBA, false);
 	AssetManager::LoadTexture("crate_specular", "container2_specular.png", TextureType::Specular, GL_RGBA, false);
@@ -21,31 +27,31 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 	AssetManager::LoadTexture("taxi_diffuse", "taxi/taxi_basecolor.png", TextureType::Diffuse, GL_RGBA, false);
 	//AssetManager::LoadTexture("taxi_emissive", "taxi/taxi_emissive.png", TextureType::Emissive, GL_RGBA, false); //  just why does it crashes with this texture ??
 
-	crateMat = std::make_shared<Material>(litObjectShader);
-	crateMat->addTexture(&AssetManager::GetTexture("crate_diffuse"));
-	crateMat->addTexture(&AssetManager::GetTexture("crate_specular"));
-	crateMat->addTexture(&AssetManager::GetTexture("black_emissive"));
-	crateMat->addParameter("material.shininess", 32.0f);
+	Material& crate_mat = AssetManager::CreateMaterial("crate", &AssetManager::GetShader("lit_object"));
+	crate_mat.addTexture(&AssetManager::GetTexture("crate_diffuse")); 
+	crate_mat.addTexture(&AssetManager::GetTexture("crate_specular")); 
+	crate_mat.addTexture(&AssetManager::GetTexture("black_emissive")); 
+	crate_mat.addParameter("material.shininess", 32.0f); 
 
-	groundMat = std::make_shared<Material>(litObjectShader);
-	groundMat->addTexture(&AssetManager::GetTexture("ground_diffuse"));
-	groundMat->addTexture(&AssetManager::GetTexture("black_specular"));
-	groundMat->addTexture(&AssetManager::GetTexture("black_emissive"));
-	groundMat->addParameter("material.shininess", 32.0f);
+	Material& ground_mat = AssetManager::CreateMaterial("ground", &AssetManager::GetShader("lit_object")); 
+	ground_mat.addTexture(&AssetManager::GetTexture("ground_diffuse"));
+	ground_mat.addTexture(&AssetManager::GetTexture("black_specular"));
+	ground_mat.addTexture(&AssetManager::GetTexture("black_emissive"));
+	ground_mat.addParameter("material.shininess", 32.0f);
 
-	taxiMat = std::make_shared<Material>(litObjectShader);
-	taxiMat->addTexture(&AssetManager::GetTexture("taxi_diffuse"));
-	taxiMat->addTexture(&AssetManager::GetTexture("black_specular"));
-	taxiMat->addTexture(&AssetManager::GetTexture("black_emissive"));
-	taxiMat->addParameter("material.shininess", 32.0f);
+	Material& taxi_mat = AssetManager::CreateMaterial("taxi", &AssetManager::GetShader("lit_object")); 
+	taxi_mat.addTexture(&AssetManager::GetTexture("taxi_diffuse"));
+	taxi_mat.addTexture(&AssetManager::GetTexture("black_specular"));
+	taxi_mat.addTexture(&AssetManager::GetTexture("black_emissive")); 
+	taxi_mat.addParameter("material.shininess", 32.0f); 
 
-	std::shared_ptr<Material> bullet_mat = std::make_shared<Material>(bulletShader);
-	bullet_mat->addParameter("emissive", 1.0f, 1.0f, 1.0f);
+	Material& bullet_mat = AssetManager::CreateMaterial("bullet", &AssetManager::GetShader("bullet"));
+	bullet_mat.addParameter("emissive", 1.0f, 1.0f, 1.0f); 
 
-	renderer->addMaterial(crateMat);
-	renderer->addMaterial(groundMat);
-	renderer->addMaterial(bullet_mat);
-	renderer->addMaterial(taxiMat);
+	renderer->addMaterial(&AssetManager::GetMaterial("crate"));
+	renderer->addMaterial(&AssetManager::GetMaterial("ground"));
+	renderer->addMaterial(&AssetManager::GetMaterial("taxi"));
+	renderer->addMaterial(&AssetManager::GetMaterial("bullet"));
 
 
 	//  meshes, models and objects
@@ -111,16 +117,16 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 	AssetManager::LoadMeshCollection("taxi", "taxi/taxi.fbx");
 
 	AssetManager::CreateModel("crate");
-	AssetManager::GetModel("crate").addMesh(&AssetManager::GetSingleMesh("cube"), crateMat);
+	AssetManager::GetModel("crate").addMesh(&AssetManager::GetSingleMesh("cube"), &AssetManager::GetMaterial("crate")); 
 
 	AssetManager::CreateModel("ground");
-	AssetManager::GetModel("ground").addMesh(&AssetManager::GetSingleMesh("plane"), groundMat);
+	AssetManager::GetModel("ground").addMesh(&AssetManager::GetSingleMesh("plane"), &AssetManager::GetMaterial("ground"));
 
 	AssetManager::CreateModel("bullet");
-	AssetManager::GetModel("bullet").addMesh(&AssetManager::GetSingleMesh("cube"), bullet_mat);
+	AssetManager::GetModel("bullet").addMesh(&AssetManager::GetSingleMesh("cube"), &AssetManager::GetMaterial("bullet"));
 
 	AssetManager::CreateModel("taxi");
-	AssetManager::GetModel("taxi").addMeshes(&AssetManager::GetMeshCollection("taxi"), taxiMat);
+	AssetManager::GetModel("taxi").addMeshes(&AssetManager::GetMeshCollection("taxi"), &AssetManager::GetMaterial("taxi"));
 
 
 	//  objects
@@ -150,12 +156,6 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 	testMesh->setRotation(Quaternion{ Vector3::unitX, Maths::toRadians(-90.0f) });
 
 
-	//  player (camera)
-	player = std::make_unique<Player>(1.5f, 5.0f, renderer_);
-	currentCam = player->getCamera().lock();
-	renderer->setCamera(player->getCamera());
-
-
 	//  lights
 	Vector3 dir_light{ 0.5f, -1.0f, 0.75f };
 	dir_light.normalize();
@@ -165,8 +165,6 @@ void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
 void FirstPersonScene::unload()
 {
 	player->unload();
-	litObjectShader->deleteProgram();
-	bulletShader->deleteProgram();
 }
 
 
