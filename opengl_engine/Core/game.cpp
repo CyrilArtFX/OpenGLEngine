@@ -140,6 +140,9 @@ void Game::processInput(GLFWwindow* glWindow)
 		glfwSetWindowShouldClose(glWindow, true);
 	}
 
+
+	
+
 	//  pause/unpause the game when p is pressed
 	if (glfwGetKey(glWindow, GLFW_KEY_P) == GLFW_PRESS && !pauseInptPrsd)
 	{
