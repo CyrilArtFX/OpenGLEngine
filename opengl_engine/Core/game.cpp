@@ -1,5 +1,6 @@
 #include "game.h"
 #include <Assets/assetManager.h>
+#include <Inputs/input.h>
 
 
 Game::Game()
@@ -58,6 +59,15 @@ bool Game::initialize(int wndw_width, int wndw_height, std::string wndw_name, bo
 		std::cout << "Failed to initialize GLAD" << std::endl;
 		return false;
 	}
+
+
+	//  initialize SDL Events
+	if (SDL_Init(SDL_INIT_EVENTS) != 0)
+	{
+		std::cout << "Failed to initialize SDL Events" << std::endl;
+		return false;
+	}
+
 
 	//  configure global OpenGL properties
 	glEnable(GL_DEPTH_TEST);
@@ -134,6 +144,14 @@ void Game::unloadScene()
 
 void Game::processInput(GLFWwindow* glWindow)
 {
+	Input::UpdateKeys();
+
+	if (Input::IsKeyPressed(SDL_SCANCODE_J))
+	{
+		std::cout << "test 1 2 1 2\n";
+	}
+
+
 	//  close window when escape is pressed
 	if (glfwGetKey(glWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 	{
@@ -177,22 +195,22 @@ void Game::processInput(GLFWwindow* glWindow)
 	{
 		//  move freecam
 		if (glfwGetKey(glWindow, GLFW_KEY_W) == GLFW_PRESS)
-			freecam->freecamKeyboard(Forward, deltaTime);
+			freecam->freecamKeyboard(Camera_Movement::Forward, deltaTime);
 
 		if (glfwGetKey(glWindow, GLFW_KEY_S) == GLFW_PRESS)
-			freecam->freecamKeyboard(Backward, deltaTime);
+			freecam->freecamKeyboard(Camera_Movement::Backward, deltaTime);
 
 		if (glfwGetKey(glWindow, GLFW_KEY_A) == GLFW_PRESS)
-			freecam->freecamKeyboard(Left, deltaTime);
+			freecam->freecamKeyboard(Camera_Movement::Left, deltaTime);
 
 		if (glfwGetKey(glWindow, GLFW_KEY_D) == GLFW_PRESS)
-			freecam->freecamKeyboard(Right, deltaTime);
+			freecam->freecamKeyboard(Camera_Movement::Right, deltaTime);
 
 		if (glfwGetKey(glWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
-			freecam->freecamKeyboard(Up, deltaTime);
+			freecam->freecamKeyboard(Camera_Movement::Up, deltaTime);
 
 		if (glfwGetKey(glWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-			freecam->freecamKeyboard(Down, deltaTime);
+			freecam->freecamKeyboard(Camera_Movement::Down, deltaTime);
 	}
 }
 

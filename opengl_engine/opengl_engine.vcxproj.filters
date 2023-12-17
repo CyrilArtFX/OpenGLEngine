@@ -93,7 +93,7 @@
     <ClCompile Include="Assets\assetMaterial.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Inputs\Input.cpp">
+    <ClCompile Include="Inputs\input.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -185,7 +185,7 @@
     <ClInclude Include="Assets\assetMaterial.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Inputs\Input.h">
+    <ClInclude Include="Inputs\input.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
