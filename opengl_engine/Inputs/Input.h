@@ -1,6 +1,5 @@
 #pragma once
-#include <SDL/SDL.h>
-#include <SDL/SDL_scancode.h>
+#include <glfw/glfw3.h>
 #include <unordered_map>
 #include <vector>
 
@@ -19,14 +18,14 @@ class Input
 public:
 	static void UpdateKeys();
 	
-	static KeyState GetKeyState(SDL_Scancode key);
-	static bool IsKeyUp(SDL_Scancode key);
-	static bool IsKeyDown(SDL_Scancode key);
-	static bool IsKeyPressed(SDL_Scancode key);
-	static bool IsKeyReleased(SDL_Scancode key);
+	static KeyState GetKeyState(int key);
+	static bool IsKeyUp(int key);
+	static bool IsKeyDown(int key);
+	static bool IsKeyPressed(int key);
+	static bool IsKeyReleased(int key);
 
 private:
-	static std::unordered_map<SDL_Scancode, KeyState> keys;
-	static std::vector<SDL_Scancode> pendingKeys;
+	static std::unordered_map<int, KeyState> keys;
+	static std::vector<int> pendingKeys;
 };
 

@@ -45,6 +45,13 @@ bool Game::initialize(int wndw_width, int wndw_height, std::string wndw_name, bo
 		}
 	); //  link mouse scroll callback function
 
+	glfwSetKeyCallback(gl_window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
+		{
+			auto self = static_cast<Game*>(glfwGetWindowUserPointer(window));
+			self->processKeyboard(window, key, scancode, action, mods);
+		}
+	); //  link keyboard callback function
+
 
 	//  create renderer
 	renderer = std::make_shared<Renderer>(Color{ 50, 75, 75, 255 }, *window);
@@ -57,14 +64,6 @@ bool Game::initialize(int wndw_width, int wndw_height, std::string wndw_name, bo
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
 		std::cout << "Failed to initialize GLAD" << std::endl;
-		return false;
-	}
-
-
-	//  initialize SDL Events
-	if (SDL_Init(SDL_INIT_EVENTS) != 0)
-	{
-		std::cout << "Failed to initialize SDL Events" << std::endl;
 		return false;
 	}
 
@@ -146,7 +145,7 @@ void Game::processInput(GLFWwindow* glWindow)
 {
 	Input::UpdateKeys();
 
-	if (Input::IsKeyPressed(SDL_SCANCODE_J))
+	if (Input::IsKeyPressed(GLFW_KEY_J))
 	{
 		std::cout << "test 1 2 1 2\n";
 	}
@@ -290,4 +289,9 @@ void Game::processScroll(GLFWwindow* glWindow, double xoffset, double yoffset)
 	{
 		freecam->freecamMouseScroll(scroll_offset);
 	}
+}
+
+void Game::processKeyboard(GLFWwindow* glWindow, int key, int scancode, int action, int mods)
+{
+
 }
