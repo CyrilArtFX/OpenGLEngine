@@ -13,6 +13,8 @@ Vector2 Input::deltaMousePos;
 float Input::futureScrollOffset;
 float Input::currentScrollOffset;
 
+uint8_t Input::frameIndex;
+
 
 void Input::Initialize()
 {
@@ -23,11 +25,20 @@ void Input::Initialize()
 	futureMousePos = Vector2::zero;
 	currentMousePos = Vector2::zero;
 	deltaMousePos = Vector2::zero;
+
+	futureScrollOffset = 0.0f;
+	currentScrollOffset = 0.0f;
+
+	frameIndex = 0;
 }
 
-void Input::UpdateInputSystem(uint8_t currentFrameIndex)
+void Input::UpdateInputSystem()
 {
-	uint8_t frame_minus_one = FrameIndexMinus(currentFrameIndex);
+	//  update frame index;
+	frameIndex = FrameIndexPlus(frameIndex);
+
+
+	uint8_t frame_minus_one = FrameIndexMinus(frameIndex);
 	uint8_t frame_minus_two = FrameIndexMinus(frame_minus_one);
 
 	//  register keys that were processed last frame
@@ -143,6 +154,50 @@ void Input::ProcessMouseScroll(double mouseScroll)
 float Input::GetScrollOffset()
 {
 	return currentScrollOffset;
+}
+
+
+
+void Input::ProcessMouse(GLFWwindow* glWindow, double xpos, double ypos)
+{
+	ProcessMouseMovement(xpos, ypos);
+}
+
+void Input::ProcessScroll(GLFWwindow* glWindow, double xoffset, double yoffset)
+{
+	ProcessMouseScroll(yoffset);
+}
+
+void Input::ProcessKeyboard(GLFWwindow* glWindow, int key, int scancode, int action, int mods)
+{
+	switch (action)
+	{
+	case GLFW_PRESS:
+		ProcessKey(frameIndex, key, KeyState::KeyPressed);
+		break;
+
+	case GLFW_REPEAT:
+		//  currently doesn't use repeat, but may in the future
+		break;
+
+	case GLFW_RELEASE:
+		ProcessKey(frameIndex, key, KeyState::KeyReleased);
+		break;
+	}
+}
+
+void Input::ProcessMouseButton(GLFWwindow* glWindow, int button, int action, int mods)
+{
+	switch (action)
+	{
+	case GLFW_PRESS:
+		Input::ProcessKey(frameIndex, button, KeyState::KeyPressed);
+		break;
+
+	case GLFW_RELEASE:
+		Input::ProcessKey(frameIndex, button, KeyState::KeyReleased);
+		break;
+	}
 }
 
 

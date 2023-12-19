@@ -1,11 +1,9 @@
 == COURT TERME ==
 
-~ Mettre le système d'inputs propre
-
 ~ Changer le duo game/scene en un trio engine/game/scene où :
-	- engine correspond globalement au game actuel et s'occupe de gérer les events globaux et de dispatch l'update, le draw et les inputs (engine contiendra un pointeur vers l'interface game et plus l'interface scene)
-	- game correspond à la partie logique de scene actuel et contiendra la logique propre à chaque jeu (game contiendra un pointeur vers l'interface scene)
-	- scene correspond à la partie load de scene actuel et s'occupera de charger/décharger les objets
+	- engine correspond globalement au game actuel et s'occupe de gérer les events globaux et de dispatch l'update et le draw (engine contiendra un pointeur vers l'interface game et plus l'interface scene)
+	- game sera un ajout pour des fonctionnalités globales dans un jeu qui survivraient au changement de scène (game contiendra un pointeur vers l'interface scene)
+	- scene correspond globalement au scene actuel avec le chargement des objets et de leur transmettre les update si besoin. scene devra toujours être capable de fournir une caméra comme actuellement.
 
 ~ Mettre un système de physique basique pour le doomlike (collisions cubes AABB, gravité, raycasts)
 
@@ -27,6 +25,6 @@
 
 == REFLEXIONS ==
 
-~ Mettre le renderer en classe statique ? permettrait d'assigner certains assets (comme les materiaux) directement à la création par exemple + de ne pas avoir à le passer en paramètre pour le joueur qui va devoir créer des balles
+~ Mettre le renderer en classe statique ? permettrait d'assigner certains assets (comme les materiaux) directement à la création par exemple + de ne pas avoir à le passer en paramètre pour le joueur qui va devoir créer des balles (par exemple)
 
 ~ Mettre un système pour détecter automatiquement la profondeur de couleur au chargement de la texture pour éviter les problèmes (si la profondeur de couleur est 24, pas d'alpha (même avec un .png), donc charger avec GL_RGBA va faire un crash) -> regarder comment gregory a fait pour xenity

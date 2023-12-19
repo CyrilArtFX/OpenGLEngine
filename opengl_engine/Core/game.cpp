@@ -33,29 +33,25 @@ bool Game::initialize(int wndw_width, int wndw_height, std::string wndw_name, bo
 
 	glfwSetCursorPosCallback(gl_window, [](GLFWwindow* window, double xpos, double ypos)
 		{
-			auto self = static_cast<Game*>(glfwGetWindowUserPointer(window));
-			self->processMouse(window, xpos, ypos);
+			Input::ProcessMouse(window, xpos, ypos);
 		}
 	); //  link mouse pos callback function
 
 	glfwSetScrollCallback(gl_window, [](GLFWwindow* window, double xoffset, double yoffset)
 		{
-			auto self = static_cast<Game*>(glfwGetWindowUserPointer(window));
-			self->processScroll(window, xoffset, yoffset);
+			Input::ProcessScroll(window, xoffset, yoffset);
 		}
 	); //  link mouse scroll callback function
 
 	glfwSetKeyCallback(gl_window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
 		{
-			auto self = static_cast<Game*>(glfwGetWindowUserPointer(window));
-			self->processKeyboard(window, key, scancode, action, mods);
+			Input::ProcessKeyboard(window, key, scancode, action, mods);
 		}
 	); //  link keyboard callback function
 
 	glfwSetMouseButtonCallback(gl_window, [](GLFWwindow* window, int button, int action, int mods)
 		{
-			auto self = static_cast<Game*>(glfwGetWindowUserPointer(window));
-			self->processMouseButton(window, button, action, mods);
+			Input::ProcessMouseButton(window, button, action, mods);
 		}
 	); //  link mouse button callback function
 
@@ -95,7 +91,6 @@ void Game::run()
 	{
 		//  time logic part
 		// -----------------
-		inputFrameIndex = Input::FrameIndexPlus(inputFrameIndex);
 		float current_frame = glfwGetTime();
 		deltaTime = current_frame - lastFrame;
 		lastFrame = current_frame;
@@ -103,7 +98,7 @@ void Game::run()
 
 		//  inputs update part
 		// -------------
-		Input::UpdateInputSystem(inputFrameIndex); //  update the keys that were registered during the last frame
+		Input::UpdateInputSystem(); //  update the keys that were registered during the last frame
 
 
 		//  update part
@@ -234,52 +229,9 @@ void Game::disableFreecam()
 }
 
 
-//  callback functions
-
+//  window resize callback functions
 void Game::windowResize(GLFWwindow* glWindow, int width, int height)
 {
 	glViewport(0, 0, width, height); //  resize OpenGL viewport when GLFW is resized
 	window->changeSize(width, height);
-}
-
-void Game::processMouse(GLFWwindow* glWindow, double xpos, double ypos)
-{
-	Input::ProcessMouseMovement(xpos, ypos);
-}
-
-void Game::processScroll(GLFWwindow* glWindow, double xoffset, double yoffset)
-{
-	Input::ProcessMouseScroll(yoffset);
-}
-
-void Game::processKeyboard(GLFWwindow* glWindow, int key, int scancode, int action, int mods)
-{
-	switch (action)
-	{
-	case GLFW_PRESS:
-		Input::ProcessKey(inputFrameIndex, key, KeyState::KeyPressed);
-		break;
-
-	case GLFW_REPEAT:
-		//  currently doesn't use repeat, but may in the future
-		break;
-
-	case GLFW_RELEASE:
-		Input::ProcessKey(inputFrameIndex, key, KeyState::KeyReleased);
-		break;
-	}
-}
-
-void Game::processMouseButton(GLFWwindow* glWindow, int button, int action, int mods)
-{
-	switch (action)
-	{
-	case GLFW_PRESS:
-		Input::ProcessKey(inputFrameIndex, button, KeyState::KeyPressed);
-		break;
-
-	case GLFW_RELEASE:
-		Input::ProcessKey(inputFrameIndex, button, KeyState::KeyReleased);
-		break;
-	}
 }

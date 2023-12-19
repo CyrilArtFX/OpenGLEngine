@@ -28,16 +28,10 @@ public:
 	void loadScene(std::weak_ptr<Scene> scene_);
 	void unloadScene();
 
-
-
-	//  functions redirected
-	void windowResize(GLFWwindow* glWindow, int width, int height);
-	void processMouse(GLFWwindow* glWindow, double xpos, double ypos);
-	void processScroll(GLFWwindow* glWindow, double xoffset, double yoffset);
-	void processKeyboard(GLFWwindow* glWindow, int key, int scancode, int action, int mods);
-	void processMouseButton(GLFWwindow* glWindow, int button, int action, int mods);
-
 	void engineUpdate(GLFWwindow* glWindow);
+
+	//  window resize function redirected
+	void windowResize(GLFWwindow* glWindow, int width, int height);
 
 private:
 	//  scene
@@ -55,9 +49,6 @@ private:
 	//  time
 	float deltaTime = 0.0f;
 	float lastFrame = 0.0f;
-
-	//  inputs
-	uint8_t inputFrameIndex = 0;
 
 	//  pause and freecam
 	bool gamePaused{ false };
