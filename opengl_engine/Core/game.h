@@ -35,6 +35,7 @@ public:
 	void processMouse(GLFWwindow* glWindow, double xpos, double ypos);
 	void processScroll(GLFWwindow* glWindow, double xoffset, double yoffset);
 	void processKeyboard(GLFWwindow* glWindow, int key, int scancode, int action, int mods);
+	void processMouseButton(GLFWwindow* glWindow, int button, int action, int mods);
 
 	void engineUpdate(GLFWwindow* glWindow);
 

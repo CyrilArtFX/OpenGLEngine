@@ -1,5 +1,6 @@
 #include "ExpositionScene.h"
 
+#include <Inputs/input.h>
 #include <GLFW/glfw3.h>
 
 
@@ -136,6 +137,27 @@ void ExpositionScene::unload()
 
 void ExpositionScene::update(float dt)
 {
+	//  move camera
+	if (Input::IsKeyDown(GLFW_KEY_W))
+		currentCam->freecamKeyboard(Forward, dt);
+
+	if (Input::IsKeyDown(GLFW_KEY_S))
+		currentCam->freecamKeyboard(Backward, dt);
+
+	if (Input::IsKeyDown(GLFW_KEY_A))
+		currentCam->freecamKeyboard(Left, dt);
+
+	if (Input::IsKeyDown(GLFW_KEY_D))
+		currentCam->freecamKeyboard(Right, dt);
+
+	if (Input::IsKeyDown(GLFW_KEY_SPACE))
+		currentCam->freecamKeyboard(Up, dt);
+
+	if (Input::IsKeyDown(GLFW_KEY_LEFT_SHIFT))
+		currentCam->freecamKeyboard(Down, dt);
+
+
+
 	flashLight.setPosition(currentCam->getPosition());
 	flashLight.setDirection(currentCam->getForward());
 
@@ -144,24 +166,6 @@ void ExpositionScene::update(float dt)
 
 void ExpositionScene::processInputs(GLFWwindow* glWindow, float dt)
 {
-	//  move camera
-	if (glfwGetKey(glWindow, GLFW_KEY_W) == GLFW_PRESS)
-		currentCam->freecamKeyboard(Forward, dt);
-
-	if (glfwGetKey(glWindow, GLFW_KEY_S) == GLFW_PRESS)
-		currentCam->freecamKeyboard(Backward, dt);
-
-	if (glfwGetKey(glWindow, GLFW_KEY_A) == GLFW_PRESS)
-		currentCam->freecamKeyboard(Left, dt);
-
-	if (glfwGetKey(glWindow, GLFW_KEY_D) == GLFW_PRESS)
-		currentCam->freecamKeyboard(Right, dt);
-
-	if (glfwGetKey(glWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
-		currentCam->freecamKeyboard(Up, dt);
-
-	if (glfwGetKey(glWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-		currentCam->freecamKeyboard(Down, dt);
 
 }
 

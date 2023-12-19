@@ -52,6 +52,13 @@ bool Game::initialize(int wndw_width, int wndw_height, std::string wndw_name, bo
 		}
 	); //  link keyboard callback function
 
+	glfwSetMouseButtonCallback(gl_window, [](GLFWwindow* window, int button, int action, int mods)
+		{
+			auto self = static_cast<Game*>(glfwGetWindowUserPointer(window));
+			self->processMouseButton(window, button, action, mods);
+		}
+	); //  link mouse button callback function
+
 
 	//  create renderer
 	renderer = std::make_shared<Renderer>(Color{ 50, 75, 75, 255 }, *window);
@@ -177,7 +184,6 @@ void Game::engineUpdate(GLFWwindow* glWindow)
 
 	if (freecamMode)
 	{
-		std::cout << deltaTime << std::endl;
 		//  move freecam
 		if (Input::IsKeyDown(GLFW_KEY_W))
 			freecam->freecamKeyboard(Camera_Movement::Forward, deltaTime);
@@ -291,6 +297,20 @@ void Game::processKeyboard(GLFWwindow* glWindow, int key, int scancode, int acti
 
 	case GLFW_RELEASE:
 		Input::ProcessKey(inputFrameIndex, key, KeyState::KeyReleased);
+		break;
+	}
+}
+
+void Game::processMouseButton(GLFWwindow* glWindow, int button, int action, int mods)
+{
+	switch (action)
+	{
+	case GLFW_PRESS:
+		Input::ProcessKey(inputFrameIndex, button, KeyState::KeyPressed);
+		break;
+
+	case GLFW_RELEASE:
+		Input::ProcessKey(inputFrameIndex, button, KeyState::KeyReleased);
 		break;
 	}
 }
