@@ -53,6 +53,8 @@ public:
 
 	float getFov() { return fov; }
 
+	void copyCameraTransform(Camera& camera);
+
 
 private:
 	void computeYawPitch();

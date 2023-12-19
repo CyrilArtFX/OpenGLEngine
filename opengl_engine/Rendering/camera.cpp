@@ -88,3 +88,13 @@ void Camera::computeYawPitch()
 {
 	setRotation(Quaternion::fromEuler(Maths::toRadians(yaw), 0.0f, Maths::toRadians(pitch)));
 }
+
+
+void Camera::copyCameraTransform(Camera& camera)
+{
+	fov = camera.fov;
+	yaw = camera.yaw;
+	pitch = camera.pitch;
+
+	pasteTransform(camera);
+}

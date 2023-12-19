@@ -46,6 +46,17 @@ void Transform::incrementRotation(Quaternion increment)
 }
 
 
+void Transform::pasteTransform(Transform& transform)
+{
+	position = transform.getPosition();
+	rotation = transform.getRotation();
+	scale = transform.getScale();
+	modelMatrix = transform.getModelMatrix();
+	normalMatrix = transform.getNormalMatrix();
+	matrixDirty = false;
+}
+
+
 const Matrix4 Transform::getModelMatrix()
 { 
 	if (matrixDirty) computeMatrix();

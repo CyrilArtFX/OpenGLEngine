@@ -19,6 +19,10 @@ public:
 	void setRotation(Quaternion newRotation);
 	void incrementRotation(Quaternion increment);
 
+
+	void pasteTransform(Transform& transform);
+
+
 	const Vector3 getPosition() const { return position; }
 	const Vector3 getScale() const { return scale; }
 	const Quaternion getRotation() const { return rotation; }
