@@ -12,9 +12,9 @@
 
 == MOYEN TERME ==
 
-~ Intégrer l'ECS (attendre le cours sur le multithreading dans un engine)
-
 ~ Créer un système de HUD (intégrer le texte tout de suite ?)
+
+~ Ajouter un système d'events (observer pattern) pour notamment un event lorsque la pause est activée
 
 ~ Améliorer le système de lumière
 
@@ -22,9 +22,13 @@
 
 ~ Mettre un vrai système de physique
 
+~ Intégrer l'ECS (attendre le cours sur le multithreading dans un engine)
+
 
 == REFLEXIONS ==
 
 ~ Mettre le renderer en classe statique ? permettrait d'assigner certains assets (comme les materiaux) directement à la création par exemple + de ne pas avoir à le passer en paramètre pour le joueur qui va devoir créer des balles (par exemple)
 
 ~ Mettre un système pour détecter automatiquement la profondeur de couleur au chargement de la texture pour éviter les problèmes (si la profondeur de couleur est 24, pas d'alpha (même avec un .png), donc charger avec GL_RGBA va faire un crash) -> regarder comment gregory a fait pour xenity
+
+~ Quand l'asset manager doit retourner une valeur nulle parce que la valeur demandée est inexistante, au lieu de créer une variable temporaire et de retourner un pointeur vers cette variable (pas ouf), plutôt avoir dans chaque liste d'asset une valeur "par défaut" à pouvoir retourner au besoin

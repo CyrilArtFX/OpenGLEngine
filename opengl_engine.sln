@@ -9,6 +9,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sandbox", "sandbox\sandbox.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shaders", "Shaders\Shaders.vcxproj", "{407DB314-264E-4F1E-97A6-AFCC6FB3EFAF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "doomlike", "doomlike\doomlike.vcxproj", "{D8C7A6FD-BBE7-443E-BCF5-5EBC6A8BF61E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7BDF02E2-AB62-4176-987F-2C2B99391124} = {7BDF02E2-AB62-4176-987F-2C2B99391124}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +46,14 @@ Global
 		{407DB314-264E-4F1E-97A6-AFCC6FB3EFAF}.Release|x64.Build.0 = Release|x64
 		{407DB314-264E-4F1E-97A6-AFCC6FB3EFAF}.Release|x86.ActiveCfg = Release|Win32
 		{407DB314-264E-4F1E-97A6-AFCC6FB3EFAF}.Release|x86.Build.0 = Release|Win32
+		{D8C7A6FD-BBE7-443E-BCF5-5EBC6A8BF61E}.Debug|x64.ActiveCfg = Debug|x64
+		{D8C7A6FD-BBE7-443E-BCF5-5EBC6A8BF61E}.Debug|x64.Build.0 = Debug|x64
+		{D8C7A6FD-BBE7-443E-BCF5-5EBC6A8BF61E}.Debug|x86.ActiveCfg = Debug|Win32
+		{D8C7A6FD-BBE7-443E-BCF5-5EBC6A8BF61E}.Debug|x86.Build.0 = Debug|Win32
+		{D8C7A6FD-BBE7-443E-BCF5-5EBC6A8BF61E}.Release|x64.ActiveCfg = Release|x64
+		{D8C7A6FD-BBE7-443E-BCF5-5EBC6A8BF61E}.Release|x64.Build.0 = Release|x64
+		{D8C7A6FD-BBE7-443E-BCF5-5EBC6A8BF61E}.Release|x86.ActiveCfg = Release|Win32
+		{D8C7A6FD-BBE7-443E-BCF5-5EBC6A8BF61E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
