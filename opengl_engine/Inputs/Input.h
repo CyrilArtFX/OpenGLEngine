@@ -16,7 +16,10 @@ enum KeyState : uint8_t
 class Input
 {
 public:
-	static void UpdateKeys();
+	static void InitializeArrays();
+	static void UpdateKeys(uint8_t currentFrameIndex);
+
+	static void ProcessKey(uint8_t processFrameIndex, int key, KeyState state);
 	
 	static KeyState GetKeyState(int key);
 	static bool IsKeyUp(int key);
@@ -24,8 +27,13 @@ public:
 	static bool IsKeyPressed(int key);
 	static bool IsKeyReleased(int key);
 
+
+	static uint8_t FrameIndexPlus(uint8_t frameIndex);
+	static uint8_t FrameIndexMinus(uint8_t frameIndex);
+
 private:
 	static std::unordered_map<int, KeyState> keys;
-	static std::vector<int> pendingKeys;
+	static std::unordered_map<uint8_t, std::vector<int>> pendingKeys;
+	static std::unordered_map<uint8_t, std::unordered_map<int, KeyState>> processingKeys;
 };
 

@@ -36,7 +36,7 @@ public:
 	void processScroll(GLFWwindow* glWindow, double xoffset, double yoffset);
 	void processKeyboard(GLFWwindow* glWindow, int key, int scancode, int action, int mods);
 
-	void processInput(GLFWwindow* glWindow);
+	void engineUpdate(GLFWwindow* glWindow);
 
 private:
 	//  scene
@@ -54,6 +54,9 @@ private:
 	//  time
 	float deltaTime = 0.0f;
 	float lastFrame = 0.0f;
+
+	//  inputs
+	uint8_t inputFrameIndex = 0;
 
 	//  pause and freecam
 	bool gamePaused{ false };

@@ -58,6 +58,7 @@ bool Game::initialize(int wndw_width, int wndw_height, std::string wndw_name, bo
 
 	//  create freecam
 	freecam = std::make_shared<Camera>(Vector3::zero);
+	freecam->setSpeed(4.0f);
 
 
 	//  initialize GLAD
@@ -66,6 +67,10 @@ bool Game::initialize(int wndw_width, int wndw_height, std::string wndw_name, bo
 		std::cout << "Failed to initialize GLAD" << std::endl;
 		return false;
 	}
+
+
+	//  initialize input system
+	Input::InitializeArrays(); 
 
 
 	//  configure global OpenGL properties
@@ -85,16 +90,22 @@ void Game::run()
 	//  main loop
 	while (!glfwWindowShouldClose(window->getGLFWwindow()))
 	{
-		//  time logic
+		//  time logic part
+		// -----------------
+		inputFrameIndex = Input::FrameIndexPlus(inputFrameIndex);
 		float current_frame = glfwGetTime();
 		deltaTime = current_frame - lastFrame;
 		lastFrame = current_frame;
 
 
-		//  inputs part
+		//  inputs update part
 		// -------------
-		processInput(window->getGLFWwindow());
+		Input::UpdateKeys(inputFrameIndex); //  update the keys that were registered during the last frame
 
+
+		//  update part
+		// -------------
+		engineUpdate(window->getGLFWwindow());
 
 		if (!gamePaused)
 		{
@@ -104,17 +115,17 @@ void Game::run()
 
 		//  rendering part
 		// ----------------
-
 		renderer->draw();
 
 
 
-		//  events and buffer swap
+		//  events and buffer swap part
+		// -----------------------------
 		glfwSwapBuffers(window->getGLFWwindow());
 		glfwPollEvents();
 	}
 
-
+	//  close engine
 	unloadScene();
 	AssetManager::DeleteObjects();
 }
@@ -141,74 +152,49 @@ void Game::unloadScene()
 
 
 
-void Game::processInput(GLFWwindow* glWindow)
+void Game::engineUpdate(GLFWwindow* glWindow)
 {
-	Input::UpdateKeys();
-
-	if (Input::IsKeyPressed(GLFW_KEY_J))
-	{
-		std::cout << "test 1 2 1 2\n";
-	}
-
-
 	//  close window when escape is pressed
-	if (glfwGetKey(glWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	if (Input::IsKeyPressed(GLFW_KEY_ESCAPE))
 	{
 		glfwSetWindowShouldClose(glWindow, true);
 	}
 
 
-	
-
 	//  pause/unpause the game when p is pressed
-	if (glfwGetKey(glWindow, GLFW_KEY_P) == GLFW_PRESS && !pauseInptPrsd)
+	if (Input::IsKeyPressed(GLFW_KEY_P))
 	{
-		pauseInptPrsd = true;
 		if (!gamePaused) pauseGame();
 		else unpauseGame();
 	}
-	if (glfwGetKey(glWindow, GLFW_KEY_P) == GLFW_RELEASE)
-	{
-		pauseInptPrsd = false;
-	}
 
 	//  active/desactive the freecam mode when m is pressed
-	if (glfwGetKey(glWindow, GLFW_KEY_SEMICOLON) == GLFW_PRESS && !freecamInptPrsd)
+	if (Input::IsKeyPressed(GLFW_KEY_SEMICOLON))
 	{
-		freecamInptPrsd = true;
 		if (!freecamMode) enableFreecam();
 		else disableFreecam();
-	}
-	if (glfwGetKey(glWindow, GLFW_KEY_SEMICOLON) == GLFW_RELEASE)
-	{
-		freecamInptPrsd = false;
-	}
-
-
-	if (!gamePaused)
-	{
-		if (scene) scene->processInputs(glWindow, deltaTime);
 	}
 
 	if (freecamMode)
 	{
+		std::cout << deltaTime << std::endl;
 		//  move freecam
-		if (glfwGetKey(glWindow, GLFW_KEY_W) == GLFW_PRESS)
+		if (Input::IsKeyDown(GLFW_KEY_W))
 			freecam->freecamKeyboard(Camera_Movement::Forward, deltaTime);
 
-		if (glfwGetKey(glWindow, GLFW_KEY_S) == GLFW_PRESS)
+		if (Input::IsKeyDown(GLFW_KEY_S))
 			freecam->freecamKeyboard(Camera_Movement::Backward, deltaTime);
 
-		if (glfwGetKey(glWindow, GLFW_KEY_A) == GLFW_PRESS)
+		if (Input::IsKeyDown(GLFW_KEY_A))
 			freecam->freecamKeyboard(Camera_Movement::Left, deltaTime);
 
-		if (glfwGetKey(glWindow, GLFW_KEY_D) == GLFW_PRESS)
+		if (Input::IsKeyDown(GLFW_KEY_D))
 			freecam->freecamKeyboard(Camera_Movement::Right, deltaTime);
 
-		if (glfwGetKey(glWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
+		if (Input::IsKeyDown(GLFW_KEY_SPACE))
 			freecam->freecamKeyboard(Camera_Movement::Up, deltaTime);
 
-		if (glfwGetKey(glWindow, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+		if (Input::IsKeyDown(GLFW_KEY_LEFT_SHIFT))
 			freecam->freecamKeyboard(Camera_Movement::Down, deltaTime);
 	}
 }
@@ -293,5 +279,18 @@ void Game::processScroll(GLFWwindow* glWindow, double xoffset, double yoffset)
 
 void Game::processKeyboard(GLFWwindow* glWindow, int key, int scancode, int action, int mods)
 {
+	switch (action)
+	{
+	case GLFW_PRESS:
+		Input::ProcessKey(inputFrameIndex, key, KeyState::KeyPressed);
+		break;
 
+	case GLFW_REPEAT:
+		//  currently doesn't use repeat, but may in the future
+		break;
+
+	case GLFW_RELEASE:
+		Input::ProcessKey(inputFrameIndex, key, KeyState::KeyReleased);
+		break;
+	}
 }
