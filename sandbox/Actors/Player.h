@@ -1,15 +1,13 @@
 #pragma once
+#include "bullet.h"
 
 #include <Rendering/camera.h>
 #include <Objects/transform.h>
 
-#include "bullet.h"
-
 #include <vector>
-#include <GLFW/glfw3.h>
 
 
-class Player
+class Player : public Transform
 {
 public:
 	Player(float height, float speed, std::weak_ptr<class Renderer> renderer);
@@ -18,16 +16,11 @@ public:
 
 	void unload();
 
-	void processInputs(GLFWwindow* glWindow, float dt);
-	void processMouse(float xOffset, float yOffset);
-	void processScroll(float scrollOffset);
-
 
 	std::weak_ptr<Camera> getCamera() { return camera; }
 
 private:
 	std::shared_ptr<Camera> camera;
-	Transform transform;
 
 	std::weak_ptr<class Renderer> rendererWeak;
 

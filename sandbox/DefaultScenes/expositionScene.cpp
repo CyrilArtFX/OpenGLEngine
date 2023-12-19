@@ -156,25 +156,15 @@ void ExpositionScene::update(float dt)
 	if (Input::IsKeyDown(GLFW_KEY_LEFT_SHIFT))
 		currentCam->freecamKeyboard(Down, dt);
 
+	Vector2 mouse_delta = Input::GetMouseDelta();
+	currentCam->freecamMouseMovement(mouse_delta.x, mouse_delta.y);
+
+	currentCam->freecamMouseScroll(Input::GetScrollOffset());
+
 
 
 	flashLight.setPosition(currentCam->getPosition());
 	flashLight.setDirection(currentCam->getForward());
 
 	cube3.incrementRotation(Quaternion{ Vector3::unitX, Maths::toRadians(90.0f) * dt });
-}
-
-void ExpositionScene::processInputs(GLFWwindow* glWindow, float dt)
-{
-
-}
-
-void ExpositionScene::processMouse(float xOffset, float yOffset)
-{
-	currentCam->freecamMouseMovement(xOffset, yOffset);
-}
-
-void ExpositionScene::processScroll(float scrollOffset)
-{
-	currentCam->freecamMouseScroll(scrollOffset);
 }

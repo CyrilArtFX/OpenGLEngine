@@ -24,10 +24,6 @@ public:
 
 	void update(float dt) override;
 
-	void processInputs(GLFWwindow* glWindow, float dt) override;
-	void processMouse(float xOffset, float yOffset) override;
-	void processScroll(float scrollOffset) override;
-
 
 private:
 	//  player

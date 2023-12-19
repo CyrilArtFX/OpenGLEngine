@@ -5,13 +5,27 @@ std::unordered_map<int, KeyState> Input::keys;
 std::unordered_map<uint8_t, std::vector<int>> Input::pendingKeys;
 std::unordered_map<uint8_t, std::unordered_map<int, KeyState>> Input::processingKeys;
 
-void Input::InitializeArrays()
+bool Input::firstMouseDelta;
+Vector2 Input::futureMousePos;
+Vector2 Input::currentMousePos;
+Vector2 Input::deltaMousePos;
+
+float Input::futureScrollOffset;
+float Input::currentScrollOffset;
+
+
+void Input::Initialize()
 {
 	processingKeys.reserve(3);
 	pendingKeys.reserve(3);
+
+	firstMouseDelta = true;
+	futureMousePos = Vector2::zero;
+	currentMousePos = Vector2::zero;
+	deltaMousePos = Vector2::zero;
 }
 
-void Input::UpdateKeys(uint8_t currentFrameIndex)
+void Input::UpdateInputSystem(uint8_t currentFrameIndex)
 {
 	uint8_t frame_minus_one = FrameIndexMinus(currentFrameIndex);
 	uint8_t frame_minus_two = FrameIndexMinus(frame_minus_one);
@@ -47,15 +61,27 @@ void Input::UpdateKeys(uint8_t currentFrameIndex)
 
 		pendingKeys[frame_minus_two].clear();
 	}
+
+	//  update mouse position
+	if (firstMouseDelta)
+	{
+		currentMousePos = futureMousePos;
+		firstMouseDelta = false;
+	}
+	deltaMousePos = currentMousePos - futureMousePos;
+	currentMousePos = futureMousePos;
+
+	//  update scroll offset
+	currentScrollOffset = futureScrollOffset;
+	futureScrollOffset = 0.0f;
 }
+
 
 void Input::ProcessKey(uint8_t processFrameIndex, int key, KeyState state)
 {
 	//  register the key in the process wait list
 	processingKeys[processFrameIndex][key] = state;
 }
-
-
 
 KeyState Input::GetKeyState(int key)
 {
@@ -91,6 +117,32 @@ bool Input::IsKeyReleased(int key)
 {
 	KeyState state = GetKeyState(key);
 	return state == KeyState::KeyReleased;
+}
+
+
+void Input::ProcessMouseMovement(double mousePosX, double mousePosY)
+{
+	futureMousePos = Vector2{ (float)mousePosX, (float)mousePosY };
+}
+
+Vector2 Input::GetMousePos()
+{
+	return currentMousePos;
+}
+
+Vector2 Input::GetMouseDelta()
+{
+	return deltaMousePos;
+}
+
+void Input::ProcessMouseScroll(double mouseScroll)
+{
+	futureScrollOffset += (float)mouseScroll;
+}
+
+float Input::GetScrollOffset()
+{
+	return currentScrollOffset;
 }
 
 

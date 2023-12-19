@@ -168,19 +168,3 @@ void FirstPersonScene::update(float dt)
 {
 	player->update(dt);
 }
-
-
-void FirstPersonScene::processInputs(GLFWwindow* glWindow, float dt)
-{
-	player->processInputs(glWindow, dt);
-}
-
-void FirstPersonScene::processMouse(float xOffset, float yOffset)
-{
-	player->processMouse(xOffset, yOffset);
-}
-
-void FirstPersonScene::processScroll(float scrollOffset)
-{
-	player->processScroll(scrollOffset);
-}

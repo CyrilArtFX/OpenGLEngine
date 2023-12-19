@@ -77,15 +77,11 @@ bool Game::initialize(int wndw_width, int wndw_height, std::string wndw_name, bo
 
 
 	//  initialize input system
-	Input::InitializeArrays(); 
+	Input::Initialize(); 
 
 
 	//  configure global OpenGL properties
 	glEnable(GL_DEPTH_TEST);
-
-
-	lastX = wndw_width / 2;
-	lastY = wndw_height / 2;
 
 
 	return true;
@@ -107,7 +103,7 @@ void Game::run()
 
 		//  inputs update part
 		// -------------
-		Input::UpdateKeys(inputFrameIndex); //  update the keys that were registered during the last frame
+		Input::UpdateInputSystem(inputFrameIndex); //  update the keys that were registered during the last frame
 
 
 		//  update part
@@ -156,9 +152,6 @@ void Game::unloadScene()
 }
 
 
-
-
-
 void Game::engineUpdate(GLFWwindow* glWindow)
 {
 	//  close window when escape is pressed
@@ -202,8 +195,14 @@ void Game::engineUpdate(GLFWwindow* glWindow)
 
 		if (Input::IsKeyDown(GLFW_KEY_LEFT_SHIFT))
 			freecam->freecamKeyboard(Camera_Movement::Down, deltaTime);
+
+		Vector2 mouse_delta = Input::GetMouseDelta();
+		freecam->freecamMouseMovement(mouse_delta.x, mouse_delta.y);
+
+		freecam->freecamMouseScroll(Input::GetScrollOffset());
 	}
 }
+
 
 void Game::pauseGame()
 {
@@ -223,8 +222,7 @@ void Game::enableFreecam()
 	freecamMode = true;
 	if (!gamePaused) pauseGame();
 	std::cout << "Freecam mode enabled.\n";
-	freecam->setPosition(scene->getCamera().lock()->getPosition());
-	freecam->setRotation(scene->getCamera().lock()->getRotation());
+	freecam->copyCameraTransform(*scene->getCamera().lock());
 	renderer->setCamera(freecam);
 }
 
@@ -237,6 +235,7 @@ void Game::disableFreecam()
 
 
 //  callback functions
+
 void Game::windowResize(GLFWwindow* glWindow, int width, int height)
 {
 	glViewport(0, 0, width, height); //  resize OpenGL viewport when GLFW is resized
@@ -245,42 +244,12 @@ void Game::windowResize(GLFWwindow* glWindow, int width, int height)
 
 void Game::processMouse(GLFWwindow* glWindow, double xpos, double ypos)
 {
-	if (firstMouse)
-	{
-		lastX = xpos;
-		lastY = ypos;
-		firstMouse = false;
-	}
-
-	float x_offset = lastX - xpos;
-	float y_offset = lastY - ypos;
-	lastX = xpos;
-	lastY = ypos;
-
-	if (!gamePaused)
-	{
-		if (scene) scene->processMouse(x_offset, y_offset);
-	}
-
-	if (freecamMode)
-	{
-		freecam->freecamMouseMovement(x_offset, y_offset);
-	}
+	Input::ProcessMouseMovement(xpos, ypos);
 }
 
 void Game::processScroll(GLFWwindow* glWindow, double xoffset, double yoffset)
 {
-	float scroll_offset = float(yoffset);
-
-	if (!gamePaused)
-	{
-		if (scene) scene->processScroll(scroll_offset);
-	}
-
-	if (freecamMode)
-	{
-		freecam->freecamMouseScroll(scroll_offset);
-	}
+	Input::ProcessMouseScroll(yoffset);
 }
 
 void Game::processKeyboard(GLFWwindow* glWindow, int key, int scancode, int action, int mods)

@@ -1,11 +1,15 @@
 #include "Player.h"
+
 #include <Inputs/input.h>
 #include <Maths/maths.h>
+
+#include <GLFW/glfw3.h>
 #include <algorithm>
+
 
 Player::Player(float height, float speed, std::weak_ptr<class Renderer> renderer) : camHeight(height), moveSpeed(speed), rendererWeak(renderer)
 {
-	transform.setPosition(0.0f, 0.0f, 0.0f);
+	setPosition(0.0f, 0.0f, 0.0f);
 	camera = std::make_shared<Camera>(Vector3{ 0.0f, camHeight, 0.0f });
 	camera->setSensitivity(0.08f);
 }
@@ -15,16 +19,16 @@ void Player::update(float dt)
 {
 	//  move camera
 	if (Input::IsKeyDown(GLFW_KEY_W))
-		transform.setPosition(transform.getPosition() + camera->getFlatFront() * dt * moveSpeed);
+		setPosition(getPosition() + camera->getFlatFront() * dt * moveSpeed);
 
 	if (Input::IsKeyDown(GLFW_KEY_S))
-		transform.setPosition(transform.getPosition() + -camera->getFlatFront() * dt * moveSpeed);
+		setPosition(getPosition() + -camera->getFlatFront() * dt * moveSpeed);
 
 	if (Input::IsKeyDown(GLFW_KEY_A))
-		transform.setPosition(transform.getPosition() + camera->getRight() * dt * moveSpeed);
+		setPosition(getPosition() + camera->getRight() * dt * moveSpeed);
 
 	if (Input::IsKeyDown(GLFW_KEY_D))
-		transform.setPosition(transform.getPosition() + -camera->getRight() * dt * moveSpeed);
+		setPosition(getPosition() + -camera->getRight() * dt * moveSpeed);
 
 	//  fake jump
 	if (Input::IsKeyPressed(GLFW_KEY_SPACE) && height == 0.0f)
@@ -38,14 +42,17 @@ void Player::update(float dt)
 		bullets.push_back(std::make_unique<Bullet>(camera->getPosition(), bullet_rotation, camera->getForward(), shootVelocity, bulletLifeTime, rendererWeak));
 	}
 
+	Vector2 mouse_delta = Input::GetMouseDelta(); 
+	camera->freecamMouseMovement(mouse_delta.x, mouse_delta.y); 
 
 
-	camera->setPosition(transform.getPosition() + Vector3{0.0f, camHeight, 0.0f});
+
+	camera->setPosition(getPosition() + Vector3{0.0f, camHeight, 0.0f});
 
 
 	//  fake jump
 	height = Maths::max(height + (jumpVelocity + fakeGravity) * dt, 0.0f);
-	transform.setPosition(transform.getPosition().x, height, transform.getPosition().z);
+	setPosition(getPosition().x, height, getPosition().z);
 
 	jumpVelocity *= 0.95f; //  should scale that by dt but don't know how lol
 	if (jumpVelocity < 0.1f || height == 0.0f)
@@ -84,18 +91,4 @@ void Player::unload()
 	{
 		bullet->destroy();
 	}
-}
-
-void Player::processInputs(GLFWwindow* glWindow, float dt)
-{
-	
-}
-
-void Player::processMouse(float xOffset, float yOffset)
-{
-	camera->freecamMouseMovement(xOffset, yOffset);
-}
-
-void Player::processScroll(float scrollOffset)
-{
 }

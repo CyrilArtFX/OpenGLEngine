@@ -62,17 +62,8 @@ private:
 	//  pause and freecam
 	bool gamePaused{ false };
 	bool freecamMode{ false };
-	bool pauseInptPrsd{ false };
-	bool freecamInptPrsd{ false };
 	void pauseGame();
 	void unpauseGame();
 	void enableFreecam();
 	void disableFreecam();
-
-
-	//  mouse
-	bool firstMouse = true;
-	float lastX = 0;
-	float lastY = 0;
 };
-
