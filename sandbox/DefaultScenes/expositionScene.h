@@ -17,7 +17,7 @@ class ExpositionScene : public Scene
 public:
 	ExpositionScene();
 
-	void load(std::weak_ptr<Renderer> renderer_) override;
+	void load(Renderer* renderer_) override;
 	void unload() override;
 
 	void update(float dt) override;
@@ -25,6 +25,8 @@ public:
 private:
 	//  scene objects
 	//-----------------
+
+	Camera camera;
 
 	Object cube1;
 	Object cube2;

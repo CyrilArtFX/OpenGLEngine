@@ -32,10 +32,7 @@ const float FOV_MAX = 45.0f;
 class Camera : public Transform
 {
 public:
-	Camera(Vector3 position_ = POSITION, float yaw_ = YAW, float pitch_ = PITCH, float fov_ = FOV);
-	Camera() = delete;
-	Camera(const Camera&) = delete;
-	Camera& operator=(const Camera&) = delete;
+	Camera();
 
 	Matrix4 getViewMatrix();
 	

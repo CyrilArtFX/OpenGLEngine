@@ -1,19 +1,19 @@
-#include "game.h"
+#include "engine.h"
 #include <Assets/assetManager.h>
 #include <Inputs/input.h>
 
 
-Game::Game()
+Engine::Engine()
 {
 }
 
 
-bool Game::initialize(int wndw_width, int wndw_height, std::string wndw_name, bool wndw_capturemouse)
+bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, bool wndw_capturemouse)
 {
 	//  create window and initialize glfw
-	window = std::make_unique<Window>(wndw_width, wndw_height, wndw_name, wndw_capturemouse);
+	window.createWindow(wndw_width, wndw_height, wndw_name, wndw_capturemouse);
 
-	GLFWwindow* gl_window = window->getGLFWwindow();
+	GLFWwindow* gl_window = window.getGLFWwindow();
 	if (gl_window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -26,7 +26,7 @@ bool Game::initialize(int wndw_width, int wndw_height, std::string wndw_name, bo
 
 	glfwSetFramebufferSizeCallback(gl_window, [](GLFWwindow* window, int width, int height)
 		{
-			auto self = static_cast<Game*>(glfwGetWindowUserPointer(window));
+			auto self = static_cast<Engine*>(glfwGetWindowUserPointer(window));
 			self->windowResize(window, width, height);
 		}
 	); //  link window resize callback function
@@ -57,11 +57,10 @@ bool Game::initialize(int wndw_width, int wndw_height, std::string wndw_name, bo
 
 
 	//  create renderer
-	renderer = std::make_shared<Renderer>(Color{ 50, 75, 75, 255 }, *window);
+	renderer.createRenderer(Color{ 50, 75, 75, 255 }, Vector2Int{ window.getWidth(), window.getHeigth() });
 
-	//  create freecam
-	freecam = std::make_shared<Camera>(Vector3::zero);
-	freecam->setSpeed(4.0f);
+	//  set freecam values
+	freecam.setSpeed(4.0f);
 
 
 	//  initialize GLAD
@@ -73,7 +72,7 @@ bool Game::initialize(int wndw_width, int wndw_height, std::string wndw_name, bo
 
 
 	//  initialize input system
-	Input::Initialize(); 
+	Input::Initialize();
 
 
 	//  configure global OpenGL properties
@@ -84,10 +83,10 @@ bool Game::initialize(int wndw_width, int wndw_height, std::string wndw_name, bo
 }
 
 
-void Game::run()
+void Engine::run()
 {
 	//  main loop
-	while (!glfwWindowShouldClose(window->getGLFWwindow()))
+	while (!glfwWindowShouldClose(window.getGLFWwindow()))
 	{
 		//  time logic part
 		// -----------------
@@ -103,7 +102,7 @@ void Game::run()
 
 		//  update part
 		// -------------
-		engineUpdate(window->getGLFWwindow());
+		engineUpdate(window.getGLFWwindow());
 
 		if (!gamePaused)
 		{
@@ -113,13 +112,12 @@ void Game::run()
 
 		//  rendering part
 		// ----------------
-		renderer->draw();
-
+		renderer.draw();
 
 
 		//  events and buffer swap part
 		// -----------------------------
-		glfwSwapBuffers(window->getGLFWwindow());
+		glfwSwapBuffers(window.getGLFWwindow());
 		glfwPollEvents();
 	}
 
@@ -129,25 +127,25 @@ void Game::run()
 }
 
 
-void Game::close()
+void Engine::close()
 {
 	//  properly clear GLFW before closing app
 	glfwTerminate();
 }
 
-void Game::loadScene(std::weak_ptr<Scene> scene_)
+void Engine::loadScene(std::weak_ptr<Scene> scene_)
 {
 	scene = scene_.lock();
-	scene->load(renderer);
+	scene->load(&renderer);
 }
 
-void Game::unloadScene()
+void Engine::unloadScene()
 {
 	if (scene) scene->unload();
 }
 
 
-void Game::engineUpdate(GLFWwindow* glWindow)
+void Engine::engineUpdate(GLFWwindow* glWindow)
 {
 	//  close window when escape is pressed
 	if (Input::IsKeyPressed(GLFW_KEY_ESCAPE))
@@ -155,6 +153,8 @@ void Game::engineUpdate(GLFWwindow* glWindow)
 		glfwSetWindowShouldClose(glWindow, true);
 	}
 
+	//  pause and freecam are useless if there is no active scene
+	if (!scene) return;
 
 	//  pause/unpause the game when p is pressed
 	if (Input::IsKeyPressed(GLFW_KEY_P))
@@ -174,64 +174,65 @@ void Game::engineUpdate(GLFWwindow* glWindow)
 	{
 		//  move freecam
 		if (Input::IsKeyDown(GLFW_KEY_W))
-			freecam->freecamKeyboard(Camera_Movement::Forward, deltaTime);
+			freecam.freecamKeyboard(Camera_Movement::Forward, deltaTime);
 
 		if (Input::IsKeyDown(GLFW_KEY_S))
-			freecam->freecamKeyboard(Camera_Movement::Backward, deltaTime);
+			freecam.freecamKeyboard(Camera_Movement::Backward, deltaTime);
 
 		if (Input::IsKeyDown(GLFW_KEY_A))
-			freecam->freecamKeyboard(Camera_Movement::Left, deltaTime);
+			freecam.freecamKeyboard(Camera_Movement::Left, deltaTime);
 
 		if (Input::IsKeyDown(GLFW_KEY_D))
-			freecam->freecamKeyboard(Camera_Movement::Right, deltaTime);
+			freecam.freecamKeyboard(Camera_Movement::Right, deltaTime);
 
 		if (Input::IsKeyDown(GLFW_KEY_SPACE))
-			freecam->freecamKeyboard(Camera_Movement::Up, deltaTime);
+			freecam.freecamKeyboard(Camera_Movement::Up, deltaTime);
 
 		if (Input::IsKeyDown(GLFW_KEY_LEFT_SHIFT))
-			freecam->freecamKeyboard(Camera_Movement::Down, deltaTime);
+			freecam.freecamKeyboard(Camera_Movement::Down, deltaTime);
 
 		Vector2 mouse_delta = Input::GetMouseDelta();
-		freecam->freecamMouseMovement(mouse_delta.x, mouse_delta.y);
+		freecam.freecamMouseMovement(mouse_delta.x, mouse_delta.y);
 
-		freecam->freecamMouseScroll(Input::GetScrollOffset());
+		freecam.freecamMouseScroll(Input::GetScrollOffset());
 	}
 }
 
 
-void Game::pauseGame()
+void Engine::pauseGame()
 {
 	gamePaused = true;
 	std::cout << "Game paused.\n";
 }
 
-void Game::unpauseGame()
+void Engine::unpauseGame()
 {
 	gamePaused = false;
-	if(freecamMode) disableFreecam();
+	if (freecamMode) disableFreecam();
 	std::cout << "Game unpaused.\n";
 }
 
-void Game::enableFreecam()
+void Engine::enableFreecam()
 {
 	freecamMode = true;
 	if (!gamePaused) pauseGame();
 	std::cout << "Freecam mode enabled.\n";
-	freecam->copyCameraTransform(*scene->getCamera().lock());
-	renderer->setCamera(freecam);
+	freecam.copyCameraTransform(scene->getCamera());
+	renderer.setCamera(&freecam);
 }
 
-void Game::disableFreecam()
+void Engine::disableFreecam()
 {
 	freecamMode = false;
 	std::cout << "Freecam mode disabled.\n";
-	renderer->setCamera(scene->getCamera());
+	renderer.setCamera(&scene->getCamera());
 }
 
 
 //  window resize callback functions
-void Game::windowResize(GLFWwindow* glWindow, int width, int height)
+void Engine::windowResize(GLFWwindow* glWindow, int width, int height)
 {
 	glViewport(0, 0, width, height); //  resize OpenGL viewport when GLFW is resized
-	window->changeSize(width, height);
+	window.changeSize(width, height);
+	renderer.setWindowSize(Vector2Int{ window.getWidth(), window.getHeigth() });
 }

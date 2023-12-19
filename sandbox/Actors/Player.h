@@ -6,23 +6,24 @@
 
 #include <vector>
 
+class Renderer;
 
 class Player : public Transform
 {
 public:
-	Player(float height, float speed, std::weak_ptr<class Renderer> renderer);
+	Player(float height, float speed, Renderer* renderer);
 
 	void update(float dt);
 
 	void unload();
 
 
-	std::weak_ptr<Camera> getCamera() { return camera; }
+	Camera& getCamera() { return camera; }
 
 private:
-	std::shared_ptr<Camera> camera;
+	Camera camera;
 
-	std::weak_ptr<class Renderer> rendererWeak;
+	Renderer* rendererRef;
 
 	float camHeight;
 	float moveSpeed;

@@ -7,11 +7,11 @@
 #include <algorithm>
 
 
-Player::Player(float height, float speed, std::weak_ptr<class Renderer> renderer) : camHeight(height), moveSpeed(speed), rendererWeak(renderer)
+Player::Player(float height, float speed, Renderer* renderer) : camHeight(height), moveSpeed(speed), rendererRef(renderer)
 {
 	setPosition(0.0f, 0.0f, 0.0f);
-	camera = std::make_shared<Camera>(Vector3{ 0.0f, camHeight, 0.0f });
-	camera->setSensitivity(0.08f);
+	camera.setPosition(Vector3{ 0.0f, camHeight, 0.0f });
+	camera.setSensitivity(0.08f);
 }
 
 
@@ -19,16 +19,16 @@ void Player::update(float dt)
 {
 	//  move camera
 	if (Input::IsKeyDown(GLFW_KEY_W))
-		setPosition(getPosition() + camera->getFlatFront() * dt * moveSpeed);
+		setPosition(getPosition() + camera.getFlatFront() * dt * moveSpeed);
 
 	if (Input::IsKeyDown(GLFW_KEY_S))
-		setPosition(getPosition() + -camera->getFlatFront() * dt * moveSpeed);
+		setPosition(getPosition() + -camera.getFlatFront() * dt * moveSpeed);
 
 	if (Input::IsKeyDown(GLFW_KEY_A))
-		setPosition(getPosition() + camera->getRight() * dt * moveSpeed);
+		setPosition(getPosition() + camera.getRight() * dt * moveSpeed);
 
 	if (Input::IsKeyDown(GLFW_KEY_D))
-		setPosition(getPosition() + -camera->getRight() * dt * moveSpeed);
+		setPosition(getPosition() + -camera.getRight() * dt * moveSpeed);
 
 	//  fake jump
 	if (Input::IsKeyPressed(GLFW_KEY_SPACE) && height == 0.0f)
@@ -37,17 +37,17 @@ void Player::update(float dt)
 	//  fake shoot
 	if (Input::IsKeyPressed(GLFW_MOUSE_BUTTON_LEFT))
 	{
-		Quaternion bullet_rotation = camera->getRotation();
-		bullet_rotation = Quaternion::concatenate(bullet_rotation, Quaternion{ camera->getUp(), Maths::toRadians(90.0f) });
-		bullets.push_back(std::make_unique<Bullet>(camera->getPosition(), bullet_rotation, camera->getForward(), shootVelocity, bulletLifeTime, rendererWeak));
+		Quaternion bullet_rotation = camera.getRotation();
+		bullet_rotation = Quaternion::concatenate(bullet_rotation, Quaternion{ camera.getUp(), Maths::toRadians(90.0f) });
+		bullets.push_back(std::make_unique<Bullet>(camera.getPosition(), bullet_rotation, camera.getForward(), shootVelocity, bulletLifeTime, rendererRef));
 	}
 
 	Vector2 mouse_delta = Input::GetMouseDelta(); 
-	camera->freecamMouseMovement(mouse_delta.x, mouse_delta.y); 
+	camera.freecamMouseMovement(mouse_delta.x, mouse_delta.y); 
 
 
 
-	camera->setPosition(getPosition() + Vector3{0.0f, camHeight, 0.0f});
+	camera.setPosition(getPosition() + Vector3{0.0f, camHeight, 0.0f});
 
 
 	//  fake jump

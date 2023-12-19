@@ -1,11 +1,11 @@
 #include "camera.h"
 #include <iostream>
 
-Camera::Camera(Vector3 position_, float yaw_, float pitch_, float fov_) :
-	Transform(), yaw(yaw_), pitch(pitch_), fov(fov_), camSpeed(SPEED), sensitivity(SENSITIVITY),
+Camera::Camera() : Transform(), 
+	yaw(YAW), pitch(PITCH), fov(FOV), camSpeed(SPEED), sensitivity(SENSITIVITY),
 	pitchMin(PITCH_MIN), pitchMax(PITCH_MAX), fovMin(FOV_MIN), fovMax(FOV_MAX)
 {
-	setPosition(position_);
+	setPosition(POSITION);
 	computeYawPitch();
 }
 

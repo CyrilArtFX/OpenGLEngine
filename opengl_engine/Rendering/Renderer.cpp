@@ -3,10 +3,15 @@
 #include <algorithm>
 
 
-Renderer::Renderer(Color clearColor_, const Window& window) : clearColor(clearColor_), windowRef(window)
+Renderer::Renderer()
 {
 }
 
+void Renderer::createRenderer(Color clearColor_, Vector2Int windowSize_)
+{
+	clearColor = clearColor_;
+	windowSize = windowSize_;
+}
 
 void Renderer::draw()
 {
@@ -18,7 +23,7 @@ void Renderer::draw()
 	if (!currentCam) return;
 
 	Matrix4 view = currentCam->getViewMatrix();
-	Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(currentCam->getFov()), windowRef.getWidth(), windowRef.getHeigth(), 0.1f, 100.0f);
+	Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(currentCam->getFov()), windowSize.x, windowSize.y, 0.1f, 100.0f);
 
 	//  loop through all shaders
 	for (auto materials_by_shaders : materials)
@@ -91,9 +96,9 @@ void Renderer::draw()
 }
 
 
-void Renderer::setCamera(std::weak_ptr<Camera> camera)
+void Renderer::setCamera(Camera* camera)
 {
-	currentCam = camera.lock();
+	currentCam = camera;
 }
 
 void Renderer::addMaterial(Material* material)

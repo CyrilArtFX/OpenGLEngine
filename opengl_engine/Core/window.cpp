@@ -1,6 +1,10 @@
 #include "window.h"
 
-Window::Window(int width, int height, std::string windowName, bool mouseCaptured)
+Window::Window()
+{
+}
+
+void Window::createWindow(int width, int height, std::string windowName, bool mouseCaptured)
 {
 	//  initialize GLFW
 	glfwInit();

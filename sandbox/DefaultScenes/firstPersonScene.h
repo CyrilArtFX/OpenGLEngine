@@ -19,7 +19,7 @@ class FirstPersonScene : public Scene
 public:
 	FirstPersonScene();
 
-	void load(std::weak_ptr<Renderer> renderer_) override;
+	void load(Renderer* renderer_) override;
 	void unload() override;
 
 	void update(float dt) override;

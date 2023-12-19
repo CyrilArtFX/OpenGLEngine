@@ -1,5 +1,4 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#pragma once
 
 #include "scene.h"
 #include "window.h"
@@ -10,16 +9,18 @@
 #include <Maths/matrix4.h>
 #include <Maths/vector3.h>
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #include <string>
 #include <iostream>
-#pragma once
 
-class Game
+class Engine
 {
 public:
-	Game();
-	Game(const Game&) = delete;
-	Game& operator=(const Game&) = delete;
+	Engine();
+	Engine(const Engine&) = delete;
+	Engine& operator=(const Engine&) = delete;
 
 	bool initialize(int wndw_width = 1024, int wndw_height = 720, std::string wndw_name = "OpenGL Engine", bool wndw_capturemouse = true);
 	void run();
@@ -38,13 +39,13 @@ private:
 	std::shared_ptr<Scene> scene;
 
 	//  window
-	std::unique_ptr<Window> window;
+	Window window;
 
 	//  renderer
-	std::shared_ptr<Renderer> renderer;
+	Renderer renderer;
 
 	//  freecam
-	std::shared_ptr<Camera> freecam;
+	Camera freecam;
 
 	//  time
 	float deltaTime = 0.0f;

@@ -6,17 +6,17 @@
 class Scene
 {
 public:
-	Scene() : renderer() {}
+	Scene() {}
 	virtual ~Scene() {} 
 
-	virtual void load(std::weak_ptr<Renderer> renderer_) = 0;
+	virtual void load(Renderer* renderer_) = 0;
 	virtual void unload() = 0; 
 	
 	virtual void update(float dt) = 0;
 
-	inline std::weak_ptr<Camera> getCamera() { return currentCam; }
+	inline Camera& getCamera() { return *currentCam; }
 
 protected:
-	std::shared_ptr<Renderer> renderer; 
-	std::shared_ptr<Camera> currentCam;
+	Renderer* renderer; 
+	Camera* currentCam;
 };

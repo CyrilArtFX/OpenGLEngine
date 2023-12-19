@@ -5,14 +5,14 @@ FirstPersonScene::FirstPersonScene() : Scene()
 }
 
 
-void FirstPersonScene::load(std::weak_ptr<Renderer> renderer_)
+void FirstPersonScene::load(Renderer* renderer_)
 {
-	renderer = renderer_.lock();
+	renderer = renderer_;
 
 	//  player (camera)
 	player = std::make_unique<Player>(1.5f, 5.0f, renderer_); 
-	currentCam = player->getCamera().lock(); 
-	renderer->setCamera(player->getCamera());
+	currentCam = &player->getCamera(); 
+	renderer->setCamera(&player->getCamera());
 
 
 	//  shaders, textures and materials

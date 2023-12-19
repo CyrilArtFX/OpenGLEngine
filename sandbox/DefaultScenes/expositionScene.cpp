@@ -9,13 +9,14 @@ ExpositionScene::ExpositionScene() : Scene()
 }
 
 
-void ExpositionScene::load(std::weak_ptr<Renderer> renderer_)
+void ExpositionScene::load(Renderer* renderer_)
 {
-	renderer = renderer_.lock();
+	renderer = renderer_;
 
 	//  camera
-	currentCam = std::make_shared<Camera>(Vector3{ 0.0f, 0.0f, -3.0f });
-	renderer->setCamera(currentCam);
+	camera.setPosition(Vector3{ 0.0f, 0.0f, -3.0f });
+	currentCam = &camera;
+	renderer->setCamera(&camera);
 
 
 	//  shaders, textures and materials
@@ -139,32 +140,32 @@ void ExpositionScene::update(float dt)
 {
 	//  move camera
 	if (Input::IsKeyDown(GLFW_KEY_W))
-		currentCam->freecamKeyboard(Forward, dt);
+		camera.freecamKeyboard(Forward, dt);
 
 	if (Input::IsKeyDown(GLFW_KEY_S))
-		currentCam->freecamKeyboard(Backward, dt);
+		camera.freecamKeyboard(Backward, dt);
 
 	if (Input::IsKeyDown(GLFW_KEY_A))
-		currentCam->freecamKeyboard(Left, dt);
+		camera.freecamKeyboard(Left, dt);
 
 	if (Input::IsKeyDown(GLFW_KEY_D))
-		currentCam->freecamKeyboard(Right, dt);
+		camera.freecamKeyboard(Right, dt);
 
 	if (Input::IsKeyDown(GLFW_KEY_SPACE))
-		currentCam->freecamKeyboard(Up, dt);
+		camera.freecamKeyboard(Up, dt);
 
 	if (Input::IsKeyDown(GLFW_KEY_LEFT_SHIFT))
-		currentCam->freecamKeyboard(Down, dt);
+		camera.freecamKeyboard(Down, dt);
 
 	Vector2 mouse_delta = Input::GetMouseDelta();
-	currentCam->freecamMouseMovement(mouse_delta.x, mouse_delta.y);
+	camera.freecamMouseMovement(mouse_delta.x, mouse_delta.y);
 
-	currentCam->freecamMouseScroll(Input::GetScrollOffset());
+	camera.freecamMouseScroll(Input::GetScrollOffset());
 
 
 
-	flashLight.setPosition(currentCam->getPosition());
-	flashLight.setDirection(currentCam->getForward());
+	flashLight.setPosition(camera.getPosition());
+	flashLight.setDirection(camera.getForward());
 
 	cube3.incrementRotation(Quaternion{ Vector3::unitX, Maths::toRadians(90.0f) * dt });
 }

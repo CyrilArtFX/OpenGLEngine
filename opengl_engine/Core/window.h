@@ -12,11 +12,9 @@ const bool WNDW_CAPT_MOUSE = true;
 class Window
 {
 public:
+	Window();
 	//  initialize glfw and create a glfw window
-	Window(int width = WNDW_WIDTH, int height = WNDW_HEIGHT, std::string windowName = WNDW_NAME, bool mouseCaptured = WNDW_CAPT_MOUSE);
-	Window() = delete;
-	Window(const Window&) = delete;
-	Window& operator=(const Window&) = delete;
+	void createWindow(int width = WNDW_WIDTH, int height = WNDW_HEIGHT, std::string windowName = WNDW_NAME, bool mouseCaptured = WNDW_CAPT_MOUSE);
 
 	GLFWwindow* getGLFWwindow() { return window; }
 

@@ -6,8 +6,8 @@
 #include <Assets/assetManager.h>
 
 
-Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_, std::weak_ptr<Renderer> renderer_) :
-	direction(direction_), velocity(velocity_), lifetime(lifetime_), renderer(renderer_.lock())
+Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_, Renderer* renderer_) :
+	direction(direction_), velocity(velocity_), lifetime(lifetime_), renderer(renderer_)
 {
 	object.addModel(&AssetManager::GetModel("bullet"));
 

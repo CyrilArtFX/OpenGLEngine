@@ -2,9 +2,9 @@
 #include <Utils/color.h>
 #include <Maths/matrix4.h>
 #include <Maths/vector3.h>
+#include <Maths/vector2Int.h>
 
 #include "camera.h"
-#include <Core/window.h>
 #include <Objects/object.h>
 #include <Objects/Lights/light.h>
 #include "material.h"
@@ -16,15 +16,13 @@
 class Renderer
 {
 public:
-	Renderer(Color clearColor_, const Window& window);
-	Renderer() = delete;
-	Renderer(const Renderer&) = delete;
-	Renderer operator=(const Renderer&) = delete;
+	Renderer();
+	void createRenderer(Color clearColor_, Vector2Int windowSize_);
 
 	void draw();
 
 
-	void setCamera(std::weak_ptr<Camera> camera);
+	void setCamera(Camera* camera);
 	inline const Camera& getCamera() const { return *currentCam; }
 
 	void addMaterial(Material* material);
@@ -38,15 +36,17 @@ public:
 	inline void setClearColor(Color newClearColor) { clearColor = newClearColor; }
 	inline Color getClearColor() { return clearColor; }
 
+	inline void setWindowSize(Vector2Int newWindowSize) { windowSize = newWindowSize; }
+
 private:
 	std::unordered_map<LightType, std::vector<Light*>> lights;
 	std::vector<Object*> objects;
 	std::unordered_map<Shader*, std::vector<Material*>> materials;
 
-	Color clearColor;
+	Color clearColor{ Color::black };
 
-	std::shared_ptr<Camera> currentCam;
-	const Window& windowRef;
+	Camera* currentCam;
+	Vector2Int windowSize;
 
 	//  would be cool if I find a better way to do this but it works for now
 	const std::unordered_map<LightType, int> lightsLimits
