@@ -2,6 +2,14 @@
 
 #include <iostream>
 
+void Game::load(Renderer* renderer_)
+{
+	renderer = renderer_;
+
+	loadGameAssets();
+	loadGame();
+}
+
 void Game::unload()
 {
 	unloadActiveScene();

@@ -7,10 +7,13 @@ class ExpositionGame : public Game
 public:
 	ExpositionGame();
 
-	void load(Renderer* renderer_) override;
-	void unloadGame() override;
-
 	void updateGame(float dt) override;
+
+protected:
+	void loadGameAssets() override;
+	void loadGame() override;
+
+	void unloadGame() override;
 
 private:
 	ExpositionScene expositionScene;

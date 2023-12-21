@@ -39,3 +39,10 @@
 ~ Mettre un système pour détecter automatiquement la profondeur de couleur au chargement de la texture pour éviter les problèmes (si la profondeur de couleur est 24, pas d'alpha (même avec un .png), donc charger avec GL_RGBA va faire un crash) -> regarder comment gregory a fait pour xenity
 
 ~ Réfléchir au fonctionnement du load asset des scenes, est-ce qu'il faudrait faire gaffe à l'utilisation de ram et unload genre les textures qui ne sont plus nécessaires ?
+
+~ Essayer de comprendre pourquoi si les bullets sont pas stockées en unique_ptr ça fait complètement n'importe quoi (genre c'est abusé de fou)
+Infos sur le problème :
+ - même en créant la bullet dans la liste directement et en faisant le setup depuis là ça bug
+ - si y'en a qu'une à la fois ça a l'air d'aller
+ - c'est le iter_swap qui pose problème ?
+ - avec le système que j'avais, ça supprimait la première balle (seulement visuellement mais aucune fonction de suppression n'était appelée) et quand je spammais ça crashait

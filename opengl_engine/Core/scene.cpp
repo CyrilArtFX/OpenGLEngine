@@ -3,11 +3,7 @@
 void Scene::load(Renderer* renderer_) 
 { 
 	renderer = renderer_; 
-	if (!assetsLoaded)
-	{
-		loadAssets();
-		assetsLoaded = true;
-	}
+
 	loadScene();
 }
 

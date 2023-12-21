@@ -22,7 +22,6 @@ public:
 	void update(float dt) override;
 
 protected:
-	void loadAssets() override;
 	void loadScene() override;
 
 private:

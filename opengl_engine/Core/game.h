@@ -9,11 +9,10 @@ class Game
 public:
 	virtual ~Game() {}
 
-	virtual void load(Renderer* renderer_) = 0;
+	void load(Renderer* renderer_);
 	void unload();
-	virtual void unloadGame() = 0;
 
-	virtual void updateGame(float dt) = 0; //  updateGame come first during a frame
+	virtual void updateGame(float dt) = 0; //  updateGame come before updateScene during a frame
 	void updateScene(float dt);
 
 	Camera& getActiveCamera();
@@ -21,6 +20,11 @@ public:
 	bool hasActiveScene();
 
 protected:
+	virtual void loadGameAssets() = 0;
+	virtual void loadGame() = 0;
+
+	virtual void unloadGame() = 0;
+
 	void loadScene(Scene* scene);
 	void unloadActiveScene();
 

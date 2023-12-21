@@ -20,7 +20,6 @@ public:
 	Camera& getCamera();
 
 protected:
-	virtual void loadAssets() = 0;
 	virtual void loadScene() = 0;
 	virtual void unloadScene() = 0;
 
@@ -31,8 +30,6 @@ protected:
 	Camera* currentCam{ nullptr };
 
 private:
-	bool assetsLoaded{ false };
-
 	std::vector<Object*> sceneregisteredObjects;
 	std::vector<Light*> sceneregisteredLights;
 };
