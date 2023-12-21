@@ -4,8 +4,6 @@
 #include <Assets/assetManager.h>
 #include <Objects/object.h>
 
-#include <Actors/player.h>
-
 #include <Maths/vector3.h>
 #include <Utils/color.h>
 
@@ -29,13 +27,7 @@ protected:
 
 
 private:
-	//  player
-	Player player;
-
-
 	//  scene objects
-	//-----------------
-
 	Object crate1;
 	Object crate2;
 	Object crate3;

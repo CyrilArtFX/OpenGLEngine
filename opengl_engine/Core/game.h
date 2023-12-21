@@ -15,7 +15,7 @@ public:
 	virtual void updateGame(float dt) = 0; //  updateGame come before updateScene during a frame
 	void updateScene(float dt);
 
-	Camera& getActiveCamera();
+	virtual Camera& getActiveCamera();
 
 	bool hasActiveScene();
 

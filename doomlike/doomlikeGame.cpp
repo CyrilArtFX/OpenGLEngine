@@ -6,11 +6,6 @@ DoomlikeGame::DoomlikeGame()
 {
 }
 
-void DoomlikeGame::updateGame(float dt)
-{
-}
-
-
 void DoomlikeGame::loadGameAssets()
 {
 	DefaultAssets::LoadDefaultAssets();
@@ -71,11 +66,27 @@ void DoomlikeGame::loadGameAssets()
 void DoomlikeGame::loadGame()
 {
 	loadScene(&testScene);
+
+	player.setup(1.5f, 5.0f, renderer);
+	renderer->setCamera(&player.getCamera());
+}
+
+
+void DoomlikeGame::updateGame(float dt)
+{
+	player.update(dt);
+}
+
+Camera& DoomlikeGame::getActiveCamera()
+{
+	return player.getCamera();
 }
 
 
 void DoomlikeGame::unloadGame()
 {
+	player.unload();
+
 	renderer->removeMaterial(&AssetManager::GetMaterial("crate"));
 	renderer->removeMaterial(&AssetManager::GetMaterial("ground"));
 	renderer->removeMaterial(&AssetManager::GetMaterial("taxi"));

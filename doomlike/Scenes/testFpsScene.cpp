@@ -9,12 +9,6 @@ void TestFpsScene::loadScene()
 	renderer->setClearColor(Color{ 50, 75, 75, 255 });
 
 
-	//  player (camera)
-	player.setup(1.5f, 5.0f, renderer);
-	currentCam = &player.getCamera();
-	renderer->setCamera(&player.getCamera());
-
-
 	//  objects
 	ground.addModel(&AssetManager::GetModel("ground"));
 	crate1.addModel(&AssetManager::GetModel("crate"));
@@ -46,11 +40,8 @@ void TestFpsScene::loadScene()
 
 void TestFpsScene::unloadScene()
 {
-	player.unload();
 }
-
 
 void TestFpsScene::update(float dt)
 {
-	player.update(dt);
 }
