@@ -10,9 +10,6 @@ class Bullet
 {
 public:
 	Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_, Renderer* renderer_);
-	Bullet() = delete;
-	Bullet(const Bullet&) = delete;
-	Bullet& operator=(const Bullet&) = delete;
 
 	void destroy();
 
@@ -21,10 +18,10 @@ public:
 	bool isLTOver() { return lifetime <= 0.0f; }
 
 private:
-	Vector3 direction;
-	float velocity;
-	float lifetime;
-	Renderer* renderer;
+	Vector3 direction{ Vector3::unitX };
+	float velocity{ 0.0f };
+	float lifetime{ 0.0f };
+	Renderer* renderer{ nullptr };
 
 	Object object;
 };

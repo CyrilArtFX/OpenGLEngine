@@ -64,9 +64,9 @@ void TestFpsScene::loadScene()
 
 
 	//  player (camera)
-	player = std::make_unique<Player>(1.5f, 5.0f, renderer);
-	currentCam = &player->getCamera();
-	renderer->setCamera(&player->getCamera());
+	player.setup(1.5f, 5.0f, renderer);
+	currentCam = &player.getCamera();
+	renderer->setCamera(&player.getCamera());
 
 
 	//  objects
@@ -100,7 +100,7 @@ void TestFpsScene::loadScene()
 
 void TestFpsScene::unloadScene()
 {
-	player->unload();
+	player.unload();
 
 	renderer->removeMaterial(&AssetManager::GetMaterial("crate"));
 	renderer->removeMaterial(&AssetManager::GetMaterial("ground"));
@@ -111,5 +111,5 @@ void TestFpsScene::unloadScene()
 
 void TestFpsScene::update(float dt)
 {
-	player->update(dt);
+	player.update(dt);
 }

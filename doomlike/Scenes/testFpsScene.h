@@ -31,7 +31,7 @@ protected:
 
 private:
 	//  player
-	std::unique_ptr<Player> player;
+	Player player;
 
 
 	//  scene objects

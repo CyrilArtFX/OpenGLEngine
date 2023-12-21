@@ -11,7 +11,8 @@ class Renderer;
 class Player : public Transform
 {
 public:
-	Player(float height, float speed, Renderer* renderer);
+	Player();
+	void setup(float height, float speed, Renderer* renderer);
 
 	void update(float dt);
 
@@ -23,10 +24,10 @@ public:
 private:
 	Camera camera;
 
-	Renderer* rendererRef;
+	Renderer* rendererRef{ nullptr };
 
-	float camHeight;
-	float moveSpeed;
+	float camHeight{ 0.0f };
+	float moveSpeed{ 0.0f };
 
 	//  fake jump
 	float fakeGravity{ -9.0f };
@@ -36,6 +37,6 @@ private:
 	//  fake shots
 	std::vector<std::unique_ptr<Bullet>> bullets;
 	float shootVelocity{ 15.0f };
-	float bulletLifeTime{ 5.0f };
+	float bulletLifeTime{ 3.0f };
 };
 

@@ -6,9 +6,13 @@
 #include <Assets/assetManager.h>
 
 
-Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_, Renderer* renderer_) :
-	direction(direction_), velocity(velocity_), lifetime(lifetime_), renderer(renderer_)
+Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_, Renderer* renderer_)
 {
+	direction = direction_;
+	velocity = velocity_;
+	lifetime = lifetime_;
+	renderer = renderer_;
+
 	object.addModel(&AssetManager::GetModel("bullet"));
 
 	object.setPosition(spawnPos);

@@ -5,10 +5,19 @@
 
 #include <GLFW/glfw3.h>
 #include <algorithm>
+#include <iostream>
 
 
-Player::Player(float height, float speed, Renderer* renderer) : camHeight(height), moveSpeed(speed), rendererRef(renderer)
+Player::Player()
 {
+}
+
+void Player::setup(float height, float speed, Renderer* renderer)
+{
+	camHeight = height;
+	moveSpeed = speed;
+	rendererRef = renderer;
+
 	setPosition(0.0f, 0.0f, 0.0f);
 	camera.setPosition(Vector3{ 0.0f, camHeight, 0.0f });
 	camera.setSensitivity(0.08f);
@@ -37,15 +46,21 @@ void Player::update(float dt)
 	//  fake shoot
 	if (Input::IsKeyPressed(GLFW_MOUSE_BUTTON_LEFT))
 	{
-		Quaternion bullet_rotation = camera.getRotation();
-		bullet_rotation = Quaternion::concatenate(bullet_rotation, Quaternion{ camera.getUp(), Maths::toRadians(90.0f) });
-		bullets.push_back(std::make_unique<Bullet>(camera.getPosition(), bullet_rotation, camera.getForward(), shootVelocity, bulletLifeTime, rendererRef));
+		if (rendererRef)
+		{
+			Quaternion bullet_rotation = camera.getRotation();
+			bullet_rotation = Quaternion::concatenate(bullet_rotation, Quaternion{ camera.getUp(), Maths::toRadians(90.0f) });
+			bullets.push_back(std::make_unique<Bullet>(camera.getPosition(), bullet_rotation, camera.getForward(), shootVelocity, bulletLifeTime, rendererRef));
+		}
+		else
+		{
+			std::cout << "Doomlike game error : Player has not his renderer ref setup !\n";
+		}
 	}
+
 
 	Vector2 mouse_delta = Input::GetMouseDelta(); 
 	camera.freecamMouseMovement(mouse_delta.x, mouse_delta.y); 
-
-
 
 	camera.setPosition(getPosition() + Vector3{0.0f, camHeight, 0.0f});
 
@@ -67,20 +82,17 @@ void Player::update(float dt)
 		bullet->update(dt);
 	}
 
+	
 	for (int i = 0; i < bullets.size(); i++)
 	{
 		if (bullets[i]->isLTOver())
 		{
 			bullets[i]->destroy();
 
-			auto iter = std::find(bullets.begin(), bullets.end(), bullets[i]);
-			if (iter != bullets.end())
-			{
-				std::iter_swap(iter, bullets.end() - 1);
-				bullets.pop_back();
-			}
+			std::iter_swap(bullets.begin() + i, bullets.end() - 1);
+			bullets.pop_back();
 
-			i = 0;
+			break; //  assume that we can't create 2 bullets on the same frame
 		}
 	}
 }
