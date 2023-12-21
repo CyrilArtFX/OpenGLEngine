@@ -12,7 +12,7 @@ void Game::load(Renderer* renderer_)
 
 void Game::unload()
 {
-	unloadActiveScene();
+	unloadActiveScene(false);
 
 	unloadGame();
 }
@@ -42,13 +42,13 @@ void Game::loadScene(Scene* scene)
 		return;
 	}
 
-	unloadActiveScene();
+	unloadActiveScene(true);
 	activeScene = scene;
 	activeScene->load(renderer);
 }
 
-void Game::unloadActiveScene()
+void Game::unloadActiveScene(bool loadNewScene)
 {
 	if (activeScene) activeScene->unload();
-	renderer->setCamera(&gamedefaultsNocam);
+	if(!loadNewScene) renderer->setCamera(&gamedefaultsNocam);
 }

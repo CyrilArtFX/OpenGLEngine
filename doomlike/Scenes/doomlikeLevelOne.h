@@ -12,33 +12,30 @@
 #include <Objects/Lights/spotLight.h>
 
 
-class ExpositionScene : public Scene
+class DoomlikeLevelOne : public Scene
 {
 public:
-	ExpositionScene();
+	DoomlikeLevelOne();
 
 	void update(float dt) override;
+
 
 protected:
 	void loadScene() override;
 
 	void unloadScene() override;
 
+
 private:
 	//  scene objects
-	//-----------------
+	Object ground1;
+	Object ground2;
+	Object ground3;
+	Object crate1;
+	Object crate2;
+	Object crate3;
 
-	Camera camera;
-
-	Object cube1;
-	Object cube2;
-	Object cube3;
-	Object lightCube1;
-	Object lightCube2;
-
-	DirectionalLight sunLight;
+	DirectionalLight dirLight;
 	PointLight pointLight1;
-	PointLight pointLight2;
-	SpotLight flashLight;
 };
 

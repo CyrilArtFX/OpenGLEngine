@@ -1,14 +1,4 @@
-== A FAIRE APRES MANGER ==
-
-~ Mettre le joueur sur le game du doomlike et faire une touche pour changer de scène et tester ça
-
-
 == COURT TERME ==
-
-~ Changer le duo game/scene en un trio engine/game/scene où : (en cours)
-	- engine correspond globalement au game actuel et s'occupe de gérer les events globaux et de dispatch l'update et le draw (engine contiendra un pointeur vers l'interface game et plus l'interface scene)
-	- game sera un ajout pour des fonctionnalités globales dans un jeu qui survivraient au changement de scène (game contiendra un pointeur vers l'interface scene)
-	- scene correspond globalement au scene actuel avec le chargement des objets et de leur transmettre les update si besoin. scene devra toujours être capable de fournir une caméra comme actuellement.
 
 ~ Mettre un système de physique basique pour le doomlike (collisions cubes AABB, gravité, raycasts)
 

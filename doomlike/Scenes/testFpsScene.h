@@ -17,13 +17,13 @@ class TestFpsScene : public Scene
 public:
 	TestFpsScene();
 
-	void unloadScene() override;
-
 	void update(float dt) override;
 
 
 protected:
 	void loadScene() override;
+
+	void unloadScene() override;
 
 
 private:

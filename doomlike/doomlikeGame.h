@@ -1,6 +1,7 @@
 #pragma once
 #include <Core/game.h>
 #include <Scenes/testFpsScene.h>
+#include <Scenes/doomlikeLevelOne.h>
 
 #include <Actors/player.h>
 
@@ -23,6 +24,7 @@ protected:
 private:
 	//  scenes
 	TestFpsScene testScene;
+	DoomlikeLevelOne levelOneScene;
 
 	//  player
 	Player player;

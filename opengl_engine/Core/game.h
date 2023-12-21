@@ -26,7 +26,7 @@ protected:
 	virtual void unloadGame() = 0;
 
 	void loadScene(Scene* scene);
-	void unloadActiveScene();
+	void unloadActiveScene(bool loadNewScene);
 
 	Renderer* renderer{ nullptr };
 	Scene* activeScene{ nullptr };

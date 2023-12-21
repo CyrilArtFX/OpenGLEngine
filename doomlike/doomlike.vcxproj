@@ -138,6 +138,7 @@
     <ClCompile Include="Actors\Player.cpp" />
     <ClCompile Include="doomlikeGame.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Scenes\doomlikeLevelOne.cpp" />
     <ClCompile Include="Scenes\testFpsScene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +150,7 @@
     <ClInclude Include="Actors\bullet.h" />
     <ClInclude Include="Actors\Player.h" />
     <ClInclude Include="doomlikeGame.h" />
+    <ClInclude Include="Scenes\doomlikeLevelOne.h" />
     <ClInclude Include="Scenes\testFpsScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

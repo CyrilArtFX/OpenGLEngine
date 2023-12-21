@@ -30,6 +30,9 @@
     <ClCompile Include="doomlikeGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Scenes\doomlikeLevelOne.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actors\bullet.h">
@@ -42,6 +45,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="doomlikeGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\doomlikeLevelOne.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

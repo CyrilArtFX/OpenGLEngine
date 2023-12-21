@@ -1,6 +1,7 @@
 #include "doomlikeGame.h"
 #include <Assets/defaultAssets.h>
 #include <Assets/assetManager.h>
+#include <Inputs/Input.h>
 
 DoomlikeGame::DoomlikeGame()
 {
@@ -75,6 +76,16 @@ void DoomlikeGame::loadGame()
 void DoomlikeGame::updateGame(float dt)
 {
 	player.update(dt);
+
+	if (Input::IsKeyPressed(GLFW_KEY_KP_0))
+	{
+		loadScene(&testScene);
+	}
+
+	if (Input::IsKeyPressed(GLFW_KEY_KP_1))
+	{
+		loadScene(&levelOneScene);
+	}
 }
 
 Camera& DoomlikeGame::getActiveCamera()
