@@ -1,7 +1,5 @@
 == A FAIRE APRES MANGER ==
 
-~ Mettre le load asset sur le game et pas sur la scene
-
 ~ Mettre le joueur sur le game du doomlike et faire une touche pour changer de scène et tester ça
 
 

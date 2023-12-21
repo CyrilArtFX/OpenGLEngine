@@ -25,7 +25,6 @@ public:
 
 
 protected:
-	void loadAssets() override;
 	void loadScene() override;
 
 
