@@ -1,7 +1,5 @@
 == A FAIRE APRES MANGER ==
 
-~ Utiliser tout les nouveaux systèmes sur le doomlike
-
 ~ Mettre le joueur sur le game du doomlike et faire une touche pour changer de scène et tester ça
 
 

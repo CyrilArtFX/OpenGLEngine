@@ -1,7 +1,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 
 #include <Core/engine.h>
-#include <Scenes/testFpsScene.h>
+#include "doomlikeGame.h"
 
 
 int main()
@@ -11,7 +11,7 @@ int main()
 
 	if (!is_engine_init) return -1;
 
-	engine.loadScene(std::make_shared<TestFpsScene>());
+	engine.loadGame(std::make_shared<DoomlikeGame>());
 
 	engine.run();
 	engine.close();
