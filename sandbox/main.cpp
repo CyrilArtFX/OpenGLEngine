@@ -2,7 +2,6 @@
 
 #include <Core/engine.h>
 #include "DefaultScenes/expositionScene.h"
-#include "DefaultScenes/firstPersonScene.h"
 
 
 int main()

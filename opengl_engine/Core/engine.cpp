@@ -57,7 +57,7 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 
 
 	//  create renderer
-	renderer.createRenderer(Color{ 50, 75, 75, 255 }, Vector2Int{ window.getWidth(), window.getHeigth() });
+	renderer.createRenderer(Color::black, Vector2Int{ window.getWidth(), window.getHeigth() });
 
 	//  set freecam values
 	freecam.setSpeed(4.0f);

@@ -14,10 +14,10 @@
 #include <Objects/Lights/spotLight.h>
 
 
-class FirstPersonScene : public Scene
+class TestFpsScene : public Scene
 {
 public:
-	FirstPersonScene();
+	TestFpsScene();
 
 	void load(Renderer* renderer_) override;
 	void unload() override;

@@ -12,6 +12,7 @@ ExpositionScene::ExpositionScene() : Scene()
 void ExpositionScene::load(Renderer* renderer_)
 {
 	renderer = renderer_;
+	renderer->setClearColor(Color{ 50, 75, 75, 255 });
 
 	//  camera
 	camera.setPosition(Vector3{ 0.0f, 0.0f, -3.0f });

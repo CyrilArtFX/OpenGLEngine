@@ -1,13 +1,14 @@
-#include "firstPersonScene.h"
+#include "testFpsScene.h"
 
-FirstPersonScene::FirstPersonScene() : Scene()
+TestFpsScene::TestFpsScene() : Scene()
 {
 }
 
 
-void FirstPersonScene::load(Renderer* renderer_)
+void TestFpsScene::load(Renderer* renderer_)
 {
 	renderer = renderer_;
+	renderer->setClearColor(Color{ 50, 75, 75, 255 });
 
 	//  player (camera)
 	player = std::make_unique<Player>(1.5f, 5.0f, renderer_); 
@@ -158,13 +159,13 @@ void FirstPersonScene::load(Renderer* renderer_)
 	renderer->addLight(&dirLight);
 }
 
-void FirstPersonScene::unload()
+void TestFpsScene::unload()
 {
 	player->unload();
 }
 
 
-void FirstPersonScene::update(float dt)
+void TestFpsScene::update(float dt)
 {
 	player->update(dt);
 }
