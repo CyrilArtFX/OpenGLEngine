@@ -1,22 +1,38 @@
 #pragma once
-#include <memory>
 #include <Rendering/renderer.h>
 #include <Rendering/camera.h>
+
+#include <vector>
+
+class Object;
+class Light;
 
 class Scene
 {
 public:
-	Scene() {}
 	virtual ~Scene() {} 
 
-	virtual void load(Renderer* renderer_) = 0;
-	virtual void unload() = 0; 
+	void load(Renderer* renderer_);
+	void unload();
 	
 	virtual void update(float dt) = 0;
 
-	inline Camera& getCamera() { return *currentCam; }
+	Camera& getCamera();
 
 protected:
-	Renderer* renderer; 
-	Camera* currentCam;
+	virtual void loadAssets() = 0;
+	virtual void loadScene() = 0;
+	virtual void unloadScene() = 0;
+
+	void registerObject(Object* object);
+	void registerLight(Light* light);
+
+	Renderer* renderer{ nullptr };
+	Camera* currentCam{ nullptr };
+
+private:
+	bool assetsLoaded{ false };
+
+	std::vector<Object*> sceneregisteredObjects;
+	std::vector<Light*> sceneregisteredLights;
 };

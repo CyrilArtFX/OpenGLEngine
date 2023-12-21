@@ -106,6 +106,19 @@ void Renderer::addMaterial(Material* material)
 	materials[material->getShaderPtr()].push_back(material);
 }
 
+void Renderer::removeMaterial(Material* material)
+{
+	auto iter = std::find(materials[material->getShaderPtr()].begin(), materials[material->getShaderPtr()].end(), material);
+	if (iter == materials[material->getShaderPtr()].end())
+	{
+		std::cout << "Renderer can't remove a material that doesn't exist.\n";
+		return;
+	}
+
+	std::iter_swap(iter, materials[material->getShaderPtr()].end() - 1);
+	materials[material->getShaderPtr()].pop_back();
+}
+
 void Renderer::addLight(Light* light)
 {
 	lights[light->getLightType()].push_back(light);

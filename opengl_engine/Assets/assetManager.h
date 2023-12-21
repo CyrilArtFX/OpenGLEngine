@@ -28,6 +28,11 @@ public:
 	*/
 	static Texture& GetTexture(std::string name);
 
+	/**
+	* Delete a texture from the asset storage.
+	*/
+	static void DeleteTexture(std::string name);
+
 
 	/**
 	* Load a single mesh from handcoded vertices.
@@ -59,6 +64,16 @@ public:
 	*/
 	static MeshCollection& GetMeshCollection(std::string name);
 
+	/**
+	* Delete a single mesh from the asset storage.
+	*/
+	static void DeleteSingleMesh(std::string name);
+
+	/**
+	* Delete a collection of mesh from the asset storage.
+	*/
+	static void DeleteMeshCollection(std::string name);
+
 
 	/**
 	* Create a model and stores it.
@@ -70,6 +85,11 @@ public:
 	* Retrieve a model from the asset storage.
 	*/
 	static Model& GetModel(std::string name);
+
+	/**
+	* Delete a model from the asset storage.
+	*/
+	static void DeleteModel(std::string name);
 
 
 	/**
@@ -83,6 +103,11 @@ public:
 	*/
 	static Shader& GetShader(std::string name);
 
+	/**
+	* Delete a shader from the asset storage.
+	*/
+	static void DeleteShader(std::string name);
+
 
 	/**
 	* Create a material and stores it.
@@ -94,6 +119,11 @@ public:
 	* Retrieve a material from the asset storage.
 	*/
 	static Material& GetMaterial(std::string name);
+
+	/**
+	* Delete a material from the asset storage.
+	*/
+	static void DeleteMaterial(std::string name);
 
 
 private:

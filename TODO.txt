@@ -34,3 +34,5 @@
 ~ Quand l'asset manager doit retourner une valeur nulle parce que la valeur demandée est inexistante, au lieu de créer une variable temporaire et de retourner un pointeur vers cette variable (pas ouf), plutôt avoir dans chaque liste d'asset une valeur "par défaut" à pouvoir retourner au besoin
 
 ~ Créer une classe (statique) pour mettre les vertex arrays (meshes) par défaut dans l'asset manager (le cube et le plane), réutilisable facilement (plus besoin de recoder les vertex dans scene) et utilisables pour le debug des cubes physiques
+
+~ Réfléchir au fonctionnement du load asset des scenes, est-ce qu'il faudrait faire gaffe à l'utilisation de ram et unload genre les textures qui ne sont plus nécessaires ?

@@ -17,10 +17,13 @@ class ExpositionScene : public Scene
 public:
 	ExpositionScene();
 
-	void load(Renderer* renderer_) override;
-	void unload() override;
+	void unloadScene() override;
 
 	void update(float dt) override;
+
+protected:
+	void loadAssets() override;
+	void loadScene() override;
 
 private:
 	//  scene objects

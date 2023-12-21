@@ -139,6 +139,7 @@
     <ClCompile Include="Assets\assetTexture.cpp" />
     <ClCompile Include="Core\engine.cpp" />
     <ClCompile Include="Core\game.cpp" />
+    <ClCompile Include="Core\scene.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Inputs\input.cpp" />
     <ClCompile Include="Maths\matrix4.cpp" />

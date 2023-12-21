@@ -34,6 +34,17 @@ Texture& AssetManager::GetTexture(std::string name)
 	return textures[name];
 }
 
+void AssetManager::DeleteTexture(std::string name)
+{
+	if (textures.find(name) == textures.end())
+	{
+		std::cout << "Asset Manager Error: Tried to delete a texture with a name that doesn't exists. Name is " << name << ".\n";
+		return;
+	}
+
+	textures.erase(name);
+}
+
 
 void AssetManager::LoadSingleMesh(std::string name, std::vector<Vertex> vertices, std::vector<unsigned int> indices)
 {
@@ -92,6 +103,33 @@ MeshCollection& AssetManager::GetMeshCollection(std::string name)
 	return meshesCollection[name];
 }
 
+void AssetManager::DeleteSingleMesh(std::string name)
+{
+	if (meshesSingle.find(name) == meshesSingle.end())
+	{
+		std::cout << "Asset Manager Error: Tried to delete a single mesh with a name that doesn't exists. Name is " << name << ".\n";
+		return;
+	}
+
+	meshesSingle[name].deleteObjects();
+	meshesSingle.erase(name);
+}
+
+void AssetManager::DeleteMeshCollection(std::string name)
+{
+	if (meshesCollection.find(name) == meshesCollection.end())
+	{
+		std::cout << "Asset Manager Error: Tried to delete a mesh collection with a name that doesn't exists. Name is " << name << ".\n";
+		return;
+	}
+
+	for (auto mesh : meshesCollection[name].collection)
+	{
+		mesh.deleteObjects();
+	}
+	meshesCollection.erase(name);
+}
+
 
 void AssetManager::CreateModel(std::string name)
 {
@@ -114,6 +152,17 @@ Model& AssetManager::GetModel(std::string name)
 	}
 
 	return models[name];
+}
+
+void AssetManager::DeleteModel(std::string name)
+{
+	if (models.find(name) == models.end())
+	{
+		std::cout << "Asset Manager Error: Tried to delete a model with a name that doesn't exists. Name is " << name << ".\n";
+		return;
+	}
+
+	models.erase(name);
 }
 
 void AssetManager::CreateShaderProgram(std::string name, const std::string vertexName, const std::string fragmentName, ShaderType shaderType)
@@ -139,6 +188,18 @@ Shader& AssetManager::GetShader(std::string name)
 	return shaders[name];
 }
 
+void AssetManager::DeleteShader(std::string name)
+{
+	if (shaders.find(name) == shaders.end())
+	{
+		std::cout << "Asset Manager Error: Tried to delete a shader with a name that doesn't exists. Name is " << name << ".\n";
+		return;
+	}
+
+	shaders[name].deleteProgram();
+	shaders.erase(name);
+}
+
 Material& AssetManager::CreateMaterial(std::string name, Shader* shaderUsed)
 {
 	if (materials.find(name) != materials.end())
@@ -162,6 +223,17 @@ Material& AssetManager::GetMaterial(std::string name)
 	}
 
 	return materials[name];
+}
+
+void AssetManager::DeleteMaterial(std::string name)
+{
+	if (materials.find(name) == materials.end())
+	{
+		std::cout << "Asset Manager Error: Tried to delete a material with a name that doesn't exists. Name is " << name << ".\n";
+		return;
+	}
+
+	materials.erase(name);
 }
 
 

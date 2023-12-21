@@ -21,11 +21,11 @@ public:
 	bool hasActiveScene();
 
 protected:
-	void loadScene(std::weak_ptr<Scene> scene);
+	void loadScene(Scene* scene);
 	void unloadActiveScene();
 
-	Renderer* renderer;
-	std::shared_ptr<Scene> activeScene;
+	Renderer* renderer{ nullptr };
+	Scene* activeScene{ nullptr };
 
 private:
 	Camera gamedefaultsNocam; //  camera to return if there is no active scene

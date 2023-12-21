@@ -4,22 +4,13 @@
 #include <GLFW/glfw3.h>
 
 
-ExpositionScene::ExpositionScene() : Scene()
+ExpositionScene::ExpositionScene()
 {
 }
 
 
-void ExpositionScene::load(Renderer* renderer_)
+void ExpositionScene::loadAssets()
 {
-	renderer = renderer_;
-	renderer->setClearColor(Color{ 50, 75, 75, 255 });
-
-	//  camera
-	camera.setPosition(Vector3{ 0.0f, 0.0f, -3.0f });
-	currentCam = &camera;
-	renderer->setCamera(&camera);
-
-
 	//  shaders, textures and materials
 	AssetManager::CreateShaderProgram("lit_object", "Lit/object_lit.vert", "Lit/object_lit.frag", ShaderType::Lit);
 	AssetManager::CreateShaderProgram("flat_emissive", "Unlit/flat_emissive.vert", "Unlit/flat_emissive.frag", ShaderType::Unlit);
@@ -38,11 +29,8 @@ void ExpositionScene::load(Renderer* renderer_)
 	Material& light_source_mat = AssetManager::CreateMaterial("light_source", &AssetManager::GetShader("flat_emissive"));
 	light_source_mat.addParameter("emissive", 1.0f, 1.0f, 1.0f);
 
-	renderer->addMaterial(&AssetManager::GetMaterial("container"));
-	renderer->addMaterial(&AssetManager::GetMaterial("light_source"));
 
-
-	//  meshes, models and objects
+	//  meshes and models 
 	std::vector<Vertex> cube_vertices
 	{
 		// positions                           // normals                      // tex coords
@@ -95,7 +83,23 @@ void ExpositionScene::load(Renderer* renderer_)
 
 	AssetManager::CreateModel("light_cube");
 	AssetManager::GetModel("light_cube").addMesh(&AssetManager::GetSingleMesh("cube"), &AssetManager::GetMaterial("light_source"));
+}
 
+void ExpositionScene::loadScene()
+{
+	renderer->setClearColor(Color{ 50, 75, 75, 255 });
+
+	renderer->addMaterial(&AssetManager::GetMaterial("container"));
+	renderer->addMaterial(&AssetManager::GetMaterial("light_source"));
+
+
+	//  camera
+	camera.setPosition(Vector3{ 0.0f, 0.0f, -3.0f });
+	currentCam = &camera;
+	renderer->setCamera(&camera);
+
+
+	//  objects
 	cube1.addModel(&AssetManager::GetModel("container"));
 	cube2.addModel(&AssetManager::GetModel("container"));
 	cube3.addModel(&AssetManager::GetModel("container"));
@@ -103,11 +107,11 @@ void ExpositionScene::load(Renderer* renderer_)
 	lightCube1.addModel(&AssetManager::GetModel("light_cube"));
 	lightCube2.addModel(&AssetManager::GetModel("light_cube"));
 
-	renderer->addObject(&cube1);
-	renderer->addObject(&cube2);
-	renderer->addObject(&cube3);
-	renderer->addObject(&lightCube1);
-	renderer->addObject(&lightCube2);
+	registerObject(&cube1);
+	registerObject(&cube2);
+	registerObject(&cube3);
+	registerObject(&lightCube1);
+	registerObject(&lightCube2);
 
 	cube1.setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
 	cube1.setRotation(Quaternion{ Vector3::unitY, Maths::toRadians(45.0f) });
@@ -125,15 +129,17 @@ void ExpositionScene::load(Renderer* renderer_)
 	pointLight2.load(Color::white, Vector3{ 1.5f, 1.0f, -0.5f });
 	flashLight.load(Color::white, Vector3::zero, Vector3::unitX);
 
-	renderer->addLight(&sunLight);
-	renderer->addLight(&pointLight1);
-	renderer->addLight(&pointLight2);
-	renderer->addLight(&flashLight);
+	registerLight(&sunLight);
+	registerLight(&pointLight1);
+	registerLight(&pointLight2);
+	registerLight(&flashLight);
 }
 
 
-void ExpositionScene::unload()
+void ExpositionScene::unloadScene()
 {
+	renderer->removeMaterial(&AssetManager::GetMaterial("container"));
+	renderer->removeMaterial(&AssetManager::GetMaterial("light_source"));
 }
 
 

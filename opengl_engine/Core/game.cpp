@@ -26,16 +26,16 @@ bool Game::hasActiveScene()
 	return false;
 }
 
-void Game::loadScene(std::weak_ptr<Scene> scene)
+void Game::loadScene(Scene* scene)
 {
 	if (!renderer)
 	{
-		std::cout << "Game renderer not setup !\n";
+		std::cout << "Game doesn't have access to the renderer !\n";
 		return;
 	}
 
 	unloadActiveScene();
-	activeScene = scene.lock();
+	activeScene = scene;
 	activeScene->load(renderer);
 }
 

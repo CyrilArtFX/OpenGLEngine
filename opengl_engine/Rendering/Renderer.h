@@ -26,6 +26,7 @@ public:
 	inline const Camera& getCamera() const { return *currentCam; }
 
 	void addMaterial(Material* material);
+	void removeMaterial(Material* material);
 
 	void addLight(Light* light);
 	void addObject(Object* object);

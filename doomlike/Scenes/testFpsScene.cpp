@@ -1,6 +1,6 @@
 #include "testFpsScene.h"
 
-TestFpsScene::TestFpsScene() : Scene()
+TestFpsScene::TestFpsScene()
 {
 }
 

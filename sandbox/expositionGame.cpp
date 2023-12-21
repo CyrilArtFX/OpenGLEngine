@@ -1,5 +1,4 @@
 #include "expositionGame.h"
-#include <DefaultScenes/expositionScene.h>
 
 ExpositionGame::ExpositionGame()
 {
@@ -9,7 +8,7 @@ void ExpositionGame::load(Renderer* renderer_)
 {
 	renderer = renderer_;
 
-	loadScene(std::make_shared<ExpositionScene>());
+	loadScene(&expositionScene);
 }
 
 void ExpositionGame::unloadGame()

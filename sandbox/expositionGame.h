@@ -1,5 +1,6 @@
 #pragma once
 #include <Core/game.h>
+#include <DefaultScenes/expositionScene.h>
 
 class ExpositionGame : public Game
 {
@@ -10,4 +11,7 @@ public:
 	void unloadGame() override;
 
 	void updateGame(float dt) override;
+
+private:
+	ExpositionScene expositionScene;
 };
