@@ -138,6 +138,7 @@
     <ClCompile Include="Assets\assetMaterial.cpp" />
     <ClCompile Include="Assets\assetTexture.cpp" />
     <ClCompile Include="Core\engine.cpp" />
+    <ClCompile Include="Core\game.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Inputs\input.cpp" />
     <ClCompile Include="Maths\matrix4.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="Assets\assetMaterial.h" />
     <ClInclude Include="Assets\assetTexture.h" />
     <ClInclude Include="Core\engine.h" />
+    <ClInclude Include="Core\game.h" />
     <ClInclude Include="Core\scene.h" />
     <ClInclude Include="Inputs\input.h" />
     <ClInclude Include="Maths\maths.h" />

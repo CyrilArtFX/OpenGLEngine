@@ -1,6 +1,6 @@
 #pragma once
 
-#include "scene.h"
+#include "game.h"
 #include "window.h"
 #include <Rendering/renderer.h>
 #include <Rendering/camera.h>
@@ -26,8 +26,8 @@ public:
 	void run();
 	void close();
 
-	void loadScene(std::weak_ptr<Scene> scene_);
-	void unloadScene();
+	void loadGame(std::weak_ptr<Game> game_);
+	void unloadGame();
 
 	void engineUpdate(GLFWwindow* glWindow);
 
@@ -35,8 +35,8 @@ public:
 	void windowResize(GLFWwindow* glWindow, int width, int height);
 
 private:
-	//  scene
-	std::shared_ptr<Scene> scene;
+	//  game
+	std::shared_ptr<Game> game;
 
 	//  window
 	Window window;

@@ -106,7 +106,11 @@ void Engine::run()
 
 		if (!gamePaused)
 		{
-			if (scene) scene->update(deltaTime);
+			if (game)
+			{
+				game->updateGame(deltaTime);
+				game->updateScene(deltaTime);
+			}
 		}
 
 
@@ -122,7 +126,7 @@ void Engine::run()
 	}
 
 	//  close engine
-	unloadScene();
+	unloadGame();
 	AssetManager::DeleteObjects();
 }
 
@@ -133,15 +137,15 @@ void Engine::close()
 	glfwTerminate();
 }
 
-void Engine::loadScene(std::weak_ptr<Scene> scene_)
+void Engine::loadGame(std::weak_ptr<Game> game_)
 {
-	scene = scene_.lock();
-	scene->load(&renderer);
+	game = game_.lock();
+	game->load(&renderer);
 }
 
-void Engine::unloadScene()
+void Engine::unloadGame()
 {
-	if (scene) scene->unload();
+	if (game) game->unload();
 }
 
 
@@ -153,8 +157,8 @@ void Engine::engineUpdate(GLFWwindow* glWindow)
 		glfwSetWindowShouldClose(glWindow, true);
 	}
 
-	//  pause and freecam are useless if there is no active scene
-	if (!scene) return;
+	//  pause and freecam are useless if there is no active game or scene
+	if (!game || !game->hasActiveScene()) return;
 
 	//  pause/unpause the game when p is pressed
 	if (Input::IsKeyPressed(GLFW_KEY_P))
@@ -217,7 +221,7 @@ void Engine::enableFreecam()
 	freecamMode = true;
 	if (!gamePaused) pauseGame();
 	std::cout << "Freecam mode enabled.\n";
-	freecam.copyCameraTransform(scene->getCamera());
+	freecam.copyCameraTransform(game->getActiveCamera());
 	renderer.setCamera(&freecam);
 }
 
@@ -225,7 +229,7 @@ void Engine::disableFreecam()
 {
 	freecamMode = false;
 	std::cout << "Freecam mode disabled.\n";
-	renderer.setCamera(&scene->getCamera());
+	renderer.setCamera(&game->getActiveCamera());
 }
 
 
