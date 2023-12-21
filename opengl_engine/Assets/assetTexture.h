@@ -7,6 +7,6 @@ public:
 	/**
 	* Load a texture from file using stbi.
 	*/
-	static Texture LoadTexture(const std::string texturePath, TextureType textureType, unsigned int glFormat = GL_RGBA, bool flipVertical = false);
+	static Texture LoadTexture(const std::string texturePath, unsigned int glFormat = GL_RGBA, bool flipVertical = false);
 };
 

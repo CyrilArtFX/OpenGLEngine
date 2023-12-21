@@ -10,7 +10,7 @@ std::unordered_map<std::string, Shader> AssetManager::shaders;
 std::unordered_map<std::string, Material> AssetManager::materials;
 
 
-void AssetManager::LoadTexture(std::string name, const std::string texturePath, TextureType textureType, unsigned int glFormat, bool flipVertical)
+void AssetManager::LoadTexture(std::string name, const std::string texturePath, unsigned int glFormat, bool flipVertical)
 {
 	if (textures.find(name) != textures.end())
 	{
@@ -18,7 +18,7 @@ void AssetManager::LoadTexture(std::string name, const std::string texturePath, 
 		return;
 	}
 	
-	textures[name] = AssetTexture::LoadTexture(texturePath, textureType, glFormat, flipVertical);
+	textures[name] = AssetTexture::LoadTexture(texturePath, glFormat, flipVertical);
 }
 
 Texture& AssetManager::GetTexture(std::string name)
@@ -26,9 +26,7 @@ Texture& AssetManager::GetTexture(std::string name)
 	if (textures.find(name) == textures.end())
 	{
 		std::cout << "Asset Manager Error: Tried to get a texture with a name that doesn't exists. Name is " << name << ".\n";
-		Texture null_tex;
-		null_tex.load(); //  load with the default notexture
-		return null_tex;
+		return textures["null_texture"];
 	}
 
 	return textures[name];
@@ -84,8 +82,7 @@ Mesh& AssetManager::GetSingleMesh(std::string name)
 	if (meshesSingle.find(name) == meshesSingle.end())
 	{
 		std::cout << "Asset Manager Error: Tried to get a single mesh with a name that doesn't exists. Name is " << name << ".\n";
-		Mesh null_mesh;
-		return null_mesh;
+		return meshesSingle["null_mesh"];
 	}
 
 	return meshesSingle[name];
@@ -96,8 +93,7 @@ MeshCollection& AssetManager::GetMeshCollection(std::string name)
 	if (meshesCollection.find(name) == meshesCollection.end())
 	{
 		std::cout << "Asset Manager Error: Tried to get a mesh collection with a name that doesn't exists. Name is " << name << ".\n";
-		MeshCollection null_collection{};
-		return null_collection;
+		return meshesCollection["null_collection"];
 	}
 
 	return meshesCollection[name];
@@ -147,8 +143,7 @@ Model& AssetManager::GetModel(std::string name)
 	if (models.find(name) == models.end())
 	{
 		std::cout << "Asset Manager Error: Tried to get a model with a name that doesn't exists. Name is " << name << ".\n";
-		Model null_model;
-		return null_model;
+		return models["null_model"];
 	}
 
 	return models[name];
@@ -181,8 +176,7 @@ Shader& AssetManager::GetShader(std::string name)
 	if (shaders.find(name) == shaders.end())
 	{
 		std::cout << "Asset Manager Error: Tried to get a shader with a name that doesn't exists. Name is " << name << ".\n";
-		Shader null_shader;
-		return null_shader; 
+		return shaders["null_shader"];
 	}
 
 	return shaders[name];
@@ -205,8 +199,7 @@ Material& AssetManager::CreateMaterial(std::string name, Shader* shaderUsed)
 	if (materials.find(name) != materials.end())
 	{
 		std::cout << "Asset Manager Error: Tried to create a material with a name that already exists. Name is " << name << ".\n";
-		Material null_material;
-		return null_material;
+		return materials["null_material"];
 	}
 
 	materials[name] = AssetMaterial::LoadMaterial(shaderUsed);
@@ -218,8 +211,7 @@ Material& AssetManager::GetMaterial(std::string name)
 	if (materials.find(name) == materials.end())
 	{
 		std::cout << "Asset Manager Error: Tried to get a material with a name that doesn't exists. Name is " << name << ".\n";
-		Material null_material;
-		return null_material;
+		return materials["null_material"];
 	}
 
 	return materials[name];
@@ -259,4 +251,14 @@ void AssetManager::DeleteObjects()
 	{
 		shader.second.deleteProgram();
 	}
+}
+
+void AssetManager::LoadNullAssets()
+{
+	LoadTexture("null_texture", "Default/notexture.png", GL_RGBA, false);
+	meshesSingle["null_mesh"] = Mesh();
+	meshesCollection["null_collection"] = MeshCollection{};
+	models["null_model"] = Model();
+	shaders["null_shader"] = Shader();
+	materials["null_material"] = Material();
 }

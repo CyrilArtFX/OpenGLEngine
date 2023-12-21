@@ -5,10 +5,8 @@ Texture::Texture()
 {
 }
 
-void Texture::load(const std::string texturePath, TextureType textureType, unsigned int glFormat, bool flipVertical)
+void Texture::load(const std::string texturePath, unsigned int glFormat, bool flipVertical)
 {
-	type = textureType;
-
 	std::string tex_path = RESOURCES_PATH + texturePath;
 
 	//  create texture
@@ -76,29 +74,4 @@ void Texture::setFilteringParameters(unsigned int minifying, unsigned int magnif
 	use();
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minifying);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magnifying);
-}
-
-
-
-std::string Texture::TypeToString(TextureType textureType)
-{
-	switch (textureType)
-	{
-
-	case TextureType::Undefined:
-		return std::string("");
-
-	case TextureType::Diffuse: 
-		return std::string("texture_diffuse");
-
-	case TextureType::Specular:
-		return std::string("texture_specular");
-
-	case TextureType::Emissive:
-		return std::string("texture_emissive");
-
-	default:
-		return std::string("");
-
-	}
 }

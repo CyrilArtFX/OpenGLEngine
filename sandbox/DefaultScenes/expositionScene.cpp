@@ -15,74 +15,26 @@ void ExpositionScene::loadAssets()
 	AssetManager::CreateShaderProgram("lit_object", "Lit/object_lit.vert", "Lit/object_lit.frag", ShaderType::Lit);
 	AssetManager::CreateShaderProgram("flat_emissive", "Unlit/flat_emissive.vert", "Unlit/flat_emissive.frag", ShaderType::Unlit);
 
-	AssetManager::LoadTexture("container_diffuse", "container2.png", TextureType::Diffuse, GL_RGBA, false);
-	AssetManager::LoadTexture("container_specular", "container2_specular.png", TextureType::Specular, GL_RGBA, false);
-	AssetManager::LoadTexture("container_emissive", "matrix.jpg", TextureType::Emissive, GL_RGB, false);
-	AssetManager::LoadTexture("black_emissive", "Default/black.png", TextureType::Emissive, GL_RGBA, false);
+	AssetManager::LoadTexture("container_diffuse", "container2.png", GL_RGBA, false);
+	AssetManager::LoadTexture("container_specular", "container2_specular.png", GL_RGBA, false);
+	AssetManager::LoadTexture("container_emissive", "matrix.jpg", GL_RGB, false);
 
 	Material& container_mat = AssetManager::CreateMaterial("container", &AssetManager::GetShader("lit_object"));
-	container_mat.addTexture(&AssetManager::GetTexture("container_diffuse"));
-	container_mat.addTexture(&AssetManager::GetTexture("container_specular"));
-	container_mat.addTexture(&AssetManager::GetTexture("black_emissive"));
+	container_mat.addTexture(&AssetManager::GetTexture("container_diffuse"), TextureType::Diffuse); 
+	container_mat.addTexture(&AssetManager::GetTexture("container_specular"), TextureType::Specular);
+	container_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
 	container_mat.addParameter("material.shininess", 32.0f);
 
 	Material& light_source_mat = AssetManager::CreateMaterial("light_source", &AssetManager::GetShader("flat_emissive"));
 	light_source_mat.addParameter("emissive", 1.0f, 1.0f, 1.0f);
 
 
-	//  meshes and models 
-	std::vector<Vertex> cube_vertices
-	{
-		// positions                           // normals                      // tex coords
-		Vertex{Vector3{-0.5f, -0.5f, -0.5f},   Vector3{ 0.0f,  0.0f, -1.0f},   Vector2{0.0f, 0.0f}},
-		Vertex{Vector3{ 0.5f, -0.5f, -0.5f},   Vector3{ 0.0f,  0.0f, -1.0f},   Vector2{1.0f, 0.0f}},
-		Vertex{Vector3{ 0.5f,  0.5f, -0.5f},   Vector3{ 0.0f,  0.0f, -1.0f},   Vector2{1.0f, 1.0f}},
-		Vertex{Vector3{ 0.5f,  0.5f, -0.5f},   Vector3{ 0.0f,  0.0f, -1.0f},   Vector2{1.0f, 1.0f}},
-		Vertex{Vector3{-0.5f,  0.5f, -0.5f},   Vector3{ 0.0f,  0.0f, -1.0f},   Vector2{0.0f, 1.0f}},
-		Vertex{Vector3{-0.5f, -0.5f, -0.5f},   Vector3{ 0.0f,  0.0f, -1.0f},   Vector2{0.0f, 0.0f}},
-
-		Vertex{Vector3{-0.5f, -0.5f,  0.5f},   Vector3{ 0.0f,  0.0f,  1.0f},   Vector2{0.0f, 0.0f}},
-		Vertex{Vector3{ 0.5f, -0.5f,  0.5f},   Vector3{ 0.0f,  0.0f,  1.0f},   Vector2{1.0f, 0.0f}},
-		Vertex{Vector3{ 0.5f,  0.5f,  0.5f},   Vector3{ 0.0f,  0.0f,  1.0f},   Vector2{1.0f, 1.0f}},
-		Vertex{Vector3{ 0.5f,  0.5f,  0.5f},   Vector3{ 0.0f,  0.0f,  1.0f},   Vector2{1.0f, 1.0f}},
-		Vertex{Vector3{-0.5f,  0.5f,  0.5f},   Vector3{ 0.0f,  0.0f,  1.0f},   Vector2{0.0f, 1.0f}},
-		Vertex{Vector3{-0.5f, -0.5f,  0.5f},   Vector3{ 0.0f,  0.0f,  1.0f},   Vector2{0.0f, 0.0f}},
-
-		Vertex{Vector3{-0.5f,  0.5f,  0.5f},   Vector3{-1.0f,  0.0f,  0.0f},   Vector2{1.0f, 0.0f}},
-		Vertex{Vector3{-0.5f,  0.5f, -0.5f},   Vector3{-1.0f,  0.0f,  0.0f},   Vector2{1.0f, 1.0f}},
-		Vertex{Vector3{-0.5f, -0.5f, -0.5f},   Vector3{-1.0f,  0.0f,  0.0f},   Vector2{0.0f, 1.0f}},
-		Vertex{Vector3{-0.5f, -0.5f, -0.5f},   Vector3{-1.0f,  0.0f,  0.0f},   Vector2{0.0f, 1.0f}},
-		Vertex{Vector3{-0.5f, -0.5f,  0.5f},   Vector3{-1.0f,  0.0f,  0.0f},   Vector2{0.0f, 0.0f}},
-		Vertex{Vector3{-0.5f,  0.5f,  0.5f},   Vector3{-1.0f,  0.0f,  0.0f},   Vector2{1.0f, 0.0f}},
-
-		Vertex{Vector3{ 0.5f,  0.5f,  0.5f},   Vector3{ 1.0f,  0.0f,  0.0f},   Vector2{1.0f, 0.0f}},
-		Vertex{Vector3{ 0.5f,  0.5f, -0.5f},   Vector3{ 1.0f,  0.0f,  0.0f},   Vector2{1.0f, 1.0f}},
-		Vertex{Vector3{ 0.5f, -0.5f, -0.5f},   Vector3{ 1.0f,  0.0f,  0.0f},   Vector2{0.0f, 1.0f}},
-		Vertex{Vector3{ 0.5f, -0.5f, -0.5f},   Vector3{ 1.0f,  0.0f,  0.0f},   Vector2{0.0f, 1.0f}},
-		Vertex{Vector3{ 0.5f, -0.5f,  0.5f},   Vector3{ 1.0f,  0.0f,  0.0f},   Vector2{0.0f, 0.0f}},
-		Vertex{Vector3{ 0.5f,  0.5f,  0.5f},   Vector3{ 1.0f,  0.0f,  0.0f},   Vector2{1.0f, 0.0f}},
-
-		Vertex{Vector3{-0.5f, -0.5f, -0.5f},   Vector3{ 0.0f, -1.0f,  0.0f},   Vector2{0.0f, 1.0f}},
-		Vertex{Vector3{ 0.5f, -0.5f, -0.5f},   Vector3{ 0.0f, -1.0f,  0.0f},   Vector2{1.0f, 1.0f}},
-		Vertex{Vector3{ 0.5f, -0.5f,  0.5f},   Vector3{ 0.0f, -1.0f,  0.0f},   Vector2{1.0f, 0.0f}},
-		Vertex{Vector3{ 0.5f, -0.5f,  0.5f},   Vector3{ 0.0f, -1.0f,  0.0f},   Vector2{1.0f, 0.0f}},
-		Vertex{Vector3{-0.5f, -0.5f,  0.5f},   Vector3{ 0.0f, -1.0f,  0.0f},   Vector2{0.0f, 0.0f}},
-		Vertex{Vector3{-0.5f, -0.5f, -0.5f},   Vector3{ 0.0f, -1.0f,  0.0f},   Vector2{0.0f, 1.0f}},
-
-		Vertex{Vector3{-0.5f,  0.5f, -0.5f},   Vector3{ 0.0f,  1.0f,  0.0f},   Vector2{0.0f, 1.0f}},
-		Vertex{Vector3{ 0.5f,  0.5f, -0.5f},   Vector3{ 0.0f,  1.0f,  0.0f},   Vector2{1.0f, 1.0f}},
-		Vertex{Vector3{ 0.5f,  0.5f,  0.5f},   Vector3{ 0.0f,  1.0f,  0.0f},   Vector2{1.0f, 0.0f}},
-		Vertex{Vector3{ 0.5f,  0.5f,  0.5f},   Vector3{ 0.0f,  1.0f,  0.0f},   Vector2{1.0f, 0.0f}},
-		Vertex{Vector3{-0.5f,  0.5f,  0.5f},   Vector3{ 0.0f,  1.0f,  0.0f},   Vector2{0.0f, 0.0f}},
-		Vertex{Vector3{-0.5f,  0.5f, -0.5f},   Vector3{ 0.0f,  1.0f,  0.0f},   Vector2{0.0f, 1.0f}}
-	};
-	AssetManager::LoadSingleMesh("cube", cube_vertices);
-
+	//  models 
 	AssetManager::CreateModel("container");
-	AssetManager::GetModel("container").addMesh(&AssetManager::GetSingleMesh("cube"), &AssetManager::GetMaterial("container"));
+	AssetManager::GetModel("container").addMesh(&AssetManager::GetSingleMesh("default_cube"), &AssetManager::GetMaterial("container"));
 
 	AssetManager::CreateModel("light_cube");
-	AssetManager::GetModel("light_cube").addMesh(&AssetManager::GetSingleMesh("cube"), &AssetManager::GetMaterial("light_source"));
+	AssetManager::GetModel("light_cube").addMesh(&AssetManager::GetSingleMesh("default_cube"), &AssetManager::GetMaterial("light_source"));
 }
 
 void ExpositionScene::loadScene()

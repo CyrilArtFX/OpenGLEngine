@@ -17,35 +17,22 @@ void Material::use()
 
 	//  assume the shader is already in use (the rendering process should have done it)
 
-	unsigned int diffuse_nr = 1;
-	unsigned int specular_nr = 1;
-	unsigned int emissive_nr = 1;
-	
-	for (int i = 0; i < textures.size(); i++)
+	unsigned int tex_activated = 0;
+	for (auto tex_type : textures)
 	{
-		glActiveTexture(GL_TEXTURE0 + i); //  activate texture unit first
+		TextureType type = tex_type.first;
+		unsigned int number = 0;
 
-		std::string number;
-		TextureType type = textures[i]->getTextureType();
-		switch (type)
+		for (auto texture : tex_type.second)
 		{
+			glActiveTexture(GL_TEXTURE0 + tex_activated); //  activate texture unit first
+			std::string str_number = std::to_string(++number);
 
-		case TextureType::Diffuse:
-			number = std::to_string(diffuse_nr++);
-			break;
+			shader->setInt("material." + TypeToString(type) + str_number, tex_activated); //  then set the sampler to the correct texture unit
+			texture->use(); //  finally bind the texture
 
-		case TextureType::Specular:
-			number = std::to_string(specular_nr++);
-			break;
-
-		case TextureType::Emissive:
-			number = std::to_string(emissive_nr++);
-			break;
-
+			tex_activated++;
 		}
-
-		shader->setInt("material." + Texture::TypeToString(type) + number, i); //  then set the sampler to the correct texture unit
-		textures[i]->use(); //  finally bind the texture
 	}
 
 	glActiveTexture(GL_TEXTURE0); //  reinitialisate the texture activation
@@ -57,9 +44,9 @@ void Material::use()
 }
 
 
-void Material::addTexture(Texture* texture)
+void Material::addTexture(Texture* texture, TextureType type)
 {
-	textures.push_back(texture);
+	textures[type].push_back(texture);
 }
 
 void Material::addParameter(std::string name, bool boolParameter)
@@ -85,4 +72,33 @@ void Material::addParameter(std::string name, Vector3 vec3Parameter)
 void Material::addParameter(std::string name, float vec3ParameterX, float vec3ParameterY, float vec3ParameterZ)
 {
 	vector3Parameters[name] = Vector3{ vec3ParameterX, vec3ParameterY, vec3ParameterZ };
+}
+
+
+
+
+
+
+
+std::string Material::TypeToString(TextureType textureType)
+{
+	switch (textureType)
+	{
+
+	case TextureType::Undefined:
+		return std::string("");
+
+	case TextureType::Diffuse:
+		return std::string("texture_diffuse");
+
+	case TextureType::Specular:
+		return std::string("texture_specular");
+
+	case TextureType::Emissive:
+		return std::string("texture_emissive");
+
+	default:
+		return std::string("");
+
+	}
 }

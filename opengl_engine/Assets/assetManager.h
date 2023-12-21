@@ -16,12 +16,17 @@ public:
 	*/
 	static void DeleteObjects();
 
+	/**
+	* Load the "null" assest (the assets that will be returned if user ask for a non-existing asset.
+	*/
+	static void LoadNullAssets();
+
 
 	/**
 	* Load a texture from file using stbi.
 	* Name = the name you want to give to this texture in the asset storage.
 	*/
-	static void LoadTexture(std::string name, const std::string texturePath, TextureType textureType, unsigned int glFormat = GL_RGBA, bool flipVertical = false);
+	static void LoadTexture(std::string name, const std::string texturePath, unsigned int glFormat = GL_RGBA, bool flipVertical = false);
 
 	/**
 	* Retrieve a texture from the asset storage.

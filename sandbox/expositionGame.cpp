@@ -1,4 +1,5 @@
 #include "expositionGame.h"
+#include <Assets/defaultAssets.h>
 
 ExpositionGame::ExpositionGame()
 {
@@ -7,6 +8,8 @@ ExpositionGame::ExpositionGame()
 void ExpositionGame::load(Renderer* renderer_)
 {
 	renderer = renderer_;
+
+	DefaultAssets::LoadDefaultAssets();
 
 	loadScene(&expositionScene);
 }

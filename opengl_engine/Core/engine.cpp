@@ -75,6 +75,10 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	Input::Initialize();
 
 
+	//  load "null" assets of AssetManager
+	AssetManager::LoadNullAssets();
+
+
 	//  configure global OpenGL properties
 	glEnable(GL_DEPTH_TEST);
 

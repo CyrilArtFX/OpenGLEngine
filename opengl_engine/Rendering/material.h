@@ -9,6 +9,15 @@
 #include <string>
 
 
+enum class TextureType : uint8_t
+{
+	Undefined = 0,
+	Diffuse = 1,
+	Specular = 2,
+	Emissive = 3
+};
+
+
 class Material
 {
 public:
@@ -20,7 +29,7 @@ public:
 	Shader& getShader() { return *shader; }
 	Shader* getShaderPtr() { return shader; } 
 
-	void addTexture(Texture* texture);
+	void addTexture(Texture* texture, TextureType type);
 
 	void addParameter(std::string name, bool boolParameter);
 	void addParameter(std::string name, int intParameter);
@@ -29,9 +38,12 @@ public:
 	void addParameter(std::string name, float vec3ParameterX, float vec3ParameterY, float vec3ParameterZ);
 
 
+	static std::string TypeToString(TextureType textureType);
+
+
 private:
 	Shader* shader;
-	std::vector<Texture*> textures;
+	std::unordered_map<TextureType, std::vector<Texture*>> textures;
 
 	std::unordered_map<std::string, bool> boolParameters;
 	std::unordered_map<std::string, int> intParameters;
