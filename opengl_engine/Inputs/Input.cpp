@@ -74,11 +74,6 @@ void Input::UpdateInputSystem()
 	}
 
 	//  update mouse position
-	if (firstMouseDelta)
-	{
-		currentMousePos = futureMousePos;
-		firstMouseDelta = false;
-	}
 	deltaMousePos = currentMousePos - futureMousePos;
 	currentMousePos = futureMousePos;
 
@@ -134,6 +129,11 @@ bool Input::IsKeyReleased(int key)
 void Input::ProcessMouseMovement(double mousePosX, double mousePosY)
 {
 	futureMousePos = Vector2{ (float)mousePosX, (float)mousePosY };
+	if (firstMouseDelta)
+	{
+		currentMousePos = futureMousePos;
+		firstMouseDelta = false;
+	}
 }
 
 Vector2 Input::GetMousePos()

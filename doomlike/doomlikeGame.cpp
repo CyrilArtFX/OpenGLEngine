@@ -67,6 +67,7 @@ void DoomlikeGame::loadGameAssets()
 void DoomlikeGame::loadGame()
 {
 	loadScene(&testScene);
+	player.respawn(testScene);
 
 	player.setup(1.5f, 5.0f, renderer);
 	renderer->setCamera(&player.getCamera());
@@ -80,11 +81,13 @@ void DoomlikeGame::updateGame(float dt)
 	if (Input::IsKeyPressed(GLFW_KEY_KP_0))
 	{
 		loadScene(&testScene);
+		player.respawn(testScene);
 	}
 
 	if (Input::IsKeyPressed(GLFW_KEY_KP_1))
 	{
 		loadScene(&levelOneScene);
+		player.respawn(levelOneScene);
 	}
 }
 

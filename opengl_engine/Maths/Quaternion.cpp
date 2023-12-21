@@ -57,5 +57,24 @@ Quaternion Quaternion::fromEuler(const Vector3& euler)
 
 Vector3 Quaternion::toEuler(const Quaternion& quat)
 {
-	return Vector3::zero;
+	float yaw = 0.0f;
+	float roll = 0.0f;
+	float pitch = 0.0f;
+
+	//  roll (x-axis rotation)
+	double sinr_cosp = 2.0 * (quat.w * quat.x + quat.y * quat.z);
+	double cosr_cosp = 1.0 - 2.0 * (quat.x * quat.x + quat.y * quat.y);
+	roll = Maths::atan2(sinr_cosp, cosr_cosp);
+
+	//  pitch (y-axis rotation)
+	double sinp = 2.0 * (quat.w * quat.y - quat.z * quat.x);
+	if (std::abs(sinp) >= 1) pitch = Maths::copysign(Maths::pi / 2.0f, sinp); //  use 90 degrees if out of range
+	else pitch = std::asin(sinp);
+
+	//  yaw (z-axis rotation)
+	double siny_cosp = 2.0 * (quat.w * quat.z + quat.x * quat.y);
+	double cosy_cosp = 1.0 - 2.0 * (quat.y * quat.y + quat.z * quat.z);
+	yaw = Maths::atan2(siny_cosp, cosy_cosp);
+
+	return Vector3{ yaw, roll, pitch };
 }

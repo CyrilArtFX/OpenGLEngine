@@ -39,11 +39,11 @@ public:
 	// Return a quaternion created from euler angles (angles in radian).
 	static Quaternion fromEuler(const float yaw, const float roll, const float pitch);
 
-	// Return a quaternion created from euler angles(angles in radian). x for yaw, y for roll and z for pitch. 
+	// Return a quaternion created from euler angles (angles in radian). x for yaw, y for roll and z for pitch. 
 	static Quaternion fromEuler(const Vector3& euler);
 	
-	// Return a Vector3 with x for yaw, y for roll and z for pitch.
-	// Don't work for now.
+	// Return a Vector3 with x for yaw, y for roll and z for pitch (angles in radian).
+	// This function need more checks to be sure it's working as intended
 	static Vector3 toEuler(const Quaternion& quat);
 
 	// Normalize the provided quaternion

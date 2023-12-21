@@ -150,6 +150,7 @@
     <ClInclude Include="Actors\bullet.h" />
     <ClInclude Include="Actors\Player.h" />
     <ClInclude Include="doomlikeGame.h" />
+    <ClInclude Include="GameLogic\playerSpawnPoint.h" />
     <ClInclude Include="Scenes\doomlikeLevelOne.h" />
     <ClInclude Include="Scenes\testFpsScene.h" />
   </ItemGroup>

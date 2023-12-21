@@ -1,5 +1,6 @@
 #pragma once
 #include <Core/scene.h>
+#include <GameLogic/playerSpawnPoint.h>
 
 #include <Assets/assetManager.h>
 #include <Objects/object.h>
@@ -12,7 +13,7 @@
 #include <Objects/Lights/spotLight.h>
 
 
-class TestFpsScene : public Scene
+class TestFpsScene : public Scene, public PlayerSpawnPoint
 {
 public:
 	TestFpsScene();

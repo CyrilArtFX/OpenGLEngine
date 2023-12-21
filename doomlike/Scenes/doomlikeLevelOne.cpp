@@ -40,6 +40,11 @@ void DoomlikeLevelOne::loadScene()
 
 	pointLight1.load(Color::red, Vector3{ 8.0f, 1.0f, 9.0f });
 	registerLight(&pointLight1);
+
+
+	//  spawn point
+	spawnPosition = Vector3{ 8.0f, 0.0f, 9.0f };
+	spawnRotation = Quaternion::fromEuler(Maths::toRadians(135.0f), 0.0f, 0.0f); //  not working for now, sadge
 }
 
 void DoomlikeLevelOne::update(float dt)

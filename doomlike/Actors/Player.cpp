@@ -103,4 +103,16 @@ void Player::unload()
 	{
 		bullet->destroy();
 	}
+	bullets.clear();
+}
+
+void Player::respawn(PlayerSpawnPoint& spawnPoint)
+{
+	unload();
+
+	setPosition(spawnPoint.spawnPosition);
+	//setRotation(spawnPoint.spawnRotation);
+
+	camera.setPosition(spawnPoint.spawnPosition + Vector3{ 0.0f, camHeight, 0.0f });
+	//camera.setRotByQuaternion(spawnPoint.spawnRotation);
 }

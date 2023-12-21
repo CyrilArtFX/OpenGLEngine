@@ -100,6 +100,11 @@ namespace Maths
 		return sqrtf(value);
 	}
 
+	inline float copysign(float magnitude, float sign)
+	{
+		return std::copysignf(magnitude, sign);
+	}
+
 	inline float fmod(float numer, float denom)
 	{
 		return std::fmod(numer, denom);

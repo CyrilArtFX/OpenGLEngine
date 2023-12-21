@@ -4,6 +4,8 @@
 #include <Rendering/camera.h>
 #include <Objects/transform.h>
 
+#include <GameLogic/playerSpawnPoint.h>
+
 #include <vector>
 
 class Renderer;
@@ -17,6 +19,9 @@ public:
 	void update(float dt);
 
 	void unload();
+
+	//  set rotation to spawn point not working because of camera
+	void respawn(PlayerSpawnPoint& spawnPoint);
 
 
 	Camera& getCamera() { return camera; }

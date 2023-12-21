@@ -28,6 +28,8 @@
 
 ~ Réfléchir au fonctionnement du load asset des scenes, est-ce qu'il faudrait faire gaffe à l'utilisation de ram et unload genre les textures qui ne sont plus nécessaires ?
 
+~ Trouver une solution pour les problèmes de rotations avec la caméra (étudier unreal ? réussir à combiner la matrice de la caméra et celle du joueur ?)
+
 ~ Essayer de comprendre pourquoi si les bullets sont pas stockées en unique_ptr ça fait complètement n'importe quoi (genre c'est abusé de fou)
 Infos sur le problème :
  - même en créant la bullet dans la liste directement et en faisant le setup depuis là ça bug
