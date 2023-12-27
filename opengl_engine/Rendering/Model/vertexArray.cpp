@@ -1,15 +1,11 @@
 #include "vertexArray.h"
 
-VertexArray::VertexArray()
+VertexArray::VertexArray(std::vector<Vertex> vertices, std::vector<unsigned int> indices) : 
+	nbVertices(vertices.size()),
+	nbIndices(indices.size()),
+	useEBO(indices.size() > 0)
 {
-}
-
-void VertexArray::load(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
-{
-	nbVertices = vertices.size();
-	nbIndices = vertices.size();
-
-	useEBO = indices.size() > 0;
+	if (vertices.size() == 0) return;
 
 	//  setup vertex buffer object and vertex array object
 	glGenVertexArrays(1, &VAO);
@@ -41,24 +37,33 @@ void VertexArray::load(std::vector<Vertex> vertices, std::vector<unsigned int> i
 
 	//  unbind vertex array
 	glBindVertexArray(0);
-
-	loaded = true;
 }
 
 
 void VertexArray::setActive()
 {
-	if (!loaded) return;
-
 	glBindVertexArray(VAO);
 }
 
 void VertexArray::deleteObjects()
 {
-	if (!loaded) return;
-
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
+}
 
-	loaded = false;
+
+
+VertexArray::VertexArray(const VertexArray& other) :
+	nbVertices(other.nbVertices), nbIndices(other.nbIndices),
+	useEBO(other.useEBO),
+	VAO(other.VAO), VBO(other.VBO), EBO(other.EBO)
+{
+}
+
+VertexArray::VertexArray()
+{
+}
+
+VertexArray::~VertexArray()
+{
 }

@@ -18,8 +18,11 @@ struct Vertex
 class VertexArray
 {
 public:
+	VertexArray(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
 	VertexArray();
-	void load(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
+	VertexArray(const VertexArray& other);
+	VertexArray& operator=(const VertexArray&) = delete;
+	~VertexArray();
 
 	void setActive();
 	void deleteObjects();
@@ -33,19 +36,15 @@ public:
 
 	bool getUseEBO() const { return useEBO; }
 
-	bool isLoaded() const { return loaded; }
-
 
 private:
-	bool loaded = false;
+	unsigned int nbVertices{ 0 };
+	unsigned int nbIndices{ 0 };
 
-	unsigned int nbVertices = 0;
-	unsigned int nbIndices = 0;
+	bool useEBO{ false };
 
-	bool useEBO = false;
-
-	unsigned int VAO = 0; //  OpenGL ID
-	unsigned int VBO = 0; //  OpenGL ID
-	unsigned int EBO = 0; //  OpenGL ID
+	unsigned int VAO{ 0 }; //  OpenGL ID
+	unsigned int VBO{ 0 }; //  OpenGL ID
+	unsigned int EBO{ 0 }; //  OpenGL ID
 };
 

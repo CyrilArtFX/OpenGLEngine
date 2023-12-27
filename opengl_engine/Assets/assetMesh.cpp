@@ -4,16 +4,12 @@
 
 Mesh AssetMesh::LoadSingleMesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
 {
-    Mesh mesh;
-    mesh.load(vertices, indices);
-    return mesh;
+    return Mesh(vertices, indices);
 }
 
 Mesh AssetMesh::LoadSingleMesh(std::string filepath)
 {
     std::string mesh_path = RESOURCES_PATH + filepath;
-
-    Mesh mesh;
 
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(mesh_path, aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -22,13 +18,11 @@ Mesh AssetMesh::LoadSingleMesh(std::string filepath)
         !scene->mRootNode)
     {
         std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
-        return mesh;
+        return Mesh();
     }
     //directory = mesh_path.substr(0, mesh_path.find_last_of(’ / ’));
 
-    processNodeSingle(scene->mRootNode, scene, mesh);
-
-    return mesh;
+    return processNodeSingle(scene->mRootNode, scene);
 }
 
 MeshCollection AssetMesh::LoadMeshCollection(std::string filepath)
@@ -54,14 +48,16 @@ MeshCollection AssetMesh::LoadMeshCollection(std::string filepath)
 }
 
 
-void AssetMesh::processNodeSingle(aiNode* node, const aiScene* scene, Mesh& singleMesh)
+Mesh AssetMesh::processNodeSingle(aiNode* node, const aiScene* scene)
 {
     //  process the node first mesh (if it exists)
     if (node->mNumMeshes > 0)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[0]];
-        singleMesh = processMesh(mesh, scene);
+        return processMesh(mesh, scene);
     }
+
+    return Mesh();
 
     //  this part may be changed to get the first mesh it encounters
 }
@@ -85,7 +81,6 @@ Mesh AssetMesh::processMesh(aiMesh* mesh, const aiScene* scene)
 {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
-    Mesh ret_mesh;
 
     //  vertices
     for (int i = 0; i < mesh->mNumVertices; i++)
@@ -132,7 +127,5 @@ Mesh AssetMesh::processMesh(aiMesh* mesh, const aiScene* scene)
         }
     }
 
-    ret_mesh.load(vertices, indices);
-
-    return ret_mesh;
+    return Mesh(vertices, indices);
 }

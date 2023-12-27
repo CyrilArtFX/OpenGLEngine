@@ -18,7 +18,7 @@ void AssetManager::LoadTexture(std::string name, const std::string texturePath, 
 		return;
 	}
 	
-	textures[name] = AssetTexture::LoadTexture(texturePath, glFormat, flipVertical);
+	textures.emplace(name, AssetTexture::LoadTexture(texturePath, glFormat, flipVertical));
 }
 
 Texture& AssetManager::GetTexture(std::string name)
@@ -52,7 +52,7 @@ void AssetManager::LoadSingleMesh(std::string name, std::vector<Vertex> vertices
 		return;
 	}
 
-	meshesSingle[name] = AssetMesh::LoadSingleMesh(vertices, indices);
+	meshesSingle.emplace(name, AssetMesh::LoadSingleMesh(vertices, indices));
 }
 
 void AssetManager::LoadSingleMesh(std::string name, std::string filepath)
@@ -63,7 +63,7 @@ void AssetManager::LoadSingleMesh(std::string name, std::string filepath)
 		return;
 	}
 
-	meshesSingle[name] = AssetMesh::LoadSingleMesh(filepath);
+	meshesSingle.emplace(name, AssetMesh::LoadSingleMesh(filepath));
 }
 
 void AssetManager::LoadMeshCollection(std::string name, std::string filepath)
@@ -74,7 +74,7 @@ void AssetManager::LoadMeshCollection(std::string name, std::string filepath)
 		return;
 	}
 
-	meshesCollection[name] = AssetMesh::LoadMeshCollection(filepath);
+	meshesCollection.emplace(name, AssetMesh::LoadMeshCollection(filepath));
 }
 
 Mesh& AssetManager::GetSingleMesh(std::string name)
@@ -119,7 +119,7 @@ void AssetManager::DeleteMeshCollection(std::string name)
 		return;
 	}
 
-	for (auto mesh : meshesCollection[name].collection)
+	for (auto& mesh : meshesCollection[name].collection)
 	{
 		mesh.deleteObjects();
 	}
@@ -135,7 +135,7 @@ void AssetManager::CreateModel(std::string name)
 		return;
 	}
 
-	models[name] = Model();
+	models.emplace(name, Model());
 }
 
 Model& AssetManager::GetModel(std::string name)
@@ -168,7 +168,7 @@ void AssetManager::CreateShaderProgram(std::string name, const std::string verte
 		return;
 	}
 
-	shaders[name] = AssetMaterial::LoadShaderProgram(vertexName, fragmentName, shaderType);
+	shaders.emplace(name, AssetMaterial::LoadShaderProgram(vertexName, fragmentName, shaderType));
 }
 
 Shader& AssetManager::GetShader(std::string name)
@@ -202,7 +202,7 @@ Material& AssetManager::CreateMaterial(std::string name, Shader* shaderUsed)
 		return materials["null_material"];
 	}
 
-	materials[name] = AssetMaterial::LoadMaterial(shaderUsed);
+	materials.emplace(name, AssetMaterial::LoadMaterial(shaderUsed));
 	return materials[name];
 }
 
@@ -234,15 +234,15 @@ void AssetManager::DeleteMaterial(std::string name)
 
 void AssetManager::DeleteObjects()
 {
-	for (auto collection : meshesCollection) 
+	for (auto& collection : meshesCollection) 
 	{
-		for (auto mesh : collection.second.collection) 
+		for (auto& mesh : collection.second.collection) 
 		{
 			mesh.deleteObjects(); 
 		}
 	}
 
-	for (auto mesh : meshesSingle) 
+	for (auto& mesh : meshesSingle) 
 	{
 		mesh.second.deleteObjects();
 	}
@@ -256,9 +256,9 @@ void AssetManager::DeleteObjects()
 void AssetManager::LoadNullAssets()
 {
 	LoadTexture("null_texture", "Default/notexture.png", GL_RGBA, false);
-	meshesSingle["null_mesh"] = Mesh();
-	meshesCollection["null_collection"] = MeshCollection{};
-	models["null_model"] = Model();
-	shaders["null_shader"] = Shader();
-	materials["null_material"] = Material();
+	meshesSingle.emplace("null_mesh", Mesh());
+	meshesCollection.emplace("null_collection", MeshCollection{});
+	models.emplace("null_model", Model());
+	shaders.emplace("null_shader", Shader());
+	materials.emplace("null_material", Material());
 }

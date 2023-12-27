@@ -30,7 +30,7 @@ public:
 	static MeshCollection LoadMeshCollection(std::string filepath);
 
 private:
-	static void processNodeSingle(aiNode* node, const aiScene* scene, Mesh& singleMesh);
+	static Mesh processNodeSingle(aiNode* node, const aiScene* scene);
 	static void processNodeCollection(aiNode* node, const aiScene* scene, MeshCollection& meshCollection);
 	static Mesh processMesh(aiMesh* mesh, const aiScene* scene);
 };

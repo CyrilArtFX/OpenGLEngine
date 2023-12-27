@@ -13,6 +13,9 @@ class Window
 {
 public:
 	Window();
+	Window(const Window&) = delete;
+	Window& operator=(const Window&) = delete;
+
 	//  initialize glfw and create a glfw window
 	void createWindow(int width = WNDW_WIDTH, int height = WNDW_HEIGHT, std::string windowName = WNDW_NAME, bool mouseCaptured = WNDW_CAPT_MOUSE);
 

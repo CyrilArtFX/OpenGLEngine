@@ -1,19 +1,28 @@
 #include "mesh.h"
 
-Mesh::Mesh()
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices) : 
+	vertexArray(vertices, indices)
 {
 }
 
-void Mesh::load(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
+Mesh::Mesh() :
+	vertexArray()
 {
-	vertexArray.load(vertices, indices);
 }
+
+Mesh::Mesh(const Mesh& other) :
+	vertexArray(other.vertexArray)
+{
+}
+
+Mesh::~Mesh()
+{
+}
+
 
 void Mesh::draw()
 {
 	//  assume the shader is already in use (the rendering process should have done it)
-
-	if (!vertexArray.isLoaded()) return;
 
 	vertexArray.setActive();
 
