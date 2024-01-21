@@ -1,6 +1,16 @@
 == COURT TERME ==
 
 ~ Mettre un système de physique basique pour le doomlike (collisions cubes AABB, gravité, raycasts)
+	-> mettre des box aabb
+	-> faire le système d'affichage debug et un visionnage des box
+	-> fixer les box a des objets pourvus de transform ? et tester le mouvement
+	-> faire de la détection point / aabb
+	-> faire des raycast qui répondent au aabb
+	-> faire la detection de collision entre box aabb
+	-> faire le "repoussage" entre box aabb (position pas rotation)
+	-> mettre la gravité et bien tester ça
+	-> finir le setup du système physique (objects channels, etc.)
+
 
 ~ Faire le doomlike (omg ?)
 
