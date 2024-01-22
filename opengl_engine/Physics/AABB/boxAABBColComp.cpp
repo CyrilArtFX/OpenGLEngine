@@ -1,14 +1,17 @@
 #include "boxAABBColComp.h"
 #include "collisionsAABB.h"
 
+#include <Assets/assetManager.h>
+#include <Rendering/material.h>
+
 BoxAABBColComp::BoxAABBColComp() : 
-	CollisionComponent(CollisionType::BoxAABB, nullptr)
+	CollisionComponent(CollisionType::BoxAABB, nullptr, &AssetManager::GetSingleMesh("default_cube"))
 {
 }
 
 BoxAABBColComp::BoxAABBColComp(Box boxValues, const Transform* transformToAssociate, bool scaleBoxSizeWithTransform) :
 	box(boxValues), useTransformScaleForBoxSize(scaleBoxSizeWithTransform),
-	CollisionComponent(CollisionType::BoxAABB, transformToAssociate)
+	CollisionComponent(CollisionType::BoxAABB, transformToAssociate, &AssetManager::GetSingleMesh("default_cube"))
 {
 }
 
@@ -36,6 +39,25 @@ bool BoxAABBColComp::resolveCollision(const CollisionComponent& otherCol) const
 	default:
 		return false;
 	}
+}
+
+void BoxAABBColComp::drawDebug(Material& debugMaterial) const
+{
+	debugMaterial.getShader().setMatrix4("model", getModelMatrix().getAsFloatPtr());
+
+	if (debugMesh)
+	{
+		debugMesh->draw();
+	}
+}
+
+const Matrix4 BoxAABBColComp::getModelMatrix() const
+{
+	Box transform_box = getTransformedBox();
+	Matrix4 matrix =
+		Matrix4::createScale(transform_box.getHalfExtents() * 2.0f) *
+		Matrix4::createTranslation(transform_box.getCenterPoint());
+	return matrix;
 }
 
 

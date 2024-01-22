@@ -54,8 +54,11 @@ private:
 	//  pause and freecam
 	bool gamePaused{ false };
 	bool freecamMode{ false };
+	bool debugViewMode{ false };
 	void pauseGame();
 	void unpauseGame();
 	void enableFreecam();
 	void disableFreecam();
+	void enableDebugView();
+	void disableDebugView();
 };

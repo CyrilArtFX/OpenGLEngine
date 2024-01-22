@@ -17,6 +17,10 @@ public:
 	bool resolveRaycast(const Ray& raycast, RaycastHitInfos& outHitInfos) const override;
 	bool resolveCollision(const CollisionComponent& otherCol) const override;
 
+	void drawDebug(Material& debugMaterial) const override;
+
+	const Matrix4 getModelMatrix() const override;
+
 	Box getTransformedBox() const;
 
 private:

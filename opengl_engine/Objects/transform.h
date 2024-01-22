@@ -30,6 +30,9 @@ public:
 	const Matrix4 getModelMatrix(); //  those functions can't be const because they need to call computeMatrix if matrix are dirty
 	const Matrix4 getNormalMatrix();
 
+	//  this function do not recompute model matrix if it is dirty, may need to work on that later on
+	const Matrix4 getModelMatrixConst() const { return modelMatrix; }
+
 	const Vector3 getForward() const;
 	const Vector3 getUp() const;
 	const Vector3 getRight() const;

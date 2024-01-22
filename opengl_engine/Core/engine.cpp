@@ -1,5 +1,6 @@
 #include "engine.h"
 #include <Assets/assetManager.h>
+#include <Assets/defaultAssets.h>
 #include <Inputs/input.h>
 
 
@@ -77,6 +78,9 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 
 	//  load "null" assets of AssetManager
 	AssetManager::LoadNullAssets();
+
+	//  load debug assets
+	DefaultAssets::LoadDebugAssets();
 
 
 	//  configure global OpenGL properties
@@ -178,6 +182,13 @@ void Engine::engineUpdate(GLFWwindow* glWindow)
 		else disableFreecam();
 	}
 
+	//  active/desactive the debug view mode when k is pressed
+	if (Input::IsKeyPressed(GLFW_KEY_K))
+	{
+		if (!debugViewMode) enableDebugView();
+		else disableDebugView();
+	}
+
 	if (freecamMode)
 	{
 		//  move freecam
@@ -234,6 +245,20 @@ void Engine::disableFreecam()
 	freecamMode = false;
 	std::cout << "Freecam mode disabled.\n";
 	renderer.setCamera(&game->getActiveCamera());
+}
+
+void Engine::enableDebugView()
+{
+	debugViewMode = true;
+	std::cout << "Debug view mode enabled.\n";
+	renderer.drawDebugMode = true;
+}
+
+void Engine::disableDebugView()
+{
+	debugViewMode = false;
+	std::cout << "Debug view mode disabled.\n";
+	renderer.drawDebugMode = false;
 }
 
 

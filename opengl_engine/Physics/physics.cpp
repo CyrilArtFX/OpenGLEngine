@@ -45,3 +45,11 @@ void Physics::ClearAllCollisions()
 
 	collisionsComponents.clear();
 }
+
+void Physics::DrawCollisionsDebug(Material& debugMaterial)
+{
+	for (auto& col : collisionsComponents)
+	{
+		col->drawDebug(debugMaterial);
+	}
+}

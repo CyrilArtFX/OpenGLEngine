@@ -1,4 +1,7 @@
 #include "renderer.h"
+#include <Assets/assetManager.h>
+#include <Physics/physics.h>
+
 #include <iostream>
 #include <algorithm>
 
@@ -92,6 +95,19 @@ void Renderer::draw()
 				object->draw(material);
 			}
 		}
+	}
+
+	if (drawDebugMode)
+	{
+		Material& debug_collision_mat = AssetManager::GetMaterial("debug_collisions");
+		Shader& debug_collision_shader = debug_collision_mat.getShader();
+		debug_collision_shader.use();
+		debug_collision_shader.setMatrix4("view", view.getAsFloatPtr());
+		debug_collision_shader.setMatrix4("projection", projection.getAsFloatPtr());
+
+		debug_collision_mat.use();
+
+		Physics::DrawCollisionsDebug(debug_collision_mat);
 	}
 }
 

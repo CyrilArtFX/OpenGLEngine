@@ -3,6 +3,7 @@
 
 #include <vector>
 
+class Material;
 
 class Physics
 {
@@ -16,6 +17,10 @@ public:
 	* When collisions will be managed as proper components, this should better be changed.
 	*/
 	static void ClearAllCollisions();
+
+
+
+	static void DrawCollisionsDebug(Material& debugMaterial);
 
 private:
 	static std::vector<CollisionComponent*> collisionsComponents;

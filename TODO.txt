@@ -2,7 +2,7 @@
 
 ~ Mettre un système de physique basique pour le doomlike (collisions cubes AABB, gravité, raycasts)
 	-> mettre des box aabb - fait
-	-> faire le système d'affichage debug et un visionnage des box
+	-> faire le système d'affichage debug et un visionnage des box - en cours
 	-> fixer les box a des objets pourvus de transform ? et tester le mouvement
 	-> faire de la détection point / aabb
 	-> faire des raycast qui répondent au aabb

@@ -19,5 +19,7 @@
     <None Include="Lit\object_lit.vert" />
     <None Include="Unlit\flat_emissive.vert" />
     <None Include="Unlit\flat_emissive.frag" />
+    <None Include="Unlit\collision_debug.frag" />
+    <None Include="Unlit\collision_debug.vert" />
   </ItemGroup>
 </Project>

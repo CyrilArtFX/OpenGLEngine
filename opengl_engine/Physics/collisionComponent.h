@@ -2,6 +2,10 @@
 #include <Objects/transform.h>
 #include "raycast.h"
 
+#include <Rendering/Model/mesh.h>
+
+class Material;
+
 
 enum class CollisionType : uint8_t
 {
@@ -26,11 +30,18 @@ public:
 	virtual bool resolveRaycast(const Ray& raycast, RaycastHitInfos& outHitInfos) const = 0;
 	virtual bool resolveCollision(const CollisionComponent& otherCol) const = 0;
 
+	virtual void drawDebug(Material& debugMaterial) const = 0;
+
+	virtual const Matrix4 getModelMatrix() const;
+
+
 protected:
-	CollisionComponent(CollisionType collisionType_, const Transform* associatedTransform_);
+	CollisionComponent(CollisionType collisionType_, const Transform* associatedTransform_, Mesh* debugMesh_);
 
 	CollisionType collisionType{ CollisionType::Null };
 	const Transform* associatedTransform{ nullptr };
+
+	Mesh* debugMesh{ nullptr };
 
 
 	//  for physics manager

@@ -56,5 +56,9 @@ private:
 		{Point, 16},
 		{Spot, 8}
 	};
+
+
+public:
+	bool drawDebugMode{ false };
 };
 
