@@ -106,6 +106,38 @@ public:
 		return Vector3(-x, -y, -z);
 	}
 
+	/** operator >
+	* Returns true if x, y and z are strictly superior to other's
+	*/
+	bool operator>(const Vector3& other) const
+	{
+		return x > other.x && y > other.y && z > other.z;
+	}
+
+	/** operator >=
+	* Returns true if x, y and z are superior or egal to other's
+	*/
+	bool operator>=(const Vector3& other) const
+	{
+		return x >= other.x && y >= other.y && z >= other.z;
+	}
+
+	/** operator <
+	* Returns true if x, y and z are strictly inferior to other's
+	*/
+	bool operator<(const Vector3& other) const
+	{
+		return x < other.x && y < other.y && z < other.z;
+	}
+
+	/** operator <=
+	* Returns true if x, y and z are inferior or egal to other's
+	*/
+	bool operator<=(const Vector3& other) const
+	{
+		return x <= other.x && y <= other.y && z <= other.z;
+	}
+
 	// Normalize the provided vector
 	static Vector3 normalize(const Vector3& vec)
 	{

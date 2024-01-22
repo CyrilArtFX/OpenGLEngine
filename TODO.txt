@@ -19,6 +19,8 @@
 
 ~ Créer un système de HUD (intégrer le texte tout de suite ?)
 
+~ Faire une classe debug qui permet de gérer les logs dans la console et sur l'écran (à la manière d'unreal)
+
 ~ Ajouter un système d'events (observer pattern) pour notamment un event lorsque la pause est activée
 
 ~ Améliorer le système de lumière
