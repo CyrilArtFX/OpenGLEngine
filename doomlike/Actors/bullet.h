@@ -3,6 +3,7 @@
 #include <Rendering/Model/vertexArray.h>
 #include <Objects/object.h>
 #include <Rendering/material.h>
+#include <Physics/AABB/boxAABBColComp.h>
 
 class Renderer;
 
@@ -24,5 +25,7 @@ private:
 	Renderer* renderer{ nullptr };
 
 	Object object;
+
+	CollisionComponent& collision;
 };
 

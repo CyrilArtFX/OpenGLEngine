@@ -4,7 +4,7 @@
 
 //  default boxes values
 const Box Box::zero(Vector3::zero, Vector3::zero);
-const Box Box::one(Vector3::zero, Vector3::one);
+const Box Box::one(Vector3::zero, Vector3{ 0.5f, 0.5f, 0.5f });
 
 
 
@@ -12,7 +12,7 @@ Box::Box()
 {
 }
 
-Box::Box(Vector3 centerPoint, Vector3 halfExtentsValues) : 
+Box::Box(Vector3 centerPoint, Vector3 halfExtentsValues) :
 	center(centerPoint), halfExtents(halfExtentsValues)
 {
 	if (halfExtents < Vector3::zero)
@@ -49,12 +49,12 @@ void Box::setHalfExtents(Vector3 halfExtentsValues)
 	halfExtents = halfExtentsValues;
 }
 
-Vector3 Box::getMinPoint()
+Vector3 Box::getMinPoint() const
 {
-	center - halfExtents;
+	return center - halfExtents;
 }
 
-Vector3 Box::getMaxPoint()
+Vector3 Box::getMaxPoint() const
 {
-	center + halfExtents;
+	return center + halfExtents;
 }

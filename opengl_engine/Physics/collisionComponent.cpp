@@ -1,7 +1,12 @@
 #include "collisionComponent.h"
+#include "physics.h"
 
 CollisionComponent::~CollisionComponent()
 {
+	if (registered)
+	{
+		Physics::RemoveCollision(this);
+	}
 }
 
 void CollisionComponent::setAssociatedTransform(const Transform* newTransform)

@@ -14,8 +14,11 @@ public:
 	void setCenterPoint(Vector3 centerPoint);
 	void setHalfExtents(Vector3 halfExtentsValues);
 
-	Vector3 getMinPoint();
-	Vector3 getMaxPoint();
+	inline Vector3 getCenterPoint() const { return center; }
+	inline Vector3 getHalfExtents() const { return center; }
+
+	Vector3 getMinPoint() const;
+	Vector3 getMaxPoint() const;
 
 private:
 	Vector3 center{ Vector3::zero };

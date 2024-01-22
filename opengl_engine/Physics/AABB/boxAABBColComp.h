@@ -1,5 +1,5 @@
 #pragma once
-#include "collisionComponent.h"
+#include <Physics/collisionComponent.h>
 #include <Maths/Geometry/box.h>
 
 
@@ -11,7 +11,7 @@ class BoxAABBColComp : public CollisionComponent
 {
 public:
 	BoxAABBColComp();
-	BoxAABBColComp(Box boxValues, const Transform* transformToAssociate);
+	BoxAABBColComp(Box boxValues, const Transform* transformToAssociate, bool scaleBoxSizeWithTransform = true);
 
 	bool resolvePoint(const Vector3& point) const override;
 	bool resolveRaycast(const Ray& raycast, RaycastHitInfos& outHitInfos) const override;
@@ -21,4 +21,5 @@ public:
 
 private:
 	Box box{ Box::zero };
+	bool useTransformScaleForBoxSize{ true };
 };

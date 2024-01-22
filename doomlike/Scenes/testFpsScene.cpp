@@ -1,4 +1,6 @@
 #include "testFpsScene.h"
+#include <Physics/physics.h>
+#include <Physics/AABB/boxAABBColComp.h>
 
 TestFpsScene::TestFpsScene()
 {
@@ -29,6 +31,10 @@ void TestFpsScene::loadScene()
 	testMesh.setPosition(Vector3{ -7.0f, 1.0f, 0.0f });
 	testMesh.setScale(0.01f);
 	testMesh.setRotation(Quaternion{ Vector3::unitX, Maths::toRadians(-90.0f) });
+
+
+	//  collisions
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate1));
 
 
 	//  lights

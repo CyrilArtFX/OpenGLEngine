@@ -31,4 +31,9 @@ protected:
 
 	CollisionType collisionType{ CollisionType::Null };
 	const Transform* associatedTransform{ nullptr };
+
+
+	//  for physics manager
+public:
+	bool registered{ false };
 };

@@ -138,6 +138,11 @@
     <ClCompile Include="Assets\assetMaterial.cpp" />
     <ClCompile Include="Assets\assetTexture.cpp" />
     <ClCompile Include="Assets\defaultAssets.cpp" />
+    <ClCompile Include="Maths\Geometry\box.cpp" />
+    <ClCompile Include="Maths\Geometry\ray.cpp" />
+    <ClCompile Include="Physics\AABB\boxAABBColComp.cpp" />
+    <ClCompile Include="Physics\collisionComponent.cpp" />
+    <ClCompile Include="Physics\AABB\collisionsAABB.cpp" />
     <ClCompile Include="Core\engine.cpp" />
     <ClCompile Include="Core\game.cpp" />
     <ClCompile Include="Core\scene.cpp" />
@@ -153,6 +158,8 @@
     <ClCompile Include="Objects\Lights\spotLight.cpp" />
     <ClCompile Include="Objects\object.cpp" />
     <ClCompile Include="Objects\transform.cpp" />
+    <ClCompile Include="Physics\physics.cpp" />
+    <ClCompile Include="Physics\raycast.cpp" />
     <ClCompile Include="Rendering\camera.cpp" />
     <ClCompile Include="Rendering\material.cpp" />
     <ClCompile Include="Rendering\Model\mesh.cpp" />
@@ -170,6 +177,11 @@
     <ClInclude Include="Assets\assetMaterial.h" />
     <ClInclude Include="Assets\assetTexture.h" />
     <ClInclude Include="Assets\defaultAssets.h" />
+    <ClInclude Include="Maths\Geometry\box.h" />
+    <ClInclude Include="Maths\Geometry\ray.h" />
+    <ClInclude Include="Physics\AABB\boxAABBColComp.h" />
+    <ClInclude Include="Physics\collisionComponent.h" />
+    <ClInclude Include="Physics\AABB\collisionsAABB.h" />
     <ClInclude Include="Core\engine.h" />
     <ClInclude Include="Core\game.h" />
     <ClInclude Include="Core\scene.h" />
@@ -186,6 +198,8 @@
     <ClInclude Include="Objects\Lights\spotLight.h" />
     <ClInclude Include="Objects\object.h" />
     <ClInclude Include="Objects\transform.h" />
+    <ClInclude Include="Physics\physics.h" />
+    <ClInclude Include="Physics\raycast.h" />
     <ClInclude Include="Rendering\camera.h" />
     <ClInclude Include="Rendering\material.h" />
     <ClInclude Include="Rendering\Model\mesh.h" />

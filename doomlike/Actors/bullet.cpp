@@ -5,8 +5,11 @@
 
 #include <Assets/assetManager.h>
 
+#include <Physics/physics.h>
 
-Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_, Renderer* renderer_)
+
+Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_, Renderer* renderer_) :
+	collision(Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3::zero, Vector3{0.2f, 0.2f, 0.2f} }, &object, false)))
 {
 	direction = direction_;
 	velocity = velocity_;
@@ -25,6 +28,8 @@ Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float 
 
 void Bullet::destroy()
 {
+	delete &collision; //  this will properly remove the collision from physics manager
+
 	renderer->removeObject(&object);
 }
 

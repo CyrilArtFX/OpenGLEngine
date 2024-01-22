@@ -1,4 +1,5 @@
 #include "scene.h"
+#include <Physics/physics.h>
 
 void Scene::load(Renderer* renderer_) 
 { 
@@ -9,6 +10,9 @@ void Scene::load(Renderer* renderer_)
 
 void Scene::unload()
 {
+	//  TODO: remove this when a proper integrations of collisions as components is done
+	Physics::ClearAllCollisions();
+
 	for (auto object : sceneregisteredObjects)
 	{
 		renderer->removeObject(object);

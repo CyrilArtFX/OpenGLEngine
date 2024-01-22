@@ -6,8 +6,8 @@ BoxAABBColComp::BoxAABBColComp() :
 {
 }
 
-BoxAABBColComp::BoxAABBColComp(Box boxValues, const Transform* transformToAssociate) : 
-	box(boxValues),
+BoxAABBColComp::BoxAABBColComp(Box boxValues, const Transform* transformToAssociate, bool scaleBoxSizeWithTransform) :
+	box(boxValues), useTransformScaleForBoxSize(scaleBoxSizeWithTransform),
 	CollisionComponent(CollisionType::BoxAABB, transformToAssociate)
 {
 }
@@ -27,8 +27,11 @@ bool BoxAABBColComp::resolveCollision(const CollisionComponent& otherCol) const
 	switch (otherCol.getCollisionType())
 	{
 	case CollisionType::BoxAABB:
+	{
 		const BoxAABBColComp& other_col_as_aabb = static_cast<const BoxAABBColComp&>(otherCol);
 		return CollisionsAABB::IntersectBoxAABB(*this, other_col_as_aabb);
+	} //  {} are here to encapsulate the local variable other_col_as_aabb
+		
 
 	default:
 		return false;
@@ -38,5 +41,10 @@ bool BoxAABBColComp::resolveCollision(const CollisionComponent& otherCol) const
 
 Box BoxAABBColComp::getTransformedBox() const
 {
-	return Box();
+	Box transformed_box;
+
+	transformed_box.setCenterPoint((box.getCenterPoint() * associatedTransform->getScale()) + associatedTransform->getPosition());
+	transformed_box.setHalfExtents(box.getHalfExtents() * (useTransformScaleForBoxSize ? associatedTransform->getScale() : Vector3::one));
+
+	return transformed_box;
 }
