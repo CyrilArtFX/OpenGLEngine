@@ -9,7 +9,7 @@ DoomlikeGame::DoomlikeGame()
 
 void DoomlikeGame::loadGameAssets()
 {
-	DefaultAssets::LoadDefaultAssets();
+	DefaultAssets::LoadDefaultAssets(*renderer);
 
 	//  shaders, textures and materials
 	AssetManager::CreateShaderProgram("lit_object", "Lit/object_lit.vert", "Lit/object_lit.frag", Lit);

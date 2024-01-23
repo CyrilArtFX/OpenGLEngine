@@ -15,25 +15,25 @@ BoxAABBColComp::BoxAABBColComp(Box boxValues, const Transform* transformToAssoci
 {
 }
 
-bool BoxAABBColComp::resolvePoint(const Vector3& point) const
+bool BoxAABBColComp::resolvePointIntersection(const Vector3& point) const
 {
 	return CollisionsAABB::IntersectPoint(*this, point);
 }
 
-bool BoxAABBColComp::resolveRaycast(const Ray& raycast, RaycastHitInfos& outHitInfos) const
+bool BoxAABBColComp::resolveRaycastIntersection(const Ray& raycast, RaycastHitInfos& outHitInfos) const
 {
 	return CollisionsAABB::IntersectRaycast(*this, raycast, outHitInfos);
 }
 
-bool BoxAABBColComp::resolveCollision(const CollisionComponent& otherCol) const
+bool BoxAABBColComp::resolveCollisionIntersection(const CollisionComponent& otherCol) const
 {
 	switch (otherCol.getCollisionType())
 	{
 	case CollisionType::BoxAABB:
-	{
+		{
 		const BoxAABBColComp& other_col_as_aabb = static_cast<const BoxAABBColComp&>(otherCol);
 		return CollisionsAABB::IntersectBoxAABB(*this, other_col_as_aabb);
-	} //  {} are here to encapsulate the local variable other_col_as_aabb
+		} //  {} are here to encapsulate the local variable other_col_as_aabb
 		
 
 	default:
@@ -41,7 +41,7 @@ bool BoxAABBColComp::resolveCollision(const CollisionComponent& otherCol) const
 	}
 }
 
-void BoxAABBColComp::drawDebug(Material& debugMaterial) const
+void BoxAABBColComp::drawDebugMesh(Material& debugMaterial) const
 {
 	debugMaterial.getShader().setMatrix4("model", getModelMatrix().getAsFloatPtr());
 

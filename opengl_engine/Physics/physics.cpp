@@ -34,6 +34,15 @@ void Physics::RemoveCollision(CollisionComponent* colComp)
 	std::cout << "PHYSICS_INFO: Successfully removed a collision.\n";
 }
 
+void Physics::UpdatePhysics()
+{
+	//  reset the 'intersected last frame' parameter
+	for (auto& col : collisionsComponents)
+	{
+		col->resetIntersected();
+	}
+}
+
 void Physics::ClearAllCollisions()
 {
 	std::cout << "PHYSICS_INFO: Clearing all collisions.\n";

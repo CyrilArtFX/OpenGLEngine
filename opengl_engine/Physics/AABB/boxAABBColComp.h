@@ -13,15 +13,16 @@ public:
 	BoxAABBColComp();
 	BoxAABBColComp(Box boxValues, const Transform* transformToAssociate, bool scaleBoxSizeWithTransform = true);
 
-	bool resolvePoint(const Vector3& point) const override;
-	bool resolveRaycast(const Ray& raycast, RaycastHitInfos& outHitInfos) const override;
-	bool resolveCollision(const CollisionComponent& otherCol) const override;
-
-	void drawDebug(Material& debugMaterial) const override;
-
 	const Matrix4 getModelMatrix() const override;
 
 	Box getTransformedBox(bool forDrawDebug = false) const;
+
+protected:
+	bool resolvePointIntersection(const Vector3& point) const override;
+	bool resolveRaycastIntersection(const Ray& raycast, RaycastHitInfos& outHitInfos) const override;
+	bool resolveCollisionIntersection(const CollisionComponent& otherCol) const override;
+
+	void drawDebugMesh(Material& debugMaterial) const override;
 
 private:
 	Box box{ Box::zero };

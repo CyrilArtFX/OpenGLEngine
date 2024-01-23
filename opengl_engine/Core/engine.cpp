@@ -2,6 +2,7 @@
 #include <Assets/assetManager.h>
 #include <Assets/defaultAssets.h>
 #include <Inputs/input.h>
+#include <Physics/physics.h>
 
 
 Engine::Engine()
@@ -111,6 +112,8 @@ void Engine::run()
 		//  update part
 		// -------------
 		engineUpdate(window.getGLFWwindow());
+
+		Physics::UpdatePhysics();
 
 		if (!gamePaused)
 		{

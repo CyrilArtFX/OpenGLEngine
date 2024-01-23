@@ -17,6 +17,8 @@ public:
 
 	Vector3(const struct Vector2 vec2);
 
+	Vector3(const struct Color color);
+
 	void set(float xP, float yP, float zP);
 	float lengthSq() const;
 	float length() const;

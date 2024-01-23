@@ -24,7 +24,9 @@ struct Color
 
 	void set(int rP, int gP, int bP, int aP);
 
-	Vector3 toVector();
+	Vector3 toVector() const;
+
+	static Vector3 ToVector(const Color& color);
 
 	/*
 	* Create a color from hue saturation and values.

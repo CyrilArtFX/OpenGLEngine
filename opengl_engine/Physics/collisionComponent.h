@@ -26,25 +26,38 @@ public:
 
 	void setAssociatedTransform(const Transform* newTransform);
 
-	virtual bool resolvePoint(const Vector3& point) const = 0;
-	virtual bool resolveRaycast(const Ray& raycast, RaycastHitInfos& outHitInfos) const = 0;
-	virtual bool resolveCollision(const CollisionComponent& otherCol) const = 0;
+	bool resolvePoint(const Vector3& point) const;
+	bool resolveRaycast(const Ray& raycast, RaycastHitInfos& outHitInfos) const;
+	bool resolveCollision(const CollisionComponent& otherCol) const;
 
-	virtual void drawDebug(Material& debugMaterial) const = 0;
+	void drawDebug(Material& debugMaterial) const;
 
 	virtual const Matrix4 getModelMatrix() const;
+
+	void resetIntersected();
+
+
+	//  for physics manager
+	bool registered{ false };
 
 
 protected:
 	CollisionComponent(CollisionType collisionType_, const Transform* associatedTransform_, Mesh* debugMesh_);
 
+	virtual bool resolvePointIntersection(const Vector3& point) const = 0;
+	virtual bool resolveRaycastIntersection(const Ray& raycast, RaycastHitInfos& outHitInfos) const = 0;
+	virtual bool resolveCollisionIntersection(const CollisionComponent& otherCol) const = 0;
+
+	virtual void drawDebugMesh(Material& debugMaterial) const = 0;
+
+
 	CollisionType collisionType{ CollisionType::Null };
 	const Transform* associatedTransform{ nullptr };
 
+
+	//  for debug drawing
 	Mesh* debugMesh{ nullptr };
 
-
-	//  for physics manager
-public:
-	bool registered{ false };
+private:
+	mutable bool intersectedLastFrame{ false };
 };

@@ -2,6 +2,7 @@
 #include "matrix4.h"
 #include "quaternion.h"
 #include "vector2.h"
+#include <Utils/color.h>
 
 const Vector3 Vector3::zero(0.0f, 0.0f, 0.f);
 const Vector3 Vector3::one(1.0f, 1.0f, 1.0f);
@@ -19,6 +20,14 @@ Vector3::Vector3(const Vector2 vec2)
 	x = vec2.x;
 	y = vec2.y;
 	z = 0.0f;
+}
+
+Vector3::Vector3(const Color color)
+{
+	Vector3 color_to_vector = color.toVector();
+	x = color_to_vector.x;
+	y = color_to_vector.y;
+	z = color_to_vector.z;
 }
 
 void Vector3::set(float xP, float yP, float zP)

@@ -4,7 +4,7 @@
 	-> mettre des box aabb - fait
 	-> faire le système d'affichage debug et un visionnage des box - fait
 	-> fixer les box a des objets pourvus de transform ? et tester le mouvement - fait
-	-> faire de la détection point / aabb
+	-> faire de la détection point / aabb - fait
 	-> faire des raycast qui répondent au aabb
 	-> faire la detection de collision entre box aabb
 	-> faire le "repoussage" entre box aabb (position pas rotation)

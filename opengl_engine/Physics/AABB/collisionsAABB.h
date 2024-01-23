@@ -7,10 +7,10 @@
 class CollisionsAABB
 {
 public:
-	static bool IntersectPoint(const BoxAABBColComp& BoxAABB, const Vector3& point);
+	static bool IntersectPoint(const BoxAABBColComp& boxAABB, const Vector3& point);
 
-	static bool IntersectRaycast(const BoxAABBColComp& BoxAABB, const Ray& raycast, RaycastHitInfos& outHitInfos);
+	static bool IntersectRaycast(const BoxAABBColComp& boxAABB, const Ray& raycast, RaycastHitInfos& outHitInfos);
 
-	static bool IntersectBoxAABB(const BoxAABBColComp& BoxAABB, const BoxAABBColComp& otherBoxAABB);
+	static bool IntersectBoxAABB(const BoxAABBColComp& boxAABB, const BoxAABBColComp& otherBoxAABB);
 };
 

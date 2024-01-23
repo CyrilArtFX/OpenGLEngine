@@ -20,9 +20,14 @@ void Color::set(int rP, int gP, int bP, int aP)
     a = aP;
 }
 
-Vector3 Color::toVector()
+Vector3 Color::toVector() const
 {
     return Vector3{ r / 255.0f, g / 255.0f, b / 255.0f };
+}
+
+Vector3 Color::ToVector(const Color& color)
+{
+    return color.toVector();
 }
 
 Color Color::HSV(float h, float s, float v)
