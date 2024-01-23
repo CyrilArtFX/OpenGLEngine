@@ -11,7 +11,7 @@ public:
 	Mesh& operator=(const Mesh&) = delete;
 	~Mesh();
 
-	void draw();
+	void draw(bool drawAsLines = false);
 	void deleteObjects();
 
 private:

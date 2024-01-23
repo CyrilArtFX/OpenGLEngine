@@ -35,6 +35,9 @@ void TestFpsScene::loadScene()
 
 	//  collisions
 	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate1));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate2));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate3));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.5f, 0.0f}, Vector3{5.0f, 0.5f, 5.0f}}, &ground));
 
 
 	//  lights

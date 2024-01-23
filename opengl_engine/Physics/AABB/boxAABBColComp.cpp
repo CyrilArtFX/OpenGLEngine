@@ -47,13 +47,13 @@ void BoxAABBColComp::drawDebug(Material& debugMaterial) const
 
 	if (debugMesh)
 	{
-		debugMesh->draw();
+		debugMesh->draw(true);
 	}
 }
 
 const Matrix4 BoxAABBColComp::getModelMatrix() const
 {
-	Box transform_box = getTransformedBox();
+	Box transform_box = getTransformedBox(true);
 	Matrix4 matrix =
 		Matrix4::createScale(transform_box.getHalfExtents() * 2.0f) *
 		Matrix4::createTranslation(transform_box.getCenterPoint());
@@ -61,12 +61,15 @@ const Matrix4 BoxAABBColComp::getModelMatrix() const
 }
 
 
-Box BoxAABBColComp::getTransformedBox() const
+Box BoxAABBColComp::getTransformedBox(bool forDrawDebug) const
 {
 	Box transformed_box;
 
 	transformed_box.setCenterPoint((box.getCenterPoint() * associatedTransform->getScale()) + associatedTransform->getPosition());
-	transformed_box.setHalfExtents(box.getHalfExtents() * (useTransformScaleForBoxSize ? associatedTransform->getScale() : Vector3::one));
+	Vector3 scale_factors = useTransformScaleForBoxSize ? associatedTransform->getScale() : Vector3::one;
+	Vector3 half_extents = box.getHalfExtents() * scale_factors;
+	if (forDrawDebug) half_extents += Vector3{ 0.01f, 0.01f, 0.01f };
+	transformed_box.setHalfExtents(half_extents);
 
 	return transformed_box;
 }

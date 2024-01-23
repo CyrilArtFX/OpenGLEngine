@@ -58,3 +58,13 @@ Vector3 Box::getMaxPoint() const
 {
 	return center + halfExtents;
 }
+
+std::string Box::toString() const
+{
+	return Box::ToString(*this);
+}
+
+std::string Box::ToString(const Box& box)
+{
+	return "Center: " + box.center.toString() + " | Half Extents: " + box.halfExtents.toString();
+}

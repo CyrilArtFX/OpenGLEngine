@@ -15,10 +15,15 @@ public:
 	void setHalfExtents(Vector3 halfExtentsValues);
 
 	inline Vector3 getCenterPoint() const { return center; }
-	inline Vector3 getHalfExtents() const { return center; }
+	inline Vector3 getHalfExtents() const { return halfExtents; }
 
 	Vector3 getMinPoint() const;
 	Vector3 getMaxPoint() const;
+
+	std::string toString() const;
+
+
+	static std::string ToString(const Box& box);
 
 private:
 	Vector3 center{ Vector3::zero };

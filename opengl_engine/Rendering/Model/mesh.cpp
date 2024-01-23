@@ -20,19 +20,21 @@ Mesh::~Mesh()
 }
 
 
-void Mesh::draw()
+void Mesh::draw(bool drawAsLines)
 {
 	//  assume the shader is already in use (the rendering process should have done it)
 
 	vertexArray.setActive();
 
+	GLuint draw_method = drawAsLines ? GL_LINE_STRIP : GL_TRIANGLES;
+
 	if (vertexArray.getUseEBO())
 	{
-		glDrawElements(GL_TRIANGLES, vertexArray.getNBIndices(), GL_UNSIGNED_INT, 0);
+		glDrawElements(draw_method, vertexArray.getNBIndices(), GL_UNSIGNED_INT, 0);
 	}
 	else
 	{
-		glDrawArrays(GL_TRIANGLES, 0, vertexArray.getNBVertices());
+		glDrawArrays(draw_method, 0, vertexArray.getNBVertices());
 	}
 }
 

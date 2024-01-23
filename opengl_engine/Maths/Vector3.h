@@ -194,7 +194,7 @@ public:
 
 	std::string toString() const
 	{
-		return std::to_string(x) + "  " + std::to_string(y) + "  " + std::to_string(z) + " \n";
+		return std::to_string(x) + "  " + std::to_string(y) + "  " + std::to_string(z);
 	}
 
 	static const Vector3 zero;

@@ -21,7 +21,7 @@ public:
 
 	const Matrix4 getModelMatrix() const override;
 
-	Box getTransformedBox() const;
+	Box getTransformedBox(bool forDrawDebug = false) const;
 
 private:
 	Box box{ Box::zero };
