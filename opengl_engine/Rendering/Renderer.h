@@ -52,9 +52,9 @@ private:
 	//  would be cool if I find a better way to do this but it works for now
 	const std::unordered_map<LightType, int> lightsLimits
 	{
-		{Directionnal, 1},
-		{Point, 16},
-		{Spot, 8}
+		{EDirectionalLight, 1},
+		{EPointLight, 16},
+		{ESpotLight, 8}
 	};
 
 

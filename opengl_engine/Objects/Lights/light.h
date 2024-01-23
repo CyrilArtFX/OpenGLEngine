@@ -3,12 +3,12 @@
 #include <Utils/color.h>
 
 
-enum LightType
+enum LightType : uint8_t
 {
-	Undefined,
-	Directionnal,
-	Point,
-	Spot
+	EUndefinedLight = 0,
+	EDirectionalLight = 1,
+	EPointLight = 2,
+	ESpotLight = 3
 };
 
 
@@ -43,5 +43,5 @@ protected:
 	float ambientStrength{ 0.01f };
 	float diffuseStrength{ 0.7f };
 
-	LightType lightType{ Undefined };
+	LightType lightType{ EUndefinedLight };
 };

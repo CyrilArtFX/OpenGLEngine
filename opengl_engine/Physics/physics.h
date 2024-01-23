@@ -1,5 +1,6 @@
 #pragma once
 #include "collisionComponent.h"
+#include "raycast.h"
 
 #include <vector>
 
@@ -11,6 +12,8 @@ public:
 	static CollisionComponent& CreateCollisionComponent(CollisionComponent* colComp);
 
 	static void RemoveCollision(CollisionComponent* colComp);
+
+	static bool RaycastLine(const Vector3& start, const Vector3& end, RaycastHitInfos& outHitInfos);
 
 	static void UpdatePhysics();
 
@@ -26,5 +29,6 @@ public:
 
 private:
 	static std::vector<CollisionComponent*> collisionsComponents;
+	static std::vector<Raycast*> raycasts; //  actually only used for storing raycast and drawing the feedback in the debug draw
 };
 

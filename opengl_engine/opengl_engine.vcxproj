@@ -161,6 +161,8 @@
     <ClCompile Include="Physics\physics.cpp" />
     <ClCompile Include="Physics\raycast.cpp" />
     <ClCompile Include="Rendering\camera.cpp" />
+    <ClCompile Include="Rendering\Debug\line.cpp" />
+    <ClCompile Include="Rendering\Debug\point.cpp" />
     <ClCompile Include="Rendering\material.cpp" />
     <ClCompile Include="Rendering\Model\mesh.cpp" />
     <ClCompile Include="Rendering\Model\model.cpp" />
@@ -177,6 +179,7 @@
     <ClInclude Include="Assets\assetMaterial.h" />
     <ClInclude Include="Assets\assetTexture.h" />
     <ClInclude Include="Assets\defaultAssets.h" />
+    <ClInclude Include="Rendering\Debug\line.h" />
     <ClInclude Include="Maths\Geometry\box.h" />
     <ClInclude Include="Maths\Geometry\ray.h" />
     <ClInclude Include="Physics\AABB\boxAABBColComp.h" />
@@ -201,6 +204,7 @@
     <ClInclude Include="Physics\physics.h" />
     <ClInclude Include="Physics\raycast.h" />
     <ClInclude Include="Rendering\camera.h" />
+    <ClInclude Include="Rendering\Debug\point.h" />
     <ClInclude Include="Rendering\material.h" />
     <ClInclude Include="Rendering\Model\mesh.h" />
     <ClInclude Include="Rendering\Model\model.h" />

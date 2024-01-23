@@ -12,7 +12,7 @@ void DirectionalLight::load(Color lightColor_, Vector3 direction_, float ambient
 	ambientStrength = ambientStrength_;
 	diffuseStrength = diffuseStrength_;
 
-	lightType = Directionnal;
+	lightType = LightType::EDirectionalLight;
 	loaded = true;
 }
 

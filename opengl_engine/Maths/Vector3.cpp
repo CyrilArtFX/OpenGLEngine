@@ -110,6 +110,12 @@ Vector3 Vector3::transform(const Vector3& v, const Quaternion& q)
 	return retVal;
 }
 
+float Vector3::Distance(const Vector3& a, const Vector3& b)
+{
+	Vector3 c = b - a;
+	return c.length();
+}
+
 Vector3 operator+(const Vector3& a, const Vector2& b)
 {
 	return Vector3(a.x + b.x, a.y + b.y, a.z);

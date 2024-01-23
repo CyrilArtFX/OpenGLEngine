@@ -194,6 +194,8 @@ public:
 	// Transform a Vector3 by a quaternion
 	static Vector3 transform(const Vector3& v, const class Quaternion& q);
 
+	static float Distance(const Vector3& a, const Vector3& b);
+
 	std::string toString() const
 	{
 		return std::to_string(x) + "  " + std::to_string(y) + "  " + std::to_string(z);

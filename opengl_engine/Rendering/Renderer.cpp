@@ -66,10 +66,10 @@ void Renderer::draw()
 
 				switch (light_type)
 				{
-				case Point:
+				case EPointLight:
 					shader->setInt("nbPointLights", light_type_used++);
 					break;
-				case Spot:
+				case ESpotLight:
 					shader->setInt("nbSpotLights", light_type_used++);
 					break;
 				}

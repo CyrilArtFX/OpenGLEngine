@@ -39,6 +39,9 @@ void TestFpsScene::loadScene()
 	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate3));
 	Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.5f, 0.0f}, Vector3{5.0f, 0.5f, 5.0f}}, &ground));
 
+	RaycastHitInfos out_raycast;
+	Physics::RaycastLine(Vector3{-2.0f, 1.5f, 0.0f}, Vector3{2.0f, 1.5f, 0.0f}, out_raycast);
+
 
 	//  lights
 	Vector3 dir_light{ 0.5f, -1.0f, 0.75f };
