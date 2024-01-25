@@ -138,7 +138,6 @@
     <ClCompile Include="Assets\assetMaterial.cpp" />
     <ClCompile Include="Assets\assetTexture.cpp" />
     <ClCompile Include="Assets\defaultAssets.cpp" />
-    <ClCompile Include="Events\ZeroParam\event_zeroParam.cpp" />
     <ClCompile Include="Maths\Geometry\box.cpp" />
     <ClCompile Include="Maths\Geometry\ray.cpp" />
     <ClCompile Include="Physics\AABB\boxAABBColComp.cpp" />
@@ -180,8 +179,8 @@
     <ClInclude Include="Assets\assetMaterial.h" />
     <ClInclude Include="Assets\assetTexture.h" />
     <ClInclude Include="Assets\defaultAssets.h" />
-    <ClInclude Include="Events\ZeroParam\event_zeroParam.h" />
-    <ClInclude Include="Events\ZeroParam\observer_zeroParam.h" />
+    <ClInclude Include="Events\event.h" />
+    <ClInclude Include="Events\observer.h" />
     <ClInclude Include="Rendering\Debug\line.h" />
     <ClInclude Include="Maths\Geometry\box.h" />
     <ClInclude Include="Maths\Geometry\ray.h" />

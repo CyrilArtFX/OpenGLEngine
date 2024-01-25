@@ -132,9 +132,6 @@
     <ClCompile Include="Rendering\Debug\point.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Events\ZeroParam\event_zeroParam.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rendering\shader.h">
@@ -260,10 +257,10 @@
     <ClInclude Include="Rendering\Debug\point.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Events\ZeroParam\event_zeroParam.h">
+    <ClInclude Include="Events\event.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Events\ZeroParam\observer_zeroParam.h">
+    <ClInclude Include="Events\observer.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
