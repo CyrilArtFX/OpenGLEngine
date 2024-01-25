@@ -2,6 +2,7 @@
 
 #include <Inputs/input.h>
 #include <Maths/maths.h>
+#include <Physics/physics.h>
 
 #include <GLFW/glfw3.h>
 #include <algorithm>
@@ -56,6 +57,15 @@ void Player::update(float dt)
 		{
 			std::cout << "Doomlike game error : Player has not his renderer ref setup !\n";
 		}
+	}
+
+	//  shoot raycast
+	if (Input::IsKeyPressed(GLFW_MOUSE_BUTTON_RIGHT))
+	{
+		Vector3 raycast_start = camera.getPosition();
+		Vector3 raycast_end = raycast_start + camera.getForward() * 5.0f;
+
+		Physics::RaycastLine(raycast_start, raycast_end);
 	}
 
 
