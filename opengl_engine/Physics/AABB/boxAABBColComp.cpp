@@ -5,13 +5,13 @@
 #include <Rendering/material.h>
 
 BoxAABBColComp::BoxAABBColComp() : 
-	CollisionComponent(CollisionType::BoxAABB, nullptr, &AssetManager::GetSingleMesh("default_cube"))
+	CollisionComponent(CollisionType::BoxAABB, nullptr, &AssetManager::GetSingleMesh("debug_cube"))
 {
 }
 
 BoxAABBColComp::BoxAABBColComp(const Box& boxValues, const Transform* transformToAssociate, bool scaleBoxSizeWithTransform) :
 	box(boxValues), useTransformScaleForBoxSize(scaleBoxSizeWithTransform),
-	CollisionComponent(CollisionType::BoxAABB, transformToAssociate, &AssetManager::GetSingleMesh("default_cube"))
+	CollisionComponent(CollisionType::BoxAABB, transformToAssociate, &AssetManager::GetSingleMesh("debug_cube"))
 {
 }
 

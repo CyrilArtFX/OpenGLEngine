@@ -16,18 +16,22 @@ void TestFpsScene::loadScene()
 	crate1.addModel(&AssetManager::GetModel("crate"));
 	crate2.addModel(&AssetManager::GetModel("crate"));
 	crate3.addModel(&AssetManager::GetModel("crate"));
+	target1.addModel(&AssetManager::GetModel("crate"));
 	testMesh.addModel(&AssetManager::GetModel("taxi"));
 
 	registerObject(&ground);
 	registerObject(&crate1);
 	registerObject(&crate2);
 	registerObject(&crate3);
+	registerObject(&target1);
 	registerObject(&testMesh);
 
 	ground.setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
 	crate1.setPosition(Vector3{ 2.0f, 0.5f, 0.0f });
 	crate2.setPosition(Vector3{ -1.0f, 0.5f, 3.0f });
 	crate3.setPosition(Vector3{ -3.5f, 0.5f, -1.0f });
+	target1.setPosition(Vector3{ 0.0f, 1.5f, -5.0f });
+	target1.setScale(Vector3{ 1.0f, 1.0f, 0.1f });
 	testMesh.setPosition(Vector3{ -7.0f, 1.0f, 0.0f });
 	testMesh.setScale(0.01f);
 	testMesh.setRotation(Quaternion{ Vector3::unitX, Maths::toRadians(-90.0f) });

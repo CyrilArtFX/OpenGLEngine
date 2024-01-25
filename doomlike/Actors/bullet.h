@@ -4,10 +4,11 @@
 #include <Objects/object.h>
 #include <Rendering/material.h>
 #include <Physics/AABB/boxAABBColComp.h>
+#include <Events/ZeroParam/observer_zeroParam.h>
 
 class Renderer;
 
-class Bullet
+class Bullet : private Observer_ZeroParam
 {
 public:
 	Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_, Renderer* renderer_);
@@ -18,6 +19,8 @@ public:
 
 	bool isLTOver() { return lifetime <= 0.0f; }
 
+	void onEventObserved() override;
+
 private:
 	Vector3 direction{ Vector3::unitX };
 	float velocity{ 0.0f };
@@ -26,6 +29,6 @@ private:
 
 	Object object;
 
-	CollisionComponent& collision;
+	CollisionComponent* collision;
 };
 

@@ -5,6 +5,8 @@
 #include <Assets/assetManager.h>
 #include <Objects/object.h>
 
+#include <Actors/target.h>
+
 #include <Maths/vector3.h>
 #include <Utils/color.h>
 
@@ -34,6 +36,8 @@ private:
 	Object crate3;
 	Object ground;
 	Object testMesh;
+
+	Target target1;
 
 	DirectionalLight dirLight;
 };

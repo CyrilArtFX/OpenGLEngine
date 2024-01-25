@@ -2,6 +2,8 @@
 #include <Objects/transform.h>
 #include "raycast.h"
 
+#include <Events/ZeroParam/event_zeroParam.h>
+
 #include <Rendering/Model/mesh.h>
 
 class Material;
@@ -42,6 +44,11 @@ public:
 
 	//  for physics manager
 	bool registered{ false };
+
+
+
+	Event_ZeroParam onCollisionDelete;
+	Event_ZeroParam onRaycastIntersect;
 
 
 protected:

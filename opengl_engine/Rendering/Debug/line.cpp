@@ -1,23 +1,18 @@
 #include "line.h"
 #include <glad/glad.h>
 #include <vector>
-#include <iostream>
 
 Line::Line()
 {
 	glGenVertexArrays(1, &lineVAO);
 	glGenBuffers(1, &lineVBO);
 	glBindVertexArray(0);
-
-	std::cout << "Creating Line\n";
 }
 
 Line::~Line()
 {
 	glDeleteVertexArrays(1, &lineVAO);
 	glDeleteBuffers(1, &lineVBO);
-
-	std::cout << "Destroying Line\n";
 }
 
 void Line::setPoints(Vector3 pointA, Vector3 pointB)

@@ -53,6 +53,13 @@ bool Physics::RaycastLine(const Vector3& start, const Vector3& end, RaycastHitIn
 		hit = hit || col_hit;
 	}
 
+	if (outHitInfos.hitCollision)
+	{
+		outHitInfos.hitCollision->forceIntersected();
+		outHitInfos.hitCollision->onRaycastIntersect.broadcast();
+	}
+
+
 	if (hit) raycasts.back()->setHitPos(outHitInfos.hitLocation);
 
 	return hit;
@@ -88,9 +95,7 @@ void Physics::UpdatePhysics(float dt)
 		RaycastHitInfos out = RaycastHitInfos();
 		for (auto& col : collisionsComponents)
 		{
-			bool col_intersect = col->getIntersected();
 			col->resolveRaycast(raycast->getRay(), out);
-			if (col_intersect == false) col->resetIntersected();
 		}
 		if(out.hitCollision) out.hitCollision->forceIntersected();
 	}
