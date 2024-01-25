@@ -5,7 +5,8 @@
 	-> faire le système d'affichage debug et un visionnage des box - fait
 	-> fixer les box a des objets pourvus de transform ? et tester le mouvement - fait
 	-> faire de la détection point / aabb - fait
-	-> faire des raycast qui répondent au aabb - en cours
+	-> faire des raycast qui répondent au aabb - fait
+	-> faire un event qui s'apelle quand la box subit une collision
 	-> faire la detection de collision entre box aabb
 	-> faire le "repoussage" entre box aabb (position pas rotation)
 	-> mettre la gravité et bien tester ça

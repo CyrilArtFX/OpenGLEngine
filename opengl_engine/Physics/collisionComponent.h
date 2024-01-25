@@ -35,6 +35,9 @@ public:
 	virtual const Matrix4 getModelMatrix() const;
 
 	void resetIntersected();
+	//  for physics manager
+	void forceIntersected() const;
+	inline bool getIntersected() const { return intersectedLastFrame; }
 
 
 	//  for physics manager

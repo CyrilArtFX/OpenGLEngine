@@ -113,10 +113,11 @@ void Engine::run()
 		// -------------
 		engineUpdate(window.getGLFWwindow());
 
-		Physics::UpdatePhysics();
 
 		if (!gamePaused)
 		{
+			Physics::UpdatePhysics(deltaTime);
+
 			if (game)
 			{
 				game->updateGame(deltaTime);

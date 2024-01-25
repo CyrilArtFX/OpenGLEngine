@@ -55,6 +55,11 @@ void CollisionComponent::resetIntersected()
 	intersectedLastFrame = false;
 }
 
+void CollisionComponent::forceIntersected() const
+{
+	intersectedLastFrame = true;
+}
+
 CollisionComponent::CollisionComponent(CollisionType collisionType_, const Transform* associatedTransform_, Mesh* debugMesh_) :
 	collisionType(collisionType_), associatedTransform(associatedTransform_), debugMesh(debugMesh_)
 {

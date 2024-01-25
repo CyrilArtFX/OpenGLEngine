@@ -35,28 +35,30 @@ void Physics::RemoveCollision(CollisionComponent* colComp)
 	std::cout << "PHYSICS_INFO: Successfully removed a collision.\n";
 }
 
-bool Physics::RaycastLine(const Vector3& start, const Vector3& end, RaycastHitInfos& outHitInfos)
+bool Physics::RaycastLine(const Vector3& start, const Vector3& end, RaycastHitInfos& outHitInfos, float drawDebugTime)
 {
 	std::cout << "PHYSICS_INFO: Create a raycast line.\n";
 
+	outHitInfos = RaycastHitInfos();
+
 	bool hit = false;
 
-	raycasts.emplace_back(new Raycast(start, end));
-
-	//  TEMP:
-	raycasts.back()->setHitPos(Vector3{ 0.0f, 1.5f, 0.0f });
+	raycasts.emplace_back(new Raycast(start, end, drawDebugTime));
 
 	const Ray& ray = raycasts.back()->getRay();
 
 	for (auto& col : collisionsComponents)
 	{
-		hit = hit || col->resolveRaycast(ray, outHitInfos);
+		bool col_hit = col->resolveRaycast(ray, outHitInfos);
+		hit = hit || col_hit;
 	}
+
+	if (hit) raycasts.back()->setHitPos(outHitInfos.hitLocation);
 
 	return hit;
 }
 
-void Physics::UpdatePhysics()
+void Physics::UpdatePhysics(float dt)
 {
 	//  reset the 'intersected last frame' parameter
 	for (auto& col : collisionsComponents)
@@ -64,14 +66,33 @@ void Physics::UpdatePhysics()
 		col->resetIntersected();
 	}
 
-	//  test the currently existing raycasts for debug drawing
-	for (auto& col : collisionsComponents)
+	//  delete raycasts that have run out of time
+	for (int i = 0; i < raycasts.size(); i++)
 	{
-		RaycastHitInfos out;
-		for (auto& raycast : raycasts)
+		raycasts[i]->updateDrawDebugTimer(dt);
+
+		if (raycasts[i]->drawDebugTimerFinished())
 		{
-			col->resolveRaycast(raycast->getRay(), out);
+			delete raycasts[i];
+
+			std::iter_swap(raycasts.begin() + i, raycasts.end() - 1);
+			raycasts.pop_back();
+
+			i--;
 		}
+	}
+
+	//  test the currently existing raycasts for debug drawing
+	for (auto& raycast : raycasts)
+	{
+		RaycastHitInfos out = RaycastHitInfos();
+		for (auto& col : collisionsComponents)
+		{
+			bool col_intersect = col->getIntersected();
+			col->resolveRaycast(raycast->getRay(), out);
+			if (col_intersect == false) col->resetIntersected();
+		}
+		if(out.hitCollision) out.hitCollision->forceIntersected();
 	}
 }
 
@@ -79,13 +100,18 @@ void Physics::ClearAllCollisions()
 {
 	std::cout << "PHYSICS_INFO: Clearing all collisions and raycasts.\n";
 
-	for (auto& col : collisionsComponents)
+	for (auto col : collisionsComponents)
 	{
 		col->registered = false;
+		delete col;
 	}
 
 	collisionsComponents.clear();
 
+	for (auto raycast : raycasts)
+	{
+		delete raycast;
+	}
 	raycasts.clear();
 }
 

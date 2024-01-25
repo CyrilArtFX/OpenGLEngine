@@ -12,7 +12,7 @@ Box::Box()
 {
 }
 
-Box::Box(Vector3 centerPoint, Vector3 halfExtentsValues) :
+Box::Box(const Vector3& centerPoint, const Vector3& halfExtentsValues) :
 	center(centerPoint), halfExtents(halfExtentsValues)
 {
 	if (halfExtents < Vector3::zero)
@@ -22,7 +22,7 @@ Box::Box(Vector3 centerPoint, Vector3 halfExtentsValues) :
 	}
 }
 
-void Box::setupWithMinAndMaxPoints(Vector3 minPoint, Vector3 maxPoint)
+void Box::setupWithMinAndMaxPoints(const Vector3& minPoint, const Vector3& maxPoint)
 {
 	if (!(minPoint <= maxPoint))
 	{
@@ -34,12 +34,12 @@ void Box::setupWithMinAndMaxPoints(Vector3 minPoint, Vector3 maxPoint)
 	center = minPoint + halfExtents;
 }
 
-void Box::setCenterPoint(Vector3 centerPoint)
+void Box::setCenterPoint(const Vector3& centerPoint)
 {
 	center = centerPoint;
 }
 
-void Box::setHalfExtents(Vector3 halfExtentsValues)
+void Box::setHalfExtents(const Vector3& halfExtentsValues)
 {
 	if (halfExtentsValues < Vector3::zero)
 	{

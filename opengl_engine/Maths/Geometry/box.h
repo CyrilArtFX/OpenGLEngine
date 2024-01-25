@@ -8,11 +8,11 @@ class Box
 {
 public:
 	Box();
-	Box(Vector3 centerPoint, Vector3 halfExtentsValues);
+	Box(const Vector3& centerPoint, const Vector3& halfExtentsValues);
 
-	void setupWithMinAndMaxPoints(Vector3 minPoint, Vector3 maxPoint);
-	void setCenterPoint(Vector3 centerPoint);
-	void setHalfExtents(Vector3 halfExtentsValues);
+	void setupWithMinAndMaxPoints(const Vector3& minPoint, const Vector3& maxPoint);
+	void setCenterPoint(const Vector3& centerPoint);
+	void setHalfExtents(const Vector3& halfExtentsValues);
 
 	inline Vector3 getCenterPoint() const { return center; }
 	inline Vector3 getHalfExtents() const { return halfExtents; }

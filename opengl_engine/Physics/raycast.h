@@ -3,15 +3,30 @@
 #include <Rendering/Debug/line.h>
 #include <Rendering/Debug/point.h>
 
+#include <limits>
+
+class CollisionComponent;
+
 struct RaycastHitInfos
 {
-	Vector3 hitLocation;
+	RaycastHitInfos(Vector3 location, float distance, const CollisionComponent* collision) :
+		hitLocation(location), hitDistance(distance), hitCollision(collision) {}
+
+	RaycastHitInfos() :
+		hitLocation(Vector3::zero), hitDistance(std::numeric_limits<float>::max()), hitCollision(nullptr) {}
+
+	Vector3 hitLocation{ Vector3::zero };
+	float hitDistance{ std::numeric_limits<float>::max() }; //  used to get the nearest hit in case of multiple hits
+	const CollisionComponent* hitCollision{ nullptr };
+
+	static RaycastHitInfos defaultInfos;
 };
+
 
 class Raycast
 {
 public:
-	Raycast(const Vector3& startPoint, const Vector3& endPoint);
+	Raycast(const Vector3& startPoint, const Vector3& endPoint, float drawDebugTime);
 	Raycast() = delete;
 	Raycast(const Raycast&) = delete;
 	Raycast& operator=(const Raycast&) = delete;
@@ -20,7 +35,11 @@ public:
 
 	void setHitPos(Vector3 hitPosition);
 
+	void updateDrawDebugTimer(float dt);
+
 	inline const Ray& getRay() const { return ray; }
+
+	inline bool drawDebugTimerFinished() const { return drawDebugTimer == 0.0f; }
 
 private:
 	Ray ray;
@@ -30,5 +49,7 @@ private:
 	Point drawDebugPointHit;
 
 	bool hit{ false };
+
+	float drawDebugTimer;
 };
 

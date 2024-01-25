@@ -13,9 +13,15 @@ public:
 
 	static void RemoveCollision(CollisionComponent* colComp);
 
-	static bool RaycastLine(const Vector3& start, const Vector3& end, RaycastHitInfos& outHitInfos);
+	/**
+	* Creates a Line Raycast from start to end.
+	* In outHitInfos will be stored the informations of the nearest encountered collision.
+	* For a raycast that don't draw debug, enter 0.0f to drawDebugTime.
+	* For a raycast that never disappear from debug, enter negative value to drawDebugTime.
+	*/
+	static bool RaycastLine(const Vector3& start, const Vector3& end, RaycastHitInfos& outHitInfos = RaycastHitInfos::defaultInfos, float drawDebugTime = 5.0f);
 
-	static void UpdatePhysics();
+	static void UpdatePhysics(float dt);
 
 	/**
 	* Remove every collisions that exists.

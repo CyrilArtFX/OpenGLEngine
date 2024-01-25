@@ -1,25 +1,40 @@
 #include "line.h"
-#include <Assets/assetManager.h>
+#include <glad/glad.h>
+#include <vector>
+#include <iostream>
 
 Line::Line()
 {
-	lineMesh = &AssetManager::GetSingleMesh("debug_line");
+	glGenVertexArrays(1, &lineVAO);
+	glGenBuffers(1, &lineVBO);
+	glBindVertexArray(0);
+
+	std::cout << "Creating Line\n";
+}
+
+Line::~Line()
+{
+	glDeleteVertexArrays(1, &lineVAO);
+	glDeleteBuffers(1, &lineVBO);
+
+	std::cout << "Destroying Line\n";
 }
 
 void Line::setPoints(Vector3 pointA, Vector3 pointB)
 {
-	//  position to point A
-	setPosition(pointA);
+	std::vector<Vector3> points{ pointA, pointB };
 
-	//  scale to the distance between point A and point B
-	Vector3 a_to_b = pointB - pointA;
-	setScale(a_to_b.length());
+	glBindVertexArray(lineVAO); //  bind the VAO before binding the vertex buffer, and before configuring vertex attributes 
 
-	//  orient toward point B
-	a_to_b.normalize();
-	Vector3 rotation_axis = Vector3::cross(Vector3::unitX, a_to_b);
-	float rotation_angle = Maths::acos(Vector3::dot(Vector3::unitX, a_to_b));
-	setRotation(Quaternion{ rotation_axis, rotation_angle });
+	glBindBuffer(GL_ARRAY_BUFFER, lineVBO);
+	glBufferData(GL_ARRAY_BUFFER, 2 * sizeof(Vector3), &points[0], GL_STATIC_DRAW);
+
+	//  position attribute
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	//  unbind vertex array
+	glBindVertexArray(0);
 }
 
 void Line::drawLine(Material& debugMaterial, const Color& drawColor)
@@ -27,5 +42,6 @@ void Line::drawLine(Material& debugMaterial, const Color& drawColor)
 	debugMaterial.getShader().setMatrix4("model", getModelMatrix().getAsFloatPtr());
 	debugMaterial.getShader().setVec3("color", drawColor);
 	
-	lineMesh->draw(true);
+	glBindVertexArray(lineVAO);
+	glDrawArrays(GL_LINE_STRIP, 0, 2);
 }

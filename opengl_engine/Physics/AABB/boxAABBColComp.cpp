@@ -9,7 +9,7 @@ BoxAABBColComp::BoxAABBColComp() :
 {
 }
 
-BoxAABBColComp::BoxAABBColComp(Box boxValues, const Transform* transformToAssociate, bool scaleBoxSizeWithTransform) :
+BoxAABBColComp::BoxAABBColComp(const Box& boxValues, const Transform* transformToAssociate, bool scaleBoxSizeWithTransform) :
 	box(boxValues), useTransformScaleForBoxSize(scaleBoxSizeWithTransform),
 	CollisionComponent(CollisionType::BoxAABB, transformToAssociate, &AssetManager::GetSingleMesh("default_cube"))
 {
