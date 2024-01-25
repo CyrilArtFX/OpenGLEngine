@@ -6,11 +6,14 @@
 	-> fixer les box a des objets pourvus de transform ? et tester le mouvement - fait
 	-> faire de la détection point / aabb - fait
 	-> faire des raycast qui répondent au aabb - fait
-	-> faire un event qui s'apelle quand la box subit une collision
+	-> faire un event qui s'apelle quand la box subit une collision - fait (cimer arthur)
 	-> faire la detection de collision entre box aabb
 	-> faire le "repoussage" entre box aabb (position pas rotation)
 	-> mettre la gravité et bien tester ça
 	-> finir le setup du système physique (objects channels, etc.)
+
+KNOWN ISSUE : le physics manager devrait avoir une liste de collision qui viennent de la scène et une liste de collision qui viennent du game.
+Sinon, en supprimant les collisions au changement de scène il supprime aussi les collisions qui devraient rester persistantes (ex: les bullets)
 
 
 ~ Faire le doomlike (omg ?)
@@ -22,7 +25,7 @@
 
 ~ Faire une classe debug qui permet de gérer les logs dans la console et sur l'écran (à la manière d'unreal)
 
-~ Ajouter un système d'events (observer pattern) pour notamment un event lorsque la pause est activée
+~ Utiliser le système d'event pour les fonctionnalités importantes du moteur (pause, etc.)
 
 ~ Améliorer le système de lumière
 

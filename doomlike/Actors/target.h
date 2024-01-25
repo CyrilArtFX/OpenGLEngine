@@ -1,16 +1,16 @@
 #pragma once
 #include <Objects/object.h>
 #include <Physics/AABB/boxAABBColComp.h>
-#include <Events/ZeroParam/observer_zeroParam.h>
+#include <Events/observer.h>
 
 class BoxAABBColComp;
 
-class Target : public Object, private Observer_ZeroParam
+class Target : public Object, private Observer
 {
 public:
 	Target();
 
-	void onEventObserved() override;
+	void onIntersectedByRaycast(const Vector3& intersectionPoint);
 
 private:
 	BoxAABBColComp* collision;

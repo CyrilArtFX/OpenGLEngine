@@ -56,7 +56,7 @@ bool Physics::RaycastLine(const Vector3& start, const Vector3& end, RaycastHitIn
 	if (outHitInfos.hitCollision)
 	{
 		outHitInfos.hitCollision->forceIntersected();
-		outHitInfos.hitCollision->onRaycastIntersect.broadcast();
+		outHitInfos.hitCollision->onRaycastIntersect.broadcast(outHitInfos.hitLocation);
 	}
 
 

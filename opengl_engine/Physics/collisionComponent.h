@@ -2,7 +2,7 @@
 #include <Objects/transform.h>
 #include "raycast.h"
 
-#include <Events/ZeroParam/event_zeroParam.h>
+#include <Events/event.h>
 
 #include <Rendering/Model/mesh.h>
 
@@ -46,9 +46,9 @@ public:
 	bool registered{ false };
 
 
-
-	Event_ZeroParam onCollisionDelete;
-	Event_ZeroParam onRaycastIntersect;
+	
+	Event<> onCollisionDelete;
+	mutable Event<const Vector3&> onRaycastIntersect;
 
 
 protected:

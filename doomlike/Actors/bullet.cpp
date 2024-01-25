@@ -24,7 +24,7 @@ Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float 
 
 	renderer->addObject(&object);
 
-	collision->onCollisionDelete.registerObserver(this);
+	collision->onCollisionDelete.registerObserver(this, std::bind(&Bullet::onCollisionDeleted, this));
 }
 
 
@@ -43,7 +43,7 @@ void Bullet::update(float dt)
 	object.setPosition(object.getPosition() + direction * velocity * dt);
 }
 
-void Bullet::onEventObserved()
+void Bullet::onCollisionDeleted()
 {
 	collision = nullptr;
 }
