@@ -5,7 +5,7 @@
 Target::Target() : 
 	collision(static_cast<BoxAABBColComp*>(&Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, this))))
 {
-	collision->onRaycastIntersect.registerObserver(this, std::bind(&Target::onIntersectedByRaycast, this, std::placeholders::_1));
+	collision->onRaycastIntersect.registerObserver(this, Bind_1(&Target::onIntersectedByRaycast));
 }
 
 void Target::onIntersectedByRaycast(const Vector3& intersectionPoint)

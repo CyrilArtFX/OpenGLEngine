@@ -24,7 +24,7 @@ Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float 
 
 	renderer->addObject(&object);
 
-	collision->onCollisionDelete.registerObserver(this, std::bind(&Bullet::onCollisionDeleted, this));
+	collision->onCollisionDelete.registerObserver(this, Bind_0(&Bullet::onCollisionDeleted));
 }
 
 
