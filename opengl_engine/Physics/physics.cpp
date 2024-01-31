@@ -99,6 +99,24 @@ void Physics::UpdatePhysics(float dt)
 		}
 		if(out.hitCollision) out.hitCollision->forceIntersected();
 	}
+
+	//  test all the collisions (unoptimized, but ok for now)
+	for (int i = 0; i < collisionsComponents.size() - 1; i++)
+	{
+		for (int j = i + 1; j < collisionsComponents.size(); j++)
+		{
+			CollisionComponent& col_a = *collisionsComponents[i];
+			CollisionComponent& col_b = *collisionsComponents[j];
+			bool hit = col_a.resolveCollision(col_b);
+			if (hit)
+			{
+				col_a.forceIntersected();
+				col_b.forceIntersected();
+				col_a.onCollisionIntersect.broadcast();
+				col_b.onCollisionIntersect.broadcast();
+			}
+		}
+	}
 }
 
 void Physics::ClearAllCollisions()

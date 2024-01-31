@@ -24,6 +24,7 @@ Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float 
 
 	renderer->addObject(&object);
 
+	collision->onCollisionIntersect.registerObserver(this, Bind_0(&Bullet::onBulletHit));
 	collision->onCollisionDelete.registerObserver(this, Bind_0(&Bullet::onCollisionDeleted));
 }
 
@@ -41,6 +42,11 @@ void Bullet::update(float dt)
 	lifetime -= dt;
 
 	object.setPosition(object.getPosition() + direction * velocity * dt);
+}
+
+void Bullet::onBulletHit()
+{
+	lifetime = 0.0f;
 }
 
 void Bullet::onCollisionDeleted()

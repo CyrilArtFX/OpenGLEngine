@@ -49,6 +49,7 @@ public:
 	
 	Event<> onCollisionDelete;
 	mutable Event<const Vector3&> onRaycastIntersect;
+	mutable Event<> onCollisionIntersect;
 
 
 protected:

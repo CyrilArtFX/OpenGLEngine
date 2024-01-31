@@ -21,14 +21,14 @@ void CollisionComponent::setAssociatedTransform(const Transform* newTransform)
 bool CollisionComponent::resolvePoint(const Vector3& point) const
 {
 	bool intersect = resolvePointIntersection(point);
-	intersectedLastFrame = (intersectedLastFrame || intersect);
+	//intersectedLastFrame = (intersectedLastFrame || intersect);
 	return intersect;
 }
 
 bool CollisionComponent::resolveRaycast(const Ray& raycast, RaycastHitInfos& outHitInfos) const
 {
 	bool intersect = resolveRaycastIntersection(raycast, outHitInfos);
-	//  for raycasts, it's up to the physics manager to set the intersected last frame
+	//  it's up to the physics manager to set the intersected last frame
 	//  the physics manager also broadcast the onRaycastIntersect event
 	return intersect;
 }
@@ -36,7 +36,8 @@ bool CollisionComponent::resolveRaycast(const Ray& raycast, RaycastHitInfos& out
 bool CollisionComponent::resolveCollision(const CollisionComponent& otherCol) const
 {
 	bool intersect = resolveCollisionIntersection(otherCol);
-	intersectedLastFrame = (intersectedLastFrame || intersect);
+	//  it's up to the physics manager to set the intersected last frame (for both collisions)
+	//  the physics manager also broadcast the onCollisionIntersect event (for both collisions)
 	return intersect;
 }
 

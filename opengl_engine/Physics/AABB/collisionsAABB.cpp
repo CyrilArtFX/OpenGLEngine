@@ -66,5 +66,14 @@ bool CollisionsAABB::IntersectRaycast(const BoxAABBColComp& boxAABB, const Ray& 
 
 bool CollisionsAABB::IntersectBoxAABB(const BoxAABBColComp& boxAABB, const BoxAABBColComp& otherBoxAABB)
 {
-	return false;
+	Box box_a = boxAABB.getTransformedBox();
+	Vector3 box_a_min = box_a.getMinPoint();
+	Vector3 box_a_max = box_a.getMaxPoint();
+
+	Box box_b = otherBoxAABB.getTransformedBox();
+	Vector3 box_b_min = box_b.getMinPoint();
+	Vector3 box_b_max = box_b.getMaxPoint();
+
+
+	return box_a_min < box_b_max && box_a_max > box_b_min;
 }

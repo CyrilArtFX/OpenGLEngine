@@ -19,6 +19,7 @@ public:
 
 	bool isLTOver() { return lifetime <= 0.0f; }
 
+	void onBulletHit();
 	void onCollisionDeleted();
 
 private:
