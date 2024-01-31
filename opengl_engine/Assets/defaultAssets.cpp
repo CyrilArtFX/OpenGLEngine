@@ -85,16 +85,6 @@ void DefaultAssets::LoadDefaultAssets(Renderer& renderer)
 
 void DefaultAssets::LoadDebugAssets()
 {
-	//  line mesh
-	std::vector<Vertex> line_vertices
-	{
-		// positions                      // normals                 // tex coords
-		Vertex{Vector3{0.0f, 0.0f, 0.0f}, Vector3{1.0f, 0.0f, 0.0f}, Vector2{0.0f, 0.0f}},
-		Vertex{Vector3{1.0f, 0.0f, 0.0f}, Vector3{1.0f, 0.0f, 0.0f}, Vector2{0.0f, 0.0f}}
-	};
-	AssetManager::LoadSingleMesh("debug_line", line_vertices);
-
-	
 	//  cube mesh
 	std::vector<Vertex> cube_vertices
 	{
