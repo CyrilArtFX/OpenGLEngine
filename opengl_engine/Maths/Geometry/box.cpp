@@ -59,6 +59,11 @@ Vector3 Box::getMaxPoint() const
 	return center + halfExtents;
 }
 
+void Box::addHalfExtents(const Box& otherBox)
+{
+	halfExtents += otherBox.halfExtents;
+}
+
 std::string Box::toString() const
 {
 	return Box::ToString(*this);

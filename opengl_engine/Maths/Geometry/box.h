@@ -20,10 +20,14 @@ public:
 	Vector3 getMinPoint() const;
 	Vector3 getMaxPoint() const;
 
+	void addHalfExtents(const Box& otherBox);
+
 	std::string toString() const;
 
 
 	static std::string ToString(const Box& box);
+
+
 
 private:
 	Vector3 center{ Vector3::zero };

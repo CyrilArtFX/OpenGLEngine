@@ -54,14 +54,25 @@ const Matrix4 CollisionComponent::getModelMatrix() const
 	return associatedTransform->getModelMatrixConst();
 }
 
-void CollisionComponent::resetIntersected()
+void CollisionComponent::updateCollisionBeforeTests()
 {
 	intersectedLastFrame = false;
+}
+
+void CollisionComponent::updateCollisionAfterTests()
+{
+	if (useCCD) posLastFrame = associatedTransform->getPosition();
 }
 
 void CollisionComponent::forceIntersected() const
 {
 	intersectedLastFrame = true;
+}
+
+void CollisionComponent::setCCD(bool cdd)
+{
+	useCCD = cdd;
+	if (useCCD) posLastFrame = associatedTransform->getPosition();
 }
 
 CollisionComponent::CollisionComponent(CollisionType collisionType_, const Transform* associatedTransform_, Mesh* debugMesh_) :

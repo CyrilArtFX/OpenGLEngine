@@ -9,7 +9,7 @@
 
 
 Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_, Renderer* renderer_) :
-	collision(&Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3::zero, Vector3{0.05f, 0.05f, 0.05f} }, &object, false)))
+	collision(&Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3::zero, Vector3{0.05f, 0.05f, 0.05f} }, &object, false), true))
 {
 	direction = direction_;
 	velocity = velocity_;

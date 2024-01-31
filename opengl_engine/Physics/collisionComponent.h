@@ -18,6 +18,8 @@ enum class CollisionType : uint8_t
 
 /** Collision Component
 * Base class for every collision component
+* For now, CCD only works with position, not rotation or scale
+* Also, intersection between two collisions with CCD is not implemented
 */
 class CollisionComponent
 {
@@ -36,10 +38,15 @@ public:
 
 	virtual const Matrix4 getModelMatrix() const;
 
-	void resetIntersected();
+	void updateCollisionBeforeTests();
+	void updateCollisionAfterTests();
+
 	//  for physics manager
 	void forceIntersected() const;
 	inline bool getIntersected() const { return intersectedLastFrame; }
+
+	void setCCD(bool ccd);
+	inline bool getUseCCD() const { return useCCD; }
 
 
 	//  for physics manager
@@ -62,6 +69,9 @@ protected:
 	virtual void drawDebugMesh(Material& debugMaterial) const = 0;
 
 
+	inline Vector3 getLastFramePos() const { return posLastFrame; }
+
+
 	CollisionType collisionType{ CollisionType::Null };
 	const Transform* associatedTransform{ nullptr };
 
@@ -71,4 +81,8 @@ protected:
 
 private:
 	mutable bool intersectedLastFrame{ false };
+
+	//  for CCD
+	bool useCCD{ false };
+	Vector3 posLastFrame{ Vector3::zero };
 };

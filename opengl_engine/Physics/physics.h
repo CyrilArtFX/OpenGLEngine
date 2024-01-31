@@ -9,7 +9,7 @@ class Material;
 class Physics
 {
 public:
-	static CollisionComponent& CreateCollisionComponent(CollisionComponent* colComp);
+	static CollisionComponent& CreateCollisionComponent(CollisionComponent* colComp, bool useCCD = false);
 
 	static void RemoveCollision(CollisionComponent* colComp);
 

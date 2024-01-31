@@ -8,12 +8,13 @@ std::vector<CollisionComponent*> Physics::collisionsComponents;
 std::vector<Raycast*> Physics::raycasts;
 
 
-CollisionComponent& Physics::CreateCollisionComponent(CollisionComponent* colComp)
+CollisionComponent& Physics::CreateCollisionComponent(CollisionComponent* colComp, bool useCCD)
 {
 	std::cout << "PHYSICS_INFO: Create a collision.\n";
 	collisionsComponents.push_back(colComp);
 
 	CollisionComponent& col = *(collisionsComponents.back());
+	col.setCCD(useCCD);
 	col.registered = true;
 	return col;
 }
@@ -43,26 +44,53 @@ bool Physics::RaycastLine(const Vector3& start, const Vector3& end, RaycastHitIn
 
 	bool hit = false;
 
-	raycasts.emplace_back(new Raycast(start, end, drawDebugTime));
-
-	const Ray& ray = raycasts.back()->getRay();
-
-	for (auto& col : collisionsComponents)
+	if (drawDebugTime != 0.0f)
 	{
-		bool col_hit = col->resolveRaycast(ray, outHitInfos);
-		hit = hit || col_hit;
-	}
+		raycasts.emplace_back(new Raycast(start, end, drawDebugTime));
 
-	if (outHitInfos.hitCollision)
+		const Ray& ray = raycasts.back()->getRay();
+
+		for (auto& col : collisionsComponents)
+		{
+			bool col_hit = col->resolveRaycast(ray, outHitInfos);
+			hit = hit || col_hit;
+		}
+
+		if (outHitInfos.hitCollision)
+		{
+			outHitInfos.hitCollision->forceIntersected();
+			outHitInfos.hitCollision->onRaycastIntersect.broadcast(outHitInfos.hitLocation);
+		}
+
+
+		if (hit) raycasts.back()->setHitPos(outHitInfos.hitLocation);
+
+		return hit;
+	}
+	else //  do not register the raycast in the list if it will not draw debug
 	{
-		outHitInfos.hitCollision->forceIntersected();
-		outHitInfos.hitCollision->onRaycastIntersect.broadcast(outHitInfos.hitLocation);
+		Raycast* raycast = new Raycast(start, end, drawDebugTime);
+
+		const Ray& ray = raycast->getRay();
+
+		for (auto& col : collisionsComponents)
+		{
+			bool col_hit = col->resolveRaycast(ray, outHitInfos);
+			hit = hit || col_hit;
+		}
+
+		if (outHitInfos.hitCollision)
+		{
+			//  also do not set the collision intersected if it will not draw debug
+			outHitInfos.hitCollision->onRaycastIntersect.broadcast(outHitInfos.hitLocation);
+		}
+
+		delete raycast;
+
+		//  finally no need to set the hit pos on the raycast if it will not draw debug
+
+		return hit;
 	}
-
-
-	if (hit) raycasts.back()->setHitPos(outHitInfos.hitLocation);
-
-	return hit;
 }
 
 void Physics::UpdatePhysics(float dt)
@@ -70,7 +98,7 @@ void Physics::UpdatePhysics(float dt)
 	//  reset the 'intersected last frame' parameter
 	for (auto& col : collisionsComponents)
 	{
-		col->resetIntersected();
+		col->updateCollisionBeforeTests();
 	}
 
 	//  delete raycasts that have run out of time
@@ -116,6 +144,12 @@ void Physics::UpdatePhysics(float dt)
 				col_b.onCollisionIntersect.broadcast();
 			}
 		}
+	}
+
+	//  update the 'pos last frame'
+	for (auto& col : collisionsComponents)
+	{
+		col->updateCollisionAfterTests();
 	}
 }
 

@@ -16,6 +16,7 @@ public:
 	const Matrix4 getModelMatrix() const override;
 
 	Box getTransformedBox(bool forDrawDebug = false) const;
+	Vector3 getLastFrameTransformedPos() const;
 
 protected:
 	bool resolvePointIntersection(const Vector3& point) const override;

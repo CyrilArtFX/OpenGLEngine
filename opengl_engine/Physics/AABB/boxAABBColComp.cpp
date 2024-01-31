@@ -32,7 +32,18 @@ bool BoxAABBColComp::resolveCollisionIntersection(const CollisionComponent& othe
 	case CollisionType::BoxAABB:
 		{
 		const BoxAABBColComp& other_col_as_aabb = static_cast<const BoxAABBColComp&>(otherCol);
-		return CollisionsAABB::IntersectBoxAABB(*this, other_col_as_aabb);
+		if (getUseCCD() && !otherCol.getUseCCD())
+		{
+			return CollisionsAABB::IntersectBoxAABBwithCCD(*this, other_col_as_aabb);
+		}
+		else if (!getUseCCD() && otherCol.getUseCCD())
+		{
+			return CollisionsAABB::IntersectBoxAABBwithCCD(other_col_as_aabb, *this);
+		}
+		else
+		{
+			return CollisionsAABB::IntersectBoxAABB(*this, other_col_as_aabb);
+		}
 		} //  {} are here to encapsulate the local variable other_col_as_aabb
 		
 
@@ -72,4 +83,9 @@ Box BoxAABBColComp::getTransformedBox(bool forDrawDebug) const
 	transformed_box.setHalfExtents(half_extents);
 
 	return transformed_box;
+}
+
+Vector3 BoxAABBColComp::getLastFrameTransformedPos() const
+{
+	 return (box.getCenterPoint() * associatedTransform->getScale()) + getLastFramePos();
 }
