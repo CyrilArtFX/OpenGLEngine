@@ -46,7 +46,7 @@ public:
 	inline bool getIntersected() const { return intersectedLastFrame; }
 
 	void setCCD(bool ccd);
-	inline bool getUseCCD() const { return useCCD; }
+	inline bool getUseCCD() const { return useCCD && !firstFrame; }
 
 
 	//  for physics manager
@@ -85,4 +85,5 @@ private:
 	//  for CCD
 	bool useCCD{ false };
 	Vector3 posLastFrame{ Vector3::zero };
+	bool firstFrame{ true };
 };

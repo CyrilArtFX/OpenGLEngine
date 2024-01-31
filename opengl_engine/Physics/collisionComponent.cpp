@@ -61,7 +61,11 @@ void CollisionComponent::updateCollisionBeforeTests()
 
 void CollisionComponent::updateCollisionAfterTests()
 {
-	if (useCCD) posLastFrame = associatedTransform->getPosition();
+	if (useCCD)
+	{
+		posLastFrame = associatedTransform->getPosition();
+		firstFrame = false;
+	}
 }
 
 void CollisionComponent::forceIntersected() const

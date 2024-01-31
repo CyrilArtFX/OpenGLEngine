@@ -107,6 +107,12 @@ bool CollisionsAABB::BoxRayIntersection(const Box& box, const Ray& ray, float& d
 		return false;
 	}
 
+	//  if tmin > length, ray (line) is intersecting AABB, but the whole AABB is after the end of the raycast
+	if (tmin > ray_length)
+	{
+		return false;
+	}
+
 	distance = tmin;
 
 	return true;

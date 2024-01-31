@@ -26,6 +26,8 @@ Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float 
 
 	collision->onCollisionIntersect.registerObserver(this, Bind_0(&Bullet::onBulletHit));
 	collision->onCollisionDelete.registerObserver(this, Bind_0(&Bullet::onCollisionDeleted));
+
+	collision->updateCollisionAfterTests(); //  do this so that ccd is enabled the first frame, should be great to find a good way to do this
 }
 
 

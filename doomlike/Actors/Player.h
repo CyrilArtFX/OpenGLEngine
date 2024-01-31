@@ -41,7 +41,7 @@ private:
 
 	//  fake shots
 	std::vector<std::unique_ptr<Bullet>> bullets;
-	float shootVelocity{ 50.0f }; //  temp, for testing ccd
+	float shootVelocity{ 15.0f };
 	float bulletLifeTime{ 3.0f };
 };
 
