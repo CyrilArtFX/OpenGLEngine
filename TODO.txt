@@ -7,7 +7,7 @@
 	-> faire de la détection point / aabb - fait
 	-> faire des raycast qui répondent au aabb - fait
 	-> faire un event qui s'apelle quand la box subit une collision - fait (cimer arthur)
-	-> faire la detection de collision entre box aabb
+	-> faire la detection de collision entre box aabb - fait
 	-> intégrer la ccd
 	-> faire le "repoussage" entre box aabb (position pas rotation)
 	-> mettre la gravité et bien tester ça
