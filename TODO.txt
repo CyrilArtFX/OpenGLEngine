@@ -11,6 +11,7 @@
 	-> intégrer la ccd - fait
 	-> faire le "repoussage" entre box aabb (position pas rotation)
 	-> mettre la gravité et bien tester ça
+	-> faire la detection ccd / ccd : https://blog.hamaluik.ca/posts/swept-aabb-collision-using-minkowski-difference/
 	-> finir le setup du système physique (objects channels, etc.)
 
 KNOWN ISSUE : le physics manager devrait avoir une liste de collision qui viennent de la scène et une liste de collision qui viennent du game.

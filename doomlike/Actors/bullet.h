@@ -4,6 +4,7 @@
 #include <Objects/object.h>
 #include <Rendering/material.h>
 #include <Physics/AABB/boxAABBColComp.h>
+#include <Physics/rigidbodyComponent.h>
 #include <Events/observer.h>
 
 class Renderer;
@@ -20,7 +21,7 @@ public:
 	bool isLTOver() { return lifetime <= 0.0f; }
 
 	void onBulletHit();
-	void onCollisionDeleted();
+	void onRigidbodyDeleted();
 
 private:
 	Vector3 direction{ Vector3::unitX };
@@ -30,6 +31,6 @@ private:
 
 	Object object;
 
-	CollisionComponent* collision;
+	RigidbodyComponent* rigidbody;
 };
 

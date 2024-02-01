@@ -41,6 +41,14 @@ bool CollisionComponent::resolveCollision(const CollisionComponent& otherCol) co
 	return intersect;
 }
 
+bool CollisionComponent::resolveCollisionCCD(const CollisionComponent& ccdCol, bool isSelfCCD) const
+{
+	bool intersect = resolveCollisionIntersectionCCD(ccdCol, isSelfCCD);
+	//  it's up to the physics manager to set the intersected last frame (for both collisions)
+	//  the physics manager also broadcast the onCollisionIntersect event (for both collisions)
+	return intersect;
+}
+
 void CollisionComponent::drawDebug(Material& debugMaterial) const
 {
 	debugMaterial.getShader().setVec3("color", intersectedLastFrame ? Color::red : Color::green);
@@ -54,18 +62,9 @@ const Matrix4 CollisionComponent::getModelMatrix() const
 	return associatedTransform->getModelMatrixConst();
 }
 
-void CollisionComponent::updateCollisionBeforeTests()
+void CollisionComponent::resetIntersected()
 {
 	intersectedLastFrame = false;
-}
-
-void CollisionComponent::updateCollisionAfterTests()
-{
-	if (useCCD)
-	{
-		posLastFrame = associatedTransform->getPosition();
-		firstFrame = false;
-	}
 }
 
 void CollisionComponent::forceIntersected() const
@@ -73,10 +72,10 @@ void CollisionComponent::forceIntersected() const
 	intersectedLastFrame = true;
 }
 
-void CollisionComponent::setCCD(bool cdd)
+void CollisionComponent::updatePosLastFrame()
 {
-	useCCD = cdd;
-	if (useCCD) posLastFrame = associatedTransform->getPosition();
+	if (!associatedTransform) return;
+	posLastFrame = associatedTransform->getPosition();
 }
 
 CollisionComponent::CollisionComponent(CollisionType collisionType_, const Transform* associatedTransform_, Mesh* debugMesh_) :

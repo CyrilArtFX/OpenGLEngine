@@ -33,20 +33,19 @@ public:
 	bool resolvePoint(const Vector3& point) const;
 	bool resolveRaycast(const Ray& raycast, RaycastHitInfos& outHitInfos) const;
 	bool resolveCollision(const CollisionComponent& otherCol) const;
+	bool resolveCollisionCCD(const CollisionComponent& ccdCol, bool isSelfCCD) const;
 
 	void drawDebug(Material& debugMaterial) const;
 
 	virtual const Matrix4 getModelMatrix() const;
 
-	void updateCollisionBeforeTests();
-	void updateCollisionAfterTests();
+	void resetIntersected();
 
 	//  for physics manager
 	void forceIntersected() const;
 	inline bool getIntersected() const { return intersectedLastFrame; }
 
-	void setCCD(bool ccd);
-	inline bool getUseCCD() const { return useCCD && !firstFrame; }
+	void updatePosLastFrame();
 
 
 	//  for physics manager
@@ -56,7 +55,6 @@ public:
 	
 	Event<> onCollisionDelete;
 	mutable Event<const Vector3&> onRaycastIntersect;
-	mutable Event<> onCollisionIntersect;
 
 
 protected:
@@ -65,11 +63,11 @@ protected:
 	virtual bool resolvePointIntersection(const Vector3& point) const = 0;
 	virtual bool resolveRaycastIntersection(const Ray& raycast, RaycastHitInfos& outHitInfos) const = 0;
 	virtual bool resolveCollisionIntersection(const CollisionComponent& otherCol) const = 0;
+	virtual bool resolveCollisionIntersectionCCD(const CollisionComponent& ccdCol, bool isSelfCCD) const = 0;
 
 	virtual void drawDebugMesh(Material& debugMaterial) const = 0;
 
-
-	inline Vector3 getLastFramePos() const { return posLastFrame; }
+	Vector3 getLastFramePos() const { return posLastFrame; }
 
 
 	CollisionType collisionType{ CollisionType::Null };
@@ -82,8 +80,6 @@ protected:
 private:
 	mutable bool intersectedLastFrame{ false };
 
-	//  for CCD
-	bool useCCD{ false };
+	//  for ccd
 	Vector3 posLastFrame{ Vector3::zero };
-	bool firstFrame{ true };
 };

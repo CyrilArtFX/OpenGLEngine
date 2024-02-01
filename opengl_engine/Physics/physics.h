@@ -1,5 +1,6 @@
 #pragma once
 #include "collisionComponent.h"
+#include "rigidbodyComponent.h"
 #include "raycast.h"
 
 #include <vector>
@@ -9,9 +10,14 @@ class Material;
 class Physics
 {
 public:
-	static CollisionComponent& CreateCollisionComponent(CollisionComponent* colComp, bool useCCD = false);
+	static CollisionComponent& CreateCollisionComponent(CollisionComponent* colComp);
 
 	static void RemoveCollision(CollisionComponent* colComp);
+
+	static RigidbodyComponent& CreateRigidbodyComponent(RigidbodyComponent* rigidbodyComp);
+
+	static void RemoveRigidbody(RigidbodyComponent* rigidbodyComp);
+
 
 	/**
 	* Creates a Line Raycast from start to end.
@@ -24,7 +30,7 @@ public:
 	static void UpdatePhysics(float dt);
 
 	/**
-	* Remove every collisions that exists.
+	* Remove every collisions and rigidbodies that exists.
 	* When collisions will be managed as proper components, this should better be changed.
 	*/
 	static void ClearAllCollisions();
@@ -35,6 +41,7 @@ public:
 
 private:
 	static std::vector<CollisionComponent*> collisionsComponents;
+	static std::vector<RigidbodyComponent*> rigidbodiesComponents;
 	static std::vector<Raycast*> raycasts; //  actually only used for storing raycast and drawing the feedback in the debug draw
 };
 

@@ -9,7 +9,7 @@
 
 
 Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_, Renderer* renderer_) :
-	collision(&Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3::zero, Vector3{0.05f, 0.05f, 0.05f} }, &object, false), true))
+	rigidbody(&Physics::CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box{ Vector3::zero, Vector3{0.05f, 0.05f, 0.05f} }, &object, false), true)))
 {
 	direction = direction_;
 	velocity = velocity_;
@@ -24,16 +24,16 @@ Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float 
 
 	renderer->addObject(&object);
 
-	collision->onCollisionIntersect.registerObserver(this, Bind_0(&Bullet::onBulletHit));
-	collision->onCollisionDelete.registerObserver(this, Bind_0(&Bullet::onCollisionDeleted));
+	rigidbody->onCollisionIntersect.registerObserver(this, Bind_0(&Bullet::onBulletHit));
+	rigidbody->onRigidbodyDelete.registerObserver(this, Bind_0(&Bullet::onRigidbodyDeleted));
 
-	collision->updateCollisionAfterTests(); //  do this so that ccd is enabled the first frame, should be great to find a good way to do this
+	rigidbody->updatePosLastFrame(); //  do this so that ccd is enabled the first frame, should be great to find a good way to do this
 }
 
 
 void Bullet::destroy()
 {
-	if(collision) delete collision; //  this will properly remove the collision from physics manager
+	if(rigidbody) delete rigidbody; //  this will properly remove the rigidbody from physics manager
 
 	renderer->removeObject(&object);
 }
@@ -51,7 +51,7 @@ void Bullet::onBulletHit()
 	lifetime = 0.0f;
 }
 
-void Bullet::onCollisionDeleted()
+void Bullet::onRigidbodyDeleted()
 {
-	collision = nullptr;
+	rigidbody = nullptr;
 }

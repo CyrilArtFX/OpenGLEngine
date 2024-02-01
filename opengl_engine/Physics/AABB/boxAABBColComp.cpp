@@ -32,20 +32,32 @@ bool BoxAABBColComp::resolveCollisionIntersection(const CollisionComponent& othe
 	case CollisionType::BoxAABB:
 		{
 		const BoxAABBColComp& other_col_as_aabb = static_cast<const BoxAABBColComp&>(otherCol);
-		if (getUseCCD() && !otherCol.getUseCCD())
+		return CollisionsAABB::IntersectBoxAABB(*this, other_col_as_aabb);
+		} //  {} are here to encapsulate the local variable other_col_as_aabb
+		
+
+	default:
+		return false;
+	}
+}
+
+bool BoxAABBColComp::resolveCollisionIntersectionCCD(const CollisionComponent& ccdCol, bool isSelfCCD) const
+{
+	switch (ccdCol.getCollisionType())
+	{
+	case CollisionType::BoxAABB:
 		{
-			return CollisionsAABB::IntersectBoxAABBwithCCD(*this, other_col_as_aabb);
-		}
-		else if (!getUseCCD() && otherCol.getUseCCD())
+		const BoxAABBColComp& ccd_col_as_aabb = static_cast<const BoxAABBColComp&>(ccdCol);
+		if (isSelfCCD)
 		{
-			return CollisionsAABB::IntersectBoxAABBwithCCD(other_col_as_aabb, *this);
+			return CollisionsAABB::IntersectBoxAABB(*this, ccd_col_as_aabb); //  ccd/ccd intersection has not been done yet
 		}
 		else
 		{
-			return CollisionsAABB::IntersectBoxAABB(*this, other_col_as_aabb);
+			return CollisionsAABB::IntersectBoxAABBwithCCD(ccd_col_as_aabb, *this);
 		}
-		} //  {} are here to encapsulate the local variable other_col_as_aabb
-		
+		} //  {} are here to encapsulate the local variable ccd_col_as_aabb
+
 
 	default:
 		return false;

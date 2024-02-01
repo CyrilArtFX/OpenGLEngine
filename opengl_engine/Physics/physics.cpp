@@ -5,16 +5,16 @@
 
 
 std::vector<CollisionComponent*> Physics::collisionsComponents;
+std::vector<RigidbodyComponent*> Physics::rigidbodiesComponents;
 std::vector<Raycast*> Physics::raycasts;
 
 
-CollisionComponent& Physics::CreateCollisionComponent(CollisionComponent* colComp, bool useCCD)
+CollisionComponent& Physics::CreateCollisionComponent(CollisionComponent* colComp)
 {
 	std::cout << "PHYSICS_INFO: Create a collision.\n";
 	collisionsComponents.push_back(colComp);
 
 	CollisionComponent& col = *(collisionsComponents.back());
-	col.setCCD(useCCD);
 	col.registered = true;
 	return col;
 }
@@ -22,7 +22,7 @@ CollisionComponent& Physics::CreateCollisionComponent(CollisionComponent* colCom
 void Physics::RemoveCollision(CollisionComponent* colComp)
 {
 	auto iter = std::find(collisionsComponents.begin(), collisionsComponents.end(), colComp);
-	if(iter == collisionsComponents.end())
+	if (iter == collisionsComponents.end())
 	{
 		std::cout << "PHYSICS_WARNING: Couldn't find a collision to remove.\n";
 		return;
@@ -34,6 +34,34 @@ void Physics::RemoveCollision(CollisionComponent* colComp)
 	collisionsComponents.pop_back();
 
 	std::cout << "PHYSICS_INFO: Successfully removed a collision.\n";
+}
+
+RigidbodyComponent& Physics::CreateRigidbodyComponent(RigidbodyComponent* rigidbodyComp)
+{
+	std::cout << "PHYSICS_INFO: Create a rigidbody.\n";
+	rigidbodiesComponents.push_back(rigidbodyComp);
+
+	RigidbodyComponent& rigidbody = *(rigidbodiesComponents.back());
+	rigidbody.setActivated(true);
+	rigidbody.registered = true;
+	return rigidbody;
+}
+
+void Physics::RemoveRigidbody(RigidbodyComponent* rigidbodyComp)
+{
+	auto iter = std::find(rigidbodiesComponents.begin(), rigidbodiesComponents.end(), rigidbodyComp);
+	if (iter == rigidbodiesComponents.end())
+	{
+		std::cout << "PHYSICS_WARNING: Couldn't find a rigidbody to remove.\n";
+		return;
+	}
+
+	std::iter_swap(iter, rigidbodiesComponents.end() - 1);
+	RigidbodyComponent& rigidbody = *(rigidbodiesComponents.back());
+	rigidbody.registered = false;
+	rigidbodiesComponents.pop_back();
+
+	std::cout << "PHYSICS_INFO: Successfully removed a rigidbody.\n";
 }
 
 bool Physics::RaycastLine(const Vector3& start, const Vector3& end, RaycastHitInfos& outHitInfos, float drawDebugTime)
@@ -98,7 +126,7 @@ void Physics::UpdatePhysics(float dt)
 	//  reset the 'intersected last frame' parameter
 	for (auto& col : collisionsComponents)
 	{
-		col->updateCollisionBeforeTests();
+		col->resetIntersected();
 	}
 
 	//  delete raycasts that have run out of time
@@ -125,45 +153,101 @@ void Physics::UpdatePhysics(float dt)
 		{
 			col->resolveRaycast(raycast->getRay(), out);
 		}
-		if(out.hitCollision) out.hitCollision->forceIntersected();
+		if (out.hitCollision) out.hitCollision->forceIntersected();
 	}
 
-	//  test all the collisions (unoptimized, but ok for now)
-	for (int i = 0; i < collisionsComponents.size() - 1; i++)
+	//  test all the rigidbodies
+	for (int i = 0; i < rigidbodiesComponents.size(); i++)
 	{
-		for (int j = i + 1; j < collisionsComponents.size(); j++)
+		RigidbodyComponent& rigidbody = *rigidbodiesComponents[i];
+		if (!rigidbody.isActivated()) continue;
+
+		//  test rigidbody / collisions
+		for (int j = 0; j < collisionsComponents.size(); j++)
 		{
-			CollisionComponent& col_a = *collisionsComponents[i];
-			CollisionComponent& col_b = *collisionsComponents[j];
-			bool hit = col_a.resolveCollision(col_b);
+			CollisionComponent& col = *collisionsComponents[j];
+			bool hit = false;
+			if (rigidbody.getUseCCD())
+			{
+				hit = col.resolveCollisionCCD(rigidbody.getAssociatedCollision(), false);
+			}
+			else
+			{
+				hit = col.resolveCollision(rigidbody.getAssociatedCollision());
+			}
+
 			if (hit)
 			{
-				col_a.forceIntersected();
-				col_b.forceIntersected();
-				col_a.onCollisionIntersect.broadcast();
-				col_b.onCollisionIntersect.broadcast();
+				rigidbody.getAssociatedCollision().forceIntersected();
+				col.forceIntersected();
+				rigidbody.onCollisionIntersect.broadcast();
 			}
 		}
+
+		//  test rigidbody / other rigidbodies
+		if (i = rigidbodiesComponents.size() - 1) return;
+		for (int k = i + 1; k < rigidbodiesComponents.size(); k++)
+		{
+			RigidbodyComponent& other_rigidbody = *rigidbodiesComponents[k];
+			bool hit = false;
+			if (rigidbody.getUseCCD())
+			{
+				if (other_rigidbody.getUseCCD())
+				{
+					hit = other_rigidbody.getAssociatedCollision().resolveCollisionCCD(rigidbody.getAssociatedCollision(), true);
+				}
+				else
+				{
+					hit = other_rigidbody.getAssociatedCollision().resolveCollisionCCD(rigidbody.getAssociatedCollision(), false);
+				}
+			}
+			else
+			{
+				if (other_rigidbody.getUseCCD())
+				{
+					hit = rigidbody.getAssociatedCollision().resolveCollisionCCD(other_rigidbody.getAssociatedCollision(), false);
+				}
+				else
+				{
+					hit = rigidbody.getAssociatedCollision().resolveCollision(other_rigidbody.getAssociatedCollision());
+				}
+			} //  not beautiful but it works
+
+			if (hit)
+			{
+				rigidbody.getAssociatedCollision().forceIntersected();
+				other_rigidbody.getAssociatedCollision().forceIntersected();
+				rigidbody.onCollisionIntersect.broadcast();
+				other_rigidbody.onCollisionIntersect.broadcast();
+			}
+		}
+		
 	}
 
 	//  update the 'pos last frame'
-	for (auto& col : collisionsComponents)
+	for (auto& rigidbody : rigidbodiesComponents)
 	{
-		col->updateCollisionAfterTests();
+		rigidbody->updatePosLastFrame();
 	}
 }
 
 void Physics::ClearAllCollisions()
 {
-	std::cout << "PHYSICS_INFO: Clearing all collisions and raycasts.\n";
+	std::cout << "PHYSICS_INFO: Clearing all collisions, rigidbodies and raycasts.\n";
 
 	for (auto col : collisionsComponents)
 	{
 		col->registered = false;
 		delete col;
 	}
-
 	collisionsComponents.clear();
+
+	for (auto rigidbody : rigidbodiesComponents)
+	{
+		rigidbody->registered = false;
+		delete rigidbody;
+	}
+	rigidbodiesComponents.clear();
 
 	for (auto raycast : raycasts)
 	{
@@ -177,6 +261,11 @@ void Physics::DrawCollisionsDebug(Material& debugMaterial)
 	for (auto& col : collisionsComponents)
 	{
 		col->drawDebug(debugMaterial);
+	}
+
+	for (auto& rigidbody : rigidbodiesComponents)
+	{
+		rigidbody->getAssociatedCollision().drawDebug(debugMaterial);
 	}
 
 	for (auto& raycast : raycasts)

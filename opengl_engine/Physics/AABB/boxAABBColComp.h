@@ -22,6 +22,7 @@ protected:
 	bool resolvePointIntersection(const Vector3& point) const override;
 	bool resolveRaycastIntersection(const Ray& raycast, RaycastHitInfos& outHitInfos) const override;
 	bool resolveCollisionIntersection(const CollisionComponent& otherCol) const override;
+	bool resolveCollisionIntersectionCCD(const CollisionComponent& ccdCol, bool isSelfCCD) const override;
 
 	void drawDebugMesh(Material& debugMaterial) const override;
 
