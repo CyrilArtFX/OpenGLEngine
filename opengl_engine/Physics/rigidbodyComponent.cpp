@@ -1,8 +1,8 @@
 #include "rigidbodyComponent.h"
 #include "physics.h"
 
-RigidbodyComponent::RigidbodyComponent(CollisionComponent* collisionToAssociate, bool useCCD) :
-	ccd(useCCD)
+RigidbodyComponent::RigidbodyComponent(CollisionComponent* collisionToAssociate, bool useCCD, bool activatePhysics) :
+	ccd(useCCD), physicsActivated(activatePhysics)
 {
 	associateCollision(collisionToAssociate);
 }
@@ -37,9 +37,14 @@ void RigidbodyComponent::updatePosLastFrame()
 	if (firstFrameCCD) firstFrameCCD = false;
 }
 
-void RigidbodyComponent::setActivated(bool value)
+void RigidbodyComponent::setPhysicsActivated(bool value)
 {
-	activated = value;
+	physicsActivated = value;
+}
+
+void RigidbodyComponent::setWeigth(float value)
+{
+	weight = value;
 }
 
 void RigidbodyComponent::setUseCCD(bool value)

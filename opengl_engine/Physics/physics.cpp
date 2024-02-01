@@ -42,7 +42,6 @@ RigidbodyComponent& Physics::CreateRigidbodyComponent(RigidbodyComponent* rigidb
 	rigidbodiesComponents.push_back(rigidbodyComp);
 
 	RigidbodyComponent& rigidbody = *(rigidbodiesComponents.back());
-	rigidbody.setActivated(true);
 	rigidbody.registered = true;
 	return rigidbody;
 }
@@ -160,7 +159,7 @@ void Physics::UpdatePhysics(float dt)
 	for (int i = 0; i < rigidbodiesComponents.size(); i++)
 	{
 		RigidbodyComponent& rigidbody = *rigidbodiesComponents[i];
-		if (!rigidbody.isActivated()) continue;
+		if (!rigidbody.isAssociatedCollisionValid()) continue;
 
 		//  test rigidbody / collisions
 		for (int j = 0; j < collisionsComponents.size(); j++)
@@ -189,6 +188,7 @@ void Physics::UpdatePhysics(float dt)
 		for (int k = i + 1; k < rigidbodiesComponents.size(); k++)
 		{
 			RigidbodyComponent& other_rigidbody = *rigidbodiesComponents[k];
+			if (!other_rigidbody.isAssociatedCollisionValid()) continue;
 			bool hit = false;
 			if (rigidbody.getUseCCD())
 			{

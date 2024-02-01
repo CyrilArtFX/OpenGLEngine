@@ -13,7 +13,9 @@ public:
 
 	static bool IntersectBoxAABB(const BoxAABBColComp& boxAABB, const BoxAABBColComp& otherBoxAABB);
 
-	static bool IntersectBoxAABBwithCCD(const BoxAABBColComp& boxAABBwithCCD, const BoxAABBColComp& otherBoxAABB);
+	static bool CollideStaticCDD(const BoxAABBColComp& cddBoxAABB, const BoxAABBColComp& staticBoxAABB);
+
+	//static bool CollideCDDs(const BoxAABBColComp& cddBoxAABBa, const BoxAABBColComp& cddBoxAABBb);
 
 
 private:

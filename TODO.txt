@@ -9,7 +9,7 @@
 	-> faire un event qui s'apelle quand la box subit une collision - fait (cimer arthur)
 	-> faire la detection de collision entre box aabb - fait
 	-> intégrer la ccd - fait
-	-> faire le "repoussage" entre box aabb (position pas rotation)
+	-> faire le "repoussage" entre box aabb (position pas rotation) - en cours
 	-> mettre la gravité et bien tester ça
 	-> faire la detection ccd / ccd : https://blog.hamaluik.ca/posts/swept-aabb-collision-using-minkowski-difference/
 	-> finir le setup du système physique (objects channels, etc.)

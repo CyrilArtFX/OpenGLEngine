@@ -3,10 +3,15 @@
 #include <Events/event.h>
 
 
+/** Rigidbody Component
+* Will tests other colliders and react with physics if it is activated.
+* For now, CCD only works with position, not rotation or scale
+* Also, intersection between two rigidbodies with CCD is not implemented
+*/
 class RigidbodyComponent
 {
 public:
-	RigidbodyComponent(CollisionComponent* collisionToAssociate, bool useCCD);
+	RigidbodyComponent(CollisionComponent* collisionToAssociate, bool useCCD, bool activatePhysics);
 	~RigidbodyComponent();
 
 	void associateCollision(CollisionComponent* collisionToAssociate);
@@ -14,8 +19,13 @@ public:
 
 	void updatePosLastFrame();
 
-	void setActivated(bool value);
-	bool isActivated() const { return activated && associatedCollision; }
+	void setPhysicsActivated(bool value);
+	bool isPhysicsActivated() const { return physicsActivated && weight > 0.0f && associatedCollision; }
+
+	void setWeigth(float value);
+	float getWeight() const { return weight; }
+
+	bool isAssociatedCollisionValid() const { return associatedCollision; }
 
 	void setUseCCD(bool value);
 	bool getUseCCD() const { return ccd && !firstFrameCCD; }
@@ -30,7 +40,8 @@ public:
 private:
 	CollisionComponent* associatedCollision{ nullptr };
 
-	bool activated{ false };
+	bool physicsActivated{ false };
+	float weight{ 1.0f };
 
 	bool ccd{ false };
 	bool firstFrameCCD{ true };

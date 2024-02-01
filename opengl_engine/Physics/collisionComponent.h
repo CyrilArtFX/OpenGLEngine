@@ -9,6 +9,12 @@
 class Material;
 
 
+struct CollisionResponse
+{
+
+};
+
+
 enum class CollisionType : uint8_t
 {
 	Null = 0,
@@ -18,8 +24,6 @@ enum class CollisionType : uint8_t
 
 /** Collision Component
 * Base class for every collision component
-* For now, CCD only works with position, not rotation or scale
-* Also, intersection between two collisions with CCD is not implemented
 */
 class CollisionComponent
 {
