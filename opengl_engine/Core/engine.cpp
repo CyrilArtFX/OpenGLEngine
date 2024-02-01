@@ -114,7 +114,7 @@ void Engine::run()
 		engineUpdate(window.getGLFWwindow());
 
 
-		if (!gamePaused)
+		if (!gamePaused || (gamePaused && oneFrame))
 		{
 			Physics::UpdatePhysics(deltaTime);
 
@@ -123,6 +123,8 @@ void Engine::run()
 				game->updateGame(deltaTime);
 				game->updateScene(deltaTime);
 			}
+
+			oneFrame = false;
 		}
 
 
@@ -179,6 +181,12 @@ void Engine::engineUpdate(GLFWwindow* glWindow)
 		else unpauseGame();
 	}
 
+	//  make the engine run only one frame when o is pressed
+	if (Input::IsKeyPressed(GLFW_KEY_O))
+	{
+		advanceOneFrame();
+	}
+
 	//  active/desactive the freecam mode when m is pressed
 	if (Input::IsKeyPressed(GLFW_KEY_SEMICOLON))
 	{
@@ -233,6 +241,16 @@ void Engine::unpauseGame()
 	gamePaused = false;
 	if (freecamMode) disableFreecam();
 	std::cout << "Game unpaused.\n";
+}
+
+void Engine::advanceOneFrame()
+{
+	if (!gamePaused) pauseGame();
+	else
+	{
+		std::cout << "Advance one frame.\n";
+		oneFrame = true;
+	}
 }
 
 void Engine::enableFreecam()

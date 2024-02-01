@@ -53,10 +53,12 @@ private:
 
 	//  pause and freecam
 	bool gamePaused{ false };
+	bool oneFrame{ false };
 	bool freecamMode{ false };
 	bool debugViewMode{ false };
 	void pauseGame();
 	void unpauseGame();
+	void advanceOneFrame();
 	void enableFreecam();
 	void disableFreecam();
 	void enableDebugView();
