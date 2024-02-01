@@ -2,6 +2,9 @@
 #include <Physics/collisionComponent.h>
 #include <Maths/Geometry/box.h>
 
+class RigidbodyComponent;
+struct CollisionResponse;
+
 
 /** Box AABB Collision Component
 * Class for collision components of type Box AABB

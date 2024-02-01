@@ -7,6 +7,7 @@
 
 class Material;
 
+
 class Physics
 {
 public:
@@ -38,6 +39,10 @@ public:
 
 
 	static void DrawCollisionsDebug(Material& debugMaterial);
+
+
+
+	static const Vector3 Gravity;
 
 private:
 	static std::vector<CollisionComponent*> collisionsComponents;

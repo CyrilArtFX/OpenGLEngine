@@ -76,15 +76,19 @@ bool CollisionsAABB::CollideBodyBox(const RigidbodyComponent& bodyAABB, Collisio
 	{
 		interpolate = IntersectBoxAABB(body_box_aabb, boxAABB);
 
+
+		//  TODO : use velocity to calculate this, it will not work otherwise
 		if (interpolate && bodyAABB.isPhysicsActivated())
 		{
 			//  set outBodyResponse
 			const Box& body_box = body_box_aabb.getTransformedBox();
 			const Box& static_box = boxAABB.getTransformedBox();
 			Vector3 body_to_box = static_box.getCenterPoint() - body_box.getCenterPoint();
-			body_to_box.clampToOne();
-			body_to_box *= (body_box.getHalfExtents() + static_box.getHalfExtents());
-			outBodyResponse.repulsion += -body_to_box;
+			Vector3 aim_body_to_box = body_to_box;
+			aim_body_to_box.clampToOne();
+			aim_body_to_box *= (body_box.getHalfExtents() + static_box.getHalfExtents());
+			outBodyResponse.repulsion += -aim_body_to_box + body_to_box;
+			float test = 2.0f;
 		}
 	}
 
@@ -156,9 +160,7 @@ bool CollisionsAABB::CCDBoxIntersection(const Box& boxCCD, const Vector3& ccdLas
 	Ray ray;
 	ray.setupWithStartEnd(ccdLastFramePos, box_ccd_pos);
 
-	float hit_distance = 0.0f;
-
-	bool intersect = BoxRayIntersection(box, ray, hit_distance);
+	bool intersect = BoxRayIntersection(box_static, ray, distance);
 
 	return intersect;
 }

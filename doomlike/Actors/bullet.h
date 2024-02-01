@@ -24,8 +24,6 @@ public:
 	void onRigidbodyDeleted();
 
 private:
-	Vector3 direction{ Vector3::unitX };
-	float velocity{ 0.0f };
 	float lifetime{ 0.0f };
 	Renderer* renderer{ nullptr };
 

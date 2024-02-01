@@ -8,6 +8,8 @@ std::vector<CollisionComponent*> Physics::collisionsComponents;
 std::vector<RigidbodyComponent*> Physics::rigidbodiesComponents;
 std::vector<Raycast*> Physics::raycasts;
 
+const Vector3 Physics::Gravity = Vector3{ 0.0f, -4.0f, 0.0f };
+
 
 CollisionComponent& Physics::CreateCollisionComponent(CollisionComponent* colComp)
 {
@@ -127,6 +129,11 @@ void Physics::UpdatePhysics(float dt)
 	{
 		col->resetIntersected();
 	}
+	for (auto& rigidbody : rigidbodiesComponents) //  also update the rigidbodies position with their velocity
+	{
+		rigidbody->resetIntersected();
+		rigidbody->updatePhysicsPreCollision(dt);
+	}
 
 	//  delete raycasts that have run out of time
 	for (int i = 0; i < raycasts.size(); i++)
@@ -177,7 +184,6 @@ void Physics::UpdatePhysics(float dt)
 		}
 
 		//  test rigidbody / other rigidbodies
-		if (i = rigidbodiesComponents.size() - 1) return;
 		for (int k = i + 1; k < rigidbodiesComponents.size(); k++)
 		{
 			RigidbodyComponent& other_rigidbody = *rigidbodiesComponents[k];
@@ -194,7 +200,7 @@ void Physics::UpdatePhysics(float dt)
 			}
 		}
 		
-		rigidbody.applyRepulsions();
+		rigidbody.updatePhysicsPostCollision(dt);
 	}
 
 	//  update the 'pos last frame'

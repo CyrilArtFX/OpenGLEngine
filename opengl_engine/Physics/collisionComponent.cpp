@@ -1,5 +1,6 @@
 #include "collisionComponent.h"
 #include "physics.h"
+#include "rigidbodyComponent.h"
 #include <Rendering/material.h>
 #include <Utils/color.h>
 

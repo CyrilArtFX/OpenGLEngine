@@ -8,6 +8,7 @@
 
 class Material;
 class RigidbodyComponent;
+struct CollisionResponse;
 
 
 enum class CollisionType : uint8_t

@@ -9,10 +9,8 @@
 
 
 Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_, Renderer* renderer_) :
-	rigidbody(&Physics::CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box{ Vector3::zero, Vector3{0.05f, 0.05f, 0.05f} }, &object, false), true, false)))
+	rigidbody(&Physics::CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box{ Vector3::zero, Vector3{0.05f, 0.05f, 0.05f} }, &object, false), true, true)))
 {
-	direction = direction_;
-	velocity = velocity_;
 	lifetime = lifetime_;
 	renderer = renderer_;
 
@@ -26,6 +24,9 @@ Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float 
 
 	rigidbody->onCollisionIntersect.registerObserver(this, Bind_0(&Bullet::onBulletHit));
 	rigidbody->onRigidbodyDelete.registerObserver(this, Bind_0(&Bullet::onRigidbodyDeleted));
+
+	rigidbody->setVelocity(direction_ * velocity_);
+	rigidbody->setUseGravity(false);
 
 	rigidbody->updatePosLastFrame(); //  do this so that ccd is enabled the first frame, should be great to find a good way to do this
 }
@@ -42,13 +43,12 @@ void Bullet::destroy()
 void Bullet::update(float dt)
 {
 	lifetime -= dt;
-
-	object.setPosition(object.getPosition() + direction * velocity * dt);
 }
 
 void Bullet::onBulletHit()
 {
-	lifetime = 0.0f;
+	rigidbody->setVelocity(Vector3::zero);
+	rigidbody->setUseGravity(true);
 }
 
 void Bullet::onRigidbodyDeleted()
