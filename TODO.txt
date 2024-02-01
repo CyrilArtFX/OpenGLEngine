@@ -19,6 +19,7 @@ KNOWN ISSUE : le physics manager devrait avoir une liste de collision qui vienne
 Sinon, en supprimant les collisions au changement de scène il supprime aussi les collisions qui devraient rester persistantes (ex: les bullets)
 KNOWN ISSUE 2 : le système de response ne marche pas bien quand le rigidbody collide avec plus d'un objet à la fois (genre dans un coin).
 Une solution possible serait d'enregistrer les objets avec lesquels il collide et de calculer la repulsion après pour avoir un meilleur contrôle.
++ il faut utiliser la vélocité pour calculer ça ça évitera bien des conneries.
 
 
 ~ Faire le doomlike (omg ?)
