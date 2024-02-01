@@ -55,6 +55,21 @@ void Vector3::normalize()
 	z /= len;
 }
 
+void Vector3::clampToOne()
+{
+	float highest_abs = Maths::max(Maths::abs(x), Maths::max(Maths::abs(y), Maths::abs(z)));
+	if (highest_abs == 0.0f)
+	{
+		x = y = z = 1.0f;
+		return;
+	}
+
+	float scale = 1.0f / highest_abs;
+	x *= scale;
+	y *= scale;
+	z *= scale;
+}
+
 Vector3& Vector3::operator+=(const Vector2& right)
 {
 	x += right.x;

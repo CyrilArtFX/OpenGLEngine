@@ -24,6 +24,9 @@ public:
 	float length() const;
 	void normalize();
 
+	// Clamp values of the vector so that the highest (absolute) is 1.0 (or -1.0) and the others are scaled
+	void clampToOne();
+
 	const float* getAsFloatPtr() const
 	{
 		return reinterpret_cast<const float*>(&x);
@@ -77,6 +80,15 @@ public:
 		x *= scalar;
 		y *= scalar;
 		z *= scalar;
+		return *this;
+	}
+
+	// Component-wise *=
+	Vector3& operator*=(const Vector3& right)
+	{
+		x *= right.x;
+		y *= right.y;
+		z *= right.z;
 		return *this;
 	}
 

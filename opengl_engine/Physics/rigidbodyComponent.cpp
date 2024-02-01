@@ -29,6 +29,13 @@ void RigidbodyComponent::associateCollision(CollisionComponent* collisionToAssoc
 }
 
 
+void RigidbodyComponent::applyRepulsions()
+{
+	if (!associatedCollision) return;
+	associatedCollision->addPosition(currentResponse.repulsion);
+	currentResponse.repulsion = Vector3::zero;
+}
+
 void RigidbodyComponent::updatePosLastFrame()
 {
 	if (!associatedCollision) return;

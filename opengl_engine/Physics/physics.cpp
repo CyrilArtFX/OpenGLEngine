@@ -165,15 +165,8 @@ void Physics::UpdatePhysics(float dt)
 		for (int j = 0; j < collisionsComponents.size(); j++)
 		{
 			CollisionComponent& col = *collisionsComponents[j];
-			bool hit = false;
-			if (rigidbody.getUseCCD())
-			{
-				hit = col.resolveCollisionCCD(rigidbody.getAssociatedCollision(), false);
-			}
-			else
-			{
-				hit = col.resolveCollision(rigidbody.getAssociatedCollision());
-			}
+
+			bool hit = col.resolveRigidbody(rigidbody, rigidbody.currentResponse);
 
 			if (hit)
 			{
@@ -189,29 +182,8 @@ void Physics::UpdatePhysics(float dt)
 		{
 			RigidbodyComponent& other_rigidbody = *rigidbodiesComponents[k];
 			if (!other_rigidbody.isAssociatedCollisionValid()) continue;
-			bool hit = false;
-			if (rigidbody.getUseCCD())
-			{
-				if (other_rigidbody.getUseCCD())
-				{
-					hit = other_rigidbody.getAssociatedCollision().resolveCollisionCCD(rigidbody.getAssociatedCollision(), true);
-				}
-				else
-				{
-					hit = other_rigidbody.getAssociatedCollision().resolveCollisionCCD(rigidbody.getAssociatedCollision(), false);
-				}
-			}
-			else
-			{
-				if (other_rigidbody.getUseCCD())
-				{
-					hit = rigidbody.getAssociatedCollision().resolveCollisionCCD(other_rigidbody.getAssociatedCollision(), false);
-				}
-				else
-				{
-					hit = rigidbody.getAssociatedCollision().resolveCollision(other_rigidbody.getAssociatedCollision());
-				}
-			} //  not beautiful but it works
+			
+			bool hit = rigidbody.getAssociatedCollision().resolveRigidbodySelf(other_rigidbody, other_rigidbody.currentResponse, rigidbody, rigidbody.currentResponse);
 
 			if (hit)
 			{
@@ -222,6 +194,7 @@ void Physics::UpdatePhysics(float dt)
 			}
 		}
 		
+		rigidbody.applyRepulsions();
 	}
 
 	//  update the 'pos last frame'

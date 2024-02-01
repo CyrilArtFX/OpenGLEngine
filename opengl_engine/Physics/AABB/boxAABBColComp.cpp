@@ -9,11 +9,12 @@ BoxAABBColComp::BoxAABBColComp() :
 {
 }
 
-BoxAABBColComp::BoxAABBColComp(const Box& boxValues, const Transform* transformToAssociate, bool scaleBoxSizeWithTransform) :
+BoxAABBColComp::BoxAABBColComp(const Box& boxValues, Transform* transformToAssociate, bool scaleBoxSizeWithTransform) :
 	box(boxValues), useTransformScaleForBoxSize(scaleBoxSizeWithTransform),
 	CollisionComponent(CollisionType::BoxAABB, transformToAssociate, &AssetManager::GetSingleMesh("debug_cube"))
 {
 }
+
 
 bool BoxAABBColComp::resolvePointIntersection(const Vector3& point) const
 {
@@ -41,28 +42,31 @@ bool BoxAABBColComp::resolveCollisionIntersection(const CollisionComponent& othe
 	}
 }
 
-bool BoxAABBColComp::resolveCollisionIntersectionCCD(const CollisionComponent& ccdCol, bool isSelfCCD) const
+bool BoxAABBColComp::resolveRigidbodyIntersection(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse) const
 {
-	switch (ccdCol.getCollisionType())
+	switch (rigidbody.getAssociatedCollision().getCollisionType())
 	{
 	case CollisionType::BoxAABB:
-		{
-		const BoxAABBColComp& ccd_col_as_aabb = static_cast<const BoxAABBColComp&>(ccdCol);
-		if (isSelfCCD)
-		{
-			return CollisionsAABB::IntersectBoxAABB(*this, ccd_col_as_aabb); //  ccd/ccd intersection has not been done yet
-		}
-		else
-		{
-			return CollisionsAABB::IntersectBoxAABBwithCCD(ccd_col_as_aabb, *this);
-		}
-		} //  {} are here to encapsulate the local variable ccd_col_as_aabb
+		return CollisionsAABB::CollideBodyBox(rigidbody, outResponse, *this);
+	
+	default:
+		return false;
+	}
+}
 
+bool BoxAABBColComp::resolveRigidbodySelfIntersection(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse, const RigidbodyComponent& selfRigidbody, CollisionResponse& outSelfResponse) const
+{
+	switch (rigidbody.getAssociatedCollision().getCollisionType())
+	{
+	case CollisionType::BoxAABB:
+		return CollisionsAABB::CollideBodies(rigidbody, outResponse, selfRigidbody, outSelfResponse);
 
 	default:
 		return false;
 	}
 }
+
+
 
 void BoxAABBColComp::drawDebugMesh(Material& debugMaterial) const
 {

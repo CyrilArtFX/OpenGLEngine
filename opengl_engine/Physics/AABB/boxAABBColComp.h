@@ -11,7 +11,7 @@ class BoxAABBColComp : public CollisionComponent
 {
 public:
 	BoxAABBColComp();
-	BoxAABBColComp(const Box& boxValues, const Transform* transformToAssociate, bool scaleBoxSizeWithTransform = true);
+	BoxAABBColComp(const Box& boxValues, Transform* transformToAssociate, bool scaleBoxSizeWithTransform = true);
 
 	const Matrix4 getModelMatrix() const override;
 
@@ -22,7 +22,8 @@ protected:
 	bool resolvePointIntersection(const Vector3& point) const override;
 	bool resolveRaycastIntersection(const Ray& raycast, RaycastHitInfos& outHitInfos) const override;
 	bool resolveCollisionIntersection(const CollisionComponent& otherCol) const override;
-	bool resolveCollisionIntersectionCCD(const CollisionComponent& ccdCol, bool isSelfCCD) const override;
+	bool resolveRigidbodyIntersection(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse) const override;
+	bool resolveRigidbodySelfIntersection(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse, const RigidbodyComponent& selfRigidbody, CollisionResponse& outSelfResponse) const override;
 
 	void drawDebugMesh(Material& debugMaterial) const override;
 

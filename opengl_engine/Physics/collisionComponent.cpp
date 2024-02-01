@@ -13,7 +13,7 @@ CollisionComponent::~CollisionComponent()
 	onCollisionDelete.broadcast();
 }
 
-void CollisionComponent::setAssociatedTransform(const Transform* newTransform)
+void CollisionComponent::setAssociatedTransform(Transform* newTransform)
 {
 	associatedTransform = newTransform;
 }
@@ -41,9 +41,17 @@ bool CollisionComponent::resolveCollision(const CollisionComponent& otherCol) co
 	return intersect;
 }
 
-bool CollisionComponent::resolveCollisionCCD(const CollisionComponent& ccdCol, bool isSelfCCD) const
+bool CollisionComponent::resolveRigidbody(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse) const
 {
-	bool intersect = resolveCollisionIntersectionCCD(ccdCol, isSelfCCD);
+	bool intersect = resolveRigidbodyIntersection(rigidbody, outResponse);
+	//  it's up to the physics manager to set the intersected last frame (for both collisions)
+	//  the physics manager also broadcast the onCollisionIntersect event (for both collisions)
+	return intersect;
+}
+
+bool CollisionComponent::resolveRigidbodySelf(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse, const RigidbodyComponent& selfRigidbody, CollisionResponse& outSelfResponse) const
+{
+	bool intersect = resolveRigidbodySelfIntersection(rigidbody, outResponse, selfRigidbody, outSelfResponse);
 	//  it's up to the physics manager to set the intersected last frame (for both collisions)
 	//  the physics manager also broadcast the onCollisionIntersect event (for both collisions)
 	return intersect;
@@ -78,7 +86,13 @@ void CollisionComponent::updatePosLastFrame()
 	posLastFrame = associatedTransform->getPosition();
 }
 
-CollisionComponent::CollisionComponent(CollisionType collisionType_, const Transform* associatedTransform_, Mesh* debugMesh_) :
+void CollisionComponent::addPosition(const Vector3& posToAdd)
+{
+	if (!associatedTransform) return;
+	associatedTransform->setPosition(associatedTransform->getPosition() + posToAdd);
+}
+
+CollisionComponent::CollisionComponent(CollisionType collisionType_, Transform* associatedTransform_, Mesh* debugMesh_) :
 	collisionType(collisionType_), associatedTransform(associatedTransform_), debugMesh(debugMesh_)
 {
 }

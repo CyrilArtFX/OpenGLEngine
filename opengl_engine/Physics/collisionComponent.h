@@ -7,12 +7,7 @@
 #include <Rendering/Model/mesh.h>
 
 class Material;
-
-
-struct CollisionResponse
-{
-
-};
+class RigidbodyComponent;
 
 
 enum class CollisionType : uint8_t
@@ -32,12 +27,13 @@ public:
 
 	inline CollisionType getCollisionType() const { return collisionType; }
 
-	void setAssociatedTransform(const Transform* newTransform);
+	void setAssociatedTransform(Transform* newTransform);
 
 	bool resolvePoint(const Vector3& point) const;
 	bool resolveRaycast(const Ray& raycast, RaycastHitInfos& outHitInfos) const;
 	bool resolveCollision(const CollisionComponent& otherCol) const;
-	bool resolveCollisionCCD(const CollisionComponent& ccdCol, bool isSelfCCD) const;
+	bool resolveRigidbody(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse) const;
+	bool resolveRigidbodySelf(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse, const RigidbodyComponent& selfRigidbody, CollisionResponse& outSelfResponse) const;
 
 	void drawDebug(Material& debugMaterial) const;
 
@@ -51,6 +47,8 @@ public:
 
 	void updatePosLastFrame();
 
+	void addPosition(const Vector3& posToAdd);
+
 
 	//  for physics manager
 	bool registered{ false };
@@ -62,12 +60,13 @@ public:
 
 
 protected:
-	CollisionComponent(CollisionType collisionType_, const Transform* associatedTransform_, Mesh* debugMesh_);
+	CollisionComponent(CollisionType collisionType_, Transform* associatedTransform_, Mesh* debugMesh_);
 
 	virtual bool resolvePointIntersection(const Vector3& point) const = 0;
 	virtual bool resolveRaycastIntersection(const Ray& raycast, RaycastHitInfos& outHitInfos) const = 0;
 	virtual bool resolveCollisionIntersection(const CollisionComponent& otherCol) const = 0;
-	virtual bool resolveCollisionIntersectionCCD(const CollisionComponent& ccdCol, bool isSelfCCD) const = 0;
+	virtual bool resolveRigidbodyIntersection(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse) const = 0;
+	virtual bool resolveRigidbodySelfIntersection(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse, const RigidbodyComponent& selfRigidbody, CollisionResponse& outSelfResponse) const = 0;
 
 	virtual void drawDebugMesh(Material& debugMaterial) const = 0;
 
@@ -75,7 +74,7 @@ protected:
 
 
 	CollisionType collisionType{ CollisionType::Null };
-	const Transform* associatedTransform{ nullptr };
+	Transform* associatedTransform{ nullptr };
 
 
 	//  for debug drawing
