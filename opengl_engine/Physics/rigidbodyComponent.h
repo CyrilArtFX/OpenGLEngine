@@ -22,29 +22,30 @@ public:
 	~RigidbodyComponent();
 
 	void associateCollision(CollisionComponent* collisionToAssociate);
-	const CollisionComponent& getAssociatedCollision() const { return *associatedCollision; }
+	inline const CollisionComponent& getAssociatedCollision() const { return *associatedCollision; }
 
 	void updatePhysicsPreCollision(float dt);
 	void updatePhysicsPostCollision(float dt);
 
-	void updatePosLastFrame();
-
 	void setPhysicsActivated(bool value);
-	bool isPhysicsActivated() const { return physicsActivated && weight > 0.0f && associatedCollision; }
+	inline bool isPhysicsActivated() const { return physicsActivated && weight > 0.0f && associatedCollision; }
 
 	void setWeigth(float value);
-	float getWeight() const { return weight; }
+	inline float getWeight() const { return weight; }
 
 	void setUseGravity(float value);
-	bool getUseGravity() const { return useGravity; }
+	inline bool getUseGravity() const { return useGravity; }
+
+	inline Vector3 getAnticipatedMovement() const { return movement; }
+	void setRealMovement(Vector3 realMovement);
 
 	void setVelocity(const Vector3& value);
 	Vector3 getVelocity() const;
 
-	bool isAssociatedCollisionValid() const { return associatedCollision; }
+	inline bool isAssociatedCollisionValid() const { return associatedCollision; }
 
 	void setUseCCD(bool value);
-	bool getUseCCD() const { return ccd && !firstFrameCCD; }
+	inline bool getUseCCD() const { return ccd; }
 
 	void resetIntersected();
 
@@ -55,8 +56,6 @@ public:
 	Event<> onRigidbodyDelete;
 	Event<> onCollisionIntersect;
 
-	CollisionResponse currentResponse;
-
 private:
 	CollisionComponent* associatedCollision{ nullptr };
 
@@ -64,9 +63,9 @@ private:
 	float weight{ 1.0f };
 
 	bool ccd{ false };
-	bool firstFrameCCD{ true };
 
 	Vector3 velocity{ Vector3::zero };
+	Vector3 movement{ Vector3::zero };
 	bool useGravity{ false };
 };
 

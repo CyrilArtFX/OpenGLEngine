@@ -12,6 +12,7 @@
 	-> faire le "repoussage" entre box aabb (position pas rotation) - en cours (ça serait bien de fix la known issue 2)
 	-> mettre la gravité et bien tester ça - en cours (faut faire en sorte que ça marche avec les mouvements du joueur)
 	-> changer le système de ccd pour utiliser la velocité du rigidbody
+	-> update la vélocité des rigidbody en fonction des collisions (utiliser les dot ou cross product ? xD)
 	-> faire la detection ccd / ccd : https://blog.hamaluik.ca/posts/swept-aabb-collision-using-minkowski-difference/
 	-> finir le setup du système physique (objects channels, etc.)
 

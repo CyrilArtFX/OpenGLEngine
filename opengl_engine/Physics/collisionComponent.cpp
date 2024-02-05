@@ -81,12 +81,6 @@ void CollisionComponent::forceIntersected() const
 	intersectedLastFrame = true;
 }
 
-void CollisionComponent::updatePosLastFrame()
-{
-	if (!associatedTransform) return;
-	posLastFrame = associatedTransform->getPosition();
-}
-
 void CollisionComponent::addPosition(const Vector3& posToAdd)
 {
 	if (!associatedTransform) return;

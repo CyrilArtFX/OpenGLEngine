@@ -46,8 +46,6 @@ public:
 	void forceIntersected() const;
 	inline bool getIntersected() const { return intersectedLastFrame; }
 
-	void updatePosLastFrame();
-
 	void addPosition(const Vector3& posToAdd);
 
 
@@ -71,8 +69,6 @@ protected:
 
 	virtual void drawDebugMesh(Material& debugMaterial) const = 0;
 
-	Vector3 getLastFramePos() const { return posLastFrame; }
-
 
 	CollisionType collisionType{ CollisionType::Null };
 	Transform* associatedTransform{ nullptr };
@@ -83,7 +79,4 @@ protected:
 
 private:
 	mutable bool intersectedLastFrame{ false };
-
-	//  for ccd
-	Vector3 posLastFrame{ Vector3::zero };
 };

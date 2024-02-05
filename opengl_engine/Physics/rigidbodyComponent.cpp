@@ -32,23 +32,19 @@ void RigidbodyComponent::associateCollision(CollisionComponent* collisionToAssoc
 void RigidbodyComponent::updatePhysicsPreCollision(float dt)
 {
 	if (!isPhysicsActivated()) return;
-	associatedCollision->addPosition(velocity * dt);
-	if (useGravity) associatedCollision->addPosition(Physics::Gravity * dt);
+
+	//  compute anticipated movement
+	movement = velocity * dt;
+	if (useGravity) movement += Physics::Gravity * dt;
 }
 
 void RigidbodyComponent::updatePhysicsPostCollision(float dt)
 {
 	if (!isPhysicsActivated()) return;
-	associatedCollision->addPosition(currentResponse.repulsion);
-	currentResponse.repulsion = Vector3::zero;
-}
 
-void RigidbodyComponent::updatePosLastFrame()
-{
-	if (!associatedCollision) return;
-	associatedCollision->updatePosLastFrame();
-
-	if (firstFrameCCD) firstFrameCCD = false;
+	//  apply real movement (anticipated movement modified by the collisions during physics step)
+	associatedCollision->addPosition(movement);
+	movement = Vector3::zero;
 }
 
 void RigidbodyComponent::setPhysicsActivated(bool value)
@@ -64,6 +60,11 @@ void RigidbodyComponent::setWeigth(float value)
 void RigidbodyComponent::setUseGravity(float value)
 {
 	useGravity = value;
+}
+
+void RigidbodyComponent::setRealMovement(Vector3 realMovement)
+{
+	movement = realMovement;
 }
 
 void RigidbodyComponent::setVelocity(const Vector3& value)

@@ -100,8 +100,3 @@ Box BoxAABBColComp::getTransformedBox(bool forDrawDebug) const
 
 	return transformed_box;
 }
-
-Vector3 BoxAABBColComp::getLastFrameTransformedPos() const
-{
-	 return (box.getCenterPoint() * associatedTransform->getScale()) + getLastFramePos();
-}

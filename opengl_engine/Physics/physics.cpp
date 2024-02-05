@@ -129,10 +129,10 @@ void Physics::UpdatePhysics(float dt)
 	{
 		col->resetIntersected();
 	}
-	for (auto& rigidbody : rigidbodiesComponents) //  also update the rigidbodies position with their velocity
+	for (auto& rigidbody : rigidbodiesComponents)
 	{
 		rigidbody->resetIntersected();
-		rigidbody->updatePhysicsPreCollision(dt);
+		rigidbody->updatePhysicsPreCollision(dt); //  also compute the anticipated movements for physics activated rigidbodies
 	}
 
 	//  delete raycasts that have run out of time
@@ -173,13 +173,17 @@ void Physics::UpdatePhysics(float dt)
 		{
 			CollisionComponent& col = *collisionsComponents[j];
 
-			bool hit = col.resolveRigidbody(rigidbody, rigidbody.currentResponse);
+			CollisionResponse response;
+
+			bool hit = col.resolveRigidbody(rigidbody, response);
 
 			if (hit)
 			{
 				rigidbody.getAssociatedCollision().forceIntersected();
 				col.forceIntersected();
 				rigidbody.onCollisionIntersect.broadcast();
+
+				rigidbody.setRealMovement(rigidbody.getAnticipatedMovement() + response.repulsion);
 			}
 		}
 
@@ -188,8 +192,11 @@ void Physics::UpdatePhysics(float dt)
 		{
 			RigidbodyComponent& other_rigidbody = *rigidbodiesComponents[k];
 			if (!other_rigidbody.isAssociatedCollisionValid()) continue;
+
+			CollisionResponse response;
+			CollisionResponse response_other;
 			
-			bool hit = rigidbody.getAssociatedCollision().resolveRigidbodySelf(other_rigidbody, other_rigidbody.currentResponse, rigidbody, rigidbody.currentResponse);
+			bool hit = rigidbody.getAssociatedCollision().resolveRigidbodySelf(other_rigidbody, response, rigidbody, response_other);
 
 			if (hit)
 			{
@@ -197,16 +204,13 @@ void Physics::UpdatePhysics(float dt)
 				other_rigidbody.getAssociatedCollision().forceIntersected();
 				rigidbody.onCollisionIntersect.broadcast();
 				other_rigidbody.onCollisionIntersect.broadcast();
+
+				rigidbody.setRealMovement(rigidbody.getAnticipatedMovement() + response.repulsion);
+				other_rigidbody.setRealMovement(other_rigidbody.getAnticipatedMovement() + response_other.repulsion);
 			}
 		}
 		
-		rigidbody.updatePhysicsPostCollision(dt);
-	}
-
-	//  update the 'pos last frame'
-	for (auto& rigidbody : rigidbodiesComponents)
-	{
-		rigidbody->updatePosLastFrame();
+		rigidbody.updatePhysicsPostCollision(dt); //  apply rigidbody real movement
 	}
 }
 

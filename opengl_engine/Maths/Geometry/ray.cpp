@@ -26,6 +26,16 @@ Ray::Ray(const Vector3& origin, const Vector3& direction, float length) :
 
 void Ray::setupWithStartEnd(const Vector3& startPos, const Vector3& endPos)
 {
+	if (startPos == endPos)
+	{
+		std::cout << "RAY_ERROR: Tried to set identical start and end positions.\n";
+		rayOrigin = Vector3::zero;
+		rayLength = 0.0f;
+		rayDirection = Vector3::unitX;
+		return;
+	}
+
+
 	rayOrigin = startPos;
 	
 	Vector3 start_to_end = endPos - startPos;
