@@ -41,7 +41,7 @@ private:
 
 	//  fake shots
 	std::vector<std::unique_ptr<Bullet>> bullets;
-	float shootVelocity{ 5.0f };
-	float bulletLifeTime{ 13.0f };
+	float shootVelocity{ 15.0f };
+	float bulletLifeTime{ 3.0f };
 };
 

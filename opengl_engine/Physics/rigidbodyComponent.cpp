@@ -62,9 +62,25 @@ void RigidbodyComponent::setUseGravity(float value)
 	useGravity = value;
 }
 
-void RigidbodyComponent::setRealMovement(Vector3 realMovement)
+void RigidbodyComponent::computeRepulsion(const Vector3& repulsion)
 {
-	movement = realMovement;
+	//  compute real movement and velocity with repulsion
+	movement += repulsion;
+	
+	//  absolutely not sure that it is a really good way to do this, it has no linear repulsion
+	//  it will certainly be reworked later
+	if (!Maths::samesign(velocity.x, repulsion.x))
+	{
+		velocity.x = 0.0f;
+	}
+	if (!Maths::samesign(velocity.y, repulsion.y))
+	{
+		velocity.y = 0.0f;
+	}
+	if (!Maths::samesign(velocity.z, repulsion.z))
+	{
+		velocity.z = 0.0f;
+	}
 }
 
 void RigidbodyComponent::setVelocity(const Vector3& value)

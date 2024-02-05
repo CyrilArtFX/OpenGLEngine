@@ -183,7 +183,7 @@ void Physics::UpdatePhysics(float dt)
 				col.forceIntersected();
 				rigidbody.onCollisionIntersect.broadcast();
 
-				rigidbody.setRealMovement(rigidbody.getAnticipatedMovement() + response.repulsion);
+				rigidbody.computeRepulsion(response.repulsion);
 			}
 		}
 
@@ -205,8 +205,8 @@ void Physics::UpdatePhysics(float dt)
 				rigidbody.onCollisionIntersect.broadcast();
 				other_rigidbody.onCollisionIntersect.broadcast();
 
-				rigidbody.setRealMovement(rigidbody.getAnticipatedMovement() + response.repulsion);
-				other_rigidbody.setRealMovement(other_rigidbody.getAnticipatedMovement() + response_other.repulsion);
+				rigidbody.computeRepulsion(response.repulsion);
+				other_rigidbody.computeRepulsion(response_other.repulsion);
 			}
 		}
 		

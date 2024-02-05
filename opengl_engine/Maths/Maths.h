@@ -105,6 +105,11 @@ namespace Maths
 		return std::copysignf(magnitude, sign);
 	}
 
+	inline bool samesign(float a, float b)
+	{
+		return ((a < 0.0f) == (b < 0.0f));
+	}
+
 	inline float fmod(float numer, float denom)
 	{
 		return std::fmod(numer, denom);

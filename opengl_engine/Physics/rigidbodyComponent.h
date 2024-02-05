@@ -13,7 +13,6 @@ struct CollisionResponse
 * Will tests other colliders and react with physics if it is activated.
 * For now, CCD only works with position, not rotation or scale
 * Also, intersection between two rigidbodies with CCD is not implemented
-* For now, velocity doesn't reduce when colliding
 */
 class RigidbodyComponent
 {
@@ -37,7 +36,7 @@ public:
 	inline bool getUseGravity() const { return useGravity; }
 
 	inline Vector3 getAnticipatedMovement() const { return movement; }
-	void setRealMovement(Vector3 realMovement);
+	void computeRepulsion(const Vector3& repulsion);
 
 	void setVelocity(const Vector3& value);
 	Vector3 getVelocity() const;
