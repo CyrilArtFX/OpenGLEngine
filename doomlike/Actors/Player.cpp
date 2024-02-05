@@ -9,8 +9,10 @@
 #include <iostream>
 
 
-Player::Player()
+Player::Player() :
+	rigidbody(&Physics::CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box::one, this, false), true, false)))
 {
+	rigidbody->onRigidbodyDelete.registerObserver(this, Bind_0(&Player::onRigidbodyDeleted));
 }
 
 void Player::setup(float height, float speed, Renderer* renderer)
@@ -22,29 +24,48 @@ void Player::setup(float height, float speed, Renderer* renderer)
 	setPosition(0.0f, 0.0f, 0.0f);
 	camera.setPosition(Vector3{ 0.0f, camHeight, 0.0f });
 	camera.setSensitivity(0.08f);
+
+	BoxAABBColComp& collision = static_cast<BoxAABBColComp&>(rigidbody->getAssociatedCollisionNonConst());
+	collision.changeBox(Box{ Vector3{0.0f, camHeight / 2.0f, 0.0f}, Vector3{0.3f, camHeight / 2.0f, 0.3f} });
+	rigidbody->setPhysicsActivated(true);
+	rigidbody->setUseGravity(true);
 }
 
 
 void Player::update(float dt)
 {
-	//  move camera
+	//  move player
+	Vector3 velocity = Vector3::zero;
+
 	if (Input::IsKeyDown(GLFW_KEY_W))
-		setPosition(getPosition() + camera.getFlatFront() * dt * moveSpeed);
+		velocity += camera.getFlatFront() * moveSpeed;
 
 	if (Input::IsKeyDown(GLFW_KEY_S))
-		setPosition(getPosition() + -camera.getFlatFront() * dt * moveSpeed);
+		velocity -= camera.getFlatFront() * moveSpeed;
 
 	if (Input::IsKeyDown(GLFW_KEY_A))
-		setPosition(getPosition() + camera.getRight() * dt * moveSpeed);
+		velocity += camera.getRight() * moveSpeed;
 
 	if (Input::IsKeyDown(GLFW_KEY_D))
-		setPosition(getPosition() + -camera.getRight() * dt * moveSpeed);
+		velocity -= camera.getRight() * moveSpeed;
 
-	//  fake jump
-	if (Input::IsKeyPressed(GLFW_KEY_SPACE) && height == 0.0f)
-		jumpVelocity = 40.0f;
 
-	//  fake shoot
+	//  jump
+	RaycastHitInfos hit_infos;
+	onGround = Physics::RaycastLine(getPosition(), getPosition() - Vector3{ 0.0f, 0.01f, 0.0f }, hit_infos, 0.0f);
+
+	if (Input::IsKeyPressed(GLFW_KEY_SPACE) && onGround)
+	{
+		setPosition(getPosition() + Vector3::unitY * 0.01f);
+		velocity += Vector3::unitY * 200.0f;
+	}
+
+
+	//  apply velocity to rigidbody
+	rigidbody->setVelocity(velocity);
+
+
+	//  shoot
 	if (Input::IsKeyPressed(GLFW_MOUSE_BUTTON_LEFT))
 	{
 		if (rendererRef)
@@ -58,6 +79,7 @@ void Player::update(float dt)
 			std::cout << "Doomlike game error : Player has not his renderer ref setup !\n";
 		}
 	}
+
 
 	//  shoot raycast
 	if (Input::IsKeyPressed(GLFW_MOUSE_BUTTON_RIGHT))
@@ -75,23 +97,11 @@ void Player::update(float dt)
 	camera.setPosition(getPosition() + Vector3{0.0f, camHeight, 0.0f});
 
 
-	//  fake jump
-	height = Maths::max(height + (jumpVelocity + fakeGravity) * dt, 0.0f);
-	setPosition(getPosition().x, height, getPosition().z);
-
-	jumpVelocity *= 0.95f; //  should scale that by dt but don't know how lol
-	if (jumpVelocity < 0.1f || height == 0.0f)
-	{
-		jumpVelocity = 0.0f;
-	}
-
-
-	//  fake shoot
+	//  shoot
 	for (auto& bullet : bullets)
 	{
 		bullet->update(dt);
 	}
-
 	
 	for (int i = 0; i < bullets.size(); i++)
 	{
@@ -102,7 +112,7 @@ void Player::update(float dt)
 			std::iter_swap(bullets.begin() + i, bullets.end() - 1);
 			bullets.pop_back();
 
-			break; //  assume that we can't create 2 bullets on the same frame
+			break; //  assume that we can't create 2 bullets on the same frame so 2 bullets cannot be destroyed by time out on the same frame
 		}
 	}
 }
@@ -125,4 +135,9 @@ void Player::respawn(PlayerSpawnPoint& spawnPoint)
 
 	camera.setPosition(spawnPoint.spawnPosition + Vector3{ 0.0f, camHeight, 0.0f });
 	//camera.setRotByQuaternion(spawnPoint.spawnRotation);
+}
+
+void Player::onRigidbodyDeleted()
+{
+	rigidbody = nullptr;
 }

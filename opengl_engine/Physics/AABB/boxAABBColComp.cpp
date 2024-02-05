@@ -15,6 +15,11 @@ BoxAABBColComp::BoxAABBColComp(const Box& boxValues, Transform* transformToAssoc
 {
 }
 
+void BoxAABBColComp::changeBox(const Box& boxValues)
+{
+	box = boxValues;
+}
+
 
 bool BoxAABBColComp::resolvePointIntersection(const Vector3& point) const
 {

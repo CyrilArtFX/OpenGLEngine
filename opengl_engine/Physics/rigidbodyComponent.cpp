@@ -67,6 +67,7 @@ void RigidbodyComponent::computeRepulsion(const Vector3& repulsion)
 	//  compute real movement and velocity with repulsion
 	movement += repulsion;
 	
+	return;
 	//  absolutely not sure that it is a really good way to do this, it has no linear repulsion
 	//  it will certainly be reworked later
 	if (!Maths::samesign(velocity.x, repulsion.x))

@@ -9,12 +9,13 @@
 	-> faire un event qui s'apelle quand la box subit une collision - fait (cimer arthur)
 	-> faire la detection de collision entre box aabb - fait
 	-> intégrer la ccd - fait
-	-> faire le "repoussage" entre box aabb (position pas rotation) pour les collisions body/static - fait
-	-> mettre la gravité et bien tester ça - en cours (faut faire en sorte que ça marche avec les mouvements du joueur)
+	-> faire la répulsion entre box aabb (position pas rotation) pour les collisions body/static - fait
 	-> changer le système de ccd pour utiliser la velocité du rigidbody - fait
 	-> update la vélocité des rigidbody en fonction des collisions - fait
+	-> changer le système de répulsion pour utiliser la normal de la collision
+	-> mettre la gravité et bien tester ça - en cours (faut faire en sorte que ça marche avec les mouvements du joueur)
 	-> faire la detection ccd / ccd : https://blog.hamaluik.ca/posts/swept-aabb-collision-using-minkowski-difference/
-	-> faire le "repoussage" entre box aabb (position pas rotation) pour les collisions body/body
+	-> faire la répulsion entre box aabb (position pas rotation) pour les collisions body/body (je me chie dessus de peur)
 	-> finir le setup du système physique (objects channels, etc.)
 
 KNOWN ISSUE : le physics manager devrait avoir une liste de collision qui viennent de la scène et une liste de collision qui viennent du game.

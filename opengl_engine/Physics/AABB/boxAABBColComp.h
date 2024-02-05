@@ -16,6 +16,8 @@ public:
 	BoxAABBColComp();
 	BoxAABBColComp(const Box& boxValues, Transform* transformToAssociate, bool scaleBoxSizeWithTransform = true);
 
+	void changeBox(const Box& boxValues);
+
 	const Matrix4 getModelMatrix() const override;
 
 	Box getTransformedBox(bool forDrawDebug = false) const;

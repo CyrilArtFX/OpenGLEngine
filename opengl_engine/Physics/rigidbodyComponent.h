@@ -22,6 +22,7 @@ public:
 
 	void associateCollision(CollisionComponent* collisionToAssociate);
 	inline const CollisionComponent& getAssociatedCollision() const { return *associatedCollision; }
+	inline CollisionComponent& getAssociatedCollisionNonConst() { return *associatedCollision; }
 
 	void updatePhysicsPreCollision(float dt);
 	void updatePhysicsPostCollision(float dt);

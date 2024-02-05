@@ -67,14 +67,14 @@ void Physics::RemoveRigidbody(RigidbodyComponent* rigidbodyComp)
 
 bool Physics::RaycastLine(const Vector3& start, const Vector3& end, RaycastHitInfos& outHitInfos, float drawDebugTime)
 {
-	std::cout << "PHYSICS_INFO: Create a raycast line.\n";
-
 	outHitInfos = RaycastHitInfos();
 
 	bool hit = false;
 
 	if (drawDebugTime != 0.0f)
 	{
+		std::cout << "PHYSICS_INFO: Create a raycast line.\n";
+
 		raycasts.emplace_back(new Raycast(start, end, drawDebugTime));
 
 		const Ray& ray = raycasts.back()->getRay();
