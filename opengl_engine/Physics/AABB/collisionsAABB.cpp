@@ -50,7 +50,8 @@ bool CollisionsAABB::CollideBodyBox(const RigidbodyComponent& bodyAABB, Collisio
 
 	if (!bodyAABB.getUseCCD())
 	{
-		const Box& body_box = body_box_aabb.getTransformedBox();
+		Box body_box = body_box_aabb.getTransformedBox();
+		body_box.setCenterPoint(body_box.getCenterPoint() + bodyAABB.getAnticipatedMovement());
 		const Box& static_box = boxAABB.getTransformedBox();
 		interpolate = BoxesIntersection(body_box, static_box);
 	}

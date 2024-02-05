@@ -45,9 +45,7 @@ void Bullet::update(float dt)
 
 void Bullet::onBulletHit()
 {
-	//rigidbody->setPhysicsActivated(false);
-	//rigidbody->setVelocity(Vector3::zero);
-	//rigidbody->setUseGravity(true);
+	rigidbody->setUseGravity(true);
 }
 
 void Bullet::onRigidbodyDeleted()
