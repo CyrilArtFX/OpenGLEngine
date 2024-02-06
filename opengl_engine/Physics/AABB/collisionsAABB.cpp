@@ -21,14 +21,16 @@ bool CollisionsAABB::IntersectRaycast(const BoxAABBColComp& boxAABB, const Ray& 
 	Box box = boxAABB.getTransformedBox();
 
 	float hit_distance = 0.0f;
+	Vector3 hit_location = Vector3::zero;
 
-	bool intersect = BoxRayIntersection(box, raycast, hit_distance);
+	bool intersect = BoxRayIntersection(box, raycast, hit_distance, hit_location);
 	
 	//  check if it is the closest collision found
 	if (hit_distance < outHitInfos.hitDistance)
 	{
 		outHitInfos.hitDistance = hit_distance;
-		outHitInfos.hitLocation = raycast.getOrigin() + raycast.getDirection() * hit_distance;
+		outHitInfos.hitLocation = hit_location;
+		outHitInfos.hitNormal = boxAABB.getNormal(hit_location);
 		outHitInfos.hitCollision = &boxAABB;
 	}
 
@@ -63,17 +65,28 @@ bool CollisionsAABB::CollideBodyBox(const RigidbodyComponent& bodyAABB, Collisio
 		const Vector3& ccd_pos_next_frame = ccd_box.getCenterPoint() + bodyAABB.getAnticipatedMovement();
 		const Box& static_box = boxAABB.getTransformedBox();
 		float hit_distance = 0.0f;
+		Vector3 hit_location = Vector3::zero;
 		
-		interpolate = CCDBoxIntersection(ccd_box, ccd_pos_next_frame, static_box, hit_distance);
+		interpolate = CCDBoxIntersection(ccd_box, ccd_pos_next_frame, static_box, hit_distance, hit_location);
 
 		if (interpolate && bodyAABB.isPhysicsActivated())
 		{
-			//  set outBodyResponse
+			//  compute collision normal
+			Vector3 collision_normal = body_box_aabb.getNormal(hit_location);
+
+			//  compute replusion
 			Vector3 body_vel = bodyAABB.getAnticipatedMovement();
 			float body_vel_length = body_vel.length();
 			body_vel.normalize();
-			outBodyResponse.repulsion = -body_vel * (body_vel_length - hit_distance);
-			Vector3 test = outBodyResponse.repulsion;
+			Vector3 repulsion = -body_vel * (body_vel_length - hit_distance);
+
+			//  clamp repulsion to collision normal
+			if (!Maths::samesign(collision_normal.x, repulsion.x)) repulsion.x = 0.0f;
+			if (!Maths::samesign(collision_normal.y, repulsion.y)) repulsion.y = 0.0f;
+			if (!Maths::samesign(collision_normal.z, repulsion.z)) repulsion.z = 0.0f;
+
+			//  set out body response;
+			outBodyResponse.repulsion = repulsion;
 		}
 	}
 
@@ -97,7 +110,7 @@ bool CollisionsAABB::BoxesIntersection(const Box& boxA, const Box& boxB)
 	return box_a_min < box_b_max && box_a_max > box_b_min;
 }
 
-bool CollisionsAABB::BoxRayIntersection(const Box& box, const Ray& ray, float& distance)
+bool CollisionsAABB::BoxRayIntersection(const Box& box, const Ray& ray, float& distance, Vector3& location)
 {
 	Vector3 box_min = box.getMinPoint();
 	Vector3 box_max = box.getMaxPoint();
@@ -142,11 +155,12 @@ bool CollisionsAABB::BoxRayIntersection(const Box& box, const Ray& ray, float& d
 	}
 
 	distance = tmin;
+	location = ray_origin + ray_direction * distance;
 
 	return true;
 }
 
-bool CollisionsAABB::CCDBoxIntersection(const Box& boxCCD, Vector3 ccdNextFramePos, const Box& box, float& distance)
+bool CollisionsAABB::CCDBoxIntersection(const Box& boxCCD, const Vector3& ccdNextFramePos, const Box& box, float& distance, Vector3& location)
 {
 	Vector3 box_ccd_pos = boxCCD.getCenterPoint();
 
@@ -163,7 +177,7 @@ bool CollisionsAABB::CCDBoxIntersection(const Box& boxCCD, Vector3 ccdNextFrameP
 	Ray ray;
 	ray.setupWithStartEnd(box_ccd_pos, ccdNextFramePos);
 
-	bool intersect = BoxRayIntersection(box_static, ray, distance);
+	bool intersect = BoxRayIntersection(box_static, ray, distance, location);
 
 	return intersect;
 }

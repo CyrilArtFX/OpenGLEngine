@@ -49,6 +49,7 @@ float Vector3::length() const
 
 void Vector3::normalize()
 {
+	if (x == 0.0f && y == 0.0f && z == 0.0f) return;
 	float len = length();
 	x /= len;
 	y /= len;

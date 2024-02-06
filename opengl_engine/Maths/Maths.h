@@ -107,7 +107,7 @@ namespace Maths
 
 	inline bool samesign(float a, float b)
 	{
-		return ((a < 0.0f) == (b < 0.0f));
+		return ((a < 0.0f) == (b < 0.0f) && (a > 0.0f) == (b > 0.0f));
 	}
 
 	inline float fmod(float numer, float denom)

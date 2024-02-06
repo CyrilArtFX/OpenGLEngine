@@ -28,7 +28,7 @@ void Player::setup(float height, float speed, Renderer* renderer)
 	BoxAABBColComp& collision = static_cast<BoxAABBColComp&>(rigidbody->getAssociatedCollisionNonConst());
 	collision.changeBox(Box{ Vector3{0.0f, camHeight / 2.0f, 0.0f}, Vector3{0.3f, camHeight / 2.0f, 0.3f} });
 	rigidbody->setPhysicsActivated(true);
-	rigidbody->setUseGravity(true);
+	//rigidbody->setUseGravity(true);
 }
 
 

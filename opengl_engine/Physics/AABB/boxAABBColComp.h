@@ -22,6 +22,12 @@ public:
 
 	Box getTransformedBox(bool forDrawDebug = false) const;
 
+	/** 
+	* Get the normal of the surface the given point is on.
+	* If the given point isn't on a surface, return Vector3::zero
+	*/
+	Vector3 getNormal(const Vector3& point) const;
+
 protected:
 	bool resolvePointIntersection(const Vector3& point) const override;
 	bool resolveRaycastIntersection(const Ray& raycast, RaycastHitInfos& outHitInfos) const override;

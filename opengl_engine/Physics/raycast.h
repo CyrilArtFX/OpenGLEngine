@@ -9,13 +9,14 @@ class CollisionComponent;
 
 struct RaycastHitInfos
 {
-	RaycastHitInfos(Vector3 location, float distance, const CollisionComponent* collision) :
-		hitLocation(location), hitDistance(distance), hitCollision(collision) {}
+	RaycastHitInfos(Vector3 location, Vector3 normal, float distance, const CollisionComponent* collision) :
+		hitLocation(location), hitNormal(normal), hitDistance(distance), hitCollision(collision) {}
 
 	RaycastHitInfos() :
-		hitLocation(Vector3::zero), hitDistance(std::numeric_limits<float>::max()), hitCollision(nullptr) {}
+		hitLocation(Vector3::zero), hitNormal(Vector3::zero), hitDistance(std::numeric_limits<float>::max()), hitCollision(nullptr) {}
 
 	Vector3 hitLocation{ Vector3::zero };
+	Vector3 hitNormal{ Vector3::zero };
 	float hitDistance{ std::numeric_limits<float>::max() }; //  used to get the nearest hit in case of multiple hits
 	const CollisionComponent* hitCollision{ nullptr };
 
