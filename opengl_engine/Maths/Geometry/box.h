@@ -20,6 +20,8 @@ public:
 	Vector3 getMinPoint() const;
 	Vector3 getMaxPoint() const;
 
+	Vector3 getPointOnPerimeter(const Vector3& point) const;
+
 	void addHalfExtents(const Box& otherBox);
 
 	std::string toString() const;

@@ -59,6 +59,56 @@ Vector3 Box::getMaxPoint() const
 	return center + halfExtents;
 }
 
+Vector3 Box::getPointOnPerimeter(const Vector3& point) const
+{
+	Vector3 point_perimeter;
+	Vector3 min = getMinPoint();
+	Vector3 max = getMaxPoint();
+
+	point_perimeter.x = Maths::clamp(point.x, min.x, max.x);
+	point_perimeter.y = Maths::clamp(point.y, min.y, max.y);
+	point_perimeter.z = Maths::clamp(point.z, min.z, max.z);
+
+	float dist_min_x = Maths::abs(point_perimeter.x - min.x);
+	float dist_max_x = Maths::abs(point_perimeter.x - max.x);
+	float dist_min_y = Maths::abs(point_perimeter.y - min.y);
+	float dist_max_y = Maths::abs(point_perimeter.y - max.y);
+	float dist_min_z = Maths::abs(point_perimeter.z - min.z);
+	float dist_max_z = Maths::abs(point_perimeter.z - max.z);
+
+	float min_dist = Maths::min(dist_min_x, Maths::min(dist_max_x, Maths::min(dist_min_y, Maths::min(dist_max_y, Maths::min(dist_min_z, dist_max_z)))));
+	
+	if (min_dist == dist_min_x)
+	{
+		point_perimeter.x = min.x;
+		return point_perimeter;
+	}
+	if (min_dist == dist_max_x)
+	{
+		point_perimeter.x = max.x;
+		return point_perimeter;
+	}
+	if (min_dist == dist_min_y)
+	{
+		point_perimeter.y = min.y;
+		return point_perimeter;
+	}
+	if (min_dist == dist_max_y)
+	{
+		point_perimeter.y = max.y;
+		return point_perimeter;
+	}
+	if (min_dist == dist_min_z)
+	{
+		point_perimeter.z = min.z;
+		return point_perimeter;
+	}
+
+	//  min_dist == dist_max_z
+	point_perimeter.z = max.z;
+	return point_perimeter;
+}
+
 void Box::addHalfExtents(const Box& otherBox)
 {
 	halfExtents += otherBox.halfExtents;

@@ -72,7 +72,9 @@ bool CollisionsAABB::CollideBodyBox(const RigidbodyComponent& bodyAABB, Collisio
 		if (interpolate && bodyAABB.isPhysicsActivated())
 		{
 			//  compute collision normal
-			Vector3 collision_normal = body_box_aabb.getNormal(hit_location);
+			Vector3 collision_normal = boxAABB.getNormal(hit_location);
+
+			//  miss a function that clamp a point to a box for finding normal with good accuracy
 
 			//  compute replusion
 			Vector3 body_vel = bodyAABB.getAnticipatedMovement();
@@ -178,6 +180,12 @@ bool CollisionsAABB::CCDBoxIntersection(const Box& boxCCD, const Vector3& ccdNex
 	ray.setupWithStartEnd(box_ccd_pos, ccdNextFramePos);
 
 	bool intersect = BoxRayIntersection(box_static, ray, distance, location);
+
+	//  with this way of compute ccd / static box intersection, the location returned by the raycast is equivalent to the center of the ccd box
+	Vector3 direction = ray.getDirection();
+	direction.normalize();
+	location += direction * boxCCD.getHalfExtents();
+	location = box.getPointOnPerimeter(location);
 
 	return intersect;
 }
