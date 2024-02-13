@@ -35,6 +35,9 @@ private:
 	Object crate1;
 	Object crate2;
 	Object crate3;
+	Object crate4;
+	Object stair1;
+	Object stair2;
 
 	DirectionalLight dirLight;
 	PointLight pointLight1;

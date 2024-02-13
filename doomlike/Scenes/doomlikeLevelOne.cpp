@@ -18,6 +18,9 @@ void DoomlikeLevelOne::loadScene()
 	crate1.addModel(&AssetManager::GetModel("crate"));
 	crate2.addModel(&AssetManager::GetModel("crate"));
 	crate3.addModel(&AssetManager::GetModel("crate"));
+	crate4.addModel(&AssetManager::GetModel("crate"));
+	stair1.addModel(&AssetManager::GetModel("crate"));
+	stair2.addModel(&AssetManager::GetModel("crate"));
 
 	registerObject(&ground1);
 	registerObject(&ground2);
@@ -25,6 +28,9 @@ void DoomlikeLevelOne::loadScene()
 	registerObject(&crate1);
 	registerObject(&crate2);
 	registerObject(&crate3);
+	registerObject(&crate4);
+	registerObject(&stair1);
+	registerObject(&stair2);
 
 	ground1.setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
 	ground2.setPosition(Vector3{ 0.0f, 0.0f, 10.0f });
@@ -32,12 +38,23 @@ void DoomlikeLevelOne::loadScene()
 	crate1.setPosition(Vector3{ 2.0f, 0.5f, 0.0f });
 	crate2.setPosition(Vector3{ 3.0f, 0.5f, 13.0f });
 	crate3.setPosition(Vector3{ 9.5f, 0.5f, 9.0f });
+	crate4.setPosition(Vector3{ 2.5f, 3.0f, 7.5f });
+	stair1.setScale(Vector3{ 1.0f, 0.2f, 1.0f });
+	stair1.setPosition(Vector3{ 8.0f, 0.1f, 15.5f });
+	stair2.setScale(Vector3{ 1.0f, 0.2f, 1.0f });
+	stair2.setPosition(Vector3{ 9.0f, 0.3f, 15.5f });
 
 
 	//  collisions
 	Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.5f, 0.0f}, Vector3{5.0f, 0.5f, 5.0f} }, &ground1, false));
 	Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.5f, 0.0f}, Vector3{5.0f, 0.5f, 5.0f} }, &ground2, false));
 	Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.5f, 0.0f}, Vector3{5.0f, 0.5f, 5.0f} }, &ground3, false));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate1, false));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate2, false));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate3, false));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate4, false));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &stair1, false));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &stair2, false));
 
 
 	//  lights

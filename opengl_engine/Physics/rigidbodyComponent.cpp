@@ -70,6 +70,11 @@ void RigidbodyComponent::setUseGravity(float value)
 	useGravity = value;
 }
 
+void RigidbodyComponent::setStepHeight(float value)
+{
+	stepHeight = value;
+}
+
 void RigidbodyComponent::computeRepulsion(const Vector3& repulsion)
 {
 	//  compute real movement and velocity with repulsion

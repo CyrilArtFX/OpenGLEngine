@@ -24,7 +24,7 @@ bool CollisionsAABB::IntersectRaycast(const BoxAABBColComp& boxAABB, const Ray& 
 	Vector3 hit_location = Vector3::zero;
 
 	bool intersect = BoxRayIntersection(box, raycast, hit_distance, hit_location);
-	
+
 	//  check if it is the closest collision found
 	if (hit_distance < outHitInfos.hitDistance)
 	{
@@ -66,7 +66,7 @@ bool CollisionsAABB::CollideBodyBox(const RigidbodyComponent& bodyAABB, Collisio
 		const Box& static_box = boxAABB.getTransformedBox();
 		float hit_distance = 0.0f;
 		Vector3 hit_location = Vector3::zero;
-		
+
 		interpolate = CCDBoxIntersection(ccd_box, ccd_pos_next_frame, static_box, hit_distance, hit_location);
 
 		if (interpolate && bodyAABB.isPhysicsActivated())
@@ -90,6 +90,21 @@ bool CollisionsAABB::CollideBodyBox(const RigidbodyComponent& bodyAABB, Collisio
 
 			outBodyResponse.impactPoint = ccd_box.getPointOnPerimeter(hit_location);
 			outBodyResponse.impactNormal = body_box_aabb.getNormal(outBodyResponse.impactPoint);
+
+			//  step (make a moving rigidbody able to step on a collision if it is low enough)
+			if (!(collision_normal == Vector3::unitY) && ccd_box.getMinPoint().y + bodyAABB.getStepHeight() > static_box.getMaxPoint().y)
+			{
+				float y_difference = static_box.getMaxPoint().y - ccd_box.getMinPoint().y;
+				if (y_difference >= 0.0f)
+				{
+					//  the colliding object could be step up on
+					outBodyResponse.repulsion = Vector3{ 0.0f, y_difference, 0.0f };
+					outBodyResponse.impactPoint = ccd_pos_next_frame + Vector3{ 0.0f, y_difference - ccd_box.getHalfExtents().y, 0.0f };
+					outBodyResponse.impactNormal = body_box_aabb.getNormal(outBodyResponse.impactPoint);
+
+					//  TODO: test if stepping on the object makes the body collide with other collisions using raycast with aabb col
+				}
+			}
 		}
 	}
 

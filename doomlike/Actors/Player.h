@@ -19,7 +19,7 @@ class Player : public Transform, public Observer
 {
 public:
 	Player();
-	void setup(float height, float speed, float jump, Renderer* renderer);
+	void setup(float height, float speed, float jump, float stepHeight, Renderer* renderer);
 
 	void update(float dt);
 

@@ -39,6 +39,9 @@ public:
 	void setUseGravity(float value);
 	inline bool getUseGravity() const { return useGravity; }
 
+	void setStepHeight(float value);
+	inline float getStepHeight() const { return stepHeight; }
+
 	inline Vector3 getAnticipatedMovement() const { return movement; }
 	void computeRepulsion(const Vector3& repulsion);
 
@@ -66,6 +69,8 @@ private:
 	float weight{ 1.0f };
 
 	bool ccd{ false };
+
+	float stepHeight{ 0.0f };
 
 	Vector3 velocity{ Vector3::zero };
 	Vector3 movement{ Vector3::zero };

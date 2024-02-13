@@ -16,12 +16,14 @@ Player::Player() :
 	rigidbody->onCollisionIntersect.registerObserver(this, Bind_1(&Player::onCollision));
 }
 
-void Player::setup(float height, float speed, float jump, Renderer* renderer)
+void Player::setup(float height, float speed, float jump, float stepHeight, Renderer* renderer)
 {
 	camHeight = height;
 	moveSpeed = speed;
 	jumpForce = jump;
 	rendererRef = renderer;
+
+	rigidbody->setStepHeight(stepHeight);
 
 	setPosition(0.0f, 0.0f, 0.0f);
 	camera.setPosition(Vector3{ 0.0f, camHeight, 0.0f });
