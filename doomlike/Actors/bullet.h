@@ -20,7 +20,7 @@ public:
 
 	bool isLTOver() { return lifetime <= 0.0f; }
 
-	void onBulletHit(const CollisionResponse& hit_response);
+	void onBulletHit(const CollisionResponse& hitResponse);
 	void onRigidbodyDeleted();
 
 private:

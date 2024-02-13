@@ -43,8 +43,9 @@ void Bullet::update(float dt)
 	lifetime -= dt;
 }
 
-void Bullet::onBulletHit(const CollisionResponse& hit_response)
+void Bullet::onBulletHit(const CollisionResponse& hitResponse)
 {
+	rigidbody->setVelocity(Vector3::zero);
 	rigidbody->setUseGravity(true);
 }
 
