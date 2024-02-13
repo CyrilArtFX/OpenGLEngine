@@ -23,7 +23,7 @@ public:
 private:
 	static bool BoxesIntersection(const Box& boxA, const Box& boxB);
 
-	static bool BoxRayIntersection(const Box& box, const Ray& ray, float& distance, Vector3& location);
+	static bool BoxRayIntersection(const Box& box, const Ray& ray, float& distance, Vector3& location, bool computeCollision = false);
 
 	static bool CCDBoxIntersection(const Box& boxCCD, const Vector3& ccdNextFramePos, const Box& box, float& distance, Vector3& location);
 

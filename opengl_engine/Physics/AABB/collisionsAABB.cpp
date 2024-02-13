@@ -74,8 +74,6 @@ bool CollisionsAABB::CollideBodyBox(const RigidbodyComponent& bodyAABB, Collisio
 			//  compute collision normal
 			Vector3 collision_normal = boxAABB.getNormal(hit_location);
 
-			//  miss a function that clamp a point to a box for finding normal with good accuracy
-
 			//  compute replusion
 			Vector3 body_vel = bodyAABB.getAnticipatedMovement();
 			float body_vel_length = body_vel.length();
@@ -112,7 +110,7 @@ bool CollisionsAABB::BoxesIntersection(const Box& boxA, const Box& boxB)
 	return box_a_min < box_b_max && box_a_max > box_b_min;
 }
 
-bool CollisionsAABB::BoxRayIntersection(const Box& box, const Ray& ray, float& distance, Vector3& location)
+bool CollisionsAABB::BoxRayIntersection(const Box& box, const Ray& ray, float& distance, Vector3& location, bool computeCollision)
 {
 	Vector3 box_min = box.getMinPoint();
 	Vector3 box_max = box.getMaxPoint();
@@ -138,8 +136,15 @@ bool CollisionsAABB::BoxRayIntersection(const Box& box, const Ray& ray, float& d
 
 	distance = std::numeric_limits<float>::max();
 
+	//  if tmax == 0, origin of the ray is on the edge of AABB
+	//  it is fine that it return true for most cases, but when using raycasts for computing collisions, it should return false
+	if (tmax == 0.0f && computeCollision)
+	{
+		return false;
+	}
+
 	//  if tmax < 0, ray (line) is intersecting AABB, but the whole AABB is behind us
-	if (tmax < 0)
+	if (tmax < 0.0f)
 	{
 		return false;
 	}
@@ -179,9 +184,10 @@ bool CollisionsAABB::CCDBoxIntersection(const Box& boxCCD, const Vector3& ccdNex
 	Ray ray;
 	ray.setupWithStartEnd(box_ccd_pos, ccdNextFramePos);
 
-	bool intersect = BoxRayIntersection(box_static, ray, distance, location);
+	bool intersect = BoxRayIntersection(box_static, ray, distance, location, true);
 
 	//  with this way of compute ccd / static box intersection, the location returned by the raycast is equivalent to the center of the ccd box
+	//  so compute the location again so that it at the real intersection point between the two boxes
 	Vector3 direction = ray.getDirection();
 	direction.normalize();
 	location += direction * boxCCD.getHalfExtents();
