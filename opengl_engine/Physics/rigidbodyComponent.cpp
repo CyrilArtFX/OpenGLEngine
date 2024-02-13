@@ -3,6 +3,7 @@
 #include <iostream>
 
 RigidbodyComponent::RigidbodyComponent(CollisionComponent* collisionToAssociate, bool useCCD, bool activatePhysics) :
+	PhysicEntity(collisionToAssociate->loadedPersistent),
 	ccd(useCCD), physicsActivated(activatePhysics), useGravity(activatePhysics)
 {
 	associateCollision(collisionToAssociate);

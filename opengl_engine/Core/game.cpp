@@ -49,6 +49,6 @@ void Game::loadScene(Scene* scene)
 
 void Game::unloadActiveScene(bool loadNewScene)
 {
-	if (activeScene) activeScene->unload();
+	if (activeScene) activeScene->unload(!loadNewScene);
 	if(!loadNewScene) renderer->setCamera(&gamedefaultsNocam);
 }

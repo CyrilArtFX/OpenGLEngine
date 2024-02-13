@@ -87,7 +87,8 @@ void CollisionComponent::addPosition(const Vector3& posToAdd)
 	associatedTransform->setPosition(associatedTransform->getPosition() + posToAdd);
 }
 
-CollisionComponent::CollisionComponent(CollisionType collisionType_, Transform* associatedTransform_, Mesh* debugMesh_) :
+CollisionComponent::CollisionComponent(CollisionType collisionType_, Transform* associatedTransform_, Mesh* debugMesh_, bool loadPersistent_) :
+	PhysicEntity(loadPersistent_),
 	collisionType(collisionType_), associatedTransform(associatedTransform_), debugMesh(debugMesh_)
 {
 }

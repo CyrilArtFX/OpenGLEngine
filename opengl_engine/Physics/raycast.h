@@ -3,6 +3,8 @@
 #include <Rendering/Debug/line.h>
 #include <Rendering/Debug/point.h>
 
+#include "physicEntity.h"
+
 #include <limits>
 
 class CollisionComponent;
@@ -24,10 +26,10 @@ struct RaycastHitInfos
 };
 
 
-class Raycast
+class Raycast : public PhysicEntity
 {
 public:
-	Raycast(const Vector3& startPoint, const Vector3& endPoint, float drawDebugTime);
+	Raycast(const Vector3& startPoint, const Vector3& endPoint, float drawDebugTime, bool loadPersistent = false);
 	Raycast() = delete;
 	Raycast(const Raycast&) = delete;
 	Raycast& operator=(const Raycast&) = delete;

@@ -1,4 +1,6 @@
 #include "doomlikeLevelOne.h"
+#include <Physics/physics.h>
+#include <Physics/AABB/boxAABBColComp.h>
 
 DoomlikeLevelOne::DoomlikeLevelOne()
 {
@@ -30,6 +32,12 @@ void DoomlikeLevelOne::loadScene()
 	crate1.setPosition(Vector3{ 2.0f, 0.5f, 0.0f });
 	crate2.setPosition(Vector3{ 3.0f, 0.5f, 13.0f });
 	crate3.setPosition(Vector3{ 9.5f, 0.5f, 9.0f });
+
+
+	//  collisions
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.5f, 0.0f}, Vector3{5.0f, 0.5f, 5.0f} }, &ground1, false));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.5f, 0.0f}, Vector3{5.0f, 0.5f, 5.0f} }, &ground2, false));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.5f, 0.0f}, Vector3{5.0f, 0.5f, 5.0f} }, &ground3, false));
 
 
 	//  lights

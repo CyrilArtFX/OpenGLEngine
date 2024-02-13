@@ -1,4 +1,5 @@
 #pragma once
+#include "physicEntity.h"
 #include <Objects/transform.h>
 #include "raycast.h"
 
@@ -21,7 +22,7 @@ enum class CollisionType : uint8_t
 /** Collision Component
 * Base class for every collision component
 */
-class CollisionComponent
+class CollisionComponent : public PhysicEntity
 {
 public:
 	virtual ~CollisionComponent();
@@ -59,7 +60,7 @@ public:
 
 
 protected:
-	CollisionComponent(CollisionType collisionType_, Transform* associatedTransform_, Mesh* debugMesh_);
+	CollisionComponent(CollisionType collisionType_, Transform* associatedTransform_, Mesh* debugMesh_, bool loadPersistent_);
 
 	virtual bool resolvePointIntersection(const Vector3& point) const = 0;
 	virtual bool resolveRaycastIntersection(const Ray& raycast, RaycastHitInfos& outHitInfos) const = 0;

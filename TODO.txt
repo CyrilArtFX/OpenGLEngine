@@ -20,14 +20,16 @@
 	-> finir le setup du système physique (objects channels, etc.)
 	-> épreuve ultime : faire bouger le joueur sur des plateformes mouvantes (pitié la physique)
 
-KNOWN ISSUE : le physics manager devrait avoir une liste de collision qui viennent de la scène et une liste de collision qui viennent du game.
-Sinon, en supprimant les collisions au changement de scène il supprime aussi les collisions qui devraient rester persistantes (ex: les bullets)
+KNOWN ISSUE : marcher entre deux collisions à la même hauteur (comme deux sols côte à côte) pose problème.
+Ca serait bien même de faire en sorte de pouvoir marcher sans problème entre deux collisions avec une petite différence de hauteur
 
 
 ~ Faire le doomlike (omg ?)
 
 
 == MOYEN TERME ==
+
+~ Intégrer du son (avec fmod ?)
 
 ~ Créer un système de HUD (intégrer le texte tout de suite ?)
 

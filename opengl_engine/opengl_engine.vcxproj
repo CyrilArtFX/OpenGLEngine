@@ -182,6 +182,7 @@
     <ClInclude Include="Assets\defaultAssets.h" />
     <ClInclude Include="Events\event.h" />
     <ClInclude Include="Events\observer.h" />
+    <ClInclude Include="Physics\physicEntity.h" />
     <ClInclude Include="Physics\rigidbodyComponent.h" />
     <ClInclude Include="Rendering\Debug\line.h" />
     <ClInclude Include="Maths\Geometry\box.h" />

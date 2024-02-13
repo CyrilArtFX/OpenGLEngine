@@ -2,9 +2,10 @@
 #include <Physics/physics.h>
 #include <iostream>
 
-Target::Target() : 
-	collision(static_cast<BoxAABBColComp*>(&Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, this))))
+void Target::load()
 {
+	collision = static_cast<BoxAABBColComp*>(&Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, this, false)));
+	
 	collision->onRaycastIntersect.registerObserver(this, Bind_1(&Target::onIntersectedByRaycast));
 }
 

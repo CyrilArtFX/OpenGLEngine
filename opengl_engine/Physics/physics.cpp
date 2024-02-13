@@ -65,7 +65,7 @@ void Physics::RemoveRigidbody(RigidbodyComponent* rigidbodyComp)
 	std::cout << "PHYSICS_INFO: Successfully removed a rigidbody.\n";
 }
 
-bool Physics::RaycastLine(const Vector3& start, const Vector3& end, RaycastHitInfos& outHitInfos, float drawDebugTime)
+bool Physics::RaycastLine(const Vector3& start, const Vector3& end, RaycastHitInfos& outHitInfos, float drawDebugTime, bool createOnScene)
 {
 	outHitInfos = RaycastHitInfos();
 
@@ -75,7 +75,7 @@ bool Physics::RaycastLine(const Vector3& start, const Vector3& end, RaycastHitIn
 	{
 		std::cout << "PHYSICS_INFO: Create a raycast line.\n";
 
-		raycasts.emplace_back(new Raycast(start, end, drawDebugTime));
+		raycasts.emplace_back(new Raycast(start, end, drawDebugTime, !createOnScene));
 
 		const Ray& ray = raycasts.back()->getRay();
 
@@ -195,7 +195,7 @@ void Physics::UpdatePhysics(float dt)
 
 			CollisionResponse response;
 			CollisionResponse response_other;
-			
+
 			bool hit = rigidbody.getAssociatedCollision().resolveRigidbodySelf(other_rigidbody, response, rigidbody, response_other);
 
 			if (hit)
@@ -209,34 +209,85 @@ void Physics::UpdatePhysics(float dt)
 				other_rigidbody.computeRepulsion(response_other.repulsion);
 			}
 		}
-		
+
 		rigidbody.updatePhysicsPostCollision(dt); //  apply rigidbody real movement
 	}
 }
 
-void Physics::ClearAllCollisions()
+void Physics::ClearAllCollisions(bool engineClosing)
 {
-	std::cout << "PHYSICS_INFO: Clearing all collisions, rigidbodies and raycasts.\n";
+	if (engineClosing) 
+	{
+		std::cout << "PHYSICS_INFO: Clearing all collisions, rigidbodies and raycasts.\n";
 
+		for (auto col : collisionsComponents)
+		{
+			col->registered = false;
+			delete col;
+		}
+		collisionsComponents.clear();
+
+		for (auto rigidbody : rigidbodiesComponents)
+		{
+			rigidbody->registered = false;
+			delete rigidbody;
+		}
+		rigidbodiesComponents.clear();
+
+		for (auto raycast : raycasts)
+		{
+			delete raycast;
+		}
+		raycasts.clear();
+
+		return;
+	}
+	
+	std::cout << "PHYSICS_INFO: Clearing active scene collisions, rigidbodies and raycasts.\n";
+
+	std::vector<CollisionComponent*> game_collisions;
 	for (auto col : collisionsComponents)
 	{
+		if (col->loadedPersistent)
+		{
+			game_collisions.push_back(col);
+			continue;
+		}
+
 		col->registered = false;
 		delete col;
 	}
 	collisionsComponents.clear();
+	collisionsComponents = game_collisions;
 
+	std::vector<RigidbodyComponent*> game_rigidbodies;
 	for (auto rigidbody : rigidbodiesComponents)
 	{
+		if (rigidbody->loadedPersistent)
+		{
+			game_rigidbodies.push_back(rigidbody);
+			continue;
+		}
+
 		rigidbody->registered = false;
 		delete rigidbody;
 	}
 	rigidbodiesComponents.clear();
+	rigidbodiesComponents = game_rigidbodies;
 
+	std::vector<Raycast*> game_raycasts;
 	for (auto raycast : raycasts)
 	{
+		if (raycast->loadedPersistent)
+		{
+			game_raycasts.push_back(raycast);
+			continue;
+		}
+
 		delete raycast;
 	}
 	raycasts.clear();
+	raycasts = game_raycasts;
 }
 
 void Physics::DrawCollisionsDebug(Material& debugMaterial)

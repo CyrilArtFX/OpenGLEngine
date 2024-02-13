@@ -14,7 +14,7 @@ class BoxAABBColComp : public CollisionComponent
 {
 public:
 	BoxAABBColComp();
-	BoxAABBColComp(const Box& boxValues, Transform* transformToAssociate, bool scaleBoxSizeWithTransform = true);
+	BoxAABBColComp(const Box& boxValues, Transform* transformToAssociate, bool loadPersistent, bool scaleBoxSizeWithTransform = true);
 
 	void changeBox(const Box& boxValues);
 

@@ -38,10 +38,10 @@ void TestFpsScene::loadScene()
 
 
 	//  collisions
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate1));
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate2));
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate3));
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.5f, 0.0f}, Vector3{5.0f, 0.5f, 5.0f} }, &ground));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate1, false));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate2, false));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate3, false));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.5f, 0.0f}, Vector3{5.0f, 0.5f, 5.0f} }, &ground, false));
 
 	RaycastHitInfos out_raycast;
 	Physics::RaycastLine(Vector3{ -1.0f, 3.5f, 3.0f }, Vector3{ -1.0f, -1.5f, 3.0f }, out_raycast);

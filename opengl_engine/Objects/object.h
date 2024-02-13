@@ -14,6 +14,8 @@ public:
 
 	void addModel(Model* model);
 
+	virtual void load() {}
+
 private:
 	std::vector<Model*> models;
 };

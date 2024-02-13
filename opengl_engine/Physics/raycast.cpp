@@ -4,7 +4,8 @@ RaycastHitInfos RaycastHitInfos::defaultInfos(Vector3::zero, Vector3::zero, std:
 
 
 
-Raycast::Raycast(const Vector3& startPoint, const Vector3& endPoint, float drawDebugTime) : 
+Raycast::Raycast(const Vector3& startPoint, const Vector3& endPoint, float drawDebugTime, bool loadPersistent) :
+	PhysicEntity(loadPersistent),
 	drawDebugLineOne(), drawDebugLineTwo(), drawDebugPointHit(), drawDebugTimer(drawDebugTime)
 {
 	drawDebugLineOne.setPoints(startPoint, endPoint);

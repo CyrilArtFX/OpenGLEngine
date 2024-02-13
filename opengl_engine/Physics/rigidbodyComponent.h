@@ -1,5 +1,6 @@
 #pragma once
 #include "collisionComponent.h"
+#include "physicEntity.h"
 #include <Events/event.h>
 
 
@@ -16,7 +17,7 @@ struct CollisionResponse
 * For now, CCD only works with position, not rotation or scale
 * Also, intersection between two rigidbodies with CCD is not implemented
 */
-class RigidbodyComponent
+class RigidbodyComponent : public PhysicEntity
 {
 public:
 	RigidbodyComponent(CollisionComponent* collisionToAssociate, bool useCCD, bool activatePhysics);

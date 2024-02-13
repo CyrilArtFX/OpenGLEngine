@@ -13,7 +13,7 @@ public:
 	virtual ~Scene() {} 
 
 	void load(Renderer* renderer_);
-	void unload();
+	void unload(bool exitGame);
 	
 	virtual void update(float dt) = 0;
 

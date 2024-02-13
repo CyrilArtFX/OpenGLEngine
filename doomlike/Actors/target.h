@@ -8,11 +8,11 @@ class BoxAABBColComp;
 class Target : public Object, private Observer
 {
 public:
-	Target();
+	void load() override;
 
 	void onIntersectedByRaycast(const Vector3& intersectionPoint);
 
 private:
-	BoxAABBColComp* collision;
+	BoxAABBColComp* collision{ nullptr };
 };
 

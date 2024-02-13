@@ -8,10 +8,10 @@ void Scene::load(Renderer* renderer_)
 	loadScene();
 }
 
-void Scene::unload()
+void Scene::unload(bool exitGame)
 {
 	//  TODO: remove this when a proper integrations of collisions as components is done
-	Physics::ClearAllCollisions();
+	Physics::ClearAllCollisions(exitGame);
 
 	for (auto object : sceneregisteredObjects)
 	{
@@ -36,6 +36,7 @@ Camera& Scene::getCamera()
 void Scene::registerObject(Object* object)
 {
 	sceneregisteredObjects.push_back(object);
+	object->load();
 	renderer->addObject(object);
 }
 

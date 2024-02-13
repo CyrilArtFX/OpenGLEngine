@@ -26,7 +26,7 @@ public:
 	* For a raycast that don't draw debug, enter 0.0f to drawDebugTime.
 	* For a raycast that never disappear from debug, enter negative value to drawDebugTime.
 	*/
-	static bool RaycastLine(const Vector3& start, const Vector3& end, RaycastHitInfos& outHitInfos = RaycastHitInfos::defaultInfos, float drawDebugTime = 5.0f);
+	static bool RaycastLine(const Vector3& start, const Vector3& end, RaycastHitInfos& outHitInfos = RaycastHitInfos::defaultInfos, float drawDebugTime = 5.0f, bool createOnScene = true);
 
 	static void UpdatePhysics(float dt);
 
@@ -34,7 +34,7 @@ public:
 	* Remove every collisions and rigidbodies that exists.
 	* When collisions will be managed as proper components, this should better be changed.
 	*/
-	static void ClearAllCollisions();
+	static void ClearAllCollisions(bool engineClosing);
 
 
 
