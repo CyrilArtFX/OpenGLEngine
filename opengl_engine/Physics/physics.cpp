@@ -8,7 +8,7 @@ std::vector<CollisionComponent*> Physics::collisionsComponents;
 std::vector<RigidbodyComponent*> Physics::rigidbodiesComponents;
 std::vector<Raycast*> Physics::raycasts;
 
-const Vector3 Physics::Gravity = Vector3{ 0.0f, -4.0f, 0.0f };
+const float Physics::Gravity = -9.8f;
 
 
 CollisionComponent& Physics::CreateCollisionComponent(CollisionComponent* colComp)
@@ -181,7 +181,7 @@ void Physics::UpdatePhysics(float dt)
 			{
 				rigidbody.getAssociatedCollision().forceIntersected();
 				col.forceIntersected();
-				rigidbody.onCollisionIntersect.broadcast();
+				rigidbody.onCollisionIntersect.broadcast(response);
 
 				rigidbody.computeRepulsion(response.repulsion);
 			}
@@ -202,8 +202,8 @@ void Physics::UpdatePhysics(float dt)
 			{
 				rigidbody.getAssociatedCollision().forceIntersected();
 				other_rigidbody.getAssociatedCollision().forceIntersected();
-				rigidbody.onCollisionIntersect.broadcast();
-				other_rigidbody.onCollisionIntersect.broadcast();
+				rigidbody.onCollisionIntersect.broadcast(response);
+				other_rigidbody.onCollisionIntersect.broadcast(response_other);
 
 				rigidbody.computeRepulsion(response.repulsion);
 				other_rigidbody.computeRepulsion(response_other.repulsion);

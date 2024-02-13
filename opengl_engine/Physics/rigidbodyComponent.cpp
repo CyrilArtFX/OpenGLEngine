@@ -1,5 +1,6 @@
 #include "rigidbodyComponent.h"
 #include "physics.h"
+#include <iostream>
 
 RigidbodyComponent::RigidbodyComponent(CollisionComponent* collisionToAssociate, bool useCCD, bool activatePhysics) :
 	ccd(useCCD), physicsActivated(activatePhysics), useGravity(activatePhysics)
@@ -33,9 +34,15 @@ void RigidbodyComponent::updatePhysicsPreCollision(float dt)
 {
 	if (!isPhysicsActivated()) return;
 
+	//  compute gravity in velocity
+	if (useGravity)
+	{
+		if(velocity.y > Physics::Gravity)
+			velocity.y += Physics::Gravity * dt * 15.0f;
+	}
+
 	//  compute anticipated movement
 	movement = velocity * dt;
-	if (useGravity) movement += Physics::Gravity * dt;
 }
 
 void RigidbodyComponent::updatePhysicsPostCollision(float dt)
@@ -67,18 +74,18 @@ void RigidbodyComponent::computeRepulsion(const Vector3& repulsion)
 	//  compute real movement and velocity with repulsion
 	movement += repulsion;
 	
-	return;
+
 	//  absolutely not sure that it is a really good way to do this, it has no linear repulsion
 	//  it will certainly be reworked later
-	if (!Maths::samesign(velocity.x, repulsion.x))
+	if (!Maths::samesign(velocity.x, repulsion.x) && repulsion.x != 0.0f)
 	{
 		velocity.x = 0.0f;
 	}
-	if (!Maths::samesign(velocity.y, repulsion.y))
+	if (!Maths::samesign(velocity.y, repulsion.y) && repulsion.y != 0.0f)
 	{
 		velocity.y = 0.0f;
 	}
-	if (!Maths::samesign(velocity.z, repulsion.z))
+	if (!Maths::samesign(velocity.z, repulsion.z) && repulsion.z != 0.0f)
 	{
 		velocity.z = 0.0f;
 	}
@@ -91,9 +98,7 @@ void RigidbodyComponent::setVelocity(const Vector3& value)
 
 Vector3 RigidbodyComponent::getVelocity() const 
 { 
-	Vector3 ret_vel = velocity;
-	if (useGravity) ret_vel += Physics::Gravity;
-	return ret_vel;
+	return velocity;
 }
 
 void RigidbodyComponent::setUseCCD(bool value)

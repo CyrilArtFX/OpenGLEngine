@@ -22,7 +22,7 @@ Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float 
 
 	renderer->addObject(&object);
 
-	rigidbody->onCollisionIntersect.registerObserver(this, Bind_0(&Bullet::onBulletHit));
+	rigidbody->onCollisionIntersect.registerObserver(this, Bind_1(&Bullet::onBulletHit));
 	rigidbody->onRigidbodyDelete.registerObserver(this, Bind_0(&Bullet::onRigidbodyDeleted));
 
 	rigidbody->setVelocity(direction_ * velocity_);
@@ -43,7 +43,7 @@ void Bullet::update(float dt)
 	lifetime -= dt;
 }
 
-void Bullet::onBulletHit()
+void Bullet::onBulletHit(const CollisionResponse& hit_response)
 {
 	rigidbody->setUseGravity(true);
 }

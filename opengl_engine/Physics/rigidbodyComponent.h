@@ -6,6 +6,8 @@
 struct CollisionResponse
 {
 	Vector3 repulsion{ Vector3::zero };
+	Vector3 impactPoint{ Vector3::zero };
+	Vector3 impactNormal{ Vector3::zero };
 };
 
 
@@ -54,7 +56,7 @@ public:
 	bool registered{ false };
 
 	Event<> onRigidbodyDelete;
-	Event<> onCollisionIntersect;
+	Event<const CollisionResponse&> onCollisionIntersect;
 
 private:
 	CollisionComponent* associatedCollision{ nullptr };

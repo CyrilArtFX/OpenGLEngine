@@ -105,7 +105,7 @@ void Engine::run()
 
 
 		//  inputs update part
-		// -------------
+		// --------------------
 		Input::UpdateInputSystem(); //  update the keys that were registered during the last frame
 
 

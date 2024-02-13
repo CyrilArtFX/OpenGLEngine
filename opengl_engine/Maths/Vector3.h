@@ -23,6 +23,8 @@ public:
 	float lengthSq() const;
 	float length() const;
 	void normalize();
+	void clampMagnitude(float magnitude);
+	void setMagnitude(float magnitude);
 
 	// Clamp values of the vector so that the highest (absolute) is 1.0 (or -1.0) and the others are scaled
 	void clampToOne();

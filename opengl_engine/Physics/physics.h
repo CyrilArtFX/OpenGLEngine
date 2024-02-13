@@ -42,7 +42,7 @@ public:
 
 
 
-	static const Vector3 Gravity;
+	static const float Gravity;
 
 private:
 	static std::vector<CollisionComponent*> collisionsComponents;

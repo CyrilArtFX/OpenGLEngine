@@ -19,7 +19,7 @@ class Player : public Transform, public Observer
 {
 public:
 	Player();
-	void setup(float height, float speed, Renderer* renderer);
+	void setup(float height, float speed, float jump, Renderer* renderer);
 
 	void update(float dt);
 
@@ -31,6 +31,8 @@ public:
 
 	void onRigidbodyDeleted();
 
+	void onCollision(const CollisionResponse& collisionResponse);
+
 
 	Camera& getCamera() { return camera; }
 
@@ -41,6 +43,7 @@ private:
 
 	float camHeight{ 0.0f };
 	float moveSpeed{ 0.0f };
+	float jumpForce{ 0.0f };
 	bool onGround{ false };
 
 	//  fake shots

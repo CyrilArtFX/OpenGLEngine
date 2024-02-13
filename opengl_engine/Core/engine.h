@@ -51,7 +51,7 @@ private:
 	float deltaTime = 0.0f;
 	float lastFrame = 0.0f;
 
-	//  pause and freecam
+	//  pause, freecam and debug view
 	bool gamePaused{ false };
 	bool oneFrame{ false };
 	bool freecamMode{ false };

@@ -87,6 +87,9 @@ bool CollisionsAABB::CollideBodyBox(const RigidbodyComponent& bodyAABB, Collisio
 
 			//  set out body response;
 			outBodyResponse.repulsion = repulsion;
+
+			outBodyResponse.impactPoint = ccd_box.getPointOnPerimeter(hit_location);
+			outBodyResponse.impactNormal = body_box_aabb.getNormal(outBodyResponse.impactPoint);
 		}
 	}
 

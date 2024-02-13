@@ -56,6 +56,20 @@ void Vector3::normalize()
 	z /= len;
 }
 
+void Vector3::clampMagnitude(float magnitude)
+{
+	if (lengthSq() <= magnitude * magnitude) return;
+	setMagnitude(magnitude);
+}
+
+void Vector3::setMagnitude(float magnitude)
+{
+	normalize();
+	x *= magnitude;
+	y *= magnitude;
+	z *= magnitude;
+}
+
 void Vector3::clampToOne()
 {
 	float highest_abs = Maths::max(Maths::abs(x), Maths::max(Maths::abs(y), Maths::abs(z)));
