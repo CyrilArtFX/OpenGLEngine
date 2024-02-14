@@ -1,5 +1,6 @@
 #include "collisionsAABB.h"
 #include <Maths/maths.h>
+#include <Physics/physics.h>
 
 using Maths::max;
 using Maths::min;
@@ -107,11 +108,17 @@ bool CollisionsAABB::CollideBodyBox(const RigidbodyComponent& bodyAABB, Collisio
 				if (y_difference >= 0.0f)
 				{
 					//  the colliding object could be step up on
+					
+					float anticipated_movement_y = bodyAABB.getAnticipatedMovement().y;
+					if (anticipated_movement_y < 0.0f) y_difference += -anticipated_movement_y; //  cancel gravity
+
+					//  test if the destination point is collision free
+					if (Physics::AABBRaycast(bodyAABB.getAnticipatedMovement() + Vector3{ 0.0f, y_difference + 0.001f, 0.0f }, ccd_box, 0.0f)) return interpolate;
+
+
 					outBodyResponse.repulsion = Vector3{ 0.0f, y_difference, 0.0f };
 					outBodyResponse.impactPoint = ccd_pos_next_frame + Vector3{ 0.0f, y_difference - ccd_box.getHalfExtents().y, 0.0f };
 					outBodyResponse.impactNormal = body_box_aabb.getNormal(outBodyResponse.impactPoint);
-
-					//  TODO: test if stepping on the object makes the body collide with other collisions using raycast with aabb col
 				}
 			}
 		}
