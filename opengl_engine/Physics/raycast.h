@@ -1,13 +1,20 @@
 #pragma once
-#include <Maths/Geometry/ray.h>
-#include <Rendering/Debug/line.h>
-#include <Rendering/Debug/point.h>
-
 #include "physicEntity.h"
 
+#include <Maths/vector3.h>
 #include <limits>
 
 class CollisionComponent;
+class Material;
+
+
+enum class RaycastType : uint8_t
+{
+	RaycastTypeNone = 0,
+	RaycastTypeLine = 1,
+	RaycastTypeAABB = 2
+};
+
 
 struct RaycastHitInfos
 {
@@ -26,33 +33,31 @@ struct RaycastHitInfos
 };
 
 
+/** Raycast
+* Raycast class contains common functionnalities to all raycasts types, such as timer and draw.
+*/
 class Raycast : public PhysicEntity
 {
 public:
-	Raycast(const Vector3& startPoint, const Vector3& endPoint, float drawDebugTime, bool loadPersistent = false);
+	Raycast(float drawDebugTime, bool loadPersistent = false);
 	Raycast() = delete;
 	Raycast(const Raycast&) = delete;
 	Raycast& operator=(const Raycast&) = delete;
 
-	void drawDebugRaycast(Material& debugMaterial);
-
-	void setHitPos(Vector3 hitPosition);
+	virtual void drawDebugRaycast(Material& debugMaterial) = 0;
 
 	void updateDrawDebugTimer(float dt);
 
-	inline const Ray& getRay() const { return ray; }
-
 	inline bool drawDebugTimerFinished() const { return drawDebugTimer == 0.0f; }
 
-private:
-	Ray ray;
+	inline RaycastType getRaycastType() const { return type; }
 
-	Line drawDebugLineOne;
-	Line drawDebugLineTwo;
-	Point drawDebugPointHit;
-
+protected:
 	bool hit{ false };
 
+	RaycastType type{ RaycastType::RaycastTypeNone };
+
+private:
 	float drawDebugTimer;
 };
 

@@ -15,15 +15,12 @@
 	-> changer le système de répulsion pour utiliser la normal de la collision - fait
 	-> mettre la gravité et bien tester ça - fait
 	-> améliorer la manière dont on peut programmer des mouvements pour pas avoir des trucs rigides comme actuellement - fait
-	-> faire un "raycast" cube pour détecter si un cube intersecte avec des collisions de la scène (avec et sans ccd)
+	-> faire un "raycast" cube pour détecter si un cube intersecte avec des collisions de la scène (à une pos statique) - fait
 	-> faire un système de step pour permettre au joueur d'avancer sur des collisions assez basses - en cours (manque le raycast cube pour tester proprement les collisions)
 	-> faire la detection ccd / ccd : https://blog.hamaluik.ca/posts/swept-aabb-collision-using-minkowski-difference/
 	-> faire la répulsion entre box aabb (position pas rotation) pour les collisions body/body (je me chie dessus de peur)
 	-> finir le setup du système physique (objects channels, etc.)
 	-> épreuve ultime : faire bouger le joueur sur des plateformes mouvantes (pitié la physique)
-
-KNOWN ISSUE : marcher entre deux collisions à la même hauteur (comme deux sols côte à côte) pose problème.
-Ca serait bien même de faire en sorte de pouvoir marcher sans problème entre deux collisions avec une petite différence de hauteur
 
 
 ~ Faire le doomlike (omg ?)
@@ -39,13 +36,25 @@ Ca serait bien même de faire en sorte de pouvoir marcher sans problème entre d
 
 ~ Utiliser le système d'event pour les fonctionnalités importantes du moteur (pause, etc.)
 
+
+== LONG TERME ==
+
+~ Intégrer l'ECS (pas FLECS pour l'instant, mais un système assez simple qui permettrait au moins de mieux gérer les collisions, les meshs, etc.)
+
 ~ Améliorer le système de lumière
 
 ~ Faire le système des ombres
 
-~ Mettre un vrai système de physique
+~ Animations 3D : https://ogldev.org/www/tutorial38/tutorial38.html
 
-~ Intégrer l'ECS (attendre le cours sur le multithreading dans un engine)
+
+== TRES LONG TERME == (aka ça sera jamais fait)
+
+~ Mettre des particules
+
+~ Mettre un système de physique supportant plus que du AABB
+
+~ Mettre un editeur :skull:
 
 
 == REFLEXIONS ==
@@ -53,6 +62,8 @@ Ca serait bien même de faire en sorte de pouvoir marcher sans problème entre d
 ~ Mettre le renderer en classe statique ? permettrait d'assigner certains assets (comme les materiaux) directement à la création par exemple + de ne pas avoir à le passer en paramètre pour le joueur qui va devoir créer des balles (par exemple)
 
 ~ Mettre un système pour détecter automatiquement la profondeur de couleur au chargement de la texture pour éviter les problèmes (si la profondeur de couleur est 24, pas d'alpha (même avec un .png), donc charger avec GL_RGBA va faire un crash) -> regarder comment gregory a fait pour xenity
+
+~ Mettre un raycast cube AABB en sweep qui utiliserais les algos utilisés pour le ccd (pourrait permettre d'améliorer la qualité du système de step, mais au prix de perfs)
 
 ~ Réfléchir au fonctionnement du load asset des scenes, est-ce qu'il faudrait faire gaffe à l'utilisation de ram et unload genre les textures qui ne sont plus nécessaires ?
 

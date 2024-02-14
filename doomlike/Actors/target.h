@@ -10,7 +10,7 @@ class Target : public Object, private Observer
 public:
 	void load() override;
 
-	void onIntersectedByRaycast(const Vector3& intersectionPoint);
+	void onIntersectedByRaycast(RaycastType type, const Vector3& intersectionPoint);
 
 private:
 	BoxAABBColComp* collision{ nullptr };

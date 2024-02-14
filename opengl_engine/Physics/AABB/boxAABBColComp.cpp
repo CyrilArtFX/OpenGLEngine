@@ -26,9 +26,14 @@ bool BoxAABBColComp::resolvePointIntersection(const Vector3& point) const
 	return CollisionsAABB::IntersectPoint(*this, point);
 }
 
-bool BoxAABBColComp::resolveRaycastIntersection(const Ray& raycast, RaycastHitInfos& outHitInfos) const
+bool BoxAABBColComp::resolveLineRaycastIntersection(const Ray& raycast, RaycastHitInfos& outHitInfos) const
 {
-	return CollisionsAABB::IntersectRaycast(*this, raycast, outHitInfos);
+	return CollisionsAABB::IntersectLineRaycast(*this, raycast, outHitInfos);
+}
+
+bool BoxAABBColComp::resolveAABBRaycastIntersection(const Box& raycast) const
+{
+	return CollisionsAABB::IntersectAABBRaycast(*this, raycast);
 }
 
 bool BoxAABBColComp::resolveCollisionIntersection(const CollisionComponent& otherCol) const

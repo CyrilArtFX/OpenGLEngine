@@ -16,7 +16,7 @@ bool CollisionsAABB::IntersectPoint(const BoxAABBColComp& boxAABB, const Vector3
 		point.z >= box_min.z && point.z <= box_max.z;
 }
 
-bool CollisionsAABB::IntersectRaycast(const BoxAABBColComp& boxAABB, const Ray& raycast, RaycastHitInfos& outHitInfos)
+bool CollisionsAABB::IntersectLineRaycast(const BoxAABBColComp& boxAABB, const Ray& raycast, RaycastHitInfos& outHitInfos)
 {
 	Box box = boxAABB.getTransformedBox();
 
@@ -33,6 +33,15 @@ bool CollisionsAABB::IntersectRaycast(const BoxAABBColComp& boxAABB, const Ray& 
 		outHitInfos.hitNormal = boxAABB.getNormal(hit_location);
 		outHitInfos.hitCollision = &boxAABB;
 	}
+
+	return intersect;
+}
+
+bool CollisionsAABB::IntersectAABBRaycast(const BoxAABBColComp& boxAABB, const Box& raycast)
+{
+	Box box = boxAABB.getTransformedBox();
+
+	bool intersect = BoxesIntersection(box, raycast);
 
 	return intersect;
 }

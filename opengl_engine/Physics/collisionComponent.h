@@ -2,6 +2,8 @@
 #include "physicEntity.h"
 #include <Objects/transform.h>
 #include "raycast.h"
+#include "raycastLine.h"
+#include "AABB/raycastAABB.h"
 
 #include <Events/event.h>
 
@@ -32,7 +34,8 @@ public:
 	void setAssociatedTransform(Transform* newTransform);
 
 	bool resolvePoint(const Vector3& point) const;
-	bool resolveRaycast(const Ray& raycast, RaycastHitInfos& outHitInfos) const;
+	bool resolveLineRaycast(const Ray& raycast, RaycastHitInfos& outHitInfos) const;
+	bool resolveAABBRaycast(const Box& raycast) const;
 	bool resolveCollision(const CollisionComponent& otherCol) const;
 	bool resolveRigidbody(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse) const;
 	bool resolveRigidbodySelf(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse, const RigidbodyComponent& selfRigidbody, CollisionResponse& outSelfResponse) const;
@@ -56,14 +59,15 @@ public:
 
 	
 	Event<> onCollisionDelete;
-	mutable Event<const Vector3&> onRaycastIntersect;
+	mutable Event<RaycastType, const Vector3&> onRaycastIntersect;
 
 
 protected:
 	CollisionComponent(CollisionType collisionType_, Transform* associatedTransform_, Mesh* debugMesh_, bool loadPersistent_);
 
 	virtual bool resolvePointIntersection(const Vector3& point) const = 0;
-	virtual bool resolveRaycastIntersection(const Ray& raycast, RaycastHitInfos& outHitInfos) const = 0;
+	virtual bool resolveLineRaycastIntersection(const Ray& raycast, RaycastHitInfos& outHitInfos) const = 0;
+	virtual bool resolveAABBRaycastIntersection(const Box& raycast) const = 0;
 	virtual bool resolveCollisionIntersection(const CollisionComponent& otherCol) const = 0;
 	virtual bool resolveRigidbodyIntersection(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse) const = 0;
 	virtual bool resolveRigidbodySelfIntersection(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse, const RigidbodyComponent& selfRigidbody, CollisionResponse& outSelfResponse) const = 0;

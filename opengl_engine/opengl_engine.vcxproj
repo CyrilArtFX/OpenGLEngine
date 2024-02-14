@@ -141,6 +141,7 @@
     <ClCompile Include="Maths\Geometry\box.cpp" />
     <ClCompile Include="Maths\Geometry\ray.cpp" />
     <ClCompile Include="Physics\AABB\boxAABBColComp.cpp" />
+    <ClCompile Include="Physics\AABB\raycastAABB.cpp" />
     <ClCompile Include="Physics\collisionComponent.cpp" />
     <ClCompile Include="Physics\AABB\collisionsAABB.cpp" />
     <ClCompile Include="Core\engine.cpp" />
@@ -160,8 +161,10 @@
     <ClCompile Include="Objects\transform.cpp" />
     <ClCompile Include="Physics\physics.cpp" />
     <ClCompile Include="Physics\raycast.cpp" />
+    <ClCompile Include="Physics\raycastLine.cpp" />
     <ClCompile Include="Physics\rigidbodyComponent.cpp" />
     <ClCompile Include="Rendering\camera.cpp" />
+    <ClCompile Include="Rendering\Debug\cube.cpp" />
     <ClCompile Include="Rendering\Debug\line.cpp" />
     <ClCompile Include="Rendering\Debug\point.cpp" />
     <ClCompile Include="Rendering\material.cpp" />
@@ -182,8 +185,11 @@
     <ClInclude Include="Assets\defaultAssets.h" />
     <ClInclude Include="Events\event.h" />
     <ClInclude Include="Events\observer.h" />
+    <ClInclude Include="Physics\AABB\raycastAABB.h" />
     <ClInclude Include="Physics\physicEntity.h" />
+    <ClInclude Include="Physics\raycastLine.h" />
     <ClInclude Include="Physics\rigidbodyComponent.h" />
+    <ClInclude Include="Rendering\Debug\cube.h" />
     <ClInclude Include="Rendering\Debug\line.h" />
     <ClInclude Include="Maths\Geometry\box.h" />
     <ClInclude Include="Maths\Geometry\ray.h" />

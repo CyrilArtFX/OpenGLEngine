@@ -1,5 +1,7 @@
 #include "physics.h"
 
+#include "raycastLine.h"
+
 #include <iostream>
 #include <algorithm>
 
@@ -65,7 +67,7 @@ void Physics::RemoveRigidbody(RigidbodyComponent* rigidbodyComp)
 	std::cout << "PHYSICS_INFO: Successfully removed a rigidbody.\n";
 }
 
-bool Physics::RaycastLine(const Vector3& start, const Vector3& end, RaycastHitInfos& outHitInfos, float drawDebugTime, bool createOnScene)
+bool Physics::LineRaycast(const Vector3& start, const Vector3& end, RaycastHitInfos& outHitInfos, float drawDebugTime, bool createOnScene)
 {
 	outHitInfos = RaycastHitInfos();
 
@@ -75,48 +77,110 @@ bool Physics::RaycastLine(const Vector3& start, const Vector3& end, RaycastHitIn
 	{
 		std::cout << "PHYSICS_INFO: Create a raycast line.\n";
 
-		raycasts.emplace_back(new Raycast(start, end, drawDebugTime, !createOnScene));
+		raycasts.emplace_back(new RaycastLine(start, end, drawDebugTime, !createOnScene));
 
-		const Ray& ray = raycasts.back()->getRay();
+		RaycastLine& raycast = static_cast<RaycastLine&>(*raycasts.back());
+
+		const Ray& ray = raycast.getRay();
 
 		for (auto& col : collisionsComponents)
 		{
-			bool col_hit = col->resolveRaycast(ray, outHitInfos);
+			bool col_hit = col->resolveLineRaycast(ray, outHitInfos);
 			hit = hit || col_hit;
 		}
 
 		if (outHitInfos.hitCollision)
 		{
-			outHitInfos.hitCollision->forceIntersected();
-			outHitInfos.hitCollision->onRaycastIntersect.broadcast(outHitInfos.hitLocation);
+			outHitInfos.hitCollision->onRaycastIntersect.broadcast(raycast.getRaycastType(), outHitInfos.hitLocation);
 		}
 
 
-		if (hit) raycasts.back()->setHitPos(outHitInfos.hitLocation);
+		if (hit) raycast.setHitPos(outHitInfos.hitLocation);
 
 		return hit;
 	}
 	else //  do not register the raycast in the list if it will not draw debug
 	{
-		Raycast* raycast = new Raycast(start, end, drawDebugTime);
+		RaycastLine* raycast = new RaycastLine(start, end, drawDebugTime);
 
 		const Ray& ray = raycast->getRay();
 
 		for (auto& col : collisionsComponents)
 		{
-			bool col_hit = col->resolveRaycast(ray, outHitInfos);
+			bool col_hit = col->resolveLineRaycast(ray, outHitInfos);
 			hit = hit || col_hit;
 		}
 
 		if (outHitInfos.hitCollision)
 		{
-			//  also do not set the collision intersected if it will not draw debug
-			outHitInfos.hitCollision->onRaycastIntersect.broadcast(outHitInfos.hitLocation);
+			outHitInfos.hitCollision->onRaycastIntersect.broadcast(raycast->getRaycastType(), outHitInfos.hitLocation);
 		}
 
 		delete raycast;
 
 		//  finally no need to set the hit pos on the raycast if it will not draw debug
+
+		return hit;
+	}
+}
+
+bool Physics::AABBRaycast(const Vector3& location, const Box& aabbBox, float drawDebugTime, bool createOnScene)
+{
+	bool hit = false;
+
+	std::vector<CollisionComponent*> intersected_cols;
+
+	if (drawDebugTime != 0.0f)
+	{
+		std::cout << "PHYSICS_INFO: Create a raycast AABB.\n";
+
+		raycasts.emplace_back(new RaycastAABB(location, aabbBox, drawDebugTime));
+
+		RaycastAABB& raycast = static_cast<RaycastAABB&>(*raycasts.back());
+
+		const Box& box = raycast.getBox();
+
+		for (auto& col : collisionsComponents)
+		{
+			if (col->resolveAABBRaycast(box))
+			{
+				hit = true;
+				intersected_cols.push_back(col);
+			}
+		}
+
+		for (auto& col : intersected_cols)
+		{
+			col->onRaycastIntersect.broadcast(raycast.getRaycastType(), location); //  location not really relevent here
+		}
+
+		if (hit) raycast.setHit();
+
+		return hit;
+	}
+	else //  do not register the raycast in the list if it will not draw debug
+	{
+		RaycastAABB* raycast = new RaycastAABB(location, aabbBox, drawDebugTime, !createOnScene);
+
+		const Box& box = raycast->getBox();
+
+		for (auto& col : collisionsComponents)
+		{
+			if (col->resolveAABBRaycast(box))
+			{
+				hit = true;
+				intersected_cols.push_back(col);
+			}
+		}
+
+		for (auto& col : intersected_cols)
+		{
+			col->onRaycastIntersect.broadcast(raycast->getRaycastType(), location); //  location not really relevent here
+		}
+
+		delete raycast;
+
+		//  finally no need to set the hit on the raycast if it will not draw debug
 
 		return hit;
 	}
@@ -149,17 +213,6 @@ void Physics::UpdatePhysics(float dt)
 
 			i--;
 		}
-	}
-
-	//  test the currently existing raycasts for debug drawing
-	for (auto& raycast : raycasts)
-	{
-		RaycastHitInfos out = RaycastHitInfos();
-		for (auto& col : collisionsComponents)
-		{
-			col->resolveRaycast(raycast->getRay(), out);
-		}
-		if (out.hitCollision) out.hitCollision->forceIntersected();
 	}
 
 	//  test all the rigidbodies
