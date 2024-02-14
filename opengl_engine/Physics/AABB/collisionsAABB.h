@@ -29,6 +29,6 @@ private:
 
 	static bool CCDBoxIntersection(const Box& boxCCD, const Vector3& ccdNextFramePos, const Box& box, float& distance, Vector3& location);
 
-	//static bool CCDsIntersection();
+	static bool CCDsIntersection(const Box& boxACCD, const Vector3& ccdANextFramePos, const Box& boxBCCD, const Vector3& ccdBNextFramePos, float& distanceA, float& distanceB, Vector3& location);
 };
 

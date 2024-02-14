@@ -229,3 +229,8 @@ bool CollisionsAABB::CCDBoxIntersection(const Box& boxCCD, const Vector3& ccdNex
 
 	return intersect;
 }
+
+bool CollisionsAABB::CCDsIntersection(const Box& boxACCD, const Vector3& ccdANextFramePos, const Box& boxBCCD, const Vector3& ccdBNextFramePos, float& distanceA, float& distanceB, Vector3& location)
+{
+	return false;
+}

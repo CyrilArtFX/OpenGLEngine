@@ -123,3 +123,16 @@ std::string Box::ToString(const Box& box)
 {
 	return "Center: " + box.center.toString() + " | Half Extents: " + box.halfExtents.toString();
 }
+
+Box Box::MinkowskiDifference(const Box& boxA, const Box& boxB)
+{
+	Box md_box;
+
+	Vector3 top_left = boxA.getMinPoint() - boxB.getMaxPoint();
+	Vector3 extents = boxA.getHalfExtents() + boxB.getHalfExtents();
+
+	md_box.setCenterPoint(top_left + extents);
+	md_box.setHalfExtents(extents);
+
+	return md_box;
+}

@@ -28,6 +28,7 @@ public:
 
 
 	static std::string ToString(const Box& box);
+	static Box MinkowskiDifference(const Box& boxA, const Box& boxB);
 
 
 
