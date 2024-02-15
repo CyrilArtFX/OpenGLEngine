@@ -160,44 +160,23 @@ bool CollisionsAABB::CollideBodies(const RigidbodyComponent& bodyAABBa, Collisio
 		if (interpolate)
 		{
 			//  compute repulsion
-			Box minkowski_diff = Box::MinkowskiDifference(body_a_box, body_b_box);
-			Vector3 repulsion_minkowski = minkowski_diff.getPointOnPerimeter(Vector3::zero);
-			float rep_length = repulsion_minkowski.length();
-
-			Vector3 body_vel_a = bodyAABBa.getAnticipatedMovement();
-			body_vel_a.normalize();
-			Vector3 body_vel_b = bodyAABBb.getAnticipatedMovement();
-			body_vel_b.normalize();
+			Box minkowski_diff = Box::MinkowskiDifference(body_b_box, body_a_box);
+			Vector3 repulsion = minkowski_diff.getPointOnPerimeter(Vector3::zero);
 
 			float total_weights = bodyAABBa.getWeight() + bodyAABBb.getWeight();
 
-			Vector3 repulsion_a = -body_vel_a * rep_length * (bodyAABBb.getWeight() / total_weights);
-			Vector3 repulsion_b = -body_vel_b * rep_length * (bodyAABBa.getWeight() / total_weights);
+			Vector3 repulsion_a = repulsion * (bodyAABBb.getWeight() / total_weights);
+			Vector3 repulsion_b = -repulsion * (bodyAABBa.getWeight() / total_weights);
 
 			//  compute hit location
-			body_a_box.setCenterPoint(body_a_box.getCenterPoint() + repulsion_a);
-			Vector3 hit_location_a = body_a_box.getCenterPoint() + body_vel_a * body_a_box.getHalfExtents();
-			body_b_box.setCenterPoint(body_b_box.getCenterPoint() + repulsion_b);
-			Vector3 hit_location_b = body_b_box.getCenterPoint() + body_vel_b * body_b_box.getHalfExtents();
-
-			//  compute collision normal
-			Vector3 collision_normal_a = body_b_box_aabb.getNormal(body_b_box.getPointOnPerimeter(hit_location_b));
-			Vector3 collision_normal_b = body_a_box_aabb.getNormal(body_a_box.getPointOnPerimeter(hit_location_a));
-
-			//  clamp repulsion to collision normal
-			if (!Maths::samesign(collision_normal_a.x, repulsion_a.x)) repulsion_a.x = 0.0f;
-			if (!Maths::samesign(collision_normal_a.y, repulsion_a.y)) repulsion_a.y = 0.0f;
-			if (!Maths::samesign(collision_normal_a.z, repulsion_a.z)) repulsion_a.z = 0.0f;
-			if (!Maths::samesign(collision_normal_b.x, repulsion_b.x)) repulsion_b.x = 0.0f;
-			if (!Maths::samesign(collision_normal_b.y, repulsion_b.y)) repulsion_b.y = 0.0f;
-			if (!Maths::samesign(collision_normal_b.z, repulsion_b.z)) repulsion_b.z = 0.0f;
+			Vector3 hit_location = body_a_box.getCenterPoint() + bodyAABBa.getAnticipatedMovement() - repulsion_a + body_a_box.getHalfExtents() * Vector3::normalize(-repulsion_a);
 
 			//  set out body response;
 			outBodyAResponse.repulsion = repulsion_a;
-			outBodyAResponse.impactPoint = body_a_box.getPointOnPerimeter(hit_location_a);
+			outBodyAResponse.impactPoint = body_a_box.getPointOnPerimeter(hit_location);
 			outBodyAResponse.impactNormal = body_a_box_aabb.getNormal(outBodyAResponse.impactPoint);
 			outBodyBResponse.repulsion = repulsion_b;
-			outBodyBResponse.impactPoint = body_b_box.getPointOnPerimeter(hit_location_b);
+			outBodyBResponse.impactPoint = body_b_box.getPointOnPerimeter(hit_location);
 			outBodyBResponse.impactNormal = body_b_box_aabb.getNormal(outBodyBResponse.impactPoint);
 		}
 	}

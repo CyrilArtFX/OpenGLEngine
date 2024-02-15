@@ -27,6 +27,7 @@ Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float 
 
 	rigidbody->setVelocity(direction_ * velocity_);
 	rigidbody->setUseGravity(false);
+	rigidbody->setWeigth(0.00001f);
 }
 
 
