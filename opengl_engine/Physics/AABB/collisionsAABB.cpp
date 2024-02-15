@@ -8,13 +8,7 @@ using Maths::min;
 bool CollisionsAABB::IntersectPoint(const BoxAABBColComp& boxAABB, const Vector3& point)
 {
 	Box box = boxAABB.getTransformedBox();
-	Vector3 box_min = box.getMinPoint();
-	Vector3 box_max = box.getMaxPoint();
-
-	return
-		point.x >= box_min.x && point.x <= box_max.x &&
-		point.y >= box_min.y && point.y <= box_max.y &&
-		point.z >= box_min.z && point.z <= box_max.z;
+	return BoxPointIntersection(box, point);
 }
 
 bool CollisionsAABB::IntersectLineRaycast(const BoxAABBColComp& boxAABB, const Ray& raycast, RaycastHitInfos& outHitInfos)
@@ -59,30 +53,56 @@ bool CollisionsAABB::CollideBodyBox(const RigidbodyComponent& bodyAABB, Collisio
 {
 	bool interpolate = false;
 	const BoxAABBColComp& body_box_aabb = static_cast<const BoxAABBColComp&>(bodyAABB.getAssociatedCollision());
+	Vector3 collision_normal = Vector3::zero;
+	Box body_box = body_box_aabb.getTransformedBox();
+	const Box static_box = boxAABB.getTransformedBox();
 
 	if (!bodyAABB.getUseCCD())
 	{
-		Box body_box = body_box_aabb.getTransformedBox();
 		body_box.setCenterPoint(body_box.getCenterPoint() + bodyAABB.getAnticipatedMovement());
-		const Box& static_box = boxAABB.getTransformedBox();
 		interpolate = BoxesIntersection(body_box, static_box);
+
+		if (interpolate && bodyAABB.isPhysicsActivated())
+		{
+			//  compute repulsion
+			Box minkowski_diff = Box::MinkowskiDifference(body_box, static_box);
+			Vector3 repulsion = minkowski_diff.getPointOnPerimeter(Vector3::zero);
+			float rep_length = repulsion.length();
+			Vector3 body_vel = bodyAABB.getAnticipatedMovement();
+			body_vel.normalize();
+			repulsion = -body_vel * rep_length;
+
+			//  compute hit location
+			body_box.setCenterPoint(body_box.getCenterPoint() + repulsion);
+			Vector3 hit_location = body_box.getCenterPoint() + body_vel * body_box.getHalfExtents();
+
+			//  compute collision normal
+			collision_normal = boxAABB.getNormal(static_box.getPointOnPerimeter(hit_location));
+
+			//  clamp repulsion to collision normal
+			if (!Maths::samesign(collision_normal.x, repulsion.x)) repulsion.x = 0.0f;
+			if (!Maths::samesign(collision_normal.y, repulsion.y)) repulsion.y = 0.0f;
+			if (!Maths::samesign(collision_normal.z, repulsion.z)) repulsion.z = 0.0f;
+
+			//  set out body response;
+			outBodyResponse.repulsion = repulsion;
+			outBodyResponse.impactPoint = body_box.getPointOnPerimeter(hit_location);
+			outBodyResponse.impactNormal = body_box_aabb.getNormal(outBodyResponse.impactPoint);
+		}
 	}
 
-	//  if the body (without ccd) intersect the collision, the test with ccd is use for it to compute repulsion
-	if (bodyAABB.getUseCCD() || interpolate)
+	if (bodyAABB.getUseCCD())
 	{
-		const Box& ccd_box = body_box_aabb.getTransformedBox();
-		const Vector3& ccd_pos_next_frame = ccd_box.getCenterPoint() + bodyAABB.getAnticipatedMovement();
-		const Box& static_box = boxAABB.getTransformedBox();
+		const Vector3 ccd_pos_next_frame = body_box.getCenterPoint() + bodyAABB.getAnticipatedMovement();
 		float hit_distance = 0.0f;
 		Vector3 hit_location = Vector3::zero;
 
-		interpolate = CCDBoxIntersection(ccd_box, ccd_pos_next_frame, static_box, hit_distance, hit_location);
+		interpolate = CCDBoxIntersection(body_box, ccd_pos_next_frame, static_box, hit_distance, hit_location);
 
 		if (interpolate && bodyAABB.isPhysicsActivated())
 		{
 			//  compute collision normal
-			Vector3 collision_normal = boxAABB.getNormal(hit_location);
+			collision_normal = boxAABB.getNormal(hit_location);
 
 			//  compute replusion
 			Vector3 body_vel = bodyAABB.getAnticipatedMovement();
@@ -97,30 +117,31 @@ bool CollisionsAABB::CollideBodyBox(const RigidbodyComponent& bodyAABB, Collisio
 
 			//  set out body response;
 			outBodyResponse.repulsion = repulsion;
-
-			outBodyResponse.impactPoint = ccd_box.getPointOnPerimeter(hit_location);
+			outBodyResponse.impactPoint = body_box.getPointOnPerimeter(hit_location);
 			outBodyResponse.impactNormal = body_box_aabb.getNormal(outBodyResponse.impactPoint);
+		}
+	}
 
-			//  step (make a moving rigidbody able to step on a collision if it is low enough)
-			if (!(collision_normal == Vector3::unitY) && ccd_box.getMinPoint().y + bodyAABB.getStepHeight() > static_box.getMaxPoint().y)
-			{
-				float y_difference = static_box.getMaxPoint().y - ccd_box.getMinPoint().y;
-				if (y_difference >= 0.0f)
-				{
-					//  the colliding object could be step up on
-					
-					float anticipated_movement_y = bodyAABB.getAnticipatedMovement().y;
-					if (anticipated_movement_y < 0.0f) y_difference += -anticipated_movement_y; //  cancel gravity
+	//  step (make a moving rigidbody able to step on a collision if it is low enough)
+	//  it is identical for ccd and non ccd since step doesn't use ccd
+	if (interpolate && bodyAABB.isPhysicsActivated() && !(collision_normal == Vector3::unitY) && body_box.getMinPoint().y + bodyAABB.getStepHeight() > static_box.getMaxPoint().y)
+	{
+		float y_difference = static_box.getMaxPoint().y - body_box.getMinPoint().y;
+		if (y_difference >= 0.0f)
+		{
+			//  the colliding object could be step up on
 
-					//  test if the destination point is collision free
-					if (Physics::AABBRaycast(bodyAABB.getAnticipatedMovement() + Vector3{ 0.0f, y_difference + 0.001f, 0.0f }, ccd_box, 0.0f)) return interpolate;
+			float anticipated_movement_y = bodyAABB.getAnticipatedMovement().y;
+			if (anticipated_movement_y < 0.0f) y_difference += -anticipated_movement_y; //  cancel gravity
 
+			//  test if the destination point is collision free
+			if (Physics::AABBRaycast(bodyAABB.getAnticipatedMovement() + Vector3{ 0.0f, y_difference + 0.001f, 0.0f }, body_box, 0.0f)) return interpolate;
 
-					outBodyResponse.repulsion = Vector3{ 0.0f, y_difference, 0.0f };
-					outBodyResponse.impactPoint = ccd_pos_next_frame + Vector3{ 0.0f, y_difference - ccd_box.getHalfExtents().y, 0.0f };
-					outBodyResponse.impactNormal = body_box_aabb.getNormal(outBodyResponse.impactPoint);
-				}
-			}
+			const Vector3 body_pos_next_frame = body_box.getCenterPoint() + bodyAABB.getAnticipatedMovement();
+
+			outBodyResponse.repulsion = Vector3{ 0.0f, y_difference, 0.0f };
+			outBodyResponse.impactPoint = body_pos_next_frame + Vector3{ 0.0f, y_difference - body_box.getHalfExtents().y, 0.0f };
+			outBodyResponse.impactNormal = body_box_aabb.getNormal(outBodyResponse.impactPoint);
 		}
 	}
 
@@ -135,13 +156,20 @@ bool CollisionsAABB::CollideBodies(const RigidbodyComponent& bodyAABBa, Collisio
 
 bool CollisionsAABB::BoxesIntersection(const Box& boxA, const Box& boxB)
 {
-	Vector3 box_a_min = boxA.getMinPoint();
-	Vector3 box_a_max = boxA.getMaxPoint();
+	Box minkowski = Box::MinkowskiDifference(boxA, boxB);
 
-	Vector3 box_b_min = boxB.getMinPoint();
-	Vector3 box_b_max = boxB.getMaxPoint();
+	return BoxPointIntersection(minkowski, Vector3::zero);
+}
 
-	return box_a_min < box_b_max && box_a_max > box_b_min;
+bool CollisionsAABB::BoxPointIntersection(const Box& box, const Vector3& point)
+{
+	Vector3 box_min = box.getMinPoint();
+	Vector3 box_max = box.getMaxPoint();
+
+	return
+		point.x >= box_min.x && point.x <= box_max.x &&
+		point.y >= box_min.y && point.y <= box_max.y &&
+		point.z >= box_min.z && point.z <= box_max.z;
 }
 
 bool CollisionsAABB::BoxRayIntersection(const Box& box, const Ray& ray, float& distance, Vector3& location, bool computeCollision)
