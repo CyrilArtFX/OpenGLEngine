@@ -77,5 +77,8 @@ private:
 	Vector3 velocity{ Vector3::zero };
 	Vector3 movement{ Vector3::zero };
 	bool useGravity{ false };
+
+
+	bool firstFrame{ true };
 };
 

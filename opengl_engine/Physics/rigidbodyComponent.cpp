@@ -33,6 +33,8 @@ void RigidbodyComponent::associateCollision(CollisionComponent* collisionToAssoc
 
 void RigidbodyComponent::updatePhysicsPreCollision(float dt)
 {
+	if (firstFrame) return;
+
 	//  compute gravity in velocity
 	if (useGravity)
 	{
@@ -53,6 +55,12 @@ void RigidbodyComponent::updatePhysicsPreCollision(float dt)
 
 void RigidbodyComponent::updatePhysicsPostCollision(float dt)
 {
+	if (firstFrame)
+	{
+		firstFrame = false;
+		return;
+	}
+
 	if (!isPhysicsActivated()) return;
 
 	//  apply real movement (anticipated movement modified by the collisions during physics step)
