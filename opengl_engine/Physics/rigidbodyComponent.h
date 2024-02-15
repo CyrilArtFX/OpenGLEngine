@@ -14,8 +14,10 @@ struct CollisionResponse
 
 /** Rigidbody Component
 * Will tests other colliders and react with physics if it is activated.
-* For now, CCD only works with position, not rotation or scale
-* Also, intersection between two rigidbodies with CCD is not implemented
+* If physics is not activated, will act as a static collision (even if it moves with velocity).
+* Rigidbody weight cannot be inferior or equal to 0.
+* CCD works with the rigidbody velocity and won't have effect if physics is not activated.
+* Step mechanic only works with static collisions (or with rigidbodies with physics not activated that act as statif collisions).
 */
 class RigidbodyComponent : public PhysicEntity
 {
@@ -31,7 +33,7 @@ public:
 	void updatePhysicsPostCollision(float dt);
 
 	void setPhysicsActivated(bool value);
-	inline bool isPhysicsActivated() const { return physicsActivated && weight > 0.0f && associatedCollision; }
+	inline bool isPhysicsActivated() const { return physicsActivated && associatedCollision; }
 
 	void setWeigth(float value);
 	inline float getWeight() const { return weight; }

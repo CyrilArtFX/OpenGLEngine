@@ -18,7 +18,7 @@
 	-> faire un "raycast" cube pour détecter si un cube intersecte avec des collisions de la scène (à une pos statique) - fait
 	-> faire un système de step pour permettre au joueur d'avancer sur des collisions assez basses - fait
 	-> faire la detection ccd / ccd : https://blog.hamaluik.ca/posts/swept-aabb-collision-using-minkowski-difference/ - en cours
-	-> faire la répulsion entre box aabb (position pas rotation) pour les collisions body/body (je me chie dessus de peur)
+	-> faire la répulsion entre box aabb (position pas rotation) pour les collisions body/body - en cours (devra attendre les object channels pour des tests complets)
 	-> finir le setup du système physique (objects channels, etc.)
 	-> faire en sorte que les raycasts testent aussi les collisions des rigidbodies
 	-> épreuve ultime : faire bouger le joueur sur des plateformes mouvantes (pitié la physique)

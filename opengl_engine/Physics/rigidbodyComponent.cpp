@@ -33,17 +33,22 @@ void RigidbodyComponent::associateCollision(CollisionComponent* collisionToAssoc
 
 void RigidbodyComponent::updatePhysicsPreCollision(float dt)
 {
-	if (!isPhysicsActivated()) return;
-
 	//  compute gravity in velocity
 	if (useGravity)
 	{
-		if(velocity.y > Physics::Gravity)
-			velocity.y += Physics::Gravity * dt * 15.0f;
+		if(velocity.y > Physics::Gravity * 2.0f)
+			velocity.y += Physics::Gravity * dt * 2.0f;
 	}
 
 	//  compute anticipated movement
 	movement = velocity * dt;
+
+	//  if rigidbody has no physic activated, it moves but without checking for collisions to repulse its movement
+	if (!isPhysicsActivated())
+	{
+		associatedCollision->addPosition(movement);
+		movement = Vector3::zero;
+	}
 }
 
 void RigidbodyComponent::updatePhysicsPostCollision(float dt)
@@ -62,6 +67,7 @@ void RigidbodyComponent::setPhysicsActivated(bool value)
 
 void RigidbodyComponent::setWeigth(float value)
 {
+	if (weight <= 0.0f) return;
 	weight = value;
 }
 
@@ -77,6 +83,8 @@ void RigidbodyComponent::setStepHeight(float value)
 
 void RigidbodyComponent::computeRepulsion(const Vector3& repulsion)
 {
+	if (!isPhysicsActivated()) return;
+
 	//  compute real movement and velocity with repulsion
 	movement += repulsion;
 	

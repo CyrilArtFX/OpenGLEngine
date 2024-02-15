@@ -69,7 +69,7 @@ void DoomlikeGame::loadGame()
 	loadScene(&testScene);
 	player.respawn(testScene);
 
-	player.setup(1.5f, 7.0f, 35.0f, 0.3f, renderer);
+	player.setup(1.5f, 7.0f, 10.0f, 0.3f, renderer);
 	renderer->setCamera(&player.getCamera());
 }
 
