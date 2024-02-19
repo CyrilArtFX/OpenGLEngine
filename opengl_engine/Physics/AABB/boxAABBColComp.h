@@ -34,7 +34,7 @@ protected:
 	bool resolveAABBRaycastIntersection(const Box& raycast) const override;
 	bool resolveCollisionIntersection(const CollisionComponent& otherCol) const override;
 	bool resolveRigidbodyIntersection(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse) const override;
-	bool resolveRigidbodySelfIntersection(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse, const RigidbodyComponent& selfRigidbody, CollisionResponse& outSelfResponse) const override;
+	bool resolveRigidbodySelfIntersection(const RigidbodyComponent& rigidbody, const RigidbodyComponent& selfRigidbody) const override;
 
 	void drawDebugMesh(Material& debugMaterial) const override;
 

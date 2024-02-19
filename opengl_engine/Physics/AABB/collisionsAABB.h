@@ -31,6 +31,6 @@ private:
 
 	static bool CCDBoxIntersection(const Box& boxCCD, const Vector3& ccdNextFramePos, const Box& box, float& distance, Vector3& location);
 
-	static bool CCDsIntersection(const Box& boxACCD, const Vector3& ccdAMovement, const Box& boxBCCD, const Vector3& ccdBMovement, float& distance, Vector3& location);
+	static bool CCDsIntersection(const Box& boxACCD, const Vector3& ccdAMovement, const Box& boxBCCD, const Vector3& ccdBMovement);
 };
 

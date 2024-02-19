@@ -64,12 +64,12 @@ bool BoxAABBColComp::resolveRigidbodyIntersection(const RigidbodyComponent& rigi
 	}
 }
 
-bool BoxAABBColComp::resolveRigidbodySelfIntersection(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse, const RigidbodyComponent& selfRigidbody, CollisionResponse& outSelfResponse) const
+bool BoxAABBColComp::resolveRigidbodySelfIntersection(const RigidbodyComponent& rigidbody, const RigidbodyComponent& selfRigidbody) const
 {
 	switch (rigidbody.getAssociatedCollision().getCollisionType())
 	{
 	case CollisionType::BoxAABB:
-		return CollisionsAABB::CollideBodies(rigidbody, outResponse, selfRigidbody, outSelfResponse);
+		return CollisionsAABB::CollideBodies(rigidbody, selfRigidbody);
 
 	default:
 		return false;

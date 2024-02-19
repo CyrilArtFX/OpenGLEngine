@@ -55,9 +55,9 @@ bool CollisionComponent::resolveRigidbody(const RigidbodyComponent& rigidbody, C
 	return intersect;
 }
 
-bool CollisionComponent::resolveRigidbodySelf(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse, const RigidbodyComponent& selfRigidbody, CollisionResponse& outSelfResponse) const
+bool CollisionComponent::resolveRigidbodySelf(const RigidbodyComponent& rigidbody, const RigidbodyComponent& selfRigidbody) const
 {
-	bool intersect = resolveRigidbodySelfIntersection(rigidbody, outResponse, selfRigidbody, outSelfResponse);
+	bool intersect = resolveRigidbodySelfIntersection(rigidbody, selfRigidbody);
 	//  it's up to the physics manager to set the intersected last frame (for both collisions)
 	//  the physics manager also broadcast the onCollisionIntersect event (for both collisions)
 	return intersect;

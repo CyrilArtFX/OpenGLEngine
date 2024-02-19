@@ -63,7 +63,7 @@ public:
 	bool registered{ false };
 
 	Event<> onRigidbodyDelete;
-	Event<const CollisionResponse&> onCollisionIntersect;
+	Event<const CollisionResponse&> onCollisionRepulsed;
 
 private:
 	CollisionComponent* associatedCollision{ nullptr };

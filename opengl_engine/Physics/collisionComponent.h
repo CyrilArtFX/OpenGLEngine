@@ -38,7 +38,7 @@ public:
 	bool resolveAABBRaycast(const Box& raycast) const;
 	bool resolveCollision(const CollisionComponent& otherCol) const;
 	bool resolveRigidbody(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse) const;
-	bool resolveRigidbodySelf(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse, const RigidbodyComponent& selfRigidbody, CollisionResponse& outSelfResponse) const;
+	bool resolveRigidbodySelf(const RigidbodyComponent& rigidbody, const RigidbodyComponent& selfRigidbody) const; //  doesn't have response since body/body doesn't compute repulsion (yet)
 
 	void drawDebug(Material& debugMaterial) const;
 
@@ -60,6 +60,7 @@ public:
 	
 	Event<> onCollisionDelete;
 	mutable Event<RaycastType, const Vector3&> onRaycastIntersect;
+	Event<RigidbodyComponent&> onCollisionIntersect;
 
 
 protected:
@@ -70,7 +71,7 @@ protected:
 	virtual bool resolveAABBRaycastIntersection(const Box& raycast) const = 0;
 	virtual bool resolveCollisionIntersection(const CollisionComponent& otherCol) const = 0;
 	virtual bool resolveRigidbodyIntersection(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse) const = 0;
-	virtual bool resolveRigidbodySelfIntersection(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse, const RigidbodyComponent& selfRigidbody, CollisionResponse& outSelfResponse) const = 0;
+	virtual bool resolveRigidbodySelfIntersection(const RigidbodyComponent& rigidbody, const RigidbodyComponent& selfRigidbody) const = 0;
 
 	virtual void drawDebugMesh(Material& debugMaterial) const = 0;
 

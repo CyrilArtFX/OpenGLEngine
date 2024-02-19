@@ -10,10 +10,10 @@
 
 
 Player::Player() :
-	rigidbody(&Physics::CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box::one, this, true, false), false, false)))
+	rigidbody(&Physics::CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box::one, this, true, false), true, false)))
 {
 	rigidbody->onRigidbodyDelete.registerObserver(this, Bind_0(&Player::onRigidbodyDeleted));
-	rigidbody->onCollisionIntersect.registerObserver(this, Bind_1(&Player::onCollision));
+	rigidbody->onCollisionRepulsed.registerObserver(this, Bind_1(&Player::onCollision));
 }
 
 void Player::setup(float height, float speed, float jump, float stepHeight, Renderer* renderer)

@@ -162,6 +162,9 @@ bool CollisionsAABB::CollideBodies(const RigidbodyComponent& bodyAABBa, const Ri
 		* WIP of computing repulsion for physic activated rigidbodies without ccd
 		* Deactivated since I choosed to not include that in my physics engine for the moment
 		* 
+		* For information (for later me), it had a strange behavior when doing a [player/movable-crate] repulsion where the player would glitch in the crate and move back and forth
+		* Also it doesn't compute if the applied repulsion could put one of the body in another collision
+		* 
 		if (interpolate)
 		{
 			//  compute repulsion
@@ -183,11 +186,12 @@ bool CollisionsAABB::CollideBodies(const RigidbodyComponent& bodyAABBa, const Ri
 			outBodyBResponse.repulsion = repulsion_b;
 			outBodyBResponse.impactPoint = body_b_box.getPointOnPerimeter(hit_location);
 			outBodyBResponse.impactNormal = body_b_box_aabb.getNormal(outBodyBResponse.impactPoint);
-		}*/
+		}
+		*/
 	}
 	else //  ccd
 	{
-
+		interpolate = CCDsIntersection(body_a_box, bodyAABBa.getAnticipatedMovement(), body_b_box, bodyAABBb.getAnticipatedMovement());
 	}
 
 	return interpolate;
@@ -298,7 +302,7 @@ bool CollisionsAABB::CCDBoxIntersection(const Box& boxCCD, const Vector3& ccdNex
 	return intersect;
 }
 
-bool CollisionsAABB::CCDsIntersection(const Box& boxACCD, const Vector3& ccdAMovement, const Box& boxBCCD, const Vector3& ccdBMovement, float& distance, Vector3& location)
+bool CollisionsAABB::CCDsIntersection(const Box& boxACCD, const Vector3& ccdAMovement, const Box& boxBCCD, const Vector3& ccdBMovement)
 {
 	Box md_box = Box::MinkowskiDifference(boxBCCD, boxACCD);
 
@@ -309,10 +313,18 @@ bool CollisionsAABB::CCDsIntersection(const Box& boxACCD, const Vector3& ccdAMov
 	}
 
 	Vector3 relative_movement = ccdAMovement - ccdBMovement;
+	if (relative_movement == Vector3::zero)
+	{
+		return false;
+	}
+
 	Ray ray;
 	ray.setupWithStartEnd(Vector3::zero, relative_movement);
 
+	float distance = 0.0f;
+	Vector3 location = Vector3::zero;
+
 	bool intersect = BoxRayIntersection(md_box, ray, distance, location, true);
 
-
+	return intersect;
 }
