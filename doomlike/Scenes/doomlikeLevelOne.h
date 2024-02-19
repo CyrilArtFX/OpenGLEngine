@@ -5,6 +5,8 @@
 #include <Assets/assetManager.h>
 #include <Objects/object.h>
 
+#include <Actors/crate.h>
+
 #include <Maths/vector3.h>
 #include <Utils/color.h>
 
@@ -38,6 +40,8 @@ private:
 	Object crate4;
 	Object stair1;
 	Object stair2;
+
+	Crate crateMovable1;
 
 	DirectionalLight dirLight;
 	PointLight pointLight1;

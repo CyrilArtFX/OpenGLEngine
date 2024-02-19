@@ -21,6 +21,7 @@ void DoomlikeLevelOne::loadScene()
 	crate4.addModel(&AssetManager::GetModel("crate"));
 	stair1.addModel(&AssetManager::GetModel("crate"));
 	stair2.addModel(&AssetManager::GetModel("crate"));
+	crateMovable1.addModel(&AssetManager::GetModel("crate"));
 
 	registerObject(&ground1);
 	registerObject(&ground2);
@@ -31,6 +32,7 @@ void DoomlikeLevelOne::loadScene()
 	registerObject(&crate4);
 	registerObject(&stair1);
 	registerObject(&stair2);
+	registerObject(&crateMovable1);
 
 	ground1.setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
 	ground2.setPosition(Vector3{ 0.0f, 0.0f, 10.0f });
@@ -43,6 +45,7 @@ void DoomlikeLevelOne::loadScene()
 	stair1.setPosition(Vector3{ 8.0f, 0.1f, 15.5f });
 	stair2.setScale(Vector3{ 1.0f, 0.2f, 1.0f });
 	stair2.setPosition(Vector3{ 9.0f, 0.3f, 15.5f });
+	crateMovable1.setPosition(Vector3{ -1.0f, 0.5f, -2.0f });
 
 
 	//  collisions

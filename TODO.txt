@@ -18,7 +18,8 @@
 	-> faire un "raycast" cube pour détecter si un cube intersecte avec des collisions de la scène (à une pos statique) - fait
 	-> faire un système de step pour permettre au joueur d'avancer sur des collisions assez basses - fait
 	-> faire la detection ccd / ccd : https://blog.hamaluik.ca/posts/swept-aabb-collision-using-minkowski-difference/ - en cours
-	-> faire la répulsion entre box aabb (position pas rotation) pour les collisions body/body - en cours (devra attendre les object channels pour des tests complets)
+	-> modifier le call onCollisionIntersect pour permettre d'avoir la collision concernée et un truc clean en cas de detection body/body
+	-> faire la répulsion entre box aabb (position pas rotation) pour les collisions body/body - annulé
 	-> finir le setup du système physique (objects channels, etc.)
 	-> faire en sorte que les raycasts testent aussi les collisions des rigidbodies
 	-> épreuve ultime : faire bouger le joueur sur des plateformes mouvantes (pitié la physique)
@@ -47,6 +48,8 @@
 ~ Faire le système des ombres
 
 ~ Animations 3D : https://ogldev.org/www/tutorial38/tutorial38.html
+
+~ "Finir" la physique avec la répulsion des collisions body/body (imagine pousser une caisse dans un mur oskour)
 
 
 == TRES LONG TERME == (aka ça sera jamais fait)

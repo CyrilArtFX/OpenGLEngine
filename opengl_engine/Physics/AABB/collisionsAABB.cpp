@@ -141,9 +141,10 @@ bool CollisionsAABB::CollideBodyBox(const RigidbodyComponent& bodyAABB, Collisio
 	return interpolate;
 }
 
-bool CollisionsAABB::CollideBodies(const RigidbodyComponent& bodyAABBa, CollisionResponse& outBodyAResponse, const RigidbodyComponent& bodyAABBb, CollisionResponse& outBodyBResponse)
+bool CollisionsAABB::CollideBodies(const RigidbodyComponent& bodyAABBa, const RigidbodyComponent& bodyAABBb)
 {
 	//  if rigidbodies are tested here, that means that they both have physics activated
+	//  (even if physics repulsion are not implemented (yet) for body/body collision)
 
 	bool interpolate = false;
 	const BoxAABBColComp& body_a_box_aabb = static_cast<const BoxAABBColComp&>(bodyAABBa.getAssociatedCollision());
@@ -157,6 +158,10 @@ bool CollisionsAABB::CollideBodies(const RigidbodyComponent& bodyAABBa, Collisio
 		body_b_box.setCenterPoint(body_b_box.getCenterPoint() + bodyAABBb.getAnticipatedMovement());
 		interpolate = BoxesIntersection(body_a_box, body_b_box);
 
+		/*
+		* WIP of computing repulsion for physic activated rigidbodies without ccd
+		* Deactivated since I choosed to not include that in my physics engine for the moment
+		* 
 		if (interpolate)
 		{
 			//  compute repulsion
@@ -178,7 +183,7 @@ bool CollisionsAABB::CollideBodies(const RigidbodyComponent& bodyAABBa, Collisio
 			outBodyBResponse.repulsion = repulsion_b;
 			outBodyBResponse.impactPoint = body_b_box.getPointOnPerimeter(hit_location);
 			outBodyBResponse.impactNormal = body_b_box_aabb.getNormal(outBodyBResponse.impactPoint);
-		}
+		}*/
 	}
 	else //  ccd
 	{
@@ -293,7 +298,21 @@ bool CollisionsAABB::CCDBoxIntersection(const Box& boxCCD, const Vector3& ccdNex
 	return intersect;
 }
 
-bool CollisionsAABB::CCDsIntersection(const Box& boxACCD, const Vector3& ccdANextFramePos, const Box& boxBCCD, const Vector3& ccdBNextFramePos, float& distanceA, float& distanceB, Vector3& location)
+bool CollisionsAABB::CCDsIntersection(const Box& boxACCD, const Vector3& ccdAMovement, const Box& boxBCCD, const Vector3& ccdBMovement, float& distance, Vector3& location)
 {
-	return false;
+	Box md_box = Box::MinkowskiDifference(boxBCCD, boxACCD);
+
+	//  Boxes colliding without their movement
+	if (BoxPointIntersection(md_box, Vector3::zero))
+	{
+		return true;
+	}
+
+	Vector3 relative_movement = ccdAMovement - ccdBMovement;
+	Ray ray;
+	ray.setupWithStartEnd(Vector3::zero, relative_movement);
+
+	bool intersect = BoxRayIntersection(md_box, ray, distance, location, true);
+
+
 }

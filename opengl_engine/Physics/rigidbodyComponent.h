@@ -15,9 +15,10 @@ struct CollisionResponse
 /** Rigidbody Component
 * Will tests other colliders and react with physics if it is activated.
 * If physics is not activated, will act as a static collision (even if it moves with velocity).
-* Rigidbody weight cannot be inferior or equal to 0.
 * CCD works with the rigidbody velocity and won't have effect if physics is not activated.
 * Step mechanic only works with static collisions (or with rigidbodies with physics not activated that act as statif collisions).
+* Collisions between physics activated rigidbodies are not implemented. They will call the onCollision event, but won't compute repulsion.
+* Rigidbody weight cannot be inferior or equal to 0 (and weight currently has no effect as bodies collisions doesn't work).
 */
 class RigidbodyComponent : public PhysicEntity
 {

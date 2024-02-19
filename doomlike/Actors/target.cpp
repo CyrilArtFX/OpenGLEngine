@@ -12,5 +12,5 @@ void Target::load()
 void Target::onIntersectedByRaycast(RaycastType type, const Vector3& intersectionPoint)
 {
 	if (type != RaycastType::RaycastTypeLine) return;
-	std::cout << "Target got hit by a redcast at coordinates " << intersectionPoint.toString() << std::endl;
+	std::cout << "Target got hit by a raycast at coordinates " << intersectionPoint.toString() << std::endl;
 }
