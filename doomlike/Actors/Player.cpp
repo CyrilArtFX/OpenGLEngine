@@ -3,6 +3,7 @@
 #include <Inputs/input.h>
 #include <Maths/maths.h>
 #include <Physics/physics.h>
+#include <Physics/ObjectChannels/collisionChannels.h>
 
 #include <GLFW/glfw3.h>
 #include <algorithm>
@@ -10,7 +11,7 @@
 
 
 Player::Player() :
-	rigidbody(&Physics::CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box::one, this, true, false), true, false)))
+	rigidbody(&Physics::CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box::one, this, true, "player", false), true, false)))
 {
 	rigidbody->onRigidbodyDelete.registerObserver(this, Bind_0(&Player::onRigidbodyDeleted));
 	rigidbody->onCollisionRepulsed.registerObserver(this, Bind_1(&Player::onCollision));
@@ -33,6 +34,8 @@ void Player::setup(float height, float speed, float jump, float stepHeight, Rend
 	collision.changeBox(Box{ Vector3{0.0f, camHeight / 2.0f, 0.0f}, Vector3{0.3f, camHeight / 2.0f, 0.3f} });
 	rigidbody->setPhysicsActivated(true);
 	rigidbody->setUseGravity(true);
+
+	rigidbody->setTestChannels(CollisionChannels::GetRegisteredTestChannel("PlayerEntity"));
 }
 
 

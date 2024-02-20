@@ -128,7 +128,7 @@ bool CollisionsAABB::CollideBodyBox(const RigidbodyComponent& bodyAABB, Collisio
 			if (anticipated_movement_y < 0.0f) y_difference += -anticipated_movement_y; //  cancel gravity
 
 			//  test if the destination point is collision free
-			if (Physics::AABBRaycast(bodyAABB.getAnticipatedMovement() + Vector3{ 0.0f, y_difference + 0.001f, 0.0f }, body_box, 0.0f)) return interpolate;
+			if (Physics::AABBRaycast(bodyAABB.getAnticipatedMovement() + Vector3{ 0.0f, y_difference + 0.001f, 0.0f }, body_box, bodyAABB.getTestChannels(), 0.0f)) return interpolate;
 
 			const Vector3 body_pos_next_frame = body_box.getCenterPoint() + bodyAABB.getAnticipatedMovement();
 

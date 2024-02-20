@@ -4,7 +4,7 @@
 
 void Target::load()
 {
-	collision = static_cast<BoxAABBColComp*>(&Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, this, false)));
+	collision = static_cast<BoxAABBColComp*>(&Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, this, false, "solid")));
 	
 	collision->onRaycastIntersect.registerObserver(this, Bind_2(&Target::onIntersectedByRaycast));
 }

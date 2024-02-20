@@ -6,6 +6,7 @@
 #include "AABB/raycastAABB.h"
 
 #include <Events/event.h>
+#include <vector>
 
 #include <Rendering/Model/mesh.h>
 
@@ -34,9 +35,9 @@ public:
 	void setAssociatedTransform(Transform* newTransform);
 
 	bool resolvePoint(const Vector3& point) const;
-	bool resolveLineRaycast(const Ray& raycast, RaycastHitInfos& outHitInfos) const;
-	bool resolveAABBRaycast(const Box& raycast) const;
-	bool resolveCollision(const CollisionComponent& otherCol) const;
+	bool resolveLineRaycast(const Ray& raycast, RaycastHitInfos& outHitInfos, const std::vector<std::string> testChannels) const;
+	bool resolveAABBRaycast(const Box& raycast, const std::vector<std::string> testChannels) const;
+	bool resolveCollision(const CollisionComponent& otherCol, const std::vector<std::string> testChannels) const;
 	bool resolveRigidbody(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse) const;
 	bool resolveRigidbodySelf(const RigidbodyComponent& rigidbody, const RigidbodyComponent& selfRigidbody) const; //  doesn't have response since body/body doesn't compute repulsion (yet)
 
@@ -52,6 +53,9 @@ public:
 
 	void addPosition(const Vector3& posToAdd);
 
+	void setCollisionChannel(std::string newCollisionChannel);
+	std::string getCollisionChannel() const { return collisionChannel; }
+
 
 	//  for physics manager
 	bool registered{ false };
@@ -63,8 +67,12 @@ public:
 	Event<RigidbodyComponent&> onCollisionIntersect;
 
 
+
+	bool channelTest(const std::vector<std::string> testChannels) const;
+
+
 protected:
-	CollisionComponent(CollisionType collisionType_, Transform* associatedTransform_, Mesh* debugMesh_, bool loadPersistent_);
+	CollisionComponent(CollisionType collisionType_, Transform* associatedTransform_, Mesh* debugMesh_, bool loadPersistent_, std::string collisionChannel_);
 
 	virtual bool resolvePointIntersection(const Vector3& point) const = 0;
 	virtual bool resolveLineRaycastIntersection(const Ray& raycast, RaycastHitInfos& outHitInfos) const = 0;
@@ -85,4 +93,6 @@ protected:
 
 private:
 	mutable bool intersectedLastFrame{ false };
+
+	std::string collisionChannel{ "" };
 };

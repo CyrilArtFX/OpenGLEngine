@@ -56,6 +56,10 @@ public:
 	void setUseCCD(bool value);
 	inline bool getUseCCD() const { return ccd; }
 
+	void setTestChannels(std::vector<std::string> newTestChannels);
+	void addTestChannel(std::string newTestChannel);
+	std::vector<std::string> getTestChannels() const;
+
 	void resetIntersected();
 
 
@@ -81,5 +85,7 @@ private:
 
 
 	bool firstFrame{ true };
+
+	std::vector<std::string> testChannels;
 };
 

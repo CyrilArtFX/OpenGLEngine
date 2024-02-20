@@ -49,15 +49,15 @@ void DoomlikeLevelOne::loadScene()
 
 
 	//  collisions
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.5f, 0.0f}, Vector3{5.0f, 0.5f, 5.0f} }, &ground1, false));
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.5f, 0.0f}, Vector3{5.0f, 0.5f, 5.0f} }, &ground2, false));
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.5f, 0.0f}, Vector3{5.0f, 0.5f, 5.0f} }, &ground3, false));
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate1, false));
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate2, false));
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate3, false));
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate4, false));
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &stair1, false));
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &stair2, false));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.5f, 0.0f}, Vector3{5.0f, 0.5f, 5.0f} }, &ground1, false, "solid"));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.5f, 0.0f}, Vector3{5.0f, 0.5f, 5.0f} }, &ground2, false, "solid"));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.5f, 0.0f}, Vector3{5.0f, 0.5f, 5.0f} }, &ground3, false, "solid"));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate1, false, "solid"));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate2, false, "solid"));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate3, false, "solid"));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate4, false, "solid"));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &stair1, false, "solid"));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &stair2, false, "solid"));
 
 
 	//  lights

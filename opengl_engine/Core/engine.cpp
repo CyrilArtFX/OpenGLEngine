@@ -76,6 +76,9 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	//  initialize input system
 	Input::Initialize();
 
+	//  initialize physics
+	Physics::InitialisePhysics();
+
 
 	//  load "null" assets of AssetManager
 	AssetManager::LoadNullAssets();

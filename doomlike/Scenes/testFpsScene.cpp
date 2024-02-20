@@ -1,6 +1,7 @@
 #include "testFpsScene.h"
 #include <Physics/physics.h>
 #include <Physics/AABB/boxAABBColComp.h>
+#include <Physics/ObjectChannels/collisionChannels.h>
 
 TestFpsScene::TestFpsScene()
 {
@@ -38,14 +39,14 @@ void TestFpsScene::loadScene()
 
 
 	//  collisions
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate1, false));
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate2, false));
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate3, false));
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.5f, 0.0f}, Vector3{5.0f, 0.5f, 5.0f} }, &ground, false));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate1, false, "solid"));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate2, false, "solid"));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate3, false, "solid"));
+	Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.5f, 0.0f}, Vector3{5.0f, 0.5f, 5.0f} }, &ground, false, "solid"));
 
 	RaycastHitInfos out_raycast;
-	Physics::LineRaycast(Vector3{ -1.0f, 3.5f, 3.0f }, Vector3{ -1.0f, -1.5f, 3.0f }, out_raycast);
-	Physics::LineRaycast(Vector3{ -4.5f, 0.5f, -3.0f }, Vector3{ 0.0f, 0.5f, 5.0f }, out_raycast, -1.0f);
+	Physics::LineRaycast(Vector3{ -1.0f, 3.5f, 3.0f }, Vector3{ -1.0f, -1.5f, 3.0f }, CollisionChannels::GetRegisteredTestChannel("TestEverything"), out_raycast);
+	Physics::LineRaycast(Vector3{ -4.5f, 0.5f, -3.0f }, Vector3{ 0.0f, 0.5f, 5.0f }, CollisionChannels::GetRegisteredTestChannel("TestEverything"), out_raycast, -1.0f);
 	Physics::AABBRaycast(Vector3{ 4.2f, 0.3f, -2.0f }, Box::one);
 
 

@@ -1,5 +1,6 @@
 #include "rigidbodyComponent.h"
 #include "physics.h"
+#include "ObjectChannels/collisionChannels.h"
 #include <iostream>
 
 RigidbodyComponent::RigidbodyComponent(CollisionComponent* collisionToAssociate, bool useCCD, bool activatePhysics) :
@@ -126,6 +127,23 @@ Vector3 RigidbodyComponent::getVelocity() const
 void RigidbodyComponent::setUseCCD(bool value)
 {
 	ccd = value;
+}
+
+void RigidbodyComponent::setTestChannels(std::vector<std::string> newTestChannels)
+{
+	testChannels = newTestChannels;
+}
+
+void RigidbodyComponent::addTestChannel(std::string newTestChannel)
+{
+	testChannels.push_back(newTestChannel);
+}
+
+std::vector<std::string> RigidbodyComponent::getTestChannels() const
+{
+	if (testChannels.empty()) return CollisionChannels::GetRegisteredTestChannel("TestEverything");
+
+	return testChannels;
 }
 
 void RigidbodyComponent::resetIntersected()

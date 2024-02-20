@@ -2,6 +2,8 @@
 
 #include "raycastLine.h"
 
+#include "ObjectChannels/collisionChannels.h"
+
 #include <iostream>
 #include <algorithm>
 
@@ -67,11 +69,14 @@ void Physics::RemoveRigidbody(RigidbodyComponent* rigidbodyComp)
 	std::cout << "PHYSICS_INFO: Successfully removed a rigidbody.\n";
 }
 
-bool Physics::LineRaycast(const Vector3& start, const Vector3& end, RaycastHitInfos& outHitInfos, float drawDebugTime, bool createOnScene)
+bool Physics::LineRaycast(const Vector3& start, const Vector3& end, const std::vector<std::string> testChannels, RaycastHitInfos& outHitInfos, float drawDebugTime, bool createOnScene)
 {
 	outHitInfos = RaycastHitInfos();
 
 	bool hit = false;
+
+	std::vector<std::string> test_channels = testChannels;
+	if (test_channels.empty()) test_channels = CollisionChannels::GetRegisteredTestChannel("TestEverything");
 
 	if (drawDebugTime != 0.0f)
 	{
@@ -85,7 +90,7 @@ bool Physics::LineRaycast(const Vector3& start, const Vector3& end, RaycastHitIn
 
 		for (auto& col : collisionsComponents)
 		{
-			bool col_hit = col->resolveLineRaycast(ray, outHitInfos);
+			bool col_hit = col->resolveLineRaycast(ray, outHitInfos, test_channels);
 			hit = hit || col_hit;
 		}
 
@@ -107,7 +112,7 @@ bool Physics::LineRaycast(const Vector3& start, const Vector3& end, RaycastHitIn
 
 		for (auto& col : collisionsComponents)
 		{
-			bool col_hit = col->resolveLineRaycast(ray, outHitInfos);
+			bool col_hit = col->resolveLineRaycast(ray, outHitInfos, test_channels);
 			hit = hit || col_hit;
 		}
 
@@ -124,9 +129,12 @@ bool Physics::LineRaycast(const Vector3& start, const Vector3& end, RaycastHitIn
 	}
 }
 
-bool Physics::AABBRaycast(const Vector3& location, const Box& aabbBox, float drawDebugTime, bool createOnScene)
+bool Physics::AABBRaycast(const Vector3& location, const Box& aabbBox, const std::vector<std::string> testChannels, float drawDebugTime, bool createOnScene)
 {
 	bool hit = false;
+
+	std::vector<std::string> test_channels = testChannels;
+	if (test_channels.empty()) test_channels = CollisionChannels::GetRegisteredTestChannel("TestEverything");
 
 	std::vector<CollisionComponent*> intersected_cols;
 
@@ -142,7 +150,7 @@ bool Physics::AABBRaycast(const Vector3& location, const Box& aabbBox, float dra
 
 		for (auto& col : collisionsComponents)
 		{
-			if (col->resolveAABBRaycast(box))
+			if (col->resolveAABBRaycast(box, test_channels))
 			{
 				hit = true;
 				intersected_cols.push_back(col);
@@ -166,7 +174,7 @@ bool Physics::AABBRaycast(const Vector3& location, const Box& aabbBox, float dra
 
 		for (auto& col : collisionsComponents)
 		{
-			if (col->resolveAABBRaycast(box))
+			if (col->resolveAABBRaycast(box, test_channels))
 			{
 				hit = true;
 				intersected_cols.push_back(col);
@@ -184,6 +192,11 @@ bool Physics::AABBRaycast(const Vector3& location, const Box& aabbBox, float dra
 
 		return hit;
 	}
+}
+
+void Physics::InitialisePhysics()
+{
+	CollisionChannels::RegisterTestChannel("TestEverything", { CollisionChannels::DefaultEverything() });
 }
 
 void Physics::UpdatePhysics(float dt)
@@ -245,7 +258,7 @@ void Physics::UpdatePhysics(float dt)
 			}
 			else
 			{
-				bool hit = col.resolveCollision(rigidbody.getAssociatedCollision());
+				bool hit = col.resolveCollision(rigidbody.getAssociatedCollision(), rigidbody.getTestChannels());
 
 				if (hit)
 				{
@@ -271,7 +284,7 @@ void Physics::UpdatePhysics(float dt)
 			if (rigidbody_physics && other_rigidbody_physics) hit = rigidbody.getAssociatedCollision().resolveRigidbodySelf(other_rigidbody, rigidbody);
 			else if (!rigidbody_physics && other_rigidbody_physics) hit = rigidbody.getAssociatedCollision().resolveRigidbody(other_rigidbody, response_other);
 			else if (rigidbody_physics) hit = other_rigidbody.getAssociatedCollision().resolveRigidbody(rigidbody, response);
-			else hit = rigidbody.getAssociatedCollision().resolveCollision(other_rigidbody.getAssociatedCollision());
+			else hit = rigidbody.getAssociatedCollision().resolveCollision(other_rigidbody.getAssociatedCollision(), rigidbody.getTestChannels());
 
 			if (hit)
 			{

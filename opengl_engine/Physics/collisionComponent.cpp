@@ -1,6 +1,7 @@
 #include "collisionComponent.h"
 #include "physics.h"
 #include "rigidbodyComponent.h"
+#include "ObjectChannels/collisionChannels.h"
 #include <Rendering/material.h>
 #include <Utils/color.h>
 
@@ -25,22 +26,28 @@ bool CollisionComponent::resolvePoint(const Vector3& point) const
 	return intersect;
 }
 
-bool CollisionComponent::resolveLineRaycast(const Ray& raycast, RaycastHitInfos& outHitInfos) const
+bool CollisionComponent::resolveLineRaycast(const Ray& raycast, RaycastHitInfos& outHitInfos, const std::vector<std::string> testChannels) const
 {
+	if (!channelTest(testChannels)) return false;
+
 	bool intersect = resolveLineRaycastIntersection(raycast, outHitInfos);
 	//  it's up to the physics manager to broadcast the onRaycastIntersect event
 	return intersect;
 }
 
-bool CollisionComponent::resolveAABBRaycast(const Box& raycast) const
+bool CollisionComponent::resolveAABBRaycast(const Box& raycast, const std::vector<std::string> testChannels) const
 {
+	if (!channelTest(testChannels)) return false;
+
 	bool intersect = resolveAABBRaycastIntersection(raycast);
 	//  it's up to the physics manager to broadcast the onRaycastIntersect event
 	return intersect;
 }
 
-bool CollisionComponent::resolveCollision(const CollisionComponent& otherCol) const
+bool CollisionComponent::resolveCollision(const CollisionComponent& otherCol, const std::vector<std::string> testChannels) const
 {
+	if (!channelTest(testChannels)) return false;
+
 	bool intersect = resolveCollisionIntersection(otherCol);
 	//  it's up to the physics manager to set the intersected last frame (for both collisions)
 	//  the physics manager also broadcast the onCollisionIntersect event (for both collisions)
@@ -49,6 +56,8 @@ bool CollisionComponent::resolveCollision(const CollisionComponent& otherCol) co
 
 bool CollisionComponent::resolveRigidbody(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse) const
 {
+	if (!channelTest(rigidbody.getTestChannels())) return false;
+
 	bool intersect = resolveRigidbodyIntersection(rigidbody, outResponse);
 	//  it's up to the physics manager to set the intersected last frame (for both collisions)
 	//  the physics manager also broadcast the onCollisionIntersect event (for both collisions)
@@ -57,6 +66,8 @@ bool CollisionComponent::resolveRigidbody(const RigidbodyComponent& rigidbody, C
 
 bool CollisionComponent::resolveRigidbodySelf(const RigidbodyComponent& rigidbody, const RigidbodyComponent& selfRigidbody) const
 {
+	if (!channelTest(rigidbody.getTestChannels()) || !rigidbody.getAssociatedCollision().channelTest(selfRigidbody.getTestChannels())) return false;
+
 	bool intersect = resolveRigidbodySelfIntersection(rigidbody, selfRigidbody);
 	//  it's up to the physics manager to set the intersected last frame (for both collisions)
 	//  the physics manager also broadcast the onCollisionIntersect event (for both collisions)
@@ -92,8 +103,27 @@ void CollisionComponent::addPosition(const Vector3& posToAdd)
 	associatedTransform->setPosition(associatedTransform->getPosition() + posToAdd);
 }
 
-CollisionComponent::CollisionComponent(CollisionType collisionType_, Transform* associatedTransform_, Mesh* debugMesh_, bool loadPersistent_) :
-	PhysicEntity(loadPersistent_),
-	collisionType(collisionType_), associatedTransform(associatedTransform_), debugMesh(debugMesh_)
+void CollisionComponent::setCollisionChannel(std::string newCollisionChannel)
 {
+	collisionChannel = newCollisionChannel;
+}
+
+CollisionComponent::CollisionComponent(CollisionType collisionType_, Transform* associatedTransform_, Mesh* debugMesh_, bool loadPersistent_, std::string collisionChannel_) :
+	PhysicEntity(loadPersistent_),
+	collisionType(collisionType_), associatedTransform(associatedTransform_), debugMesh(debugMesh_), collisionChannel(collisionChannel_)
+{
+}
+
+bool CollisionComponent::channelTest(const std::vector<std::string> testChannels) const
+{
+	for (auto test_channel : testChannels)
+	{
+		if (test_channel == "") continue;
+
+		if(test_channel == CollisionChannels::DefaultEverything()) return true;
+
+		if (test_channel == collisionChannel) return true;
+	}
+
+	return false;
 }

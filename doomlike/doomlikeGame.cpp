@@ -1,6 +1,7 @@
 #include "doomlikeGame.h"
 #include <Assets/defaultAssets.h>
 #include <Assets/assetManager.h>
+#include <Physics/ObjectChannels/collisionChannels.h>
 #include <Inputs/Input.h>
 
 DoomlikeGame::DoomlikeGame()
@@ -62,6 +63,10 @@ void DoomlikeGame::loadGameAssets()
 
 	AssetManager::CreateModel("taxi");
 	AssetManager::GetModel("taxi").addMeshes(&AssetManager::GetMeshCollection("taxi"), &AssetManager::GetMaterial("taxi"));
+
+
+	//  object channels
+	CollisionChannels::RegisterTestChannel("PlayerEntity", { "solid" }); //  for player and player bullets
 }
 
 void DoomlikeGame::loadGame()
