@@ -98,7 +98,7 @@ void Player::update(float dt)
 		Vector3 raycast_start = camera.getPosition();
 		Vector3 raycast_end = raycast_start + camera.getForward() * 5.0f;
 
-		Physics::LineRaycast(raycast_start, raycast_end);
+		Physics::LineRaycast(raycast_start, raycast_end, CollisionChannels::GetRegisteredTestChannel("PlayerEntity"));
 	}
 
 

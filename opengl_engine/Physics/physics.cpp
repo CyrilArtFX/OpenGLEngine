@@ -93,6 +93,12 @@ bool Physics::LineRaycast(const Vector3& start, const Vector3& end, const std::v
 			bool col_hit = col->resolveLineRaycast(ray, outHitInfos, test_channels);
 			hit = hit || col_hit;
 		}
+		for (auto& body : rigidbodiesComponents)
+		{
+			const CollisionComponent& col = body->getAssociatedCollision();
+			bool col_hit = col.resolveLineRaycast(ray, outHitInfos, test_channels);
+			hit = hit || col_hit;
+		}
 
 		if (outHitInfos.hitCollision)
 		{
@@ -113,6 +119,12 @@ bool Physics::LineRaycast(const Vector3& start, const Vector3& end, const std::v
 		for (auto& col : collisionsComponents)
 		{
 			bool col_hit = col->resolveLineRaycast(ray, outHitInfos, test_channels);
+			hit = hit || col_hit;
+		}
+		for (auto& body : rigidbodiesComponents)
+		{
+			const CollisionComponent& col = body->getAssociatedCollision();
+			bool col_hit = col.resolveLineRaycast(ray, outHitInfos, test_channels);
 			hit = hit || col_hit;
 		}
 
@@ -136,7 +148,7 @@ bool Physics::AABBRaycast(const Vector3& location, const Box& aabbBox, const std
 	std::vector<std::string> test_channels = testChannels;
 	if (test_channels.empty()) test_channels = CollisionChannels::GetRegisteredTestChannel("TestEverything");
 
-	std::vector<CollisionComponent*> intersected_cols;
+	std::vector<const CollisionComponent*> intersected_cols;
 
 	if (drawDebugTime != 0.0f)
 	{
@@ -148,7 +160,7 @@ bool Physics::AABBRaycast(const Vector3& location, const Box& aabbBox, const std
 
 		const Box& box = raycast.getBox();
 
-		for (auto& col : collisionsComponents)
+		for (auto col : collisionsComponents)
 		{
 			if (col->resolveAABBRaycast(box, test_channels))
 			{
@@ -156,8 +168,17 @@ bool Physics::AABBRaycast(const Vector3& location, const Box& aabbBox, const std
 				intersected_cols.push_back(col);
 			}
 		}
+		for (auto body : rigidbodiesComponents)
+		{
+			const CollisionComponent& col = body->getAssociatedCollision();
+			if (col.resolveAABBRaycast(box, testChannels))
+			{
+				hit = true;
+				intersected_cols.push_back(&col);
+			}
+		}
 
-		for (auto& col : intersected_cols)
+		for (auto col : intersected_cols)
 		{
 			col->onRaycastIntersect.broadcast(raycast.getRaycastType(), location); //  location not really relevent here
 		}
@@ -172,7 +193,7 @@ bool Physics::AABBRaycast(const Vector3& location, const Box& aabbBox, const std
 
 		const Box& box = raycast->getBox();
 
-		for (auto& col : collisionsComponents)
+		for (auto col : collisionsComponents)
 		{
 			if (col->resolveAABBRaycast(box, test_channels))
 			{
@@ -180,8 +201,17 @@ bool Physics::AABBRaycast(const Vector3& location, const Box& aabbBox, const std
 				intersected_cols.push_back(col);
 			}
 		}
+		for (auto body : rigidbodiesComponents)
+		{
+			const CollisionComponent& col = body->getAssociatedCollision();
+			if (col.resolveAABBRaycast(box, testChannels))
+			{
+				hit = true;
+				intersected_cols.push_back(&col);
+			}
+		}
 
-		for (auto& col : intersected_cols)
+		for (auto col : intersected_cols)
 		{
 			col->onRaycastIntersect.broadcast(raycast->getRaycastType(), location); //  location not really relevent here
 		}
