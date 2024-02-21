@@ -1,31 +1,15 @@
 == COURT TERME ==
 
-~ Mettre un système de physique basique pour le doomlike (collisions cubes AABB, gravité, raycasts) - fait (un peu plus que basique au final xD)
-	-> mettre des box aabb - fait
-	-> faire le système d'affichage debug et un visionnage des box - fait
-	-> fixer les box a des objets pourvus de transform ? et tester le mouvement - fait
-	-> faire de la détection point / aabb - fait
-	-> faire des raycast qui répondent au aabb - fait
-	-> faire un event qui s'apelle quand la box subit une collision - fait (cimer arthur)
-	-> faire la detection de collision entre box aabb - fait
-	-> intégrer la ccd - fait
-	-> faire la répulsion entre box aabb (position pas rotation) pour les collisions body/static - fait
-	-> changer le système de ccd pour utiliser la velocité du rigidbody - fait
-	-> update la vélocité des rigidbody en fonction des collisions - fait
-	-> changer le système de répulsion pour utiliser la normal de la collision - fait
-	-> mettre la gravité et bien tester ça - fait
-	-> améliorer la manière dont on peut programmer des mouvements pour pas avoir des trucs rigides comme actuellement - fait
-	-> faire un "raycast" cube pour détecter si un cube intersecte avec des collisions de la scène (à une pos statique) - fait
-	-> faire un système de step pour permettre au joueur d'avancer sur des collisions assez basses - fait
-	-> modifier le call onCollisionIntersect pour permettre d'avoir la collision concernée et un truc clean en cas de detection body/body - fait
-	-> faire la detection ccd / ccd : https://blog.hamaluik.ca/posts/swept-aabb-collision-using-minkowski-difference/ - fait
-	-> faire la répulsion entre box aabb (position pas rotation) pour les collisions body/body - annulé
-	-> finir le setup du système physique (objects channels, etc.) - fait
-	-> faire en sorte que les raycasts testent aussi les collisions des rigidbodies - fait
-	-> épreuve ultime : faire bouger le joueur sur des plateformes mouvantes (pitié la physique) - fait
-
-
-~ Faire le doomlike (omg ?)
+~ Faire le doomlike (partie 1)
+	-> Faire un système de GameplayStatics pour pouvoir récupérer la référence au Game et à la Scene
+	-> Faire la base de l'ennemi (mesh, raycast vers le joueur, orientation, réaction aux balles)
+	-> Mettre les meshs d'arme et de balles
+	-> Intégrer la mort du joueur
+	-> Récupérer des meshs/textures pour un décor
+	-> Faire un premier niveau simpliste
+	-> Faire un système pour faire réagir une partie du niveau en fonction des ennemis tués
+	-> Faire le système de trigger qui ferait réagir des parties du niveau (lumière, objets...)
+	-> Faire un bon niveau avec des salles et des éléments cinématiques sur les lumières et autres
 
 
 == MOYEN TERME ==
