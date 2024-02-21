@@ -1,6 +1,6 @@
 #pragma once
 #include "physicEntity.h"
-#include <Objects/transform.h>
+#include <Objects/object.h>
 #include "raycast.h"
 #include "raycastLine.h"
 #include "AABB/raycastAABB.h"
@@ -32,7 +32,8 @@ public:
 
 	inline CollisionType getCollisionType() const { return collisionType; }
 
-	void setAssociatedTransform(Transform* newTransform);
+	void setAssociatedObject(Object* newObject);
+	inline const Object* getAssociatedObject() const { return associatedObject; }
 
 	bool resolvePoint(const Vector3& point) const;
 	bool resolveLineRaycast(const Ray& raycast, RaycastHitInfos& outHitInfos, const std::vector<std::string> testChannels) const;
@@ -72,7 +73,7 @@ public:
 
 
 protected:
-	CollisionComponent(CollisionType collisionType_, Transform* associatedTransform_, Mesh* debugMesh_, bool loadPersistent_, std::string collisionChannel_);
+	CollisionComponent(CollisionType collisionType_, Object* associatedObject_, Mesh* debugMesh_, bool loadPersistent_, std::string collisionChannel_);
 
 	virtual bool resolvePointIntersection(const Vector3& point) const = 0;
 	virtual bool resolveLineRaycastIntersection(const Ray& raycast, RaycastHitInfos& outHitInfos) const = 0;
@@ -85,7 +86,7 @@ protected:
 
 
 	CollisionType collisionType{ CollisionType::Null };
-	Transform* associatedTransform{ nullptr };
+	Object* associatedObject{ nullptr };
 
 
 	//  for debug drawing

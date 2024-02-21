@@ -85,6 +85,8 @@ void DoomlikeLevelOne::update(float dt)
 {
 	movingPlatform1.update(dt);
 	movingPlatform2.update(dt);
+
+	enemy1.update(dt);
 }
 
 void DoomlikeLevelOne::unloadScene()

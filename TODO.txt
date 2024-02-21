@@ -2,13 +2,15 @@
 
 ~ Faire le doomlike (partie 1)
 	-> Faire un système de GameplayStatics pour pouvoir récupérer la référence au Game et à la Scene - fait
-	-> Faire la base de l'ennemi (mesh, raycast vers le joueur, orientation, réaction aux balles) - en cours
+	-> Faire la base de l'ennemi (mesh, raycast vers le joueur, orientation, réaction aux balles) - en cours 
+		(orientation marche pas et besoin d'un système propre de suppression des objets pour finir la réaction aux balles)
 	-> Mettre les meshs d'arme et de balles
 	-> Intégrer la mort du joueur
 	-> Récupérer des meshs/textures pour un décor
 	-> Faire un premier niveau simpliste
 	-> Faire un système pour faire réagir une partie du niveau en fonction des ennemis tués
 	-> Faire le système de trigger qui ferait réagir des parties du niveau (lumière, objets...)
+	-> Améliorer l'ennemi avec le déplacement vers le joueur
 	-> Faire un bon niveau avec des salles et des éléments cinématiques sur les lumières et autres
 
 

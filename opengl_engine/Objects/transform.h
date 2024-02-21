@@ -18,6 +18,7 @@ public:
 
 	void setRotation(Quaternion newRotation);
 	void incrementRotation(Quaternion increment);
+	void rotateTowards(Vector3 posTowards);
 
 
 	void pasteTransform(Transform& transform);

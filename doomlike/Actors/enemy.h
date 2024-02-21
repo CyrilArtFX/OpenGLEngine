@@ -2,12 +2,23 @@
 #include <Objects/object.h>
 #include <Physics/AABB/boxAABBColComp.h>
 #include <Physics/rigidbodyComponent.h>
+#include <Events/observer.h>
 
-class Enemy : public Object
+class Player;
+
+class Enemy : public Object, public Observer
 {
 public:
 	void load() override;
 
+	void update(float dt);
+
 private:
+	void onBodyIntersect(RigidbodyComponent& other);
+
 	RigidbodyComponent* rigidbody{ nullptr };
+
+	Player* playerRef{ nullptr };
+
+	float range{ 12.0f };
 };

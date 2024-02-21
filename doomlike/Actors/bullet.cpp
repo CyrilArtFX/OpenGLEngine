@@ -59,7 +59,10 @@ void Bullet::onBulletWallHit(const CollisionResponse& hitResponse)
 
 void Bullet::onBulletEntityHit(RigidbodyComponent& hitBody)
 {
-	std::cout << "A bullet hit another rigidbody!\n";
+	if (hitBody.getAssociatedCollision().getCollisionChannel() == "enemy")
+	{
+		lifetime = 0.0f;
+	}
 }
 
 void Bullet::onRigidbodyDeleted()

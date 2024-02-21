@@ -9,9 +9,9 @@ BoxAABBColComp::BoxAABBColComp() :
 {
 }
 
-BoxAABBColComp::BoxAABBColComp(const Box& boxValues, Transform* transformToAssociate, bool loadPersistent, std::string collisionChannel, bool scaleBoxSizeWithTransform) :
+BoxAABBColComp::BoxAABBColComp(const Box& boxValues, Object* objectToAssociate, bool loadPersistent, std::string collisionChannel, bool scaleBoxSizeWithTransform) :
 	box(boxValues), useTransformScaleForBoxSize(scaleBoxSizeWithTransform),
-	CollisionComponent(CollisionType::BoxAABB, transformToAssociate, &AssetManager::GetSingleMesh("debug_cube"), loadPersistent, collisionChannel)
+	CollisionComponent(CollisionType::BoxAABB, objectToAssociate, &AssetManager::GetSingleMesh("debug_cube"), loadPersistent, collisionChannel)
 {
 }
 
@@ -102,8 +102,8 @@ Box BoxAABBColComp::getTransformedBox(bool forDrawDebug) const
 {
 	Box transformed_box;
 
-	transformed_box.setCenterPoint((box.getCenterPoint() * associatedTransform->getScale()) + associatedTransform->getPosition());
-	Vector3 scale_factors = useTransformScaleForBoxSize ? associatedTransform->getScale() : Vector3::one;
+	transformed_box.setCenterPoint((box.getCenterPoint() * associatedObject->getScale()) + associatedObject->getPosition());
+	Vector3 scale_factors = useTransformScaleForBoxSize ? associatedObject->getScale() : Vector3::one;
 	Vector3 half_extents = box.getHalfExtents() * scale_factors;
 	if (forDrawDebug) half_extents += Vector3{ 0.01f, 0.01f, 0.01f };
 	transformed_box.setHalfExtents(half_extents);

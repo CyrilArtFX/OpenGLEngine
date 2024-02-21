@@ -15,6 +15,8 @@ public:
 
 	Camera& getActiveCamera() override;
 
+	Player* getPlayer() { return &player; }
+
 protected:
 	void loadGameAssets() override;
 	void loadGame() override;

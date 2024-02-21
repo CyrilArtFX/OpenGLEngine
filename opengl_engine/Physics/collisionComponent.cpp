@@ -15,9 +15,9 @@ CollisionComponent::~CollisionComponent()
 	onCollisionDelete.broadcast();
 }
 
-void CollisionComponent::setAssociatedTransform(Transform* newTransform)
+void CollisionComponent::setAssociatedObject(Object* newObject)
 {
-	associatedTransform = newTransform;
+	associatedObject = newObject;
 }
 
 bool CollisionComponent::resolvePoint(const Vector3& point) const
@@ -82,9 +82,9 @@ void CollisionComponent::drawDebug(Material& debugMaterial) const
 
 const Matrix4 CollisionComponent::getModelMatrix() const
 {
-	if (!associatedTransform) return Matrix4::identity;
+	if (!associatedObject) return Matrix4::identity;
 
-	return associatedTransform->getModelMatrixConst();
+	return associatedObject->getModelMatrixConst();
 }
 
 void CollisionComponent::resetIntersected()
@@ -99,8 +99,8 @@ void CollisionComponent::forceIntersected() const
 
 void CollisionComponent::addPosition(const Vector3& posToAdd)
 {
-	if (!associatedTransform) return;
-	associatedTransform->setPosition(associatedTransform->getPosition() + posToAdd);
+	if (!associatedObject) return;
+	associatedObject->setPosition(associatedObject->getPosition() + posToAdd);
 }
 
 void CollisionComponent::setCollisionChannel(std::string newCollisionChannel)
@@ -108,9 +108,9 @@ void CollisionComponent::setCollisionChannel(std::string newCollisionChannel)
 	collisionChannel = newCollisionChannel;
 }
 
-CollisionComponent::CollisionComponent(CollisionType collisionType_, Transform* associatedTransform_, Mesh* debugMesh_, bool loadPersistent_, std::string collisionChannel_) :
+CollisionComponent::CollisionComponent(CollisionType collisionType_, Object* associatedObject_, Mesh* debugMesh_, bool loadPersistent_, std::string collisionChannel_) :
 	PhysicEntity(loadPersistent_),
-	collisionType(collisionType_), associatedTransform(associatedTransform_), debugMesh(debugMesh_), collisionChannel(collisionChannel_)
+	collisionType(collisionType_), associatedObject(associatedObject_), debugMesh(debugMesh_), collisionChannel(collisionChannel_)
 {
 }
 

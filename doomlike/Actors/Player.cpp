@@ -136,6 +136,11 @@ void Player::update(float dt)
 	}
 }
 
+Vector3 Player::getEyePosition() const
+{
+	return camera.getPosition();
+}
+
 void Player::unload()
 {
 	for (auto& bullet : bullets)

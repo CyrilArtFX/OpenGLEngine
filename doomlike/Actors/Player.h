@@ -15,7 +15,7 @@
 
 class Renderer;
 
-class Player : public Transform, public Observer
+class Player : public Object, public Observer
 {
 public:
 	Player();
@@ -32,6 +32,8 @@ public:
 	void onRigidbodyDeleted();
 
 	void onCollision(const CollisionResponse& collisionResponse);
+
+	Vector3 getEyePosition() const;
 
 
 	Camera& getCamera() { return camera; }
