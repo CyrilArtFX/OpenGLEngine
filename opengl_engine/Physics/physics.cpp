@@ -17,7 +17,7 @@ const float Physics::Gravity = -9.8f;
 
 CollisionComponent& Physics::CreateCollisionComponent(CollisionComponent* colComp)
 {
-	std::cout << "PHYSICS_INFO: Create a collision.\n";
+	//std::cout << "PHYSICS_INFO: Create a collision.\n";
 	collisionsComponents.push_back(colComp);
 
 	CollisionComponent& col = *(collisionsComponents.back());
@@ -39,12 +39,12 @@ void Physics::RemoveCollision(CollisionComponent* colComp)
 	col.registered = false;
 	collisionsComponents.pop_back();
 
-	std::cout << "PHYSICS_INFO: Successfully removed a collision.\n";
+	//std::cout << "PHYSICS_INFO: Successfully removed a collision.\n";
 }
 
 RigidbodyComponent& Physics::CreateRigidbodyComponent(RigidbodyComponent* rigidbodyComp)
 {
-	std::cout << "PHYSICS_INFO: Create a rigidbody.\n";
+	//std::cout << "PHYSICS_INFO: Create a rigidbody.\n";
 	rigidbodiesComponents.push_back(rigidbodyComp);
 
 	RigidbodyComponent& rigidbody = *(rigidbodiesComponents.back());
@@ -66,7 +66,7 @@ void Physics::RemoveRigidbody(RigidbodyComponent* rigidbodyComp)
 	rigidbody.registered = false;
 	rigidbodiesComponents.pop_back();
 
-	std::cout << "PHYSICS_INFO: Successfully removed a rigidbody.\n";
+	//std::cout << "PHYSICS_INFO: Successfully removed a rigidbody.\n";
 }
 
 bool Physics::LineRaycast(const Vector3& start, const Vector3& end, const std::vector<std::string> testChannels, RaycastHitInfos& outHitInfos, float drawDebugTime, bool createOnScene)
@@ -80,7 +80,7 @@ bool Physics::LineRaycast(const Vector3& start, const Vector3& end, const std::v
 
 	if (drawDebugTime != 0.0f)
 	{
-		std::cout << "PHYSICS_INFO: Create a raycast line.\n";
+		//std::cout << "PHYSICS_INFO: Create a raycast line.\n";
 
 		raycasts.emplace_back(new RaycastLine(start, end, drawDebugTime, !createOnScene));
 
@@ -152,7 +152,7 @@ bool Physics::AABBRaycast(const Vector3& location, const Box& aabbBox, const std
 
 	if (drawDebugTime != 0.0f)
 	{
-		std::cout << "PHYSICS_INFO: Create a raycast AABB.\n";
+		//std::cout << "PHYSICS_INFO: Create a raycast AABB.\n";
 
 		raycasts.emplace_back(new RaycastAABB(location, aabbBox, drawDebugTime));
 
@@ -351,7 +351,7 @@ void Physics::ClearAllCollisions(bool engineClosing)
 {
 	if (engineClosing) 
 	{
-		std::cout << "PHYSICS_INFO: Clearing all collisions, rigidbodies and raycasts.\n";
+		//std::cout << "PHYSICS_INFO: Clearing all collisions, rigidbodies and raycasts.\n";
 
 		for (auto col : collisionsComponents)
 		{
@@ -376,7 +376,7 @@ void Physics::ClearAllCollisions(bool engineClosing)
 		return;
 	}
 	
-	std::cout << "PHYSICS_INFO: Clearing active scene collisions, rigidbodies and raycasts.\n";
+	//std::cout << "PHYSICS_INFO: Clearing active scene collisions, rigidbodies and raycasts.\n";
 
 	std::vector<CollisionComponent*> game_collisions;
 	for (auto col : collisionsComponents)
