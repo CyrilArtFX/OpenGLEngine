@@ -6,6 +6,7 @@
 #include <Objects/object.h>
 
 #include <Actors/movingPlatform.h>
+#include <Actors/enemy.h>
 
 #include <Maths/vector3.h>
 #include <Utils/color.h>
@@ -43,6 +44,8 @@ private:
 
 	MovingPlatform movingPlatform1;
 	MovingPlatform movingPlatform2;
+
+	Enemy enemy1;
 
 	DirectionalLight dirLight;
 	PointLight pointLight1;

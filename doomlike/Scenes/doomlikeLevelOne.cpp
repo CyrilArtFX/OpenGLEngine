@@ -35,6 +35,7 @@ void DoomlikeLevelOne::loadScene()
 	registerObject(&stair2);
 	registerObject(&movingPlatform1);
 	registerObject(&movingPlatform2);
+	registerObject(&enemy1);
 
 	ground1.setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
 	ground2.setPosition(Vector3{ 0.0f, 0.0f, 10.0f });
@@ -47,6 +48,7 @@ void DoomlikeLevelOne::loadScene()
 	stair1.setPosition(Vector3{ 8.0f, 0.1f, 15.5f });
 	stair2.setScale(Vector3{ 1.0f, 0.2f, 1.0f });
 	stair2.setPosition(Vector3{ 9.0f, 0.3f, 15.5f });
+	enemy1.setPosition(Vector3{ -1.0f, 1.2f, 12.0f });
 
 	movingPlatform1.setup(Vector3{ 10.0f, -3.0f, 2.0f }, Vector3{ 10.0f, 7.0f, 2.0f }, 5.0f);
 	movingPlatform2.setup(Vector3{ 8.0f, 3.0f, 2.0f }, Vector3{ 3.0f, 3.0f, -2.0f }, 5.0f);
