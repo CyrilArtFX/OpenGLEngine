@@ -24,10 +24,16 @@ RigidbodyComponent::~RigidbodyComponent()
 
 void RigidbodyComponent::associateCollision(CollisionComponent* collisionToAssociate)
 {
+	if (associatedCollision)
+	{
+		associatedCollision->onCollisionIntersect.unregisterObserver(this);
+	}
+
 	associatedCollision = collisionToAssociate;
 	if (associatedCollision)
 	{
 		//  do initialization things with the newly associated collision
+		associatedCollision->onCollisionIntersect.registerObserver(this, Bind_1(&RigidbodyComponent::onCollisionIntersected));
 	}
 }
 
@@ -44,7 +50,8 @@ void RigidbodyComponent::updatePhysicsPreCollision(float dt)
 	}
 
 	//  compute anticipated movement
-	movement = velocity * dt;
+	movement = (velocity + velocityOneFrame) * dt;
+	velocityOneFrame = Vector3::zero;
 
 	//  if rigidbody has no physic activated, it moves but without checking for collisions to repulse its movement
 	if (!isPhysicsActivated())
@@ -119,9 +126,19 @@ void RigidbodyComponent::setVelocity(const Vector3& value)
 	velocity = value;
 }
 
+void RigidbodyComponent::addVelocity(const Vector3& value)
+{
+	velocity += value;
+}
+
 Vector3 RigidbodyComponent::getVelocity() const 
 { 
 	return velocity;
+}
+
+void RigidbodyComponent::addVelocityOneFrame(const Vector3& value)
+{
+	velocityOneFrame += value;
 }
 
 void RigidbodyComponent::setUseCCD(bool value)
@@ -149,4 +166,11 @@ std::vector<std::string> RigidbodyComponent::getTestChannels() const
 void RigidbodyComponent::resetIntersected()
 {
 	associatedCollision->resetIntersected();
+}
+
+void RigidbodyComponent::onCollisionIntersected(RigidbodyComponent& other)
+{
+	if (isPhysicsActivated() || !other.isPhysicsActivated()) return;
+
+	other.addVelocityOneFrame(getVelocity());
 }

@@ -135,7 +135,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Actors\bullet.cpp" />
-    <ClCompile Include="Actors\crate.cpp" />
+    <ClCompile Include="Actors\movingPlatform.cpp" />
     <ClCompile Include="Actors\Player.cpp" />
     <ClCompile Include="Actors\target.cpp" />
     <ClCompile Include="doomlikeGame.cpp" />
@@ -150,7 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actors\bullet.h" />
-    <ClInclude Include="Actors\crate.h" />
+    <ClInclude Include="Actors\movingPlatform.h" />
     <ClInclude Include="Actors\Player.h" />
     <ClInclude Include="Actors\target.h" />
     <ClInclude Include="doomlikeGame.h" />

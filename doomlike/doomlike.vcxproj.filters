@@ -36,7 +36,7 @@
     <ClCompile Include="Actors\target.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Actors\crate.cpp">
+    <ClCompile Include="Actors\movingPlatform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -62,7 +62,7 @@
     <ClInclude Include="Actors\target.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Actors\crate.h">
+    <ClInclude Include="Actors\movingPlatform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

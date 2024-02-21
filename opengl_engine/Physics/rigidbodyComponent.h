@@ -2,6 +2,7 @@
 #include "collisionComponent.h"
 #include "physicEntity.h"
 #include <Events/event.h>
+#include <Events/observer.h>
 
 
 struct CollisionResponse
@@ -20,7 +21,7 @@ struct CollisionResponse
 * Collisions between physics activated rigidbodies are not implemented. They will call the onCollision event, but won't compute repulsion.
 * Rigidbody weight cannot be inferior or equal to 0 (and weight currently has no effect as bodies collisions doesn't work).
 */
-class RigidbodyComponent : public PhysicEntity
+class RigidbodyComponent : public PhysicEntity, public Observer
 {
 public:
 	RigidbodyComponent(CollisionComponent* collisionToAssociate, bool useCCD, bool activatePhysics);
@@ -49,7 +50,10 @@ public:
 	void computeRepulsion(const Vector3& repulsion);
 
 	void setVelocity(const Vector3& value);
+	void addVelocity(const Vector3& value);
 	Vector3 getVelocity() const;
+
+	void addVelocityOneFrame(const Vector3& value);
 
 	inline bool isAssociatedCollisionValid() const { return associatedCollision; }
 
@@ -80,6 +84,7 @@ private:
 	float stepHeight{ 0.0f };
 
 	Vector3 velocity{ Vector3::zero };
+	Vector3 velocityOneFrame{ Vector3::zero };
 	Vector3 movement{ Vector3::zero };
 	bool useGravity{ false };
 
@@ -87,5 +92,8 @@ private:
 	bool firstFrame{ true };
 
 	std::vector<std::string> testChannels;
+
+
+	void onCollisionIntersected(RigidbodyComponent& other);
 };
 

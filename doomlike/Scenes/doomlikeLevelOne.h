@@ -5,7 +5,7 @@
 #include <Assets/assetManager.h>
 #include <Objects/object.h>
 
-#include <Actors/crate.h>
+#include <Actors/movingPlatform.h>
 
 #include <Maths/vector3.h>
 #include <Utils/color.h>
@@ -41,7 +41,8 @@ private:
 	Object stair1;
 	Object stair2;
 
-	Crate crateMovable1;
+	MovingPlatform movingPlatform1;
+	MovingPlatform movingPlatform2;
 
 	DirectionalLight dirLight;
 	PointLight pointLight1;
