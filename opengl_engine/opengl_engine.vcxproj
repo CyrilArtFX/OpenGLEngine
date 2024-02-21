@@ -138,6 +138,7 @@
     <ClCompile Include="Assets\assetMaterial.cpp" />
     <ClCompile Include="Assets\assetTexture.cpp" />
     <ClCompile Include="Assets\defaultAssets.cpp" />
+    <ClCompile Include="GameplayStatics\gameplayStatics.cpp" />
     <ClCompile Include="Maths\Geometry\box.cpp" />
     <ClCompile Include="Maths\Geometry\ray.cpp" />
     <ClCompile Include="Physics\AABB\boxAABBColComp.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="Assets\defaultAssets.h" />
     <ClInclude Include="Events\event.h" />
     <ClInclude Include="Events\observer.h" />
+    <ClInclude Include="GameplayStatics\gameplayStatics.h" />
     <ClInclude Include="Physics\AABB\raycastAABB.h" />
     <ClInclude Include="Physics\ObjectChannels\collisionChannels.h" />
     <ClInclude Include="Physics\physicEntity.h" />

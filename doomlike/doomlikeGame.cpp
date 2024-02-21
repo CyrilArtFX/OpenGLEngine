@@ -3,6 +3,7 @@
 #include <Assets/assetManager.h>
 #include <Physics/ObjectChannels/collisionChannels.h>
 #include <Inputs/Input.h>
+#include <GameplayStatics/gameplayStatics.h>
 
 DoomlikeGame::DoomlikeGame()
 {

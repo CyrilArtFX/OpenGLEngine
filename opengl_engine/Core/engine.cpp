@@ -3,6 +3,7 @@
 #include <Assets/defaultAssets.h>
 #include <Inputs/input.h>
 #include <Physics/physics.h>
+#include <GameplayStatics/gameplayStatics.h>
 
 
 Engine::Engine()
@@ -157,12 +158,14 @@ void Engine::close()
 void Engine::loadGame(std::weak_ptr<Game> game_)
 {
 	game = game_.lock();
+	GameplayStatics::SetCurrentGame(game.get());
 	game->load(&renderer);
 }
 
 void Engine::unloadGame()
 {
 	if (game) game->unload();
+	GameplayStatics::SetCurrentGame(nullptr);
 }
 
 

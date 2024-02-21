@@ -1,4 +1,5 @@
 #include "game.h"
+#include <GameplayStatics/gameplayStatics.h>
 
 #include <iostream>
 
@@ -44,6 +45,7 @@ void Game::loadScene(Scene* scene)
 
 	unloadActiveScene(true);
 	activeScene = scene;
+	GameplayStatics::SetCurrentScene(activeScene);
 	activeScene->load(renderer);
 }
 
@@ -51,4 +53,6 @@ void Game::unloadActiveScene(bool loadNewScene)
 {
 	if (activeScene) activeScene->unload(!loadNewScene);
 	if(!loadNewScene) renderer->setCamera(&gamedefaultsNocam);
+
+	if (!loadNewScene) GameplayStatics::SetCurrentScene(nullptr);
 }
