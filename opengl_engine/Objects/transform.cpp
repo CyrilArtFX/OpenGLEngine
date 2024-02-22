@@ -47,11 +47,8 @@ void Transform::incrementRotation(Quaternion increment)
 
 void Transform::rotateTowards(Vector3 posTowards)
 {
-	//  TODO: make a better function than this lol (it doesn't work)
-	Vector3 direction = Vector3::normalize(posTowards - getPosition());
-	Vector3 rotation_axis = Vector3::cross(Vector3::unitX, direction);
-	float rotation_angle = Maths::acos(Vector3::dot(Vector3::unitX, direction));
-	setRotation(Quaternion{ rotation_axis, rotation_angle });
+	rotation = Quaternion::createLookAt(getPosition(), posTowards, Vector3::unitY);
+	matrixDirty = true;
 }
 
 

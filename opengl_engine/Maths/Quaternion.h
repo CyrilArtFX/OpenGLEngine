@@ -135,6 +135,10 @@ public:
 		return retVal;
 	}
 
+	static Quaternion createLookAt(const Vector3& pos, const Vector3& target, const Vector3& up);
+
+	static Quaternion fromRotationMatrix(const float mat[3][3]);
+
 	static const Quaternion identity;
 };
 

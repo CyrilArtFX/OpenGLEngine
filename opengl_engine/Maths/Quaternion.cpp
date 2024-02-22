@@ -78,3 +78,64 @@ Vector3 Quaternion::toEuler(const Quaternion& quat)
 
 	return Vector3{ yaw, roll, pitch };
 }
+
+Quaternion Quaternion::createLookAt(const Vector3& pos, const Vector3& target, const Vector3& up)
+{
+	Vector3 z_axis = Vector3::normalize(target - pos);
+	Vector3 x_axis = Vector3::normalize(Vector3::cross(up, z_axis));
+	Vector3 y_axis = Vector3::normalize(Vector3::cross(z_axis, x_axis));
+
+	float look_at_matrix[3][3] =
+	{
+		{ x_axis.x, y_axis.x, z_axis.x },
+		{ x_axis.y, y_axis.y, z_axis.y },
+		{ x_axis.z, y_axis.z, z_axis.z }
+	};
+
+	return fromRotationMatrix(look_at_matrix);
+}
+
+Quaternion Quaternion::fromRotationMatrix(const float mat[3][3])
+{
+	//  rotation matrix to quaternion code from https://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
+	Quaternion quat;
+
+	float trace = mat[0][0] + mat[1][1] + mat[2][2];
+	if (trace > 0.0f)
+	{
+		float s = 0.5f / sqrtf(trace + 1.0f);
+		quat.w = 0.25f / s;
+		quat.x = (mat[2][1] - mat[1][2]) * s;
+		quat.y = (mat[0][2] - mat[2][0]) * s;
+		quat.z = (mat[1][0] - mat[0][1]) * s;
+	}
+	else
+	{
+		if (mat[0][0] > mat[1][1] && mat[0][0] > mat[2][2])
+		{
+			float s = 2.0f * sqrtf(1.0f + mat[0][0] - mat[1][1] - mat[2][2]);
+			quat.w = (mat[2][1] - mat[1][2]) / s;
+			quat.x = 0.25f * s;
+			quat.y = (mat[0][1] + mat[1][0]) / s;
+			quat.z = (mat[0][2] + mat[2][0]) / s;
+		}
+		else if (mat[1][1] > mat[2][2])
+		{
+			float s = 2.0f * sqrtf(1.0f + mat[1][1] - mat[0][0] - mat[2][2]);
+			quat.w = (mat[0][2] - mat[2][0]) / s;
+			quat.x = (mat[0][1] + mat[1][0]) / s;
+			quat.y = 0.25f * s;
+			quat.z = (mat[1][2] + mat[2][1]) / s;
+		}
+		else
+		{
+			float s = 2.0f * sqrtf(1.0f + mat[2][2] - mat[0][0] - mat[1][1]);
+			quat.w = (mat[1][0] - mat[0][1]) / s;
+			quat.x = (mat[0][2] + mat[2][0]) / s;
+			quat.y = (mat[1][2] + mat[2][1]) / s;
+			quat.z = 0.25f * s;
+		}
+	}
+
+	return quat;
+}
