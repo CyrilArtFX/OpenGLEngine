@@ -17,6 +17,15 @@ void Transform::setPosition(float newPosX, float newPosY, float newPosZ)
 	setPosition(Vector3{ newPosX, newPosY, newPosZ });
 }
 
+void Transform::addPositionRotated(Vector3 posRotate)
+{
+	Vector3 pos = getPosition();
+	pos += getRight() * posRotate.x;
+	pos += getUp() * posRotate.y;
+	pos += getForward() * posRotate.z;
+	setPosition(pos);
+}
+
 void Transform::setScale(Vector3 newScale)
 {
 	scale = newScale;

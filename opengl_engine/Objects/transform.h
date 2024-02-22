@@ -11,6 +11,8 @@ public:
 
 	void setPosition(Vector3 newPos);
 	void setPosition(float newPosX, float newPosY, float newPosZ);
+	//  add position to this transform that follows its rotation. Ideal for offsets
+	void addPositionRotated(Vector3 posRotate);
 
 	void setScale(Vector3 newScale);
 	void setScale(float newScaleX, float newScaleY, float newScaleZ);

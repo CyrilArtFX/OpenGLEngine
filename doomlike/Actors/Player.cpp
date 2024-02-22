@@ -4,6 +4,8 @@
 #include <Maths/maths.h>
 #include <Physics/physics.h>
 #include <Physics/ObjectChannels/collisionChannels.h>
+#include <Assets/assetManager.h>
+#include <Rendering/renderer.h>
 
 #include <GLFW/glfw3.h>
 #include <algorithm>
@@ -25,6 +27,10 @@ void Player::setup(float height, float speed, float jump, float stepHeight, Rend
 	rendererRef = renderer;
 
 	rigidbody->setStepHeight(stepHeight);
+
+	gunObject.addModel(&AssetManager::GetModel("gun"));
+	rendererRef->addObject(&gunObject);
+	gunObject.setScale(0.1f);
 
 	setPosition(0.0f, 0.0f, 0.0f);
 	camera.setPosition(Vector3{ 0.0f, camHeight, 0.0f });
@@ -134,6 +140,14 @@ void Player::update(float dt)
 		std::cout << "Player fall too far below the ground, teleporting to origin\n";
 		setPosition(Vector3::zero);
 	}
+
+
+
+	//  move gun object to follow player
+	gunObject.setPosition(camera.getPosition());
+	gunObject.addPositionRotated(Vector3{ 0.1f, -0.1f, -0.2f }); //  gun offset of camera
+	gunObject.setRotation(camera.getRotation());
+	gunObject.incrementRotation(Quaternion{ gunObject.getUp(), Maths::toRadians(180.0f) }); //  gun is rotated backward by default
 }
 
 Vector3 Player::getEyePosition() const

@@ -53,6 +53,8 @@ private:
 	float shootVelocity{ 15.0f };
 	float bulletLifeTime{ 3.0f };
 
+	Object gunObject;
+
 	RigidbodyComponent* rigidbody;
 };
 
