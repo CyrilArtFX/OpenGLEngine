@@ -32,6 +32,12 @@ void Scene::unload(bool exitGame)
 
 void Scene::update(float dt)
 {
+	if (firstFrame)
+	{
+		firstFrame = false;
+		return;
+	}
+
 	updateScene(dt);
 
 	for (auto object : sceneregisteredObjects)

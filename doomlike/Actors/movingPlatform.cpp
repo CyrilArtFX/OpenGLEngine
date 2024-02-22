@@ -13,6 +13,8 @@ void MovingPlatform::setup(Vector3 pointA_, Vector3 pointB_, float timeAtoB_)
 	pointA = pointA_;
 	pointB = pointB_;
 	timeAtoB = timeAtoB_;
+	timer = 0.0f;
+	reverse = false;
 
 	setPosition(pointA);
 	distance = Vector3::Distance(pointA, pointB);
@@ -30,7 +32,7 @@ void MovingPlatform::updateObject(float dt)
 		{
 			timer = 0.0f;
 			reverse = false;
-			rigidbody->setVelocity((pointB - pointA) * (1.0f /timeAtoB));
+			rigidbody->setVelocity((pointB - pointA) * (1.0f / timeAtoB));
 		}
 	}
 	else

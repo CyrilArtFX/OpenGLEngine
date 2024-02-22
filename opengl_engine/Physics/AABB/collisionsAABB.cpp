@@ -133,7 +133,7 @@ bool CollisionsAABB::CollideBodyBox(const RigidbodyComponent& bodyAABB, Collisio
 			const Vector3 body_pos_next_frame = body_box.getCenterPoint() + bodyAABB.getAnticipatedMovement();
 
 			outBodyResponse.repulsion = Vector3{ 0.0f, y_difference, 0.0f };
-			outBodyResponse.impactPoint = body_pos_next_frame + Vector3{ 0.0f, y_difference - body_box.getHalfExtents().y, 0.0f };
+			outBodyResponse.impactPoint = body_box.getPointOnPerimeter(body_pos_next_frame + Vector3{ 0.0f, y_difference - body_box.getHalfExtents().y, 0.0f });
 			outBodyResponse.impactNormal = body_box_aabb.getNormal(outBodyResponse.impactPoint);
 		}
 	}

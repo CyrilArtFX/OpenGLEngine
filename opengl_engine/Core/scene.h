@@ -55,4 +55,6 @@ protected:
 private:
 	std::vector<Object*> sceneregisteredObjects;
 	std::vector<Light*> sceneregisteredLights;
+
+	bool firstFrame{ true };
 };
