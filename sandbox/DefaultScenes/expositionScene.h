@@ -17,7 +17,7 @@ class ExpositionScene : public Scene
 public:
 	ExpositionScene();
 
-	void update(float dt) override;
+	void updateScene(float dt) override;
 
 protected:
 	void loadScene() override;

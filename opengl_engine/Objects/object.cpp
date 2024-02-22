@@ -16,6 +16,11 @@ void Object::draw(Material* materialInUsage)
 	}
 }
 
+void Object::update(float dt)
+{
+	updateObject(dt);
+}
+
 
 void Object::addModel(Model* model)
 {

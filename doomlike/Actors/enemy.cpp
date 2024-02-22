@@ -23,8 +23,15 @@ void Enemy::load()
 	playerRef = static_cast<DoomlikeGame*>(GameplayStatics::GetGame())->getPlayer();
 }
 
-void Enemy::update(float dt)
+void Enemy::updateObject(float dt)
 {
+	if (dead)
+	{
+		delete rigidbody;
+		GameplayStatics::GetActiveScene()->unregisterObject(this);
+		return;
+	}
+
 	if (!playerRef) return;
 
 	RaycastHitInfos out;
@@ -42,7 +49,9 @@ void Enemy::onBodyIntersect(RigidbodyComponent& other)
 {
 	if (other.getAssociatedCollision().getCollisionChannel() == "bullet")
 	{
-		//  TODO: implement proper object destruction with correct unregister for renderer
 		std::cout << "Enemy Die\n";
+		dead = true;
+		//  not safe to delete rigidbody here cause it's during the update physics step
+		//  might need a way to automate this with a pending system
 	}
 }

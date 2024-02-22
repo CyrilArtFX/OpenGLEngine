@@ -21,7 +21,7 @@ class DoomlikeLevelOne : public Scene, public PlayerSpawnPoint
 public:
 	DoomlikeLevelOne();
 
-	void update(float dt) override;
+	void updateScene(float dt) override;
 
 
 protected:
@@ -44,8 +44,6 @@ private:
 
 	MovingPlatform movingPlatform1;
 	MovingPlatform movingPlatform2;
-
-	Enemy enemy1;
 
 	DirectionalLight dirLight;
 	PointLight pointLight1;

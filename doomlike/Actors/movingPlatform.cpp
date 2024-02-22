@@ -19,7 +19,7 @@ void MovingPlatform::setup(Vector3 pointA_, Vector3 pointB_, float timeAtoB_)
 	rigidbody->setVelocity((pointB - pointA) * (1.0f / timeAtoB));
 }
 
-void MovingPlatform::update(float dt)
+void MovingPlatform::updateObject(float dt)
 {
 	if (timeAtoB <= 0.0f || distance == 0.0f) return;
 

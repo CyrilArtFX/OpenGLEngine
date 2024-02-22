@@ -61,6 +61,6 @@ void TestFpsScene::unloadScene()
 {
 }
 
-void TestFpsScene::update(float dt)
+void TestFpsScene::updateScene(float dt)
 {
 }

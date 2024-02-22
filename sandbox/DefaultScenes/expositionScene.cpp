@@ -65,7 +65,7 @@ void ExpositionScene::unloadScene()
 }
 
 
-void ExpositionScene::update(float dt)
+void ExpositionScene::updateScene(float dt)
 {
 	//  move camera
 	if (Input::IsKeyDown(GLFW_KEY_W))

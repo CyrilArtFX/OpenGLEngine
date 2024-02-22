@@ -11,7 +11,7 @@ class Enemy : public Object, public Observer
 public:
 	void load() override;
 
-	void update(float dt);
+	void updateObject(float dt) override;
 
 private:
 	void onBodyIntersect(RigidbodyComponent& other);
@@ -21,4 +21,5 @@ private:
 	Player* playerRef{ nullptr };
 
 	float range{ 9.0f };
+	bool dead{ false };
 };

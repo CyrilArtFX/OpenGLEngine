@@ -20,7 +20,7 @@ class TestFpsScene : public Scene, public PlayerSpawnPoint
 public:
 	TestFpsScene();
 
-	void update(float dt) override;
+	void updateScene(float dt) override;
 
 
 protected:

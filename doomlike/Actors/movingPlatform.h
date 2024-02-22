@@ -9,7 +9,7 @@ public:
 	void load() override;
 
 	void setup(Vector3 pointA_, Vector3 pointB_, float timeAtoB_);
-	void update(float dt);
+	void updateObject(float dt) override;
 
 private:
 	RigidbodyComponent* rigidbody{ nullptr };
