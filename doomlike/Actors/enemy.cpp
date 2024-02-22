@@ -54,4 +54,9 @@ void Enemy::onBodyIntersect(RigidbodyComponent& other)
 		//  not safe to delete rigidbody here cause it's during the update physics step
 		//  might need a way to automate this with a pending system
 	}
+	else if (other.getAssociatedCollision().getCollisionChannel() == "player")
+	{
+		std::cout << "Player Die\n";
+		static_cast<DoomlikeGame*>(GameplayStatics::GetGame())->restartLevel();
+	}
 }

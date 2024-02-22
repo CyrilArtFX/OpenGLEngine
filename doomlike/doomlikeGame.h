@@ -17,6 +17,8 @@ public:
 
 	Player* getPlayer() { return &player; }
 
+	void restartLevel();
+
 protected:
 	void loadGameAssets() override;
 	void loadGame() override;
@@ -24,9 +26,13 @@ protected:
 	void unloadGame() override;
 
 private:
+	void loadLevel(int index);
+
 	//  scenes
 	TestFpsScene testScene;
 	DoomlikeLevelOne levelOneScene;
+	int currentLevel = 0;
+	bool mustRestartLevel{ false };
 
 	//  player
 	Player player;

@@ -112,28 +112,52 @@ void DoomlikeGame::loadGameAssets()
 
 void DoomlikeGame::loadGame()
 {
-	loadScene(&testScene);
-	player.respawn(testScene);
-
 	player.setup(1.5f, 7.0f, 10.0f, 0.3f, renderer);
 	renderer->setCamera(&player.getCamera());
+
+	loadLevel(1);
 }
 
 
 void DoomlikeGame::updateGame(float dt)
 {
+	if (mustRestartLevel)
+	{
+		loadLevel(currentLevel);
+		mustRestartLevel = false;
+	}
+
 	player.update(dt);
 
 	if (Input::IsKeyPressed(GLFW_KEY_KP_0))
 	{
-		loadScene(&testScene);
-		player.respawn(testScene);
+		loadLevel(0);
 	}
 
 	if (Input::IsKeyPressed(GLFW_KEY_KP_1))
 	{
+		loadLevel(1);
+	}
+}
+
+void DoomlikeGame::restartLevel()
+{
+	mustRestartLevel = true;
+}
+
+void DoomlikeGame::loadLevel(int index)
+{
+	currentLevel = index;
+	switch (index)
+	{
+	case 0:
+		loadScene(&testScene);
+		player.respawn(testScene);
+		break;
+	case 1:
 		loadScene(&levelOneScene);
 		player.respawn(levelOneScene);
+		break;
 	}
 }
 
@@ -150,5 +174,8 @@ void DoomlikeGame::unloadGame()
 	renderer->removeMaterial(&AssetManager::GetMaterial("crate"));
 	renderer->removeMaterial(&AssetManager::GetMaterial("ground"));
 	renderer->removeMaterial(&AssetManager::GetMaterial("taxi"));
+	renderer->removeMaterial(&AssetManager::GetMaterial("gun"));
+	renderer->removeMaterial(&AssetManager::GetMaterial("enemy"));
 	renderer->removeMaterial(&AssetManager::GetMaterial("bullet"));
+	renderer->removeMaterial(&AssetManager::GetMaterial("gun"));
 }
