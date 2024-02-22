@@ -35,7 +35,7 @@ void DoomlikeLevelOne::loadScene()
 	registerObject(&stair2);
 	registerObject(&movingPlatform1);
 	registerObject(&movingPlatform2);
-	Object& enemy_1 = registerObject(new Enemy()); //  better to add object that can be altered like this
+	Object& enemy_1 = registerObject(new Enemy()); //  better to add objects that can be altered like this
 
 	ground1.setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
 	ground2.setPosition(Vector3{ 0.0f, 0.0f, 10.0f });

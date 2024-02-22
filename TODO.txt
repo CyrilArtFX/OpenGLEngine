@@ -3,7 +3,7 @@
 ~ Faire le doomlike (partie 1)
 	-> Faire un système de GameplayStatics pour pouvoir récupérer la référence au Game et à la Scene - fait
 	-> Faire la base de l'ennemi (mesh, raycast vers le joueur, orientation, réaction aux balles) - fait
-	-> Mettre les meshs d'arme et de balles
+	-> Mettre les meshs d'arme et de balles - en cours (balle fait)
 	-> Intégrer la mort du joueur
 	-> Récupérer des meshs/textures pour un décor
 	-> Faire un premier niveau simpliste

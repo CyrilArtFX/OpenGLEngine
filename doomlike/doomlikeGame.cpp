@@ -15,7 +15,6 @@ void DoomlikeGame::loadGameAssets()
 
 	//  shaders, textures and materials
 	AssetManager::CreateShaderProgram("lit_object", "Lit/object_lit.vert", "Lit/object_lit.frag", Lit);
-	AssetManager::CreateShaderProgram("bullet", "Unlit/flat_emissive.vert", "Unlit/flat_emissive.frag", Unlit);
 
 	AssetManager::LoadTexture("crate_diffuse", "container2.png", GL_RGBA, false);
 	AssetManager::LoadTexture("crate_specular", "container2_specular.png", GL_RGBA, false);
@@ -28,6 +27,9 @@ void DoomlikeGame::loadGameAssets()
 	AssetManager::LoadTexture("enemy_diffuse", "doomlike/enemy/enemy_basecolor.jpeg", GL_RGB, false);
 	AssetManager::LoadTexture("enemy_specular", "doomlike/enemy/enemy_roughness.jpeg", GL_RGB, false);
 	AssetManager::LoadTexture("enemy_emissive", "doomlike/enemy/enemy_emissive.jpeg", GL_RGB, false);
+
+	AssetManager::LoadTexture("bullet_diffuse", "doomlike/bullet/bullet_basecolor.png", GL_RGB, false);
+	AssetManager::LoadTexture("bullet_specular", "doomlike/bullet/bullet_roughness.png", GL_RED, false); //  still need the system to automatically analyse texture color depth
 
 	Material& crate_mat = AssetManager::CreateMaterial("crate", &AssetManager::GetShader("lit_object"));
 	crate_mat.addTexture(&AssetManager::GetTexture("crate_diffuse"), TextureType::Diffuse);
@@ -53,19 +55,24 @@ void DoomlikeGame::loadGameAssets()
 	enemy_mat.addTexture(&AssetManager::GetTexture("enemy_emissive"), TextureType::Emissive);
 	enemy_mat.addParameter("material.shininess", 32.0f);
 
-	Material& bullet_mat = AssetManager::CreateMaterial("bullet", &AssetManager::GetShader("bullet"));
-	bullet_mat.addParameter("emissive", 1.0f, 1.0f, 1.0f);
+	Material& bullet_mat = AssetManager::CreateMaterial("bullet", &AssetManager::GetShader("lit_object"));
+	bullet_mat.addTexture(&AssetManager::GetTexture("bullet_diffuse"), TextureType::Diffuse);
+	bullet_mat.addTexture(&AssetManager::GetTexture("bullet_specular"), TextureType::Specular);
+	bullet_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
+	bullet_mat.addParameter("material.shininess", 32.0f);
 
 	renderer->addMaterial(&AssetManager::GetMaterial("crate"));
 	renderer->addMaterial(&AssetManager::GetMaterial("ground"));
 	renderer->addMaterial(&AssetManager::GetMaterial("taxi"));
 	renderer->addMaterial(&AssetManager::GetMaterial("bullet"));
 	renderer->addMaterial(&AssetManager::GetMaterial("enemy"));
+	renderer->addMaterial(&AssetManager::GetMaterial("bullet"));
 
 
 	//  meshes and models
 	AssetManager::LoadMeshCollection("taxi", "taxi/taxi.fbx");
 	AssetManager::LoadMeshCollection("enemy", "doomlike/enemy/enemy.obj");
+	AssetManager::LoadMeshCollection("bullet", "doomlike/bullet/bullet.fbx");
 
 	AssetManager::CreateModel("crate");
 	AssetManager::GetModel("crate").addMesh(&AssetManager::GetSingleMesh("default_cube"), &AssetManager::GetMaterial("crate"));
@@ -73,14 +80,14 @@ void DoomlikeGame::loadGameAssets()
 	AssetManager::CreateModel("ground");
 	AssetManager::GetModel("ground").addMesh(&AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("ground"));
 
-	AssetManager::CreateModel("bullet");
-	AssetManager::GetModel("bullet").addMesh(&AssetManager::GetSingleMesh("default_cube"), &AssetManager::GetMaterial("bullet"));
-
 	AssetManager::CreateModel("taxi");
 	AssetManager::GetModel("taxi").addMeshes(&AssetManager::GetMeshCollection("taxi"), &AssetManager::GetMaterial("taxi"));
 
 	AssetManager::CreateModel("enemy");
 	AssetManager::GetModel("enemy").addMeshes(&AssetManager::GetMeshCollection("enemy"), &AssetManager::GetMaterial("enemy"));
+
+	AssetManager::CreateModel("bullet");
+	AssetManager::GetModel("bullet").addMeshes(&AssetManager::GetMeshCollection("bullet"), &AssetManager::GetMaterial("bullet"));
 
 
 	//  object channels
