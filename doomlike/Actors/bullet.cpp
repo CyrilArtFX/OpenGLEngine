@@ -22,7 +22,7 @@ Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float 
 	object.setPosition(spawnPos);
 	object.setRotation(spawnRot);
 	object.incrementRotation(Quaternion{ object.getUp(), Maths::toRadians(90.0f)});
-	object.setScale(0.00035f); //  faut pas mettre l'unit en kilometre sur maya hein (genre il abuse du bail le frero la)
+	object.setScale(0.0002f); //  faut pas mettre l'unit en kilometre sur maya hein (genre il abuse du bail le frero la)
 
 	renderer->addObject(&object);
 

@@ -87,9 +87,23 @@ void Player::update(float dt)
 	{
 		if (rendererRef)
 		{
-			Quaternion bullet_rotation = camera.getRotation();
-			bullet_rotation = Quaternion::concatenate(bullet_rotation, Quaternion{ camera.getUp(), Maths::toRadians(90.0f) });
-			bullets.push_back(std::make_unique<Bullet>(camera.getPosition(), bullet_rotation, camera.getForward(), shootVelocity, bulletLifeTime, rendererRef));
+			RaycastHitInfos out;
+			bool ray_hit = Physics::LineRaycast(camera.getPosition(), camera.getPosition() + camera.getForward() * 1000.0f, { "solid", "enemy" }, out, 0.0f);
+
+			Quaternion bullet_rotation;
+			Vector3 bullet_direction;
+			if (!ray_hit)
+			{
+				bullet_rotation = Quaternion::concatenate(camera.getRotation(), Quaternion{ camera.getUp(), Maths::toRadians(90.0f) });
+				bullet_direction = camera.getForward();
+			}
+			else
+			{
+				bullet_rotation = Quaternion::createLookAt(gunObject.getPosition(), out.hitLocation, Vector3::unitY);
+				bullet_direction = Vector3::normalize(out.hitLocation - gunObject.getPosition());
+			}
+
+			bullets.push_back(std::make_unique<Bullet>(gunObject.getPosition(), bullet_rotation, bullet_direction, shootVelocity, bulletLifeTime, rendererRef));
 		}
 		else
 		{
