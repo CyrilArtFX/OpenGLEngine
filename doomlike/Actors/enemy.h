@@ -20,5 +20,5 @@ private:
 
 	Player* playerRef{ nullptr };
 
-	float range{ 12.0f };
+	float range{ 9.0f };
 };

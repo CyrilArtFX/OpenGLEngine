@@ -41,7 +41,8 @@ void DoomlikeLevelOne::loadScene()
 	ground2.setPosition(Vector3{ 0.0f, 0.0f, 10.0f });
 	ground3.setPosition(Vector3{ 10.0f, 0.0f, 10.0f });
 	crate1.setPosition(Vector3{ 2.0f, 0.5f, 0.0f });
-	crate2.setPosition(Vector3{ 3.0f, 0.5f, 13.0f });
+	crate2.setPosition(Vector3{ 3.0f, 1.0f, 13.0f });
+	crate2.setScale(Vector3{ 0.5f, 2.0f, 2.0f });
 	crate3.setPosition(Vector3{ 9.5f, 0.5f, 9.0f });
 	crate4.setPosition(Vector3{ 2.5f, 3.0f, 7.5f });
 	stair1.setScale(Vector3{ 1.0f, 0.2f, 1.0f });

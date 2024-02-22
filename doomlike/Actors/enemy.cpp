@@ -31,11 +31,11 @@ void Enemy::update(float dt)
 	bool test_player = Physics::LineRaycast(getPosition(), playerRef->getEyePosition(), { "solid", "player" }, out, 0.0f);
 	if (!test_player) return;
 
-	const Player* player_visibility = dynamic_cast<const Player*>(out.hitCollision->getAssociatedObject());
-	if (!player_visibility) return;
+	if (out.hitDistance > range) return;
 
-	//  TODO: find a way to make a good look at rotation for enemy
-	//rotateTowards(player_visibility->getEyePosition());
+	if (out.hitCollision->getCollisionChannel() != "player") return;
+
+	rotateTowards(playerRef->getPosition());
 }
 
 void Enemy::onBodyIntersect(RigidbodyComponent& other)
