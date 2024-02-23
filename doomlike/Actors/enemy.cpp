@@ -1,5 +1,6 @@
 #include "enemy.h"
 #include <Physics/physics.h>
+#include <Physics/ObjectChannels/collisionChannels.h>
 #include <Assets/assetManager.h>
 
 #include "Player.h"
@@ -15,6 +16,7 @@ void Enemy::load()
 
 	rigidbody = &Physics::CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box{Vector3::zero, Vector3{0.7f, 0.7f, 0.7f}}, this, false, "enemy"), false, true));
 	rigidbody->getAssociatedCollisionNonConst().onCollisionIntersect.registerObserver(this, Bind_1(&Enemy::onBodyIntersect));
+	rigidbody->setTestChannels(CollisionChannels::GetRegisteredTestChannel("Enemy"));
 
 	rigidbody->setUseGravity(false);
 
@@ -49,14 +51,14 @@ void Enemy::onBodyIntersect(RigidbodyComponent& other)
 {
 	if (other.getAssociatedCollision().getCollisionChannel() == "bullet")
 	{
-		std::cout << "Enemy Die\n";
+		std::cout << "Enemy die from a bullet.\n";
 		dead = true;
 		//  not safe to delete rigidbody here cause it's during the update physics step
 		//  might need a way to automate this with a pending system
 	}
 	else if (other.getAssociatedCollision().getCollisionChannel() == "player")
 	{
-		std::cout << "Player Die\n";
+		std::cout << "Player die from the enemy.\n";
 		static_cast<DoomlikeGame*>(GameplayStatics::GetGame())->restartLevel();
 	}
 }

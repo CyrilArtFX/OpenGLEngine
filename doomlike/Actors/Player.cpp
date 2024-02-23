@@ -7,6 +7,9 @@
 #include <Assets/assetManager.h>
 #include <Rendering/renderer.h>
 
+#include <GameplayStatics/gameplayStatics.h>
+#include <doomlikeGame.h>
+
 #include <GLFW/glfw3.h>
 #include <algorithm>
 #include <iostream>
@@ -151,8 +154,8 @@ void Player::update(float dt)
 
 	if (getPosition().y < -50.0f)
 	{
-		std::cout << "Player fall too far below the ground, teleporting to origin\n";
-		setPosition(Vector3::zero);
+		std::cout << "Player die by falling.\n";
+		static_cast<DoomlikeGame*>(GameplayStatics::GetGame())->restartLevel();
 	}
 
 
