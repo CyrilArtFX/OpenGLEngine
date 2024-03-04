@@ -91,7 +91,7 @@ void Player::update(float dt)
 		if (rendererRef)
 		{
 			RaycastHitInfos out;
-			bool ray_hit = Physics::LineRaycast(camera.getPosition(), camera.getPosition() + camera.getForward() * 1000.0f, { "solid", "enemy" }, out, 0.0f);
+			bool ray_hit = Physics::LineRaycast(camera.getPosition(), camera.getPosition() + camera.getForward() * 1000.0f, CollisionChannels::GetRegisteredTestChannel("PlayerEntity"), out, 0.0f);
 
 			Quaternion bullet_rotation;
 			Vector3 bullet_direction;
