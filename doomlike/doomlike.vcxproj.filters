@@ -30,7 +30,7 @@
     <ClCompile Include="doomlikeGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Scenes\doomlikeLevelOne.cpp">
+    <ClCompile Include="Scenes\doomlikeLevelDebug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Actors\target.cpp">
@@ -40,6 +40,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Actors\enemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes\doomlikeLevelStart.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Decor\wall.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -56,7 +62,7 @@
     <ClInclude Include="doomlikeGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scenes\doomlikeLevelOne.h">
+    <ClInclude Include="Scenes\doomlikeLevelDebug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameLogic\playerSpawnPoint.h">
@@ -69,6 +75,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Actors\enemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\doomlikeLevelStart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Decor\wall.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,7 +1,8 @@
 #pragma once
 #include <Core/game.h>
 #include <Scenes/testFpsScene.h>
-#include <Scenes/doomlikeLevelOne.h>
+#include <Scenes/doomlikeLevelDebug.h>
+#include <Scenes/doomlikeLevelStart.h>
 
 #include <Actors/player.h>
 
@@ -30,7 +31,8 @@ private:
 
 	//  scenes
 	TestFpsScene testScene;
-	DoomlikeLevelOne levelOneScene;
+	DoomlikeLevelDebug levelDebugScene;
+	DoomlikeLevelStart levelStartScene;
 	int currentLevel = 0;
 	bool mustRestartLevel{ false };
 

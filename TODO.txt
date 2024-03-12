@@ -58,6 +58,8 @@
 
 ~ Les objets scenes sont créés avant que le loadDefaultAssets soit appelé par l'objet game ?
 
+~ Regarder la projection d'un vecteur sur une surface pour remplacer l'espèce d'harcoding bizarre pour annuler la vélocité vers la collision (en plus c'est un bon point de maths pour les entretiens)
+
 ~ Trouver une solution pour les problèmes de rotations avec la caméra (étudier unreal ? réussir à combiner la matrice de la caméra et celle du joueur ?)
 
 ~ Essayer de comprendre pourquoi si les bullets sont pas stockées en unique_ptr ça fait complètement n'importe quoi (genre c'est abusé de fou)
