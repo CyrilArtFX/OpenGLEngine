@@ -6,6 +6,7 @@
 #include <GameplayStatics/gameplayStatics.h>
 
 #include <Decor/wall.h>
+#include <Decor/floorceiling.h>
 
 DoomlikeGame::DoomlikeGame()
 {
@@ -20,11 +21,6 @@ void DoomlikeGame::loadGameAssets()
 
 	AssetManager::LoadTexture("crate_diffuse", "container2.png", GL_RGBA, false);
 	AssetManager::LoadTexture("crate_specular", "container2_specular.png", GL_RGBA, false);
-
-	AssetManager::LoadTexture("ground_diffuse", "pavement.jpg", GL_RGB, false);
-
-	AssetManager::LoadTexture("ceiling_diffuse", "doomlike/tex_woodceiling/woodceiling_basecolor.jpg", GL_RGB, false);
-	AssetManager::LoadTexture("ceiling_specular", "doomlike/tex_woodceiling/woodceiling_roughness.jpg", GL_RED, false);
 
 	AssetManager::LoadTexture("taxi_diffuse", "taxi/taxi_basecolor.png", GL_RGBA, false);
 	AssetManager::LoadTexture("taxi_emissive", "taxi/taxi_emissive.png", GL_RGB, false);
@@ -45,18 +41,6 @@ void DoomlikeGame::loadGameAssets()
 	crate_mat.addTexture(&AssetManager::GetTexture("crate_specular"), TextureType::Specular);
 	crate_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
 	crate_mat.addParameter("material.shininess", 32.0f);
-
-	Material& ground_mat = AssetManager::CreateMaterial("ground", &AssetManager::GetShader("lit_object"));
-	ground_mat.addTexture(&AssetManager::GetTexture("ground_diffuse"), TextureType::Diffuse);
-	ground_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Specular);
-	ground_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
-	ground_mat.addParameter("material.shininess", 32.0f);
-
-	Material& ceiling_mat = AssetManager::CreateMaterial("ceiling", &AssetManager::GetShader("lit_object"));
-	ceiling_mat.addTexture(&AssetManager::GetTexture("ceiling_diffuse"), TextureType::Diffuse);
-	ceiling_mat.addTexture(&AssetManager::GetTexture("ceiling_specular"), TextureType::Specular);
-	ceiling_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
-	ceiling_mat.addParameter("material.shininess", 32.0f);
 
 	Material& taxi_mat = AssetManager::CreateMaterial("taxi", &AssetManager::GetShader("lit_object"));
 	taxi_mat.addTexture(&AssetManager::GetTexture("taxi_diffuse"), TextureType::Diffuse);
@@ -83,8 +67,6 @@ void DoomlikeGame::loadGameAssets()
 	gun_mat.addParameter("material.shininess", 32.0f);
 
 	renderer->addMaterial(&AssetManager::GetMaterial("crate"));
-	renderer->addMaterial(&AssetManager::GetMaterial("ground"));
-	renderer->addMaterial(&AssetManager::GetMaterial("ceiling"));
 	renderer->addMaterial(&AssetManager::GetMaterial("taxi"));
 	renderer->addMaterial(&AssetManager::GetMaterial("gun"));
 	renderer->addMaterial(&AssetManager::GetMaterial("enemy"));
@@ -101,12 +83,6 @@ void DoomlikeGame::loadGameAssets()
 	AssetManager::CreateModel("crate");
 	AssetManager::GetModel("crate").addMesh(&AssetManager::GetSingleMesh("default_cube"), &AssetManager::GetMaterial("crate"));
 
-	AssetManager::CreateModel("ground");
-	AssetManager::GetModel("ground").addMesh(&AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("ground"));
-
-	AssetManager::CreateModel("ceiling");
-	AssetManager::GetModel("ceiling").addMesh(&AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("ceiling"));
-
 	AssetManager::CreateModel("taxi");
 	AssetManager::GetModel("taxi").addMeshes(&AssetManager::GetMeshCollection("taxi"), &AssetManager::GetMaterial("taxi"));
 
@@ -121,7 +97,8 @@ void DoomlikeGame::loadGameAssets()
 
 
 	//  decor setups
-	Wall::SetupWalls(*renderer);
+	WallSetup::SetupWalls(*renderer);
+	FloorCeilingSetup::SetupFloorCeilings(*renderer);
 
 
 	//  object channels
@@ -200,13 +177,12 @@ void DoomlikeGame::unloadGame()
 	player.unload();
 
 	renderer->removeMaterial(&AssetManager::GetMaterial("crate"));
-	renderer->removeMaterial(&AssetManager::GetMaterial("ground"));
-	renderer->removeMaterial(&AssetManager::GetMaterial("ceiling"));
 	renderer->removeMaterial(&AssetManager::GetMaterial("taxi"));
 	renderer->removeMaterial(&AssetManager::GetMaterial("gun"));
 	renderer->removeMaterial(&AssetManager::GetMaterial("enemy"));
 	renderer->removeMaterial(&AssetManager::GetMaterial("bullet"));
 	renderer->removeMaterial(&AssetManager::GetMaterial("gun"));
 
-	Wall::ReleaseWalls(*renderer);
+	WallSetup::ReleaseWalls(*renderer);
+	FloorCeilingSetup::ReleaseFloorCeilings(*renderer);
 }

@@ -1,49 +1,41 @@
 #include "wall.h"
-#include <Assets/assetManager.h>
-#include <Rendering/renderer.h>
+#include <Physics/physics.h>
+#include <Physics/AABB/boxAABBColComp.h>
 
 
-
-
-
-
-
-// ============================================================================
-//  ---------------- Compact setup for code clarity --------------------------
-// ============================================================================
-
-
-void Wall::SetupWalls(Renderer& rendererRef)
+void Wall::load()
 {
-	AssetManager::LoadTexture("wall_diffuse", "doomlike/tex_stonewall/stonewall_basecolor.jpg", GL_RGB, false);
-	AssetManager::LoadTexture("wall_specular", "doomlike/tex_stonewall/stonewall_specular.jpg", GL_RGB, false);
-
-	Material& wall_mat = AssetManager::CreateMaterial("wall", &AssetManager::GetShader("lit_object"));
-	wall_mat.addTexture(&AssetManager::GetTexture("wall_diffuse"), TextureType::Diffuse);
-	wall_mat.addTexture(&AssetManager::GetTexture("wall_specular"), TextureType::Specular);
-	wall_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
-	wall_mat.addParameter("material.shininess", 32.0f);
-
-	rendererRef.addMaterial(&AssetManager::GetMaterial("wall"));
-
-
-	std::vector<Vertex> wall_vertices
-	{
-		// positions                         // normals                  // tex coords
-		Vertex{Vector3{-1.0f, 0.0f, -1.0f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{0.0f, 0.0f}},
-		Vertex{Vector3{ 1.0f, 0.0f, -1.0f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{2.0f, 0.0f}},
-		Vertex{Vector3{ 1.0f, 0.0f,  1.0f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{2.0f, 2.0f}},
-		Vertex{Vector3{ 1.0f, 0.0f,  1.0f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{2.0f, 2.0f}},
-		Vertex{Vector3{-1.0f, 0.0f,  1.0f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{0.0f, 2.0f}},
-		Vertex{Vector3{-1.0f, 0.0f, -1.0f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{0.0f, 0.0f}}
-	};
-	AssetManager::LoadSingleMesh("wall", wall_vertices);
-
-	AssetManager::CreateModel("wall");
-	AssetManager::GetModel("wall").addMesh(&AssetManager::GetSingleMesh("wall"), &AssetManager::GetMaterial("wall"));
+	addModel(&AssetManager::GetModel("wall"));
 }
 
-void Wall::ReleaseWalls(Renderer& rendererRef)
+void Wall::setup(Vector3 position, FacingDirection facingDirection, bool hasCollision)
 {
-	rendererRef.removeMaterial(&AssetManager::GetMaterial("wall"));
+	setPosition(position);
+
+	switch (facingDirection)
+	{
+	case FacingDirection::FacingPositiveX:
+		setRotation(Quaternion::fromEuler(0.0f, Maths::toRadians(90.0f), Maths::toRadians(-90.0f)));
+		if (hasCollision)
+			Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{-0.1f, 0.0f, 0.0f}, Vector3{0.1f, 1.25f, 1.25f} }, this, false, "solid"));
+		break;
+
+	case FacingDirection::FacingNegativeX:
+		setRotation(Quaternion::fromEuler(0.0f, Maths::toRadians(90.0f), Maths::toRadians(90.0f)));
+		if (hasCollision)
+			Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.1f, 0.0f, 0.0f}, Vector3{0.1f, 1.25f, 1.25f} }, this, false, "solid"));
+		break;
+
+	case FacingDirection::FacingPositiveZ:
+		setRotation(Quaternion::fromEuler(Maths::toRadians(90.0f), Maths::toRadians(90.0f), Maths::toRadians(90.0f)));
+		if (hasCollision)
+			Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, 0.0f, -0.1f}, Vector3{1.25f, 1.25f, 0.1f} }, this, false, "solid"));
+		break;
+
+	case FacingDirection::FacingNegativeZ:
+		setRotation(Quaternion::fromEuler(Maths::toRadians(-90.0f), Maths::toRadians(90.0f), Maths::toRadians(90.0f)));
+		if (hasCollision)
+			Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, 0.0f, 0.1f}, Vector3{1.25f, 1.25f, 0.1f} }, this, false, "solid"));
+		break;
+	}
 }

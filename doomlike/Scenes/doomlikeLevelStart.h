@@ -3,8 +3,10 @@
 #include <GameLogic/playerSpawnPoint.h>
 
 #include <Objects/object.h>
-
 #include <Objects/Lights/directionalLight.h>
+
+#include <Decor/wall.h>
+#include <Decor/floorceiling.h>
 
 
 class DoomlikeLevelStart : public Scene, public PlayerSpawnPoint
@@ -23,9 +25,10 @@ protected:
 
 private:
 	//  static scene objects
-	Object ground;
-	Object wall;
-	Object wall2;
+	FloorObj floor;
+	Wall wall1;
+	Wall wall2;
+	Ceiling ceiling;
 
 	DirectionalLight globalLight;
 };

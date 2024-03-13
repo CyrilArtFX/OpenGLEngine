@@ -46,7 +46,7 @@
 ~ Mettre un editeur :skull:
 
 
-== REFLEXIONS ==
+== REFLEXIONS / PROBLEMES CONNUS ==
 
 ~ Mettre le renderer en classe statique ? permettrait d'assigner certains assets (comme les materiaux) directement à la création par exemple + de ne pas avoir à le passer en paramètre pour le joueur qui va devoir créer des balles (par exemple)
 
@@ -59,6 +59,8 @@
 ~ Les objets scenes sont créés avant que le loadDefaultAssets soit appelé par l'objet game ?
 
 ~ Regarder la projection d'un vecteur sur une surface pour remplacer l'espèce d'harcoding bizarre pour annuler la vélocité vers la collision (en plus c'est un bon point de maths pour les entretiens)
+
+~ Si l'épaisseur de la collision d'un plafond est faible, il est possible de passer à travers en sautant d'en dessous (à cause de la step mechanic), il faudrait trouver pourquoi ça fait ça et le corriger
 
 ~ Trouver une solution pour les problèmes de rotations avec la caméra (étudier unreal ? réussir à combiner la matrice de la caméra et celle du joueur ?)
 
