@@ -52,34 +52,23 @@ namespace FloorCeilingSetup
 		floor_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Specular);
 		floor_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
 		floor_mat.addParameter("material.shininess", 32.0f);
+		floor_mat.addParameter("beta_prevent_tex_scaling", true);
 
 		Material& ceiling_mat = AssetManager::CreateMaterial("ceiling", &AssetManager::GetShader("lit_object"));
 		ceiling_mat.addTexture(&AssetManager::GetTexture("ceiling_diffuse"), TextureType::Diffuse);
 		ceiling_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Specular);
 		ceiling_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
 		ceiling_mat.addParameter("material.shininess", 32.0f);
+		ceiling_mat.addParameter("beta_prevent_tex_scaling", true);
 
 		rendererRef.addMaterial(&AssetManager::GetMaterial("floor"));
 		rendererRef.addMaterial(&AssetManager::GetMaterial("ceiling"));
 
-
-		std::vector<Vertex> floorceiling_vertices
-		{
-			// positions                         // normals                  // tex coords
-			Vertex{Vector3{-2.5f, 0.0f, -2.5f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{0.0f, 0.0f}},
-			Vertex{Vector3{ 2.5f, 0.0f, -2.5f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{5.0f, 0.0f}},
-			Vertex{Vector3{ 2.5f, 0.0f,  2.5f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{5.0f, 5.0f}},
-			Vertex{Vector3{ 2.5f, 0.0f,  2.5f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{5.0f, 5.0f}},
-			Vertex{Vector3{-2.5f, 0.0f,  2.5f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{0.0f, 5.0f}},
-			Vertex{Vector3{-2.5f, 0.0f, -2.5f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{0.0f, 0.0f}}
-		};
-		AssetManager::LoadSingleMesh("floorceiling", floorceiling_vertices);
-
 		AssetManager::CreateModel("floor");
-		AssetManager::GetModel("floor").addMesh(&AssetManager::GetSingleMesh("floorceiling"), &AssetManager::GetMaterial("floor"));
+		AssetManager::GetModel("floor").addMesh(&AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("floor"));
 
 		AssetManager::CreateModel("ceiling");
-		AssetManager::GetModel("ceiling").addMesh(&AssetManager::GetSingleMesh("floorceiling"), &AssetManager::GetMaterial("ceiling"));
+		AssetManager::GetModel("ceiling").addMesh(&AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("ceiling"));
 	}
 
 	static void ReleaseFloorCeilings(Renderer& rendererRef)

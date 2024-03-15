@@ -13,24 +13,18 @@ enum class FacingDirection : uint8_t
 	FacingNegativeZ
 };
 
-enum class WallSize : uint8_t
-{
-	WallSmall,
-	WallBig
-};
-
 
 class Wall : public Object
 {
 public:
 	Wall() {}
-	Wall(Vector3 position, FacingDirection facingDirection, WallSize size, bool hasCollision = true);
+	Wall(Vector3 position, FacingDirection facingDirection, bool hasCollision = true);
 
 	void load() override;
-	void setup(Vector3 position, FacingDirection facingDirection, WallSize size, bool hasCollision = true);
+	void setup(Vector3 position, FacingDirection facingDirection, bool hasCollision = true);
 };
 
-//  TODO: a way to scale things like walls without scaling the texture (uvs would be scaled as well)
+
 
 
 
@@ -54,39 +48,12 @@ namespace WallSetup
 		wall_mat.addTexture(&AssetManager::GetTexture("wall_specular"), TextureType::Specular);
 		wall_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
 		wall_mat.addParameter("material.shininess", 32.0f);
+		wall_mat.addParameter("beta_prevent_tex_scaling", true);
 
 		rendererRef.addMaterial(&AssetManager::GetMaterial("wall"));
 
-
-		std::vector<Vertex> wall_vertices_small  // constructed as a flat plane oriented towards positive Y for simplicity
-		{
-			// positions                           // normals                  // tex coords
-			Vertex{Vector3{-1.25f, 0.0f, -1.25f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{0.0f, 0.0f}},
-			Vertex{Vector3{ 1.25f, 0.0f, -1.25f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{2.0f, 0.0f}},
-			Vertex{Vector3{ 1.25f, 0.0f,  1.25f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{2.0f, 2.0f}},
-			Vertex{Vector3{ 1.25f, 0.0f,  1.25f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{2.0f, 2.0f}},
-			Vertex{Vector3{-1.25f, 0.0f,  1.25f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{0.0f, 2.0f}},
-			Vertex{Vector3{-1.25f, 0.0f, -1.25f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{0.0f, 0.0f}}
-		};
-		AssetManager::LoadSingleMesh("wall_small", wall_vertices_small);
-
-		std::vector<Vertex> wall_vertices_big  // constructed as a flat plane oriented towards positive Y for simplicity
-		{
-			// positions                           // normals                  // tex coords
-			Vertex{Vector3{-2.5f, 0.0f, -2.5f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{0.0f, 0.0f}},
-			Vertex{Vector3{ 2.5f, 0.0f, -2.5f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{4.0f, 0.0f}},
-			Vertex{Vector3{ 2.5f, 0.0f,  2.5f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{4.0f, 4.0f}},
-			Vertex{Vector3{ 2.5f, 0.0f,  2.5f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{4.0f, 4.0f}},
-			Vertex{Vector3{-2.5f, 0.0f,  2.5f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{0.0f, 4.0f}},
-			Vertex{Vector3{-2.5f, 0.0f, -2.5f},  Vector3{0.0f, 1.0f, 0.0f},  Vector2{0.0f, 0.0f}}
-		};
-		AssetManager::LoadSingleMesh("wall_big", wall_vertices_big);
-
-		AssetManager::CreateModel("wall_small");
-		AssetManager::GetModel("wall_small").addMesh(&AssetManager::GetSingleMesh("wall_small"), &AssetManager::GetMaterial("wall"));
-
-		AssetManager::CreateModel("wall_big");
-		AssetManager::GetModel("wall_big").addMesh(&AssetManager::GetSingleMesh("wall_big"), &AssetManager::GetMaterial("wall"));
+		AssetManager::CreateModel("wall");
+		AssetManager::GetModel("wall").addMesh(&AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("wall"));
 	}
 
 

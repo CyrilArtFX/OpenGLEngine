@@ -16,7 +16,7 @@ void FloorObj::setup(Vector3 position, bool hasCollision)
 {
 	setPosition(position);
 	if (hasCollision)
-		Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.1f, 0.0f}, Vector3{2.5f, 0.1f, 2.5f} }, this, false, "solid"));
+		Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.1f, 0.0f}, Vector3{0.5f, 0.1f, 0.5f} }, this, false, "solid"));
 }
 
 
@@ -36,7 +36,7 @@ void Ceiling::setup(Vector3 position, bool hasCollision)
 	setPosition(position);
 	setRotation(Quaternion::fromEuler(0.0f, Maths::toRadians(180.0f), 0.0f));
 	if (hasCollision)
-		Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, 0.2f, 0.0f}, Vector3{2.5f, 0.2f, 2.5f} }, this, false, "solid"));
+		Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, 0.2f, 0.0f}, Vector3{0.5f, 0.2f, 0.5f} }, this, false, "solid"));
 	//  ceiling collision a bit thicker cause otherwise player would be able to pass through it thanks to step mechanic
 	//  (might need to investigate this issue)
 }

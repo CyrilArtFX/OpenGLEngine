@@ -7,11 +7,14 @@ layout(location = 2) in vec2 aTexCoord;
 out vec3 tFragPos;
 out vec3 tNormal;
 out vec2 tTexCoord;
+out vec3 tObjScale;
+out vec3 tObjNormal;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 uniform mat4 normalMatrix;
+uniform vec3 scale;
 
 void main()
 {
@@ -19,6 +22,10 @@ void main()
 	tFragPos = vec3(vec4(aPos, 1.0f) * model);
 
 	tNormal = aNormal * mat3(normalMatrix);
+
+	tObjScale = scale;
+
+	tObjNormal = aNormal;
 	
 	tTexCoord = aTexCoord;
 }

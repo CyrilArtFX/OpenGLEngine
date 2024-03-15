@@ -60,12 +60,12 @@ void DefaultAssets::LoadDefaultAssets(Renderer& renderer)
 	std::vector<Vertex> plane_vertices
 	{
 		// positions                         // normals                   // tex coords
-		Vertex{Vector3{-5.0f, 0.0f, -5.0f},  Vector3{ 0.0f, 1.0f, 0.0f},  Vector2{ 0.0f,  0.0f}},
-		Vertex{Vector3{ 5.0f, 0.0f, -5.0f},  Vector3{ 0.0f, 1.0f, 0.0f},  Vector2{10.0f,  0.0f}},
-		Vertex{Vector3{ 5.0f, 0.0f,  5.0f},  Vector3{ 0.0f, 1.0f, 0.0f},  Vector2{10.0f, 10.0f}},
-		Vertex{Vector3{ 5.0f, 0.0f,  5.0f},  Vector3{ 0.0f, 1.0f, 0.0f},  Vector2{10.0f, 10.0f}},
-		Vertex{Vector3{-5.0f, 0.0f,  5.0f},  Vector3{ 0.0f, 1.0f, 0.0f},  Vector2{ 0.0f, 10.0f}},
-		Vertex{Vector3{-5.0f, 0.0f, -5.0f},  Vector3{ 0.0f, 1.0f, 0.0f},  Vector2{ 0.0f,  0.0f}}
+		Vertex{Vector3{-0.5f, 0.0f, -0.5f},  Vector3{ 0.0f, 1.0f, 0.0f},  Vector2{-0.5f, -0.5f}},
+		Vertex{Vector3{ 0.5f, 0.0f, -0.5f},  Vector3{ 0.0f, 1.0f, 0.0f},  Vector2{ 0.5f, -0.5f}},
+		Vertex{Vector3{ 0.5f, 0.0f,  0.5f},  Vector3{ 0.0f, 1.0f, 0.0f},  Vector2{ 0.5f,  0.5f}},
+		Vertex{Vector3{ 0.5f, 0.0f,  0.5f},  Vector3{ 0.0f, 1.0f, 0.0f},  Vector2{ 0.5f,  0.5f}},
+		Vertex{Vector3{-0.5f, 0.0f,  0.5f},  Vector3{ 0.0f, 1.0f, 0.0f},  Vector2{-0.5f,  0.5f}},
+		Vertex{Vector3{-0.5f, 0.0f, -0.5f},  Vector3{ 0.0f, 1.0f, 0.0f},  Vector2{-0.5f, -0.5f}}
 	};
 	AssetManager::LoadSingleMesh("default_plane", plane_vertices);
 

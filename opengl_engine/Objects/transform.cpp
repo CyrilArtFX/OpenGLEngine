@@ -28,7 +28,7 @@ void Transform::addPositionRotated(Vector3 posRotate)
 
 void Transform::setScale(Vector3 newScale)
 {
-	scale = newScale;
+	scale = Vector3::transform(newScale, rotation);
 	matrixDirty = true;
 }
 
