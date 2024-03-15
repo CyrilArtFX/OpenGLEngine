@@ -8,6 +8,9 @@
 class FloorObj : public Object
 {
 public:
+	FloorObj() {}
+	FloorObj(Vector3 position, bool hasCollision = true);
+
 	void load() override;
 	void setup(Vector3 position, bool hasCollision = true);
 };
@@ -16,6 +19,9 @@ public:
 class Ceiling : public Object
 {
 public:
+	Ceiling() {}
+	Ceiling(Vector3 position, bool hasCollision = true);
+
 	void load() override;
 	void setup(Vector3 position, bool hasCollision = true);
 };

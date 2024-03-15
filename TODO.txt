@@ -6,11 +6,13 @@
 	-> Mettre les meshs d'arme et de balles - fait
 	-> Intégrer la mort du joueur - fait
 	-> Récupérer des meshs/textures pour un décor - en cours
-	-> Faire un premier niveau simpliste
+	-> Faire un premier niveau simpliste - en cours
 	-> Faire un système pour faire réagir une partie du niveau en fonction des ennemis tués
 	-> Faire le système de trigger qui ferait réagir des parties du niveau (lumière, objets...)
 	-> Améliorer l'ennemi avec le déplacement vers le joueur
 	-> Faire un bon niveau avec des salles et des éléments cinématiques sur les lumières et autres
+
+~ Retour sur la physique : mettre l'algo collide and slide à la place de ma répulsion (aaaaa) https://www.youtube.com/watch?v=YR6Q7dUz2uk
 
 
 == MOYEN TERME ==

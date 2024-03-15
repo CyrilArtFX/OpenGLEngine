@@ -2,6 +2,11 @@
 #include <Physics/physics.h>
 #include <Physics/AABB/boxAABBColComp.h>
 
+FloorObj::FloorObj(Vector3 position, bool hasCollision)
+{
+	setup(position, hasCollision);
+}
+
 void FloorObj::load()
 {
 	addModel(&AssetManager::GetModel("floor"));
@@ -15,6 +20,11 @@ void FloorObj::setup(Vector3 position, bool hasCollision)
 }
 
 
+
+Ceiling::Ceiling(Vector3 position, bool hasCollision)
+{
+	setup(position, hasCollision);
+}
 
 void Ceiling::load()
 {

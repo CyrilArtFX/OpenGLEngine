@@ -7,6 +7,7 @@
 
 #include <Decor/wall.h>
 #include <Decor/floorceiling.h>
+#include <Actors/enemy.h>
 
 
 class DoomlikeLevelStart : public Scene, public PlayerSpawnPoint
@@ -24,12 +25,7 @@ protected:
 
 
 private:
-	//  static scene objects
-	FloorObj floor;
-	Wall wall1;
-	Wall wall2;
-	Ceiling ceiling;
-
+	//  static lights
 	DirectionalLight globalLight;
 };
 
