@@ -20,12 +20,12 @@ void DoomlikeLevelStart::loadScene()
 	//  static objects
 	registerObject(new FloorObj(Vector3{0.0f, 0.0f,  2.5f})).setScale(Vector3{ 5.0f, 1.0f, 10.0f});
 	registerObject(new FloorObj(Vector3{0.0f, 0.0f, 15.0f})).setScale(Vector3{15.0f, 1.0f, 15.0f});
-	registerObject(new Ceiling(Vector3{0.0f, 3.0f,  2.5f})).setScale(Vector3{ 5.0f, 1.0f, 10.0f});
+	registerObject(new Ceiling(Vector3{0.0f, 3.0f,  2.5f})).setScale(Vector3{ 5.0f, 1.0f, 10.0f });
 	registerObject(new Ceiling(Vector3{0.0f, 5.0f, 15.0f})).setScale(Vector3{15.0f, 1.0f, 15.0f});
 
-	registerObject(new Wall(Vector3{ 0.0f, 1.5f, -2.5f }, FacingDirection::FacingPositiveZ)).setScale(Vector3{ 5.0f, 1.0f, 3.0f });
-	registerObject(new Wall(Vector3{ -2.5f, 1.5f, 2.5f }, FacingDirection::FacingPositiveX)).setScale(Vector3{ 10.0f, 1.0f, 3.0f });
-	registerObject(new Wall(Vector3{  2.5f, 1.5f, 2.5f }, FacingDirection::FacingNegativeX)).setScale(Vector3{ 10.0f, 1.0f, 3.0f });
+	registerObject(new Wall(Vector3{ 0.0f, 1.5f, -2.5f }, FacingDirection::FacingPositiveZ, Vector2{5.0f, 3.0f}));
+	registerObject(new Wall(Vector3{ -2.5f, 1.5f, 2.5f }, FacingDirection::FacingPositiveX, Vector2{10.0f, 3.0f}));
+	registerObject(new Wall(Vector3{  2.5f, 1.5f, 2.5f }, FacingDirection::FacingNegativeX, Vector2{10.0f, 3.0f}));
 
 	/*
 	registerObject(new FloorObj(Vector3{  0.0f, 0.0f,  0.0f }));

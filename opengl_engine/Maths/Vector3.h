@@ -210,6 +210,11 @@ public:
 
 	static Vector3 transform(const Vector3& vec, const class Matrix4& mat, float w = 1.0f);
 
+	static Vector3 abs(const Vector3& vec)
+	{
+		return Vector3(Maths::abs(vec.x), Maths::abs(vec.y), Maths::abs(vec.z));
+	}
+
 	// This will transform the vector and renormalize the w component
 	static Vector3 transformWithPerspDiv(const Vector3& vec, const class Matrix4& mat, float w = 1.0f);
 

@@ -18,10 +18,14 @@ class Wall : public Object
 {
 public:
 	Wall() {}
-	Wall(Vector3 position, FacingDirection facingDirection, bool hasCollision = true);
+
+	//  scale is a Vector2 because it corresponds to the plane scale once put flat
+	Wall(Vector3 position, FacingDirection facingDirection, Vector2 scale, bool hasCollision = true);
 
 	void load() override;
-	void setup(Vector3 position, FacingDirection facingDirection, bool hasCollision = true);
+
+	//  scale is a Vector2 because it corresponds to the plane scale once put flat
+	void setup(Vector3 position, FacingDirection facingDirection, Vector2 scale, bool hasCollision = true);
 };
 
 

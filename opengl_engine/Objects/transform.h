@@ -14,9 +14,9 @@ public:
 	//  add position to this transform that follows its rotation. Ideal for offsets
 	void addPositionRotated(Vector3 posRotate);
 
-	void setScale(Vector3 newScale);
-	void setScale(float newScaleX, float newScaleY, float newScaleZ);
-	void setScale(float newUniformScale);
+	void setScale(Vector3 newScale, bool scaleInWorld = false);
+	void setScale(float newScaleX, float newScaleY, float newScaleZ, bool scaleInWorld = false);
+	void setScale(float newUniformScale, bool scaleInWorld = false);
 
 	void setRotation(Quaternion newRotation);
 	void incrementRotation(Quaternion increment);

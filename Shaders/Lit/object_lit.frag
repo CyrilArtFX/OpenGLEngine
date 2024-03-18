@@ -84,7 +84,7 @@ void main()
 	//  recompute texCoord
 	vec2 texCoord = tTexCoord;
 
-	if(beta_prevent_tex_scaling) //  yeah this is extremly bad I know
+	if(beta_prevent_tex_scaling == true) //  yeah this is extremly bad I know
 	{
 		texCoord.x *= tObjScale.x;
 		texCoord.y *= tObjScale.z;

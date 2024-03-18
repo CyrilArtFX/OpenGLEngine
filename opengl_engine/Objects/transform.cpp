@@ -26,20 +26,29 @@ void Transform::addPositionRotated(Vector3 posRotate)
 	setPosition(pos);
 }
 
-void Transform::setScale(Vector3 newScale)
+void Transform::setScale(Vector3 newScale, bool scaleInWorld)
 {
-	scale = Vector3::transform(newScale, rotation);
+	//  scaleInWorld is still quite a beta
+
+	if (scaleInWorld)
+	{
+		scale = Vector3::abs(Vector3::transform(newScale, rotation));
+	}
+	else
+	{
+		scale = newScale;
+	}
 	matrixDirty = true;
 }
 
-void Transform::setScale(float newScaleX, float newScaleY, float newScaleZ)
+void Transform::setScale(float newScaleX, float newScaleY, float newScaleZ, bool scaleInWorld)
 {
-	setScale(Vector3{ newScaleX, newScaleY, newScaleZ });
+	setScale(Vector3{ newScaleX, newScaleY, newScaleZ }, scaleInWorld);
 }
 
-void Transform::setScale(float newUniformScale)
+void Transform::setScale(float newUniformScale, bool scaleInWorld)
 {
-	setScale(Vector3{ newUniformScale, newUniformScale, newUniformScale });
+	setScale(Vector3{ newUniformScale, newUniformScale, newUniformScale }, scaleInWorld);
 }
 
 void Transform::setRotation(Quaternion newRotation)
