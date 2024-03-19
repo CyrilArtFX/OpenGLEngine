@@ -54,7 +54,7 @@ Mesh AssetMesh::processNodeSingle(aiNode* node, const aiScene* scene)
     if (node->mNumMeshes > 0)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[0]];
-        return processMesh(mesh, scene);
+        return processMesh(mesh, node, scene);
     }
 
     return Mesh();
@@ -68,7 +68,7 @@ void AssetMesh::processNodeCollection(aiNode* node, const aiScene* scene, MeshCo
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        meshCollection.collection.push_back(processMesh(mesh, scene));
+        meshCollection.collection.push_back(processMesh(mesh, node, scene));
     }
     //  then do the same recursively for each of its children
     for (unsigned int i = 0; i < node->mNumChildren; i++)
@@ -77,8 +77,13 @@ void AssetMesh::processNodeCollection(aiNode* node, const aiScene* scene, MeshCo
     }
 }
 
-Mesh AssetMesh::processMesh(aiMesh* mesh, const aiScene* scene)
+Mesh AssetMesh::processMesh(aiMesh* mesh, aiNode* node, const aiScene* scene)
 {
+    aiMatrix4x4 node_matrix = node->mTransformation;
+    aiMatrix4x4 node_matrix_normal = node_matrix;
+    node_matrix_normal.Inverse();
+    node_matrix_normal.Transpose();
+
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
 
@@ -88,17 +93,23 @@ Mesh AssetMesh::processMesh(aiMesh* mesh, const aiScene* scene)
         Vertex vertex;
 
         //  vertex position
+        aiVector3D vertices_transformed = mesh->mVertices[i];
+        vertices_transformed *= node_matrix;
+
         Vector3 pos;
-        pos.x = mesh->mVertices[i].x;
-        pos.y = mesh->mVertices[i].y;
-        pos.z = mesh->mVertices[i].z;
+        pos.x = vertices_transformed.x;
+        pos.y = vertices_transformed.y;
+        pos.z = vertices_transformed.z;
         vertex.position = pos;
 
         //  vertex normal
+        aiVector3D normal_transformed = mesh->mNormals[i];
+        normal_transformed *= node_matrix_normal; //  it is supposed to rotate the normal properly if the node has a rotation but I'm not sure it works perfectly
+
         Vector3 normal;
-        normal.x = mesh->mNormals[i].x;
-        normal.y = mesh->mNormals[i].y;
-        normal.z = mesh->mNormals[i].z;
+        normal.x = normal_transformed.x;
+        normal.y = normal_transformed.y;
+        normal.z = normal_transformed.z;
         vertex.normal = normal;
 
         //  vertex texture coordinates
