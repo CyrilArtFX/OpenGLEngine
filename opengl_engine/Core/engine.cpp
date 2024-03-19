@@ -228,6 +228,12 @@ void Engine::engineUpdate(GLFWwindow* glWindow)
 		if (Input::IsKeyDown(GLFW_KEY_LEFT_SHIFT))
 			freecam.freecamKeyboard(Camera_Movement::Down, deltaTime);
 
+		if (Input::IsKeyPressed(GLFW_MOUSE_BUTTON_RIGHT))
+			freecam.setSpeed(10.0f);
+
+		if (Input::IsKeyReleased(GLFW_MOUSE_BUTTON_RIGHT))
+			freecam.setSpeed(4.0f);
+
 		Vector2 mouse_delta = Input::GetMouseDelta();
 		freecam.freecamMouseMovement(mouse_delta.x, mouse_delta.y);
 
@@ -266,6 +272,7 @@ void Engine::enableFreecam()
 	std::cout << "Freecam mode enabled.\n";
 	freecam.copyCameraTransform(game->getActiveCamera());
 	renderer.setCamera(&freecam);
+	freecam.setSpeed(4.0f);
 }
 
 void Engine::disableFreecam()
