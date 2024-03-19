@@ -15,13 +15,22 @@ namespace Stairs
 		FacingNegativeZ
 	};
 
+
+	/*
+	* Stairs have the size of a 2*2*2 box.
+	* Origin is at the center bottom.
+	*/
 	class StairsObj : public Object
 	{
 	public:
 		StairsObj() {}
+
+		//  position correspond to the center bottom of the stairs
 		StairsObj(Vector3 position, Stairs::FacingDirection facingDirection);
 
 		void load() override;
+
+		//  position correspond to the center bottom of the stairs
 		void setup(Vector3 position, Stairs::FacingDirection facingDirection);
 	};
 };
@@ -52,7 +61,7 @@ namespace StairsSetup
 		stairs_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Specular);
 		stairs_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
 		stairs_mat.addParameter("material.shininess", 32.0f);
-		stairs_mat.addParameter("beta_prevent_tex_scaling", false);
+		//stairs_mat.addParameter("beta_prevent_tex_scaling", false);
 
 		rendererRef.addMaterial(&AssetManager::GetMaterial("stairs"));
 

@@ -45,13 +45,13 @@ void DoomlikeLevelStart::loadScene()
 
 
 	//  stairs
-	registerObject(new StairsObj(Vector3{ 2.5f, 0.0f, 16.0f }, Stairs::FacingDirection::FacingNegativeZ));
+	registerObject(new StairsObj(Vector3{ 3.8f, 0.0f, 16.0f }, Stairs::FacingDirection::FacingNegativeZ));
 
 
 	//  enemies
 	Object& enemy_1 = registerObject(new Enemy());
 
-	enemy_1.setPosition(Vector3{ 2.5f, 1.2f,  12.5f });
+	enemy_1.setPosition(Vector3{ 3.5f, 1.2f,  11.5f });
 	
 
 

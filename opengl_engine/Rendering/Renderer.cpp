@@ -41,8 +41,6 @@ void Renderer::draw()
 		shader->setMatrix4("view", view.getAsFloatPtr());
 		shader->setMatrix4("projection", projection.getAsFloatPtr());
 
-		shader->setBool("beta_prevent_tex_scaling", false); //  should do a better thing for all beta parameters
-
 		ShaderType shader_type = shader->getShaderType();
 		switch (shader_type) //  feels a bit hardcoded, should be cool to find a better way to do this
 		{
@@ -89,6 +87,8 @@ void Renderer::draw()
 		//  loop through all materials that use the shader
 		for (auto material : materials_by_shaders.second)
 		{
+			shader->setBool("beta_prevent_tex_scaling", false); //  should do a better thing for all beta parameters
+
 			material->use();
 
 			//  loop through all objects to draw all meshes that uses the material
