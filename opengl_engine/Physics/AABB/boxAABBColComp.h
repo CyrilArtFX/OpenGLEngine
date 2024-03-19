@@ -14,7 +14,7 @@ class BoxAABBColComp : public CollisionComponent
 {
 public:
 	BoxAABBColComp();
-	BoxAABBColComp(const Box& boxValues, Object* objectToAssociate, bool loadPersistent, std::string collisionChannel, bool scaleBoxSizeWithTransform = true);
+	BoxAABBColComp(const Box& boxValues, Object* objectToAssociate, bool loadPersistent, std::string collisionChannel, bool scaleBoxSizeWithTransform = true, bool moveBoxCenterWithObjectScale = true);
 
 	void changeBox(const Box& boxValues);
 
@@ -41,4 +41,5 @@ protected:
 private:
 	Box box{ Box::zero };
 	bool useTransformScaleForBoxSize{ true };
+	bool useTransformScaleForBoxCenter{ true };
 };

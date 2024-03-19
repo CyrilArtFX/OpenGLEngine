@@ -25,25 +25,25 @@ void Wall::setup(Vector3 position, FacingDirection facingDirection, Vector2 scal
 	case FacingDirection::FacingPositiveX:
 		setRotation(Quaternion::fromEuler(0.0f, Maths::toRadians(90.0f), Maths::toRadians(-90.0f)));
 		if (hasCollision)
-			Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{-0.01f, 0.0f, 0.0f}, Vector3{0.1f, scale.y, scale.x} }, this, false, "solid", false));
+			Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{-0.1f, 0.0f, 0.0f}, Vector3{0.1f, scale.y, scale.x} }, this, false, "solid", false, false));
 		break;
 
 	case FacingDirection::FacingNegativeX:
 		setRotation(Quaternion::fromEuler(0.0f, Maths::toRadians(90.0f), Maths::toRadians(90.0f)));
 		if (hasCollision)
-			Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.01f, 0.0f, 0.0f}, Vector3{0.1f, scale.y, scale.x} }, this, false, "solid", false));
+			Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.1f, 0.0f, 0.0f}, Vector3{0.1f, scale.y, scale.x} }, this, false, "solid", false, false));
 		break;
 
 	case FacingDirection::FacingPositiveZ:
 		setRotation(Quaternion::fromEuler(Maths::toRadians(90.0f), Maths::toRadians(90.0f), Maths::toRadians(90.0f)));
 		if (hasCollision)
-			Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, 0.0f, -0.01f}, Vector3{scale.x, scale.y, 0.1f} }, this, false, "solid", false));
+			Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, 0.0f, -0.1f}, Vector3{scale.x, scale.y, 0.1f} }, this, false, "solid", false, false));
 		break;
 
 	case FacingDirection::FacingNegativeZ:
 		setRotation(Quaternion::fromEuler(Maths::toRadians(-90.0f), Maths::toRadians(90.0f), Maths::toRadians(90.0f)));
 		if (hasCollision)
-			Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, 0.0f, 0.01f}, Vector3{scale.x, scale.y, 0.1f} }, this, false, "solid", false));
+			Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, 0.0f, 0.1f}, Vector3{scale.x, scale.y, 0.1f} }, this, false, "solid", false, false));
 		break;
 	}
 }
