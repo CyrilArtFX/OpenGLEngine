@@ -16,6 +16,7 @@ AAA -> Trouver un moyen pour scale les objets sans que ça fasse complètement n
 	-> Faire un bon niveau avec des salles et des éléments cinématiques sur les lumières et autres
 
 ~ Retour sur la physique : mettre l'algo collide and slide à la place de ma répulsion (aaaaa) https://www.youtube.com/watch?v=YR6Q7dUz2uk
+	-> la mécanique de step pourrait marcher de l'autre manière, quand on chute ça snap automatiquement si y'a une collision pas trop basse
 
 
 == MOYEN TERME ==

@@ -19,6 +19,7 @@ namespace Stairs
 	/*
 	* Stairs have the size of a 2*2*2 box.
 	* Origin is at the center bottom.
+	* Steps height is 0.25f.
 	*/
 	class StairsObj : public Object
 	{
