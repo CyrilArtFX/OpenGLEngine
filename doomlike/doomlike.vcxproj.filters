@@ -51,6 +51,9 @@
     <ClCompile Include="Decor\floorceiling.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Decor\stairs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actors\bullet.h">
@@ -87,6 +90,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Decor\floorceiling.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Decor\stairs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

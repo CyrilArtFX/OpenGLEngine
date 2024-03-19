@@ -7,6 +7,7 @@
 
 #include <Decor/wall.h>
 #include <Decor/floorceiling.h>
+#include <Decor/stairs.h>
 #include <Actors/enemy.h>
 
 

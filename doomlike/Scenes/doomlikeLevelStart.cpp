@@ -9,6 +9,10 @@
 #include <Physics/AABB/boxAABBColComp.h>
 
 
+using Wall::WallObj;
+using Stairs::StairsObj;
+
+
 DoomlikeLevelStart::DoomlikeLevelStart()
 {
 }
@@ -23,21 +27,25 @@ void DoomlikeLevelStart::loadScene()
 	registerObject(new Ceiling(Vector3{ 0.0f, 3.0f,  2.5f })).setScale(Vector3{ 5.0f, 1.0f, 10.0f });
 	registerObject(new Ceiling(Vector3{ 0.0f, 5.0f, 15.0f })).setScale(Vector3{ 15.0f, 1.0f, 15.0f });
 
-	registerObject(new Wall(Vector3{ 0.0f, 1.5f, -2.5f }, FacingDirection::FacingPositiveZ, Vector2{ 5.0f, 3.0f }));
-	registerObject(new Wall(Vector3{ -2.5f, 1.5f, 2.5f }, FacingDirection::FacingPositiveX, Vector2{ 10.0f, 3.0f }));
-	registerObject(new Wall(Vector3{ 2.5f, 1.5f, 2.5f }, FacingDirection::FacingNegativeX, Vector2{ 10.0f, 3.0f }));
+	registerObject(new WallObj(Vector3{ 0.0f, 1.5f, -2.5f }, Wall::FacingDirection::FacingPositiveZ, Vector2{ 5.0f, 3.0f }));
+	registerObject(new WallObj(Vector3{ -2.5f, 1.5f, 2.5f }, Wall::FacingDirection::FacingPositiveX, Vector2{ 10.0f, 3.0f }));
+	registerObject(new WallObj(Vector3{ 2.5f, 1.5f, 2.5f }, Wall::FacingDirection::FacingNegativeX, Vector2{ 10.0f, 3.0f }));
 
-	registerObject(new Wall(Vector3{ -5.0f, 2.5f, 7.5f }, FacingDirection::FacingPositiveZ, Vector2{ 5.0f, 5.0f }));
-	registerObject(new Wall(Vector3{ 0.0f, 4.0f, 7.5f }, FacingDirection::FacingPositiveZ, Vector2{ 5.0f, 2.0f }));
-	registerObject(new Wall(Vector3{ 5.0f, 2.5f, 7.5f }, FacingDirection::FacingPositiveZ, Vector2{ 5.0f, 5.0f }));
-	registerObject(new Wall(Vector3{ -7.5f, 2.5f, 15.0f }, FacingDirection::FacingPositiveX, Vector2{ 15.0f, 5.0f }));
-	registerObject(new Wall(Vector3{ 7.5f, 2.5f, 15.0f }, FacingDirection::FacingNegativeX, Vector2{ 15.0f, 5.0f }));
-	registerObject(new Wall(Vector3{ 0.0f, 2.5f, 22.5f }, FacingDirection::FacingNegativeZ, Vector2{ 15.0f, 5.0f }));
+	registerObject(new WallObj(Vector3{ -5.0f, 2.5f, 7.5f }, Wall::FacingDirection::FacingPositiveZ, Vector2{ 5.0f, 5.0f }));
+	registerObject(new WallObj(Vector3{ 0.0f, 4.0f, 7.5f }, Wall::FacingDirection::FacingPositiveZ, Vector2{ 5.0f, 2.0f }));
+	registerObject(new WallObj(Vector3{ 5.0f, 2.5f, 7.5f }, Wall::FacingDirection::FacingPositiveZ, Vector2{ 5.0f, 5.0f }));
+	registerObject(new WallObj(Vector3{ -7.5f, 2.5f, 15.0f }, Wall::FacingDirection::FacingPositiveX, Vector2{ 15.0f, 5.0f }));
+	registerObject(new WallObj(Vector3{ 7.5f, 2.5f, 15.0f }, Wall::FacingDirection::FacingNegativeX, Vector2{ 15.0f, 5.0f }));
+	registerObject(new WallObj(Vector3{ 0.0f, 2.5f, 22.5f }, Wall::FacingDirection::FacingNegativeZ, Vector2{ 15.0f, 5.0f }));
 
-	registerObject(new Wall(Vector3{ -2.5f, 2.5f, 11.5f }, FacingDirection::FacingNegativeZ, Vector2{ 2.0f, 5.0f }));
-	registerObject(new Wall(Vector3{ -1.5f, 2.5f, 12.5f }, FacingDirection::FacingPositiveX, Vector2{ 2.0f, 5.0f }));
-	registerObject(new Wall(Vector3{ -3.5f, 2.5f, 12.5f }, FacingDirection::FacingNegativeX, Vector2{ 2.0f, 5.0f }));
-	registerObject(new Wall(Vector3{ -2.5f, 2.5f, 13.5f }, FacingDirection::FacingPositiveZ, Vector2{ 2.0f, 5.0f }));
+	registerObject(new WallObj(Vector3{ -2.5f, 2.5f, 11.5f }, Wall::FacingDirection::FacingNegativeZ, Vector2{ 2.0f, 5.0f }));
+	registerObject(new WallObj(Vector3{ -1.5f, 2.5f, 12.5f }, Wall::FacingDirection::FacingPositiveX, Vector2{ 2.0f, 5.0f }));
+	registerObject(new WallObj(Vector3{ -3.5f, 2.5f, 12.5f }, Wall::FacingDirection::FacingNegativeX, Vector2{ 2.0f, 5.0f }));
+	registerObject(new WallObj(Vector3{ -2.5f, 2.5f, 13.5f }, Wall::FacingDirection::FacingPositiveZ, Vector2{ 2.0f, 5.0f }));
+
+
+	//  stairs
+	registerObject(new StairsObj(Vector3{ 2.5f, 0.0f, 16.0f }, Stairs::FacingDirection::FacingNegativeZ));
 
 
 	//  enemies

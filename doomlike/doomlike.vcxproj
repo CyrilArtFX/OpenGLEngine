@@ -140,6 +140,7 @@
     <ClCompile Include="Actors\Player.cpp" />
     <ClCompile Include="Actors\target.cpp" />
     <ClCompile Include="Decor\floorceiling.cpp" />
+    <ClCompile Include="Decor\stairs.cpp" />
     <ClCompile Include="Decor\wall.cpp" />
     <ClCompile Include="doomlikeGame.cpp" />
     <ClCompile Include="main.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="Actors\Player.h" />
     <ClInclude Include="Actors\target.h" />
     <ClInclude Include="Decor\floorceiling.h" />
+    <ClInclude Include="Decor\stairs.h" />
     <ClInclude Include="Decor\wall.h" />
     <ClInclude Include="doomlikeGame.h" />
     <ClInclude Include="GameLogic\playerSpawnPoint.h" />

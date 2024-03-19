@@ -2,18 +2,21 @@
 #include <Physics/physics.h>
 #include <Physics/AABB/boxAABBColComp.h>
 
+using Wall::FacingDirection;
+using Wall::WallObj;
 
-Wall::Wall(Vector3 position, FacingDirection facingDirection, Vector2 scale, bool hasCollision)
+
+WallObj::WallObj(Vector3 position, FacingDirection facingDirection, Vector2 scale, bool hasCollision)
 {
 	setup(position, facingDirection, scale, hasCollision);
 }
 
-void Wall::load()
+void WallObj::load()
 {
 	addModel(&AssetManager::GetModel("wall"));
 }
 
-void Wall::setup(Vector3 position, FacingDirection facingDirection, Vector2 scale, bool hasCollision)
+void WallObj::setup(Vector3 position, FacingDirection facingDirection, Vector2 scale, bool hasCollision)
 {
 	setPosition(position);
 	setScale(scale.x, 1.0f, scale.y);

@@ -5,28 +5,33 @@
 #include <Rendering/renderer.h>
 
 
-enum class FacingDirection : uint8_t
+namespace Wall
 {
-	FacingPositiveX,
-	FacingNegativeX,
-	FacingPositiveZ,
-	FacingNegativeZ
+	enum class FacingDirection : uint8_t
+	{
+		FacingPositiveX,
+		FacingNegativeX,
+		FacingPositiveZ,
+		FacingNegativeZ
+	};
+
+	class WallObj : public Object
+	{
+	public:
+		WallObj() {}
+
+		//  scale is a Vector2 because it corresponds to the plane scale once put flat
+		WallObj(Vector3 position, Wall::FacingDirection facingDirection, Vector2 scale, bool hasCollision = true);
+
+		void load() override;
+
+		//  scale is a Vector2 because it corresponds to the plane scale once put flat
+		void setup(Vector3 position, Wall::FacingDirection facingDirection, Vector2 scale, bool hasCollision = true);
+	};
 };
 
 
-class Wall : public Object
-{
-public:
-	Wall() {}
 
-	//  scale is a Vector2 because it corresponds to the plane scale once put flat
-	Wall(Vector3 position, FacingDirection facingDirection, Vector2 scale, bool hasCollision = true);
-
-	void load() override;
-
-	//  scale is a Vector2 because it corresponds to the plane scale once put flat
-	void setup(Vector3 position, FacingDirection facingDirection, Vector2 scale, bool hasCollision = true);
-};
 
 
 
