@@ -33,4 +33,5 @@ private:
 	static Mesh processNodeSingle(aiNode* node, const aiScene* scene);
 	static void processNodeCollection(aiNode* node, const aiScene* scene, MeshCollection& meshCollection);
 	static Mesh processMesh(aiMesh* mesh, aiNode* node, const aiScene* scene);
+	static aiMatrix4x4 retrieveParentTransform(aiNode* node);
 };

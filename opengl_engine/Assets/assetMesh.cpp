@@ -79,7 +79,7 @@ void AssetMesh::processNodeCollection(aiNode* node, const aiScene* scene, MeshCo
 
 Mesh AssetMesh::processMesh(aiMesh* mesh, aiNode* node, const aiScene* scene)
 {
-    aiMatrix4x4 node_matrix = node->mTransformation;
+    aiMatrix4x4 node_matrix = retrieveParentTransform(node);
     aiMatrix4x4 node_matrix_normal = node_matrix;
     node_matrix_normal.Inverse();
     node_matrix_normal.Transpose();
@@ -139,4 +139,12 @@ Mesh AssetMesh::processMesh(aiMesh* mesh, aiNode* node, const aiScene* scene)
     }
 
     return Mesh(vertices, indices);
+}
+
+aiMatrix4x4 AssetMesh::retrieveParentTransform(aiNode* node)
+{
+    aiNode* parent = node->mParent;
+    if (parent == nullptr) return node->mTransformation;
+
+    return node->mTransformation * retrieveParentTransform(node->mParent);
 }
