@@ -2,18 +2,19 @@
 #include <Physics/physics.h>
 #include <Physics/AABB/boxAABBColComp.h>
 
-FloorObj::FloorObj(Vector3 position, bool hasCollision)
+FloorObj::FloorObj(Vector3 position, bool isWood, bool hasCollision)
 {
-	setup(position, hasCollision);
+	setup(position, isWood, hasCollision);
 }
 
 void FloorObj::load()
 {
-	addModel(&AssetManager::GetModel("floor"));
 }
 
-void FloorObj::setup(Vector3 position, bool hasCollision)
+void FloorObj::setup(Vector3 position, bool isWood, bool hasCollision)
 {
+	addModel(&AssetManager::GetModel(isWood ? "floor_wood" : "floor"));
+
 	setPosition(position);
 	if (hasCollision)
 		Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.1f, 0.0f}, Vector3{0.5f, 0.1f, 0.5f} }, this, false, "solid"));

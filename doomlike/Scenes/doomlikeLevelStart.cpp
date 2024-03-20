@@ -22,8 +22,8 @@ void DoomlikeLevelStart::loadScene()
 	renderer->setClearColor(Color{ 50, 75, 75, 255 });
 
 	//  floors, ceilings, walls and stairs
-	registerObject(new FloorObj(Vector3{ 0.0f, 0.0f,  2.5f })).setScale(Vector3{ 5.0f, 1.0f, 10.0f });
-	registerObject(new FloorObj(Vector3{ 0.0f, 0.0f, 15.0f })).setScale(Vector3{ 15.0f, 1.0f, 15.0f });
+	registerObject(new FloorObj(Vector3{ 0.0f, 0.0f,  2.5f }, true)).setScale(Vector3{ 5.0f, 1.0f, 10.0f });
+	registerObject(new FloorObj(Vector3{ 0.0f, 0.0f, 15.0f }, false)).setScale(Vector3{ 15.0f, 1.0f, 15.0f });
 	registerObject(new Ceiling(Vector3{ 0.0f, 3.0f,  2.5f })).setScale(Vector3{ 5.0f, 1.0f, 10.0f });
 	registerObject(new Ceiling(Vector3{ 0.0f, 5.0f, 15.0f })).setScale(Vector3{ 15.0f, 1.0f, 15.0f });
 
@@ -44,7 +44,7 @@ void DoomlikeLevelStart::loadScene()
 	registerObject(new WallObj(Vector3{ -2.5f, 2.5f, 13.5f }, Wall::FacingDirection::FacingPositiveZ, Vector2{ 2.0f, 5.0f }));
 
 	registerObject(new StairsObj(Vector3{ 3.8f, 0.0f, 16.0f }, Stairs::FacingDirection::FacingNegativeZ));
-	registerObject(new FloorObj(Vector3{ 0.0f, 2.0f, 19.75f })).setScale(Vector3{ 15.0f, 1.0f, 5.5f });
+	registerObject(new FloorObj(Vector3{ 0.0f, 2.0f, 19.75f }, true)).setScale(Vector3{ 15.0f, 1.0f, 5.5f });
 	registerObject(new WallObj(Vector3{ 0.0f, 1.0f, 17.0f }, Wall::FacingDirection::FacingNegativeZ, Vector2{ 15.0f, 2.0f }));
 
 
@@ -81,5 +81,5 @@ void DoomlikeLevelStart::unloadScene()
 
 void DoomlikeLevelStart::onEnemiesDead()
 {
-	std::cout << "efibqzeifbqf\n";
+	std::cout << "All enemies of the level are dead!\n";
 }

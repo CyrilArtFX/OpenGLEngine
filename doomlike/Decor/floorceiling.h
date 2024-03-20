@@ -9,10 +9,10 @@ class FloorObj : public Object
 {
 public:
 	FloorObj() {}
-	FloorObj(Vector3 position, bool hasCollision = true);
+	FloorObj(Vector3 position, bool isWood, bool hasCollision = true);
 
 	void load() override;
-	void setup(Vector3 position, bool hasCollision = true);
+	void setup(Vector3 position, bool isWood, bool hasCollision = true);
 };
 
 
@@ -47,12 +47,22 @@ namespace FloorCeilingSetup
 		AssetManager::LoadTexture("ceiling_diffuse", "doomlike/tex_woodceiling/woodceiling_basecolor.jpg", GL_RGB, false);
 		//AssetManager::LoadTexture("ceiling_specular", "doomlike/tex_woodceiling/woodceiling_roughness.jpg", GL_RED, false);
 
+		AssetManager::LoadTexture("floor_wood_diffuse", "doomlike/tex_woodfloor/woodfloor_basecolor.jpg", GL_RGB, false);
+		AssetManager::LoadTexture("floor_wood_specular", "doomlike/tex_woodfloor/woodfloor_specular.jpg", GL_RGB, false);
+
 		Material& floor_mat = AssetManager::CreateMaterial("floor", &AssetManager::GetShader("lit_object"));
 		floor_mat.addTexture(&AssetManager::GetTexture("floor_diffuse"), TextureType::Diffuse);
 		floor_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Specular);
 		floor_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
 		floor_mat.addParameter("material.shininess", 32.0f);
 		floor_mat.addParameter("beta_prevent_tex_scaling", true);
+
+		Material& floor_wood_mat = AssetManager::CreateMaterial("floor_wood", &AssetManager::GetShader("lit_object"));
+		floor_wood_mat.addTexture(&AssetManager::GetTexture("floor_wood_diffuse"), TextureType::Diffuse);
+		floor_wood_mat.addTexture(&AssetManager::GetTexture("floor_wood_specular"), TextureType::Specular);
+		floor_wood_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
+		floor_wood_mat.addParameter("material.shininess", 32.0f);
+		floor_wood_mat.addParameter("beta_prevent_tex_scaling", true);
 
 		Material& ceiling_mat = AssetManager::CreateMaterial("ceiling", &AssetManager::GetShader("lit_object"));
 		ceiling_mat.addTexture(&AssetManager::GetTexture("ceiling_diffuse"), TextureType::Diffuse);
@@ -62,10 +72,14 @@ namespace FloorCeilingSetup
 		ceiling_mat.addParameter("beta_prevent_tex_scaling", true);
 
 		rendererRef.addMaterial(&AssetManager::GetMaterial("floor"));
+		rendererRef.addMaterial(&AssetManager::GetMaterial("floor_wood"));
 		rendererRef.addMaterial(&AssetManager::GetMaterial("ceiling"));
 
 		AssetManager::CreateModel("floor");
 		AssetManager::GetModel("floor").addMesh(&AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("floor"));
+
+		AssetManager::CreateModel("floor_wood");
+		AssetManager::GetModel("floor_wood").addMesh(&AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("floor_wood"));
 
 		AssetManager::CreateModel("ceiling");
 		AssetManager::GetModel("ceiling").addMesh(&AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("ceiling"));
@@ -74,6 +88,7 @@ namespace FloorCeilingSetup
 	static void ReleaseFloorCeilings(Renderer& rendererRef)
 	{
 		rendererRef.removeMaterial(&AssetManager::GetMaterial("floor"));
+		rendererRef.removeMaterial(&AssetManager::GetMaterial("floor_wood"));
 		rendererRef.removeMaterial(&AssetManager::GetMaterial("ceiling"));
 	}
 };
