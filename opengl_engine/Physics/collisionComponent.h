@@ -46,6 +46,8 @@ public:
 
 	virtual const Matrix4 getModelMatrix() const;
 
+	virtual Vector3 getCenterDownPos() const { return Vector3::zero; }
+
 	void resetIntersected();
 
 	//  for physics manager

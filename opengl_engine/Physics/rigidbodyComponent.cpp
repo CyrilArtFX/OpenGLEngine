@@ -8,6 +8,8 @@ RigidbodyComponent::RigidbodyComponent(CollisionComponent* collisionToAssociate,
 	ccd(useCCD), physicsActivated(activatePhysics), useGravity(activatePhysics)
 {
 	associateCollision(collisionToAssociate);
+
+	onCollisionRepulsed.registerObserver(this, Bind_1(&RigidbodyComponent::onCollision));
 }
 
 RigidbodyComponent::~RigidbodyComponent()
@@ -47,6 +49,9 @@ void RigidbodyComponent::updatePhysicsPreCollision(float dt)
 	{
 		if(velocity.y > Physics::Gravity * 2.0f)
 			velocity.y += Physics::Gravity * dt * 2.0f;
+
+		groundedLastFrame = onGround;
+		onGround = false;
 	}
 
 	//  compute anticipated movement
@@ -70,6 +75,31 @@ void RigidbodyComponent::updatePhysicsPostCollision(float dt)
 	}
 
 	if (!isPhysicsActivated()) return;
+
+
+	//  inversed step mechanic
+	if (getStepHeight() > 0.0f && groundedLastFrame && !isOnGround())
+	{
+		Vector3 foot_pos = associatedCollision->getCenterDownPos();
+		RaycastHitInfos out;
+
+
+		//  this does not work for now. to make it work, it need a function that sweep a box through a line and return the first collision it encounters
+		//  use it instead of this line raycast and it will be good
+
+		bool hit = Physics::LineRaycast(foot_pos, foot_pos + Vector3{ 0.0f, -stepHeight, 0.0f }, { "solid" }, out, 0.0f);
+		if (hit)
+		{
+			if (out.hitNormal == Vector3::negUnitY)
+			{
+				movement += Vector3{ 0.0f, -out.hitDistance, 0.0f };
+			}
+		}
+	}
+
+
+
+
 
 	//  apply real movement (anticipated movement modified by the collisions during physics step)
 	associatedCollision->addPosition(movement);
@@ -173,4 +203,11 @@ void RigidbodyComponent::onCollisionIntersected(RigidbodyComponent& other)
 	if (isPhysicsActivated() || !other.isPhysicsActivated()) return;
 
 	other.addVelocityOneFrame(getVelocity());
+}
+
+void RigidbodyComponent::onCollision(const CollisionResponse& collisionResponse)
+{
+	if (collisionResponse.impactNormal == Vector3::negUnitY) onGround = true;
+	//  might change that later to allow onGround even on non perfectly flat surfaces using dot product
+	//  not necessary now since there is only AABB currently implemented in this engine
 }

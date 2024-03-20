@@ -46,7 +46,6 @@ private:
 	float camHeight{ 0.0f };
 	float moveSpeed{ 0.0f };
 	float jumpForce{ 0.0f };
-	bool onGround{ false };
 
 	//  fake shots
 	std::vector<std::unique_ptr<Bullet>> bullets;

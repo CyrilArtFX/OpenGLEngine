@@ -57,6 +57,8 @@ public:
 
 	inline bool isAssociatedCollisionValid() const { return associatedCollision; }
 
+	inline bool isOnGround() const { return onGround && getUseGravity(); }
+
 	void setUseCCD(bool value);
 	inline bool getUseCCD() const { return ccd; }
 
@@ -88,6 +90,9 @@ private:
 	Vector3 movement{ Vector3::zero };
 	bool useGravity{ false };
 
+	bool onGround{ false };
+	bool groundedLastFrame{ false };
+
 
 	bool firstFrame{ true };
 
@@ -95,5 +100,6 @@ private:
 
 
 	void onCollisionIntersected(RigidbodyComponent& other);
+	void onCollision(const CollisionResponse& collisionResponse);
 };
 

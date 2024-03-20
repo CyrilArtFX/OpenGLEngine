@@ -97,6 +97,14 @@ const Matrix4 BoxAABBColComp::getModelMatrix() const
 	return matrix;
 }
 
+Vector3 BoxAABBColComp::getCenterDownPos() const
+{
+	Box transformed_box = getTransformedBox();
+	Vector3 center_down = transformed_box.getCenterPoint();
+	center_down += Vector3{ 0.0f, -transformed_box.getHalfExtents().y, 0.0f };
+	return center_down;
+}
+
 
 Box BoxAABBColComp::getTransformedBox(bool forDrawDebug) const
 {

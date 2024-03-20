@@ -74,11 +74,10 @@ void Player::update(float dt)
 
 
 	//  jump
-	if (Input::IsKeyPressed(GLFW_KEY_SPACE) && onGround)
+	if (Input::IsKeyPressed(GLFW_KEY_SPACE) && rigidbody->isOnGround())
 	{
 		velocity += Vector3::unitY * jumpForce;
 	}
-	onGround = false;
 
 
 	//  apply velocity to rigidbody
@@ -199,7 +198,4 @@ void Player::onRigidbodyDeleted()
 
 void Player::onCollision(const CollisionResponse& collisionResponse)
 {
-	if (collisionResponse.impactNormal == Vector3::negUnitY) onGround = true;
-	//  might change that later to allow onGround even on non perfectly flat surfaces using dot product
-	//  not necessary now since there is only AABB currently implemented in this engine
 }

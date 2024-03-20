@@ -5,18 +5,17 @@
 	-> Faire la base de l'ennemi (mesh, raycast vers le joueur, orientation, réaction aux balles) - fait
 	-> Mettre les meshs d'arme et de balles - fait
 	-> Intégrer la mort du joueur - fait
-
-AAA -> Trouver un moyen pour scale les objets sans que ça fasse complètement nimp sur les collisions (je vais chialer jpp)
-
 	-> Récupérer des meshs/textures pour un décor - en cours
-	-> Faire un premier niveau simpliste - en cours
 	-> Faire un système pour faire réagir une partie du niveau en fonction des ennemis tués
+	-> Faire un premier niveau simpliste - en cours
 	-> Faire le système de trigger qui ferait réagir des parties du niveau (lumière, objets...)
 	-> Améliorer l'ennemi avec le déplacement vers le joueur
 	-> Faire un bon niveau avec des salles et des éléments cinématiques sur les lumières et autres
 
+
 ~ Retour sur la physique : mettre l'algo collide and slide à la place de ma répulsion (aaaaa) https://www.youtube.com/watch?v=YR6Q7dUz2uk
-	-> la mécanique de step pourrait marcher de l'autre manière, quand on chute ça snap automatiquement si y'a une collision pas trop basse
+	-> Faire un raycast sweep AABB (sera utile pour améliorer la physique et pour le step inversé)
+	(->) la mécanique de step pourrait marcher de l'autre manière, quand on chute ça snap automatiquement si y'a une collision pas trop basse
 
 
 == MOYEN TERME ==
@@ -57,8 +56,6 @@ AAA -> Trouver un moyen pour scale les objets sans que ça fasse complètement n
 ~ Mettre le renderer en classe statique ? permettrait d'assigner certains assets (comme les materiaux) directement à la création par exemple + de ne pas avoir à le passer en paramètre pour le joueur qui va devoir créer des balles (par exemple)
 
 ~ Mettre un système pour détecter automatiquement la profondeur de couleur au chargement de la texture pour éviter les problèmes (si la profondeur de couleur est 24, pas d'alpha (même avec un .png), donc charger avec GL_RGBA va faire un crash) -> regarder comment gregory a fait pour xenity
-
-~ Mettre un raycast cube AABB en sweep qui utiliserais les algos utilisés pour le ccd (pourrait permettre d'améliorer la qualité du système de step, mais au prix de perfs)
 
 ~ Réfléchir au fonctionnement du load asset des scenes, est-ce qu'il faudrait faire gaffe à l'utilisation de ram et unload genre les textures qui ne sont plus nécessaires ?
 

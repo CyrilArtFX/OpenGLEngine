@@ -117,7 +117,7 @@ bool CollisionsAABB::CollideBodyBox(const RigidbodyComponent& bodyAABB, Collisio
 
 	//  step (make a moving rigidbody able to step on a collision if it is low enough)
 	//  it is identical for ccd and non ccd since step doesn't use ccd
-	if (interpolate && !(collision_normal == Vector3::unitY && bodyAABB.getUseCCD()) && body_box.getMinPoint().y + bodyAABB.getStepHeight() > static_box.getMaxPoint().y)
+	if (interpolate && !(collision_normal == Vector3::unitY && bodyAABB.getUseCCD()) && (body_box.getMinPoint().y + bodyAABB.getStepHeight() > static_box.getMaxPoint().y))
 	{
 		float y_difference = static_box.getMaxPoint().y - body_box.getMinPoint().y;
 		if (y_difference >= 0.0f)
