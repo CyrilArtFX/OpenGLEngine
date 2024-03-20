@@ -57,6 +57,9 @@
     <ClCompile Include="LevelUtilities\enemyCount.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Decor\lamps.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actors\bullet.h">
@@ -99,6 +102,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LevelUtilities\enemyCount.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Decor\lamps.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

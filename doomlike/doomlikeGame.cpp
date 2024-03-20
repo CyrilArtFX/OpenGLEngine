@@ -8,6 +8,7 @@
 #include <Decor/wall.h>
 #include <Decor/floorceiling.h>
 #include <Decor/stairs.h>
+#include <Decor/lamps.h>
 
 DoomlikeGame::DoomlikeGame()
 {
@@ -101,6 +102,7 @@ void DoomlikeGame::loadGameAssets()
 	WallSetup::SetupWalls(*renderer);
 	FloorCeilingSetup::SetupFloorCeilings(*renderer);
 	StairsSetup::SetupStairs(*renderer);
+	LampsSetup::SetupLamps(*renderer);
 
 
 	//  object channels
@@ -188,4 +190,5 @@ void DoomlikeGame::unloadGame()
 	WallSetup::ReleaseWalls(*renderer);
 	FloorCeilingSetup::ReleaseFloorCeilings(*renderer);
 	StairsSetup::ReleaseStairs(*renderer);
+	LampsSetup::ReleaseLamps(*renderer);
 }

@@ -127,15 +127,16 @@ void AssetManager::DeleteMeshCollection(std::string name)
 }
 
 
-void AssetManager::CreateModel(std::string name)
+Model& AssetManager::CreateModel(std::string name)
 {
 	if (models.find(name) != models.end())
 	{
 		std::cout << "Asset Manager Error: Tried to create a model with a name that already exists. Name is " << name << ".\n";
-		return;
+		return models["null_model"];
 	}
 
 	models.emplace(name, Model());
+	return models[name];
 }
 
 Model& AssetManager::GetModel(std::string name)

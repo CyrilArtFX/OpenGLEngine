@@ -9,6 +9,7 @@
 #include <Decor/wall.h>
 #include <Decor/floorceiling.h>
 #include <Decor/stairs.h>
+#include <Decor/lamps.h>
 #include <Actors/enemy.h>
 #include <LevelUtilities/enemyCount.h>
 

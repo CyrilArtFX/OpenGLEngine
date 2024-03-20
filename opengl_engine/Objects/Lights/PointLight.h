@@ -26,11 +26,15 @@ public:
 	inline void setQuadratic(float newQuadratic) { quadratic = newQuadratic; }
 	inline float getQuadratic() { return quadratic; }
 
+	inline void setUseDiffColorToSpecColor(bool value) { useColorToSpecular = value; }
+
 private:
 	Vector3 position{ Vector3::zero };
 
 	float constant{ 0.0f };
 	float linear{ 0.0f };
 	float quadratic{ 0.0f };
+
+	bool useColorToSpecular{ false };
 };
 

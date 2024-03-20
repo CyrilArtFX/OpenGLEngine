@@ -84,7 +84,7 @@ public:
 	* Create a model and stores it.
 	* Name = the name you want to give to this model in the asset storage.
 	*/
-	static void CreateModel(std::string name);
+	static Model& CreateModel(std::string name);
 
 	/**
 	* Retrieve a model from the asset storage.

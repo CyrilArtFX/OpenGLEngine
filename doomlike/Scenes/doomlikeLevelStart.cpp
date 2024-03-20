@@ -48,6 +48,13 @@ void DoomlikeLevelStart::loadScene()
 	registerObject(new WallObj(Vector3{ 0.0f, 1.0f, 17.0f }, Wall::FacingDirection::FacingNegativeZ, Vector2{ 15.0f, 2.0f }));
 
 
+	//  decor
+	registerObject(new Lamp(Vector3{ -3.2f, 0.0f, 8.3f }, false, *this, 0.1f));
+	registerObject(new Lamp(Vector3{ 3.2f, 0.0f, 8.3f }, false, *this, 0.35f));
+	registerObject(new Lamp(Vector3{ 6.5f, 2.0f, 21.5f }, false, *this, 0.67f));
+	registerObject(new Lamp(Vector3{ 0.0f, 5.0f, 0.0f }, true, *this, 0.52f));
+
+
 	//  enemies
 	Enemy& enemy_1 = static_cast<Enemy&>(registerObject(new Enemy()));
 	Enemy& enemy_2 = static_cast<Enemy&>(registerObject(new Enemy()));
@@ -62,7 +69,7 @@ void DoomlikeLevelStart::loadScene()
 
 
 	//  static lights
-	globalLight.load(Color::white, Vector3::unitY, 0.4f, 0.0f);
+	globalLight.load(Color::white, Vector3::unitY, 0.2f, 0.0f);
 	registerLight(&globalLight);
 
 
