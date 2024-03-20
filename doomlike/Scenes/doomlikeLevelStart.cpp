@@ -49,11 +49,14 @@ void DoomlikeLevelStart::loadScene()
 
 
 	//  enemies
-	Object& enemy_1 = registerObject(new Enemy());
-	Object& enemy_2 = registerObject(new Enemy());
+	Enemy& enemy_1 = static_cast<Enemy&>(registerObject(new Enemy()));
+	Enemy& enemy_2 = static_cast<Enemy&>(registerObject(new Enemy()));
 
 	enemy_1.setPosition(Vector3{ 3.5f, 1.2f,  11.5f });
 	enemy_2.setPosition(Vector3{ -3.0f, 3.2f, 20.0f });
+
+	enemyCount.addEnemies({ &enemy_1, &enemy_2 });
+	enemyCount.onAllEnemiesDead.registerObserver(this, Bind_0(&DoomlikeLevelStart::onEnemiesDead));
 	
 
 
@@ -73,4 +76,10 @@ void DoomlikeLevelStart::updateScene(float dt)
 
 void DoomlikeLevelStart::unloadScene()
 {
+	enemyCount.clearEnemies(true);
+}
+
+void DoomlikeLevelStart::onEnemiesDead()
+{
+	std::cout << "efibqzeifbqf\n";
 }

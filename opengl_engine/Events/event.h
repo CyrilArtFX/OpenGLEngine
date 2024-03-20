@@ -31,6 +31,21 @@ public:
 		}
 	}
 
+	void clearAllObservers()
+	{
+		if (inBroadcast)
+		{
+			for (auto observer : observers)
+			{
+				pendingObservers.push_back(observer.first);
+			}
+		}
+		else
+		{
+			observers.clear();
+		}
+	}
+
 
 	void broadcast(Parameters ...parameters)
 	{

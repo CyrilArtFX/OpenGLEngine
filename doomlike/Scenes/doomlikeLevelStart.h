@@ -1,4 +1,5 @@
 #pragma once
+#include <Events/observer.h>
 #include <Core/scene.h>
 #include <GameLogic/playerSpawnPoint.h>
 
@@ -9,9 +10,10 @@
 #include <Decor/floorceiling.h>
 #include <Decor/stairs.h>
 #include <Actors/enemy.h>
+#include <LevelUtilities/enemyCount.h>
 
 
-class DoomlikeLevelStart : public Scene, public PlayerSpawnPoint
+class DoomlikeLevelStart : public Scene, public Observer, public PlayerSpawnPoint
 {
 public:
 	DoomlikeLevelStart();
@@ -28,5 +30,10 @@ protected:
 private:
 	//  static lights
 	DirectionalLight globalLight;
+
+	//  level utilities
+	EnemyCount enemyCount;
+
+	void onEnemiesDead();
 };
 

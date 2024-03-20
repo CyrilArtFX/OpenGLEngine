@@ -29,6 +29,7 @@ void Enemy::updateObject(float dt)
 {
 	if (dead)
 	{
+		onDie.broadcast(this);
 		delete rigidbody;
 		GameplayStatics::GetActiveScene()->unregisterObject(this);
 		return;

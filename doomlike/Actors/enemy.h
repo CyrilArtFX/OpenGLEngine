@@ -2,6 +2,8 @@
 #include <Objects/object.h>
 #include <Physics/AABB/boxAABBColComp.h>
 #include <Physics/rigidbodyComponent.h>
+
+#include <Events/event.h>
 #include <Events/observer.h>
 
 class Player;
@@ -12,6 +14,8 @@ public:
 	void load() override;
 
 	void updateObject(float dt) override;
+
+	Event<Enemy*> onDie;
 
 private:
 	void onBodyIntersect(RigidbodyComponent& other);
