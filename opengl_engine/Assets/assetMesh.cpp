@@ -146,5 +146,5 @@ aiMatrix4x4 AssetMesh::retrieveParentTransform(aiNode* node)
     aiNode* parent = node->mParent;
     if (parent == nullptr) return node->mTransformation;
 
-    return node->mTransformation * retrieveParentTransform(node->mParent);
+    return retrieveParentTransform(node->mParent) * node->mTransformation;
 }
