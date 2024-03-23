@@ -74,26 +74,29 @@ namespace LampsSetup
 		chandelier_leather.addParameter("material.shininess", 32.0f);
 
 		Material& flame = AssetManager::CreateMaterial("flame", &AssetManager::GetShader("flat_emissive"));
+		flame.addParameter("emissive", Color{ 227, 141, 2, 255 });
 
 		rendererRef.addMaterial(&AssetManager::GetMaterial("lamp"));
 		rendererRef.addMaterial(&AssetManager::GetMaterial("chandelier_candle"));
 		rendererRef.addMaterial(&AssetManager::GetMaterial("chandelier_base"));
 		rendererRef.addMaterial(&AssetManager::GetMaterial("chandelier_leather"));
+		rendererRef.addMaterial(&AssetManager::GetMaterial("flame"));
 
 		AssetManager::LoadMeshCollection("lamp", "doomlike/lamp/lamp.fbx");
 		AssetManager::LoadMeshCollection("chandelier", "doomlike/chandelier/chandelier.fbx");
 
-		AssetManager::CreateModel("lamp");
-		AssetManager::GetModel("lamp").addMeshes(&AssetManager::GetMeshCollection("lamp"), &AssetManager::GetMaterial("lamp"));
+		Model& lamp = AssetManager::CreateModel("lamp");
+		MeshCollection& lamp_meshes = AssetManager::GetMeshCollection("lamp");
+		lamp.addMesh(&lamp_meshes.collection.at(0), &AssetManager::GetMaterial("lamp"));
+		lamp.addMesh(&lamp_meshes.collection.at(1), &AssetManager::GetMaterial("flame"));
 
 		Model& chandelier = AssetManager::CreateModel("chandelier");
 		MeshCollection& chandelier_meshes = AssetManager::GetMeshCollection("chandelier");
-		//chandelier.addMesh(&chandelier_meshes.collection.at(0), &AssetManager::GetMaterial("chandelier_base"));
-		//chandelier.addMesh(&chandelier_meshes.collection.at(1), &AssetManager::GetMaterial("chandelier_base"));
-		//chandelier.addMesh(&chandelier_meshes.collection.at(2), &AssetManager::GetMaterial("chandelier_leather"));
-		//chandelier.addMesh(&chandelier_meshes.collection.at(3), &AssetManager::GetMaterial("default_white_emissive"));
-		//chandelier.addMesh(&chandelier_meshes.collection.at(4), &AssetManager::GetMaterial("default_black_emissive"));
-		//chandelier.addMeshes(&chandelier_meshes, &AssetManager::GetMaterial("default_white_emissive"));
+		chandelier.addMesh(&chandelier_meshes.collection.at(0), &AssetManager::GetMaterial("chandelier_base"));
+		chandelier.addMesh(&chandelier_meshes.collection.at(1), &AssetManager::GetMaterial("chandelier_base"));
+		chandelier.addMesh(&chandelier_meshes.collection.at(2), &AssetManager::GetMaterial("chandelier_leather"));
+		chandelier.addMesh(&chandelier_meshes.collection.at(3), &AssetManager::GetMaterial("chandelier_candle"));
+		chandelier.addMesh(&chandelier_meshes.collection.at(4), &AssetManager::GetMaterial("flame"));
 	}
 
 
@@ -103,5 +106,6 @@ namespace LampsSetup
 		rendererRef.removeMaterial(&AssetManager::GetMaterial("chandelier_candle"));
 		rendererRef.removeMaterial(&AssetManager::GetMaterial("chandelier_base"));
 		rendererRef.removeMaterial(&AssetManager::GetMaterial("chandelier_leather"));
+		rendererRef.removeMaterial(&AssetManager::GetMaterial("flame"));
 	}
 };
