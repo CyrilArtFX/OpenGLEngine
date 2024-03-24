@@ -52,7 +52,7 @@ void DoomlikeLevelStart::loadScene()
 	registerObject(new Lamp(Vector3{ -3.2f, 0.0f, 8.3f }, false, *this, 0.1f));
 	registerObject(new Lamp(Vector3{ 3.2f, 0.0f, 8.3f }, false, *this, 0.35f));
 	registerObject(new Lamp(Vector3{ 6.5f, 2.0f, 21.5f }, false, *this, 0.67f));
-	registerObject(new Lamp(Vector3{ 0.0f, 5.0f, 0.0f }, true, *this, 0.52f));
+	registerObject(new Lamp(Vector3{ -3.0f, 5.0f, 16.5f }, true, *this, 0.52f));
 
 
 	//  enemies
@@ -69,7 +69,7 @@ void DoomlikeLevelStart::loadScene()
 
 
 	//  static lights
-	globalLight.load(Color::white, Vector3::unitY, 0.2f, 0.0f);
+	globalLight.load(Color{ 255, 238, 209, 255 }, Vector3::unitY, 0.35f, 0.0f);
 	registerLight(&globalLight);
 
 

@@ -24,6 +24,7 @@ private:
 
 	float time{ 0.0f };
 	bool reverse{ false };
+	float baseLightIntensity{ 0.0f };
 };
 
 
@@ -74,7 +75,7 @@ namespace LampsSetup
 		chandelier_leather.addParameter("material.shininess", 32.0f);
 
 		Material& flame = AssetManager::CreateMaterial("flame", &AssetManager::GetShader("flat_emissive"));
-		flame.addParameter("emissive", Color{ 227, 141, 2, 255 });
+		flame.addParameter("emissive", Color{ 209, 155, 67, 255 });
 
 		rendererRef.addMaterial(&AssetManager::GetMaterial("lamp"));
 		rendererRef.addMaterial(&AssetManager::GetMaterial("chandelier_candle"));
@@ -95,7 +96,7 @@ namespace LampsSetup
 		chandelier.addMesh(&chandelier_meshes.collection.at(0), &AssetManager::GetMaterial("chandelier_base"));
 		chandelier.addMesh(&chandelier_meshes.collection.at(1), &AssetManager::GetMaterial("chandelier_base"));
 		chandelier.addMesh(&chandelier_meshes.collection.at(2), &AssetManager::GetMaterial("chandelier_leather"));
-		chandelier.addMesh(&chandelier_meshes.collection.at(3), &AssetManager::GetMaterial("chandelier_candle"));
+		chandelier.addMesh(&chandelier_meshes.collection.at(3), &AssetManager::GetMaterial("flame")); //  allows a better visibility than the candle material
 		chandelier.addMesh(&chandelier_meshes.collection.at(4), &AssetManager::GetMaterial("flame"));
 	}
 
