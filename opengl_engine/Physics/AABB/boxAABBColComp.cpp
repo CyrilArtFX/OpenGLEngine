@@ -105,6 +105,11 @@ Vector3 BoxAABBColComp::getCenterDownPos() const
 	return center_down;
 }
 
+Box BoxAABBColComp::getEncapsulatingBox() const
+{
+	return getTransformedBox();
+}
+
 
 Box BoxAABBColComp::getTransformedBox(bool forDrawDebug) const
 {

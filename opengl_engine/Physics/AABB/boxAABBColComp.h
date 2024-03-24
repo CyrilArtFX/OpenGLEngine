@@ -21,6 +21,7 @@ public:
 	const Matrix4 getModelMatrix() const override;
 
 	Vector3 getCenterDownPos() const override;
+	Box getEncapsulatingBox() const override;
 
 	Box getTransformedBox(bool forDrawDebug = false) const;
 

@@ -4,6 +4,7 @@
 #include "raycast.h"
 #include "raycastLine.h"
 #include "AABB/raycastAABB.h"
+#include <Maths/Geometry/box.h>
 
 #include <Events/event.h>
 #include <vector>
@@ -40,13 +41,14 @@ public:
 	bool resolveAABBRaycast(const Box& raycast, const std::vector<std::string> testChannels) const;
 	bool resolveCollision(const CollisionComponent& otherCol, const std::vector<std::string> testChannels) const;
 	bool resolveRigidbody(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse) const;
-	bool resolveRigidbodySelf(const RigidbodyComponent& rigidbody, const RigidbodyComponent& selfRigidbody) const; //  doesn't have response since body/body doesn't compute repulsion (yet)
+	bool resolveRigidbodySelf(const RigidbodyComponent& rigidbody, const RigidbodyComponent& selfRigidbody) const; //  doesn't have response since body/body doesn't compute repulsion (yet (lol...) )
 
 	void drawDebug(Material& debugMaterial) const;
 
 	virtual const Matrix4 getModelMatrix() const;
 
 	virtual Vector3 getCenterDownPos() const { return Vector3::zero; }
+	virtual Box getEncapsulatingBox() const { return Box::zero; }
 
 	void resetIntersected();
 

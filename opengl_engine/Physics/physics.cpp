@@ -1,6 +1,8 @@
 #include "physics.h"
 
 #include "raycastLine.h"
+#include "AABB/raycastAABB.h"
+#include "AABB/raycastAABBSweep.h"
 
 #include "ObjectChannels/collisionChannels.h"
 
@@ -14,6 +16,11 @@ std::vector<Raycast*> Physics::raycasts;
 
 const float Physics::Gravity = -9.8f;
 
+
+
+// ===============================================
+//  ---- Collisions & Rigidbodies management ----
+// ===============================================
 
 CollisionComponent& Physics::CreateCollisionComponent(CollisionComponent* colComp)
 {
@@ -69,6 +76,12 @@ void Physics::RemoveRigidbody(RigidbodyComponent* rigidbodyComp)
 	//std::cout << "PHYSICS_INFO: Successfully removed a rigidbody.\n";
 }
 
+
+
+// ===============================================
+//  ---------------- Raycasts -------------------
+// ===============================================
+
 bool Physics::LineRaycast(const Vector3& start, const Vector3& end, const std::vector<std::string> testChannels, RaycastHitInfos& outHitInfos, float drawDebugTime, bool createOnScene)
 {
 	outHitInfos = RaycastHitInfos();
@@ -112,7 +125,7 @@ bool Physics::LineRaycast(const Vector3& start, const Vector3& end, const std::v
 	}
 	else //  do not register the raycast in the list if it will not draw debug
 	{
-		RaycastLine* raycast = new RaycastLine(start, end, drawDebugTime);
+		RaycastLine* raycast = new RaycastLine(start, end, drawDebugTime, !createOnScene);
 
 		const Ray& ray = raycast->getRay();
 
@@ -154,7 +167,7 @@ bool Physics::AABBRaycast(const Vector3& location, const Box& aabbBox, const std
 	{
 		//std::cout << "PHYSICS_INFO: Create a raycast AABB.\n";
 
-		raycasts.emplace_back(new RaycastAABB(location, aabbBox, drawDebugTime));
+		raycasts.emplace_back(new RaycastAABB(location, aabbBox, drawDebugTime, !createOnScene));
 
 		RaycastAABB& raycast = static_cast<RaycastAABB&>(*raycasts.back());
 
@@ -223,6 +236,33 @@ bool Physics::AABBRaycast(const Vector3& location, const Box& aabbBox, const std
 		return hit;
 	}
 }
+
+bool Physics::AABBSweepRaycast(const Vector3& start, const Vector3& end, const Box& aabbBox, const std::vector<std::string> testChannels, RaycastHitInfos& outHitInfos, float drawDebugTime, bool createOnScene)
+{
+	outHitInfos = RaycastHitInfos();
+
+	bool hit = false;
+
+	std::vector<std::string> test_channels = testChannels;
+	if (test_channels.empty()) test_channels = CollisionChannels::GetRegisteredTestChannel("TestEverything");
+
+	if (drawDebugTime != 0.0f)
+	{
+		//std::cout << "PHYSICS_INFO: Create a raycast AABB sweep.\n";
+
+		raycasts.emplace_back(new RaycastAABBSweep(start, end, aabbBox, drawDebugTime, !createOnScene));
+
+		RaycastAABBSweep& raycast = static_cast<RaycastAABBSweep&>(*raycasts.back());
+
+
+	}
+}
+
+
+
+// ===============================================
+//  ----------------- Update --------------------
+// ===============================================
 
 void Physics::InitialisePhysics()
 {
@@ -347,6 +387,32 @@ void Physics::UpdatePhysics(float dt)
 	}
 }
 
+
+void Physics::DrawCollisionsDebug(Material& debugMaterial)
+{
+	for (auto& col : collisionsComponents)
+	{
+		col->drawDebug(debugMaterial);
+	}
+
+	for (auto& rigidbody : rigidbodiesComponents)
+	{
+		rigidbody->getAssociatedCollision().drawDebug(debugMaterial);
+	}
+
+	for (auto& raycast : raycasts)
+	{
+		raycast->drawDebugRaycast(debugMaterial);
+	}
+}
+
+
+
+
+// ===============================================
+//  ------------- Clear Physics -----------------
+// ===============================================
+
 void Physics::ClearAllCollisions(bool engineClosing)
 {
 	if (engineClosing) 
@@ -421,22 +487,4 @@ void Physics::ClearAllCollisions(bool engineClosing)
 	}
 	raycasts.clear();
 	raycasts = game_raycasts;
-}
-
-void Physics::DrawCollisionsDebug(Material& debugMaterial)
-{
-	for (auto& col : collisionsComponents)
-	{
-		col->drawDebug(debugMaterial);
-	}
-
-	for (auto& rigidbody : rigidbodiesComponents)
-	{
-		rigidbody->getAssociatedCollision().drawDebug(debugMaterial);
-	}
-
-	for (auto& raycast : raycasts)
-	{
-		raycast->drawDebugRaycast(debugMaterial);
-	}
 }

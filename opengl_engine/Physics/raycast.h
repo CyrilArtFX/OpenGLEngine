@@ -12,7 +12,8 @@ enum class RaycastType : uint8_t
 {
 	RaycastTypeNone = 0,
 	RaycastTypeLine = 1,
-	RaycastTypeAABB = 2
+	RaycastTypeAABB = 2,
+	RaycastTypeAABBSweep = 3
 };
 
 
