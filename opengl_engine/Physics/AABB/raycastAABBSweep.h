@@ -32,7 +32,8 @@ private:
 
 	Line drawDebugLineOne;
 	Line drawDebugLineTwo;
-	Cube drawDebugCube;
+	Cube drawDebugCubeOne;
+	Cube drawDebugCubeTwo;
 
 	Box baseBoxInfos;
 };

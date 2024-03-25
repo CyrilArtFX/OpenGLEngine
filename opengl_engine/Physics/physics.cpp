@@ -254,7 +254,60 @@ bool Physics::AABBSweepRaycast(const Vector3& start, const Vector3& end, const B
 
 		RaycastAABBSweep& raycast = static_cast<RaycastAABBSweep&>(*raycasts.back());
 
+		const Ray& ray = raycast.getRay();
+		const Box& box = raycast.getBox();
 
+		for (auto& col : collisionsComponents)
+		{
+			bool col_hit = col->resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels);
+			hit = hit || col_hit;
+		}
+		for (auto& body : rigidbodiesComponents)
+		{
+			const CollisionComponent& col = body->getAssociatedCollision();
+			bool col_hit = col.resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels);
+			hit = hit || col_hit;
+		}
+
+		if (outHitInfos.hitCollision)
+		{
+			outHitInfos.hitCollision->onRaycastIntersect.broadcast(raycast.getRaycastType(), outHitInfos.hitLocation);
+		}
+
+		raycast.setValues(hit, outHitInfos.hitLocation);
+		//  the location sent here must be the center of the box sliding on the ray when it just collides with the first encountered collision
+
+		return hit;
+	}
+	else //  do not register the raycast in the list if it will not draw debug
+	{
+		RaycastAABBSweep* raycast = new RaycastAABBSweep(start, end, aabbBox, drawDebugTime, !createOnScene);
+
+		const Ray& ray = raycast->getRay();
+		const Box& box = raycast->getBox();
+
+		for (auto& col : collisionsComponents)
+		{
+			bool col_hit = col->resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels);
+			hit = hit || col_hit;
+		}
+		for (auto& body : rigidbodiesComponents)
+		{
+			const CollisionComponent& col = body->getAssociatedCollision();
+			bool col_hit = col.resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels);
+			hit = hit || col_hit;
+		}
+
+		if (outHitInfos.hitCollision)
+		{
+			outHitInfos.hitCollision->onRaycastIntersect.broadcast(raycast->getRaycastType(), outHitInfos.hitLocation);
+		}
+
+		delete raycast;
+
+		//  finally no need to set the values of the raycast if it will not draw debug
+
+		return hit;
 	}
 }
 

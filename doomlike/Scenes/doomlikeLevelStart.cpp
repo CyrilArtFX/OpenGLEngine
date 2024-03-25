@@ -64,6 +64,11 @@ void DoomlikeLevelStart::loadScene()
 
 	enemyCount.addEnemies({ &enemy_1, &enemy_2 });
 	enemyCount.onAllEnemiesDead.registerObserver(this, Bind_0(&DoomlikeLevelStart::onEnemiesDead));
+
+
+
+	RaycastHitInfos out;
+	Physics::AABBSweepRaycast(Vector3{ 0.0f, 5.0f, 0.0f }, Vector3{ 0.0f, 5.0f, -5.0f }, Box::one, {}, out, -1.0f);
 	
 
 

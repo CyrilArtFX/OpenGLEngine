@@ -44,6 +44,15 @@ bool CollisionComponent::resolveAABBRaycast(const Box& raycast, const std::vecto
 	return intersect;
 }
 
+bool CollisionComponent::resolveAABBSweepRaycast(const Ray& raycast, const Box& boxRaycast, RaycastHitInfos& outHitInfos, const std::vector<std::string> testChannels) const
+{
+	if (!channelTest(testChannels)) return false;
+
+	bool intersect = resolveAABBSweepRaycastIntersection(raycast, boxRaycast, outHitInfos);
+	//  it's up to the physics manager to broadcast the onRaycastIntersect event
+	return intersect;
+}
+
 bool CollisionComponent::resolveCollision(const CollisionComponent& otherCol, const std::vector<std::string> testChannels) const
 {
 	if (!channelTest(testChannels)) return false;
