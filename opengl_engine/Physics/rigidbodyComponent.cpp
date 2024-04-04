@@ -78,27 +78,20 @@ void RigidbodyComponent::updatePhysicsPostCollision(float dt)
 
 
 	//  inversed step mechanic
-	if (getStepHeight() > 0.0f && groundedLastFrame && !isOnGround())
+	if (getStepHeight() > 0.0f && groundedLastFrame && !isOnGround() && velocity.y < 0.0f)
 	{
-		Vector3 foot_pos = associatedCollision->getCenterDownPos();
+		Box box = associatedCollision->getEncapsulatingBox();
 		RaycastHitInfos out;
 
-
-		//  this does not work for now. to make it work, it need a function that sweep a box through a line and return the first collision it encounters
-		//  use it instead of this line raycast and it will be good
-
-		bool hit = Physics::LineRaycast(foot_pos, foot_pos + Vector3{ 0.0f, -stepHeight, 0.0f }, { "solid" }, out, 0.0f);
+		bool hit = Physics::AABBSweepRaycast(box.getCenterPoint(), box.getCenterPoint() + Vector3{0.0f, -stepHeight, 0.0f}, box, {"solid"}, out, 0.0f);
 		if (hit)
 		{
-			if (out.hitNormal == Vector3::negUnitY)
+			if (out.hitNormal == Vector3::unitY)
 			{
 				movement += Vector3{ 0.0f, -out.hitDistance, 0.0f };
 			}
 		}
 	}
-
-
-
 
 
 	//  apply real movement (anticipated movement modified by the collisions during physics step)
