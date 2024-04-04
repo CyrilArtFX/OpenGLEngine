@@ -21,6 +21,13 @@ public:
 	Vector3 getMaxPoint() const;
 
 	Vector3 getPointOnPerimeter(const Vector3& point) const;
+	Vector3 getNormalAtPoint(const Vector3& point) const;
+
+	/**
+	* This function is useful in case like Raycast AABB Sweep to find the hit normal of the nearest encountered collision.
+	* Warning: this can produce really strange results if the two boxes are deeply colliding or if one box is contained inside the other one.
+	*/
+	Vector3 getNearestFaceNormal(const Box& other) const;
 
 	void addHalfExtents(const Box& otherBox);
 

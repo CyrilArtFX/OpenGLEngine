@@ -109,6 +109,113 @@ Vector3 Box::getPointOnPerimeter(const Vector3& point) const
 	return point_perimeter;
 }
 
+Vector3 Box::getNormalAtPoint(const Vector3& point) const
+{
+	//  this function can surely be greatly optimized by using maths
+	//  I will need to check that later
+
+	Vector3 min = getMinPoint();
+	Vector3 max = getMaxPoint();
+	Vector3 out_normal = Vector3::zero;
+
+	if (point.x == min.x) out_normal.x = -1.0f;
+	else if (point.x == max.x) out_normal.x = 1.0f;
+
+	if (point.y == min.y) out_normal.y = -1.0f;
+	else if (point.y == max.y) out_normal.y = 1.0f;
+
+	if (point.z == min.z) out_normal.z = -1.0f;
+	else if (point.z == max.z) out_normal.z = 1.0f;
+
+	out_normal.normalize();
+	return out_normal;
+}
+
+Vector3 Box::getNearestFaceNormal(const Box& other) const
+{
+	Vector3 out_normal = Vector3::zero;
+
+	Vector3 min = getMinPoint();
+	Vector3 max = getMaxPoint();
+	Vector3 other_min = other.getMinPoint();
+	Vector3 other_max = other.getMaxPoint();
+
+	float nearest_face = 0.0f;
+
+	//  X aligned faces
+	float x_diff;
+	if (center.x > other.center.x)
+	{
+		x_diff = Maths::abs(min.x - other_max.x);
+		out_normal = Vector3::negUnitX;
+	}
+	else
+	{
+		x_diff = Maths::abs(other_min.x - max.x);
+		out_normal = Vector3::unitX;
+	}
+	nearest_face = x_diff;
+
+	//  Y aligned faces
+	float y_diff;
+	if (center.y > other.center.y)
+	{
+		y_diff = Maths::abs(min.y - other_max.y);
+		if (y_diff == nearest_face)
+		{
+			out_normal += Vector3::negUnitY;
+		}
+		else if (y_diff < nearest_face)
+		{
+			out_normal = Vector3::negUnitY;
+			nearest_face = y_diff;
+		}
+	}
+	else
+	{
+		y_diff = Maths::abs(other_min.y - max.y);
+		if (y_diff == nearest_face)
+		{
+			out_normal += Vector3::unitY;
+		}
+		else if (y_diff < nearest_face)
+		{
+			out_normal = Vector3::unitY;
+			nearest_face = y_diff;
+		}
+	}
+
+	//  Z aligned faces
+	float z_diff;
+	if (center.z > other.center.z)
+	{
+		z_diff = Maths::abs(min.z - other_max.z);
+		if (z_diff == nearest_face)
+		{
+			out_normal += Vector3::negUnitZ;
+		}
+		else if (z_diff < nearest_face)
+		{
+			out_normal = Vector3::negUnitZ;
+		}
+	}
+	else
+	{
+		z_diff = Maths::abs(other_min.z - max.z);
+		if (z_diff == nearest_face)
+		{
+			out_normal += Vector3::unitZ;
+		}
+		else if (z_diff < nearest_face)
+		{
+			out_normal = Vector3::unitZ;
+		}
+	}
+
+	out_normal.normalize();
+	return out_normal;
+}
+
 void Box::addHalfExtents(const Box& otherBox)
 {
 	halfExtents += otherBox.halfExtents;

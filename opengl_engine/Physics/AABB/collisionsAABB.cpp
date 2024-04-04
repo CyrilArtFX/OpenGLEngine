@@ -56,11 +56,7 @@ bool CollisionsAABB::IntersectAABBSweepRaycast(const BoxAABBColComp& boxAABB, co
 	{
 		outHitInfos.hitDistance = hit_distance;
 		outHitInfos.hitLocation = hit_location;
-
-		Vector3 perimeter_pos = hit_location + (raycast.getDirection() * boxRaycast.getHalfExtents());
-		perimeter_pos = box.getPointOnPerimeter(perimeter_pos);
-		outHitInfos.hitNormal = boxAABB.getNormal(perimeter_pos);
-
+		outHitInfos.hitNormal = box.getNearestFaceNormal(Box{ hit_location, boxRaycast.getHalfExtents() });
 		outHitInfos.hitCollision = &boxAABB;
 	}
 

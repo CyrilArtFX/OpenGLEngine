@@ -133,23 +133,6 @@ Box BoxAABBColComp::getTransformedBox(bool forDrawDebug) const
 
 Vector3 BoxAABBColComp::getNormal(const Vector3& point) const
 {
-	//  this function can surely be greatly optimized by using maths
-	//  I will need to check that later
 	Box transformed_box = getTransformedBox();
-	Vector3 box_min = transformed_box.getMinPoint();
-	Vector3 box_max = transformed_box.getMaxPoint();
-
-	Vector3 out_normal = Vector3::zero;
-
-	if (point.x == box_min.x) out_normal.x = -1.0f;
-	else if (point.x == box_max.x) out_normal.x = 1.0f;
-
-	if (point.y == box_min.y) out_normal.y = -1.0f;
-	else if (point.y == box_max.y) out_normal.y = 1.0f;
-
-	if (point.z == box_min.z) out_normal.z = -1.0f;
-	else if (point.z == box_max.z) out_normal.z = 1.0f;
-
-	out_normal.normalize();
-	return out_normal;
+	return transformed_box.getNormalAtPoint(point);
 }
