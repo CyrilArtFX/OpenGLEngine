@@ -38,7 +38,7 @@ bool BoxAABBColComp::resolveAABBRaycastIntersection(const Box& raycast) const
 
 bool BoxAABBColComp::resolveAABBSweepRaycastIntersection(const Ray& raycast, const Box& boxRaycast, RaycastHitInfos& outHitInfos) const
 {
-	return false;
+	return CollisionsAABB::IntersectAABBSweepRaycast(*this, raycast, boxRaycast, outHitInfos);
 }
 
 bool BoxAABBColComp::resolveCollisionIntersection(const CollisionComponent& otherCol) const

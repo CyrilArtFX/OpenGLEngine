@@ -120,7 +120,8 @@ void Player::update(float dt)
 		Vector3 raycast_start = camera.getPosition();
 		Vector3 raycast_end = raycast_start + camera.getForward() * 5.0f;
 
-		Physics::LineRaycast(raycast_start, raycast_end, CollisionChannels::GetRegisteredTestChannel("PlayerEntity"));
+		//Physics::LineRaycast(raycast_start, raycast_end, CollisionChannels::GetRegisteredTestChannel("PlayerEntity"));
+		Physics::AABBSweepRaycast(raycast_start, raycast_end, Box{ Vector3::zero, Vector3{0.1f, 0.1f, 0.1f} }, CollisionChannels::GetRegisteredTestChannel("PlayerEntity"));
 	}
 
 

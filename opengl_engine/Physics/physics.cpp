@@ -275,7 +275,6 @@ bool Physics::AABBSweepRaycast(const Vector3& start, const Vector3& end, const B
 		}
 
 		raycast.setValues(hit, outHitInfos.hitLocation);
-		//  the location sent here must be the center of the box sliding on the ray when it just collides with the first encountered collision
 
 		return hit;
 	}

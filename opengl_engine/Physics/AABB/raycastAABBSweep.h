@@ -10,6 +10,7 @@
 
 /** Raycast AABB Sweep
 * A type of raycast that sweep an AABB Box from a point A to a point B in a linear way.
+* Warning: Box center offset will not be take into account, only it size will matter.
 */
 class RaycastAABBSweep : public Raycast
 {
@@ -34,6 +35,4 @@ private:
 	Line drawDebugLineTwo;
 	Cube drawDebugCubeOne;
 	Cube drawDebugCubeTwo;
-
-	Box baseBoxInfos;
 };

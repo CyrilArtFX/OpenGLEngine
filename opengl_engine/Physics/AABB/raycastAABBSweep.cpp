@@ -2,13 +2,12 @@
 
 RaycastAABBSweep::RaycastAABBSweep(const Vector3& startPoint, const Vector3& endPoint, const Box& boxInfos, float drawDebugTime, bool loadPersistent) :
 	Raycast(drawDebugTime, loadedPersistent),
-	drawDebugLineOne(), drawDebugLineTwo(), drawDebugCubeOne(), drawDebugCubeTwo(),
-	box(boxInfos), baseBoxInfos(boxInfos)
+	drawDebugLineOne(), drawDebugLineTwo(), drawDebugCubeOne(), drawDebugCubeTwo(), box(boxInfos)
 {
 	type = RaycastType::RaycastTypeAABBSweep;
 
 	ray.setupWithStartEnd(startPoint, endPoint);
-	box.setCenterPoint(baseBoxInfos.getCenterPoint() + startPoint);
+	box.setCenterPoint(startPoint);
 
 	drawDebugLineOne.setPoints(startPoint, endPoint);
 	drawDebugCubeOne.setBox(box);
@@ -38,12 +37,12 @@ void RaycastAABBSweep::setValues(bool raycastHit, Vector3 hitPosition)
 		drawDebugLineOne.setPoints(ray.getStart(), hitPosition);
 		drawDebugLineTwo.setPoints(hitPosition, ray.getEnd());
 
-		box.setCenterPoint(baseBoxInfos.getCenterPoint() + hitPosition);
+		box.setCenterPoint(hitPosition);
 		drawDebugCubeTwo.setBox(box);
 	}
 	else
 	{
-		box.setCenterPoint(baseBoxInfos.getCenterPoint() + ray.getEnd());
+		box.setCenterPoint(ray.getEnd());
 		drawDebugCubeTwo.setBox(box);
 	}
 }

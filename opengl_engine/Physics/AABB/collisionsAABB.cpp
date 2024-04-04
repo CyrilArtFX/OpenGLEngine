@@ -42,6 +42,31 @@ bool CollisionsAABB::IntersectAABBRaycast(const BoxAABBColComp& boxAABB, const B
 	return intersect;
 }
 
+bool CollisionsAABB::IntersectAABBSweepRaycast(const BoxAABBColComp& boxAABB, const Ray& raycast, const Box& boxRaycast, RaycastHitInfos& outHitInfos)
+{
+	Box box = boxAABB.getTransformedBox();
+
+	float hit_distance = 0.0f;
+	Vector3 hit_location = Vector3::zero;
+
+	bool intersect = CCDBoxIntersectionRaycast(boxRaycast, raycast, box, hit_distance, hit_location);
+
+	//  check if it is the closest collision found
+	if (intersect && hit_distance < outHitInfos.hitDistance)
+	{
+		outHitInfos.hitDistance = hit_distance;
+		outHitInfos.hitLocation = hit_location;
+
+		Vector3 perimeter_pos = hit_location + (raycast.getDirection() * boxRaycast.getHalfExtents());
+		perimeter_pos = box.getPointOnPerimeter(perimeter_pos);
+		outHitInfos.hitNormal = boxAABB.getNormal(perimeter_pos);
+
+		outHitInfos.hitCollision = &boxAABB;
+	}
+
+	return intersect;
+}
+
 bool CollisionsAABB::IntersectBoxAABB(const BoxAABBColComp& boxAABB, const BoxAABBColComp& otherBoxAABB)
 {
 	Box box_a = boxAABB.getTransformedBox();
@@ -298,6 +323,26 @@ bool CollisionsAABB::CCDBoxIntersection(const Box& boxCCD, const Vector3& ccdNex
 	direction.normalize();
 	location += direction * boxCCD.getHalfExtents();
 	location = box.getPointOnPerimeter(location);
+
+	return intersect;
+}
+
+bool CollisionsAABB::CCDBoxIntersectionRaycast(const Box& boxRaycast, const Ray& ray, const Box& boxObject, float& distance, Vector3& centerLocation)
+{
+	Vector3 box_raycast_pos = boxRaycast.getCenterPoint();
+
+	if (box_raycast_pos == ray.getEnd()) //  raycast AABB Sweep but without the sweep (??)
+	{
+		bool intersect = BoxesIntersection(boxRaycast, boxObject);
+		distance = 0.0f;
+		centerLocation = boxRaycast.getCenterPoint();
+		return intersect;
+	}
+
+	Box box_static = boxObject;
+	box_static.addHalfExtents(boxRaycast);
+
+	bool intersect = BoxRayIntersection(box_static, ray, distance, centerLocation, false);
 
 	return intersect;
 }

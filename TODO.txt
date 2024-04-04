@@ -14,7 +14,7 @@
 
 
 ~ Retour sur la physique : mettre l'algo collide and slide à la place de ma répulsion (aaaaa) https://www.youtube.com/watch?v=YR6Q7dUz2uk
-	-> Faire un raycast sweep AABB (sera utile pour améliorer la physique et pour le step inversé) - en cours
+	-> Faire un raycast sweep AABB (sera utile pour améliorer la physique et pour le step inversé) - fait
 	(->) la mécanique de step pourrait marcher de l'autre manière, quand on chute ça snap automatiquement si y'a une collision pas trop basse
 
 
