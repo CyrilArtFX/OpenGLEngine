@@ -35,6 +35,8 @@ private:
 	//  level utilities
 	EnemyCount enemyCount;
 
+	Object* endLevelWall;
+
 	void onEnemiesDead();
 };
 

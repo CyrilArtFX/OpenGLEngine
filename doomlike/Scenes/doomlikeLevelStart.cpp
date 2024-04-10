@@ -34,9 +34,9 @@ void DoomlikeLevelStart::loadScene()
 	registerObject(new WallObj(Vector3{ -5.0f, 2.5f, 7.5f }, Wall::FacingDirection::FacingPositiveZ, Vector2{ 5.0f, 5.0f }));
 	registerObject(new WallObj(Vector3{ 0.0f, 4.0f, 7.5f }, Wall::FacingDirection::FacingPositiveZ, Vector2{ 5.0f, 2.0f }));
 	registerObject(new WallObj(Vector3{ 5.0f, 2.5f, 7.5f }, Wall::FacingDirection::FacingPositiveZ, Vector2{ 5.0f, 5.0f }));
-	registerObject(new WallObj(Vector3{ -7.5f, 2.5f, 15.0f }, Wall::FacingDirection::FacingPositiveX, Vector2{ 15.0f, 5.0f }));
 	registerObject(new WallObj(Vector3{ 7.5f, 2.5f, 15.0f }, Wall::FacingDirection::FacingNegativeX, Vector2{ 15.0f, 5.0f }));
-	registerObject(new WallObj(Vector3{ 0.0f, 2.5f, 22.5f }, Wall::FacingDirection::FacingNegativeZ, Vector2{ 15.0f, 5.0f }));
+	registerObject(new WallObj(Vector3{ -5.0f, 2.5f, 22.5f }, Wall::FacingDirection::FacingNegativeZ, Vector2{ 25.0f, 5.0f }));
+	registerObject(new WallObj(Vector3{ -7.5f, 2.5f, 12.25f }, Wall::FacingDirection::FacingPositiveX, Vector2{ 9.5f, 5.0f }));
 
 	registerObject(new WallObj(Vector3{ -2.5f, 2.5f, 11.5f }, Wall::FacingDirection::FacingNegativeZ, Vector2{ 2.0f, 5.0f }));
 	registerObject(new WallObj(Vector3{ -1.5f, 2.5f, 12.5f }, Wall::FacingDirection::FacingPositiveX, Vector2{ 2.0f, 5.0f }));
@@ -44,8 +44,12 @@ void DoomlikeLevelStart::loadScene()
 	registerObject(new WallObj(Vector3{ -2.5f, 2.5f, 13.5f }, Wall::FacingDirection::FacingPositiveZ, Vector2{ 2.0f, 5.0f }));
 
 	registerObject(new StairsObj(Vector3{ 3.8f, 0.0f, 16.0f }, Stairs::FacingDirection::FacingNegativeZ));
-	registerObject(new FloorObj(Vector3{ 0.0f, 2.0f, 19.75f }, true)).setScale(Vector3{ 15.0f, 1.0f, 5.5f });
+	registerObject(new FloorObj(Vector3{ -5.0f, 2.0f, 19.75f }, true)).setScale(Vector3{ 25.0f, 1.0f, 5.5f });
 	registerObject(new WallObj(Vector3{ 0.0f, 1.0f, 17.0f }, Wall::FacingDirection::FacingNegativeZ, Vector2{ 15.0f, 2.0f }));
+	registerObject(new WallObj(Vector3{ -12.5f, 3.5f, 17.0f }, Wall::FacingDirection::FacingPositiveZ, Vector2{ 10.0f, 3.0f }));
+	registerObject(new Ceiling(Vector3{ -12.5f, 5.0f, 19.75f })).setScale(Vector3{ 10.0f, 1.0f, 5.5f });
+
+	endLevelWall = &registerObject(new WallObj(Vector3{ -7.5f, 3.5f, 19.75f }, Wall::FacingDirection::FacingPositiveX, Vector2{5.5f, 3.0f}));
 
 
 	//  decor
@@ -89,4 +93,5 @@ void DoomlikeLevelStart::unloadScene()
 void DoomlikeLevelStart::onEnemiesDead()
 {
 	std::cout << "All enemies of the level are dead!\n";
+	endLevelWall->setPosition(Vector3{ -17.5f, 3.5f, 19.75f });
 }
