@@ -5,7 +5,7 @@
 	-> Faire la base de l'ennemi (mesh, raycast vers le joueur, orientation, réaction aux balles) - fait
 	-> Mettre les meshs d'arme et de balles - fait
 	-> Intégrer la mort du joueur - fait
-	-> Récupérer des meshs/textures pour un décor - en cours
+	-> Récupérer des meshs/textures pour un décor - fait
 	-> Faire un système pour faire réagir une partie du niveau en fonction des ennemis tués - en cours
 	-> Faire un premier niveau simpliste - en cours
 	-> Faire le système de trigger qui ferait réagir des parties du niveau (lumière, objets...)
