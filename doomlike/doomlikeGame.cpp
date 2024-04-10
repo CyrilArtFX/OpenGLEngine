@@ -107,7 +107,7 @@ void DoomlikeGame::loadGameAssets()
 
 	//  object channels
 	CollisionChannels::RegisterTestChannel("PlayerEntity", { "solid", "enemy"}); //  for player and player bullets
-	CollisionChannels::RegisterTestChannel("Enemy", { "player", "bullet" });
+	CollisionChannels::RegisterTestChannel("Enemy", { "solid", "player", "bullet" });
 }
 
 void DoomlikeGame::loadGame()

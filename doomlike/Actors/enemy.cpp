@@ -35,6 +35,8 @@ void Enemy::updateObject(float dt)
 		return;
 	}
 
+	rigidbody->setVelocity(Vector3::zero);
+
 	if (!playerRef) return;
 
 	RaycastHitInfos out;
@@ -46,6 +48,7 @@ void Enemy::updateObject(float dt)
 	if (out.hitCollision->getCollisionChannel() != "player") return;
 
 	rotateTowards(playerRef->getPosition());
+	rigidbody->setVelocity(Vector3::normalize(playerRef->getEyePosition() - getPosition()) * speed);
 }
 
 void Enemy::onBodyIntersect(RigidbodyComponent& other)
@@ -60,6 +63,6 @@ void Enemy::onBodyIntersect(RigidbodyComponent& other)
 	else if (other.getAssociatedCollision().getCollisionChannel() == "player")
 	{
 		std::cout << "Player die from the enemy.\n";
-		static_cast<DoomlikeGame*>(GameplayStatics::GetGame())->restartLevel();
+		//static_cast<DoomlikeGame*>(GameplayStatics::GetGame())->restartLevel();
 	}
 }

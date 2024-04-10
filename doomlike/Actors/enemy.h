@@ -25,5 +25,6 @@ private:
 	Player* playerRef{ nullptr };
 
 	float range{ 9.0f };
+	float speed{ 2.0f };
 	bool dead{ false };
 };
