@@ -53,11 +53,16 @@
 ~ Mettre un editeur :skull:
 
 
+== CORRECTIONS DE PROBLEMES ==
+
+~ Utiliser les infos dans les meshs pour sortir les IDs des materiaux et permettre une assignation de materiaux plus poussée et plus simple
+
+~ Mettre un système pour détecter automatiquement la profondeur de couleur au chargement de la texture pour éviter les problèmes (si la profondeur de couleur est 24, pas d'alpha (même avec un .png), donc charger avec GL_RGBA va faire un crash) -> regarder comment gregory a fait pour xenity
+
+
 == REFLEXIONS / PROBLEMES CONNUS ==
 
 ~ Mettre le renderer en classe statique ? permettrait d'assigner certains assets (comme les materiaux) directement à la création par exemple + de ne pas avoir à le passer en paramètre pour le joueur qui va devoir créer des balles (par exemple)
-
-~ Mettre un système pour détecter automatiquement la profondeur de couleur au chargement de la texture pour éviter les problèmes (si la profondeur de couleur est 24, pas d'alpha (même avec un .png), donc charger avec GL_RGBA va faire un crash) -> regarder comment gregory a fait pour xenity
 
 ~ Réfléchir au fonctionnement du load asset des scenes, est-ce qu'il faudrait faire gaffe à l'utilisation de ram et unload genre les textures qui ne sont plus nécessaires ?
 
