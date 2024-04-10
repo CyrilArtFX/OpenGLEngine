@@ -48,7 +48,7 @@ void RigidbodyComponent::updatePhysicsPreCollision(float dt)
 	if (useGravity)
 	{
 		if(velocity.y > Physics::Gravity * 2.0f)
-			velocity.y += Physics::Gravity * dt * 2.0f;
+			velocity.y += Physics::Gravity * dt * 2.5f;
 
 		groundedLastFrame = onGround;
 		onGround = false;

@@ -112,7 +112,7 @@ void DoomlikeGame::loadGameAssets()
 
 void DoomlikeGame::loadGame()
 {
-	player.setup(1.5f, 7.0f, 10.0f, 0.3f, renderer);
+	player.setup(1.5f, 7.0f, 7.0f, 0.3f, renderer);
 	renderer->setCamera(&player.getCamera());
 
 	loadLevel(2);
