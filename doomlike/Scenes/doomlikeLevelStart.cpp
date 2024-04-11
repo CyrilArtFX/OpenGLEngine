@@ -1,4 +1,6 @@
 #include "doomlikeLevelStart.h"
+#include <doomlikeGame.h>
+#include <GameplayStatics/gameplayStatics.h>
 
 #include <Assets/assetManager.h>
 #include <Physics/physics.h>
@@ -68,6 +70,11 @@ void DoomlikeLevelStart::loadScene()
 
 	enemyCount.addEnemies({ &enemy_1, &enemy_2 });
 	enemyCount.onAllEnemiesDead.registerObserver(this, Bind_0(&DoomlikeLevelStart::onEnemiesDead));
+
+
+	//  trigger zone
+	endLevelZone.setup(Vector3{ -15.0f, 3.5f, 19.75f }, Vector3{ 4.0f, 2.5f, 4.8f });
+	endLevelZone.onPlayerEnter.registerObserver(this, Bind_0(&DoomlikeLevelStart::onPlayerEnterEndLevelZone));
 	
 
 
@@ -94,4 +101,10 @@ void DoomlikeLevelStart::onEnemiesDead()
 {
 	std::cout << "All enemies of the level are dead!\n";
 	endLevelWall->setPosition(Vector3{ -17.5f, 3.5f, 19.75f });
+}
+
+void DoomlikeLevelStart::onPlayerEnterEndLevelZone()
+{
+	std::cout << "Player exit intro level.\n";
+	static_cast<DoomlikeGame*>(GameplayStatics::GetGame())->changeLevel(1);
 }

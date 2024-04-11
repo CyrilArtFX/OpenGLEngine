@@ -11,7 +11,9 @@
 #include <Decor/stairs.h>
 #include <Decor/lamps.h>
 #include <Actors/enemy.h>
+
 #include <LevelUtilities/enemyCount.h>
+#include <LevelUtilities/triggerZone.h>
 
 
 class DoomlikeLevelStart : public Scene, public Observer, public PlayerSpawnPoint
@@ -34,9 +36,11 @@ private:
 
 	//  level utilities
 	EnemyCount enemyCount;
+	TriggerZone endLevelZone;
 
 	Object* endLevelWall;
 
 	void onEnemiesDead();
+	void onPlayerEnterEndLevelZone();
 };
 

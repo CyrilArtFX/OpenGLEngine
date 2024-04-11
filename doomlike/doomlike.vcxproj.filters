@@ -60,6 +60,9 @@
     <ClCompile Include="Decor\lamps.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LevelUtilities\triggerZone.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actors\bullet.h">
@@ -105,6 +108,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Decor\lamps.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelUtilities\triggerZone.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

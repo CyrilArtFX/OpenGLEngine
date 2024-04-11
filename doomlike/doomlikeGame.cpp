@@ -106,7 +106,7 @@ void DoomlikeGame::loadGameAssets()
 
 
 	//  object channels
-	CollisionChannels::RegisterTestChannel("PlayerEntity", { "solid", "enemy"}); //  for player and player bullets
+	CollisionChannels::RegisterTestChannel("PlayerEntity", { "solid", "enemy", "trigger_zone"}); //  for player and player bullets
 	CollisionChannels::RegisterTestChannel("Enemy", { "solid", "player", "bullet" });
 }
 
@@ -147,6 +147,18 @@ void DoomlikeGame::updateGame(float dt)
 
 void DoomlikeGame::restartLevel()
 {
+	mustRestartLevel = true;
+}
+
+void DoomlikeGame::changeLevel(int levelIndex)
+{
+	if (levelIndex < 0 || levelIndex > 2)
+	{
+		std::cout << "DOOMLIKE ERROR: Tried to change the level with index to a level that doesn't exist.\n";
+		return;
+	}
+
+	currentLevel = levelIndex;
 	mustRestartLevel = true;
 }
 

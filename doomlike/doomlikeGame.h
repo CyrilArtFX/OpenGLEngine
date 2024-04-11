@@ -19,6 +19,7 @@ public:
 	Player* getPlayer() { return &player; }
 
 	void restartLevel();
+	void changeLevel(int levelIndex);
 
 protected:
 	void loadGameAssets() override;

@@ -63,6 +63,6 @@ void Enemy::onBodyIntersect(RigidbodyComponent& other)
 	else if (other.getAssociatedCollision().getCollisionChannel() == "player")
 	{
 		std::cout << "Player die from the enemy.\n";
-		//static_cast<DoomlikeGame*>(GameplayStatics::GetGame())->restartLevel();
+		static_cast<DoomlikeGame*>(GameplayStatics::GetGame())->restartLevel();
 	}
 }
