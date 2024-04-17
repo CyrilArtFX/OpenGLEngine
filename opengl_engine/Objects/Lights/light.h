@@ -35,9 +35,13 @@ public:
 		 
 	inline bool isLoaded() { return loaded; }
 
+	inline void turnOff() { off = true; }
+	inline void turnOn() { off = false; }
+
 
 protected:
 	bool loaded{ false };
+	bool off{ false };
 
 	Color lightColor{ Color::white };
 	float ambientStrength{ 0.01f };

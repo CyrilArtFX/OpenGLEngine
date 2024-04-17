@@ -3,16 +3,16 @@
 #include <Physics/physics.h>
 #include <Physics/AABB/boxAABBColComp.h>
 
-Lamp::Lamp(Vector3 position, bool isCeiling, Scene& sceneRef, float rand)
+Lamp::Lamp(Vector3 position, bool isCeiling, Scene& sceneRef, float rand, bool startOff)
 {
-	setup(position, isCeiling, sceneRef, rand);
+	setup(position, isCeiling, sceneRef, rand, startOff);
 }
 
 void Lamp::load()
 {
 }
 
-void Lamp::setup(Vector3 position, bool isCeiling, Scene& sceneRef, float rand)
+void Lamp::setup(Vector3 position, bool isCeiling, Scene& sceneRef, float rand, bool startOff)
 {
 	if (isCeiling)
 	{
@@ -37,6 +37,11 @@ void Lamp::setup(Vector3 position, bool isCeiling, Scene& sceneRef, float rand)
 		baseLightIntensity = 0.22f;
 	}
 
+	if (startOff)
+	{
+		light.turnOff();
+	}
+
 	
 	light.setUseDiffColorToSpecColor(true);
 
@@ -58,4 +63,17 @@ void Lamp::updateObject(float dt)
 	}
 
 	light.setDiffuseStrength(baseLightIntensity + (Maths::sin(time) / 11.0f));
+}
+
+void Lamp::changeStatus(bool lightStatus)
+{
+	if (lightStatus)
+	{
+		light.turnOn();
+	}
+	else
+	{
+		light.turnOff();
+		
+	}
 }

@@ -12,12 +12,13 @@ class Lamp : public Object
 {
 public:
 	Lamp() {}
-	Lamp(Vector3 position, bool isCeiling, Scene& sceneRef, float rand);
+	Lamp(Vector3 position, bool isCeiling, Scene& sceneRef, float rand, bool startOff = false);
 
 	void load() override;
-	void setup(Vector3 position, bool isCeiling, Scene& sceneRef, float rand);
+	void setup(Vector3 position, bool isCeiling, Scene& sceneRef, float rand, bool startOff = false);
 
 	void updateObject(float dt) override;
+	void changeStatus(bool lightStatus);
 
 private:
 	PointLight light;

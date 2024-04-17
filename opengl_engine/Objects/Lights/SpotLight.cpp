@@ -34,10 +34,10 @@ void SpotLight::use(Shader& litShader, int lightIndex)
 	litShader.setVec3("spotLights[" + std::to_string(lightIndex) + "].position", position);
 	litShader.setVec3("spotLights[" + std::to_string(lightIndex) + "].direction", direction);
 
-	litShader.setVec3("spotLights[" + std::to_string(lightIndex) + "].ambient", lightColor.toVector() * ambientStrength);
-	litShader.setVec3("spotLights[" + std::to_string(lightIndex) + "].diffuse", lightColor.toVector() * diffuseStrength);
+	litShader.setVec3("spotLights[" + std::to_string(lightIndex) + "].ambient", off ? Vector3::zero : lightColor.toVector() * ambientStrength);
+	litShader.setVec3("spotLights[" + std::to_string(lightIndex) + "].diffuse", off ? Vector3::zero : lightColor.toVector() * diffuseStrength);
 	Color spec_color = Color::white;
-	litShader.setVec3("spotLights[" + std::to_string(lightIndex) + "].specular", spec_color.toVector());
+	litShader.setVec3("spotLights[" + std::to_string(lightIndex) + "].specular", off ? Vector3::zero : spec_color.toVector());
 
 	litShader.setFloat("spotLights[" + std::to_string(lightIndex) + "].cutOff", cutOff);
 	litShader.setFloat("spotLights[" + std::to_string(lightIndex) + "].outerCutOff", outerCutOff);

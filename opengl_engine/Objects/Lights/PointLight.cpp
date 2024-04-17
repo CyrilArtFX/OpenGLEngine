@@ -28,10 +28,10 @@ void PointLight::use(Shader& litShader, int lightIndex)
 
 	litShader.setVec3("pointLights[" + std::to_string(lightIndex) + "].position", position);
 
-	litShader.setVec3("pointLights[" + std::to_string(lightIndex) + "].ambient", lightColor.toVector() * ambientStrength); 
-	litShader.setVec3("pointLights[" + std::to_string(lightIndex) + "].diffuse", lightColor.toVector() * diffuseStrength);
+	litShader.setVec3("pointLights[" + std::to_string(lightIndex) + "].ambient", off ? Vector3::zero : lightColor.toVector() * ambientStrength); 
+	litShader.setVec3("pointLights[" + std::to_string(lightIndex) + "].diffuse", off ? Vector3::zero : lightColor.toVector() * diffuseStrength);
 	Color spec_color = useColorToSpecular ? lightColor : Color::white;
-	litShader.setVec3("pointLights[" + std::to_string(lightIndex) + "].specular", spec_color.toVector()); 
+	litShader.setVec3("pointLights[" + std::to_string(lightIndex) + "].specular", off ? Vector3::zero : spec_color.toVector());
 
 	litShader.setFloat("pointLights[" + std::to_string(lightIndex) + "].constant", constant);
 	litShader.setFloat("pointLights[" + std::to_string(lightIndex) + "].linear", linear);

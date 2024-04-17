@@ -23,8 +23,8 @@ void DirectionalLight::use(Shader& litShader, int lightIndex)
 
 	litShader.setVec3("dirLight.direction", direction);
 
-	litShader.setVec3("dirLight.ambient", lightColor.toVector() * ambientStrength);
-	litShader.setVec3("dirLight.diffuse", lightColor.toVector() * diffuseStrength);
+	litShader.setVec3("dirLight.ambient", off ? Vector3::zero : lightColor.toVector() * ambientStrength);
+	litShader.setVec3("dirLight.diffuse", off ? Vector3::zero : lightColor.toVector() * diffuseStrength);
 	Color spec_color = Color::white;
-	litShader.setVec3("dirLight.specular", spec_color.toVector());
+	litShader.setVec3("dirLight.specular", off ? Vector3::zero : spec_color.toVector());
 }
