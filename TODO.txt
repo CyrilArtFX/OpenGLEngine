@@ -9,7 +9,7 @@
 	-> Faire un système pour faire réagir une partie du niveau en fonction des ennemis tués - fait
 	-> Faire un premier niveau simpliste - fait
 	-> Améliorer l'ennemi avec le déplacement vers le joueur - fait
-	-> Faire le système de trigger qui ferait réagir des parties du niveau (lumière, objets...) et changement de niveau - en cours
+	-> Faire le système de trigger qui ferait réagir des parties du niveau (lumière, objets...) et changement de niveau - fait
 	-> Faire un bon niveau avec des salles et des éléments cinématiques sur les lumières et autres
 	-> Mettre un espèce de camera lag pour que les escaliers ça soit moins horrible
 
