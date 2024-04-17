@@ -14,6 +14,7 @@ public:
 	void update(float dt);
 
 	void addModel(Model* model);
+	Model& getModel(int index);
 
 	virtual void load() {}
 	virtual void updateObject(float dt) {}

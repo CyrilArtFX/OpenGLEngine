@@ -107,4 +107,5 @@ void DoomlikeLevelStart::onPlayerEnterEndLevelZone()
 {
 	std::cout << "Player exit intro level.\n";
 	static_cast<DoomlikeGame*>(GameplayStatics::GetGame())->changeLevel(1);
+	endLevelZone.onPlayerEnter.unregisterObserver(this);
 }

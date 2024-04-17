@@ -23,6 +23,8 @@ public:
 private:
 	PointLight light;
 
+	bool isChandelier{ false };
+
 	float time{ 0.0f };
 	bool reverse{ false };
 	float baseLightIntensity{ 0.0f };
@@ -78,11 +80,15 @@ namespace LampsSetup
 		Material& flame = AssetManager::CreateMaterial("flame", &AssetManager::GetShader("flat_emissive"));
 		flame.addParameter("emissive", Color{ 209, 155, 67, 255 });
 
+		Material& flame_off = AssetManager::CreateMaterial("flame_off", &AssetManager::GetShader("flat_emissive"));
+		flame_off.addParameter("emissive", Color{ 20, 14 ,3, 255 });
+
 		rendererRef.addMaterial(&AssetManager::GetMaterial("lamp"));
 		rendererRef.addMaterial(&AssetManager::GetMaterial("chandelier_candle"));
 		rendererRef.addMaterial(&AssetManager::GetMaterial("chandelier_base"));
 		rendererRef.addMaterial(&AssetManager::GetMaterial("chandelier_leather"));
 		rendererRef.addMaterial(&AssetManager::GetMaterial("flame"));
+		rendererRef.addMaterial(&AssetManager::GetMaterial("flame_off"));
 
 		AssetManager::LoadMeshCollection("lamp", "doomlike/lamp/lamp.fbx");
 		AssetManager::LoadMeshCollection("chandelier", "doomlike/chandelier/chandelier.fbx");
@@ -109,5 +115,6 @@ namespace LampsSetup
 		rendererRef.removeMaterial(&AssetManager::GetMaterial("chandelier_base"));
 		rendererRef.removeMaterial(&AssetManager::GetMaterial("chandelier_leather"));
 		rendererRef.removeMaterial(&AssetManager::GetMaterial("flame"));
+		rendererRef.removeMaterial(&AssetManager::GetMaterial("flame_off"));
 	}
 };

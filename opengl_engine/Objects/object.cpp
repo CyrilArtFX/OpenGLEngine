@@ -27,3 +27,8 @@ void Object::addModel(Model* model)
 {
 	models.push_back(model);
 }
+
+Model& Object::getModel(int index)
+{
+	return *models[index];
+}

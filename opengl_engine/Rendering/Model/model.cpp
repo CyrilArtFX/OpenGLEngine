@@ -10,25 +10,28 @@ void Model::draw(Material* materialInUsage)
 
 	for (auto mesh_material : meshMaterials)
 	{
-		if (mesh_material.first != materialInUsage) continue;
+		if (mesh_material.material != materialInUsage) continue;
 
-		for (auto mesh : mesh_material.second)
-		{
-			mesh->draw();
-		}
+		mesh_material.mesh->draw();
 	}
 }
 
 
 void Model::addMesh(Mesh* mesh, Material* material)
 {
-	meshMaterials[material].push_back(mesh);
+	meshMaterials.push_back(MeshMaterial{ mesh, material });
 }
 
 void Model::addMeshes(MeshCollection* meshes, Material* material)
 {
 	for (int i = 0; i < meshes->collection.size(); i++)
 	{
-		meshMaterials[material].push_back(&meshes->collection[i]);
+		meshMaterials.push_back(MeshMaterial{ &meshes->collection[i], material });
 	}
+}
+
+void Model::changeMaterial(int index, Material* newMaterial)
+{
+	if (index < 0 || index >= meshMaterials.size()) return;
+	meshMaterials[index].material = newMaterial;
 }

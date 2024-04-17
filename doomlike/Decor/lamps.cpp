@@ -24,6 +24,8 @@ void Lamp::setup(Vector3 position, bool isCeiling, Scene& sceneRef, float rand, 
 
 		light.load(Color{ 227, 141, 2, 255 }, position + Vector3{ 0.0f, 0.7f, 0.0f }, 0.01f, 0.41f);
 		baseLightIntensity = 0.4f;
+
+		isChandelier = true;
 	}
 	else
 	{
@@ -40,6 +42,16 @@ void Lamp::setup(Vector3 position, bool isCeiling, Scene& sceneRef, float rand, 
 	if (startOff)
 	{
 		light.turnOff();
+
+		if (isChandelier)
+		{
+			getModel(0).changeMaterial(3, &AssetManager::GetMaterial("chandelier_candle"));
+			getModel(0).changeMaterial(4, &AssetManager::GetMaterial("flame_off"));
+		}
+		else
+		{
+			getModel(0).changeMaterial(1, &AssetManager::GetMaterial("flame_off"));
+		}
 	}
 
 	
@@ -70,10 +82,29 @@ void Lamp::changeStatus(bool lightStatus)
 	if (lightStatus)
 	{
 		light.turnOn();
+
+		if (isChandelier)
+		{
+			getModel(0).changeMaterial(3, &AssetManager::GetMaterial("flame"));
+			getModel(0).changeMaterial(4, &AssetManager::GetMaterial("flame"));
+		}
+		else
+		{
+			getModel(0).changeMaterial(1, &AssetManager::GetMaterial("flame"));
+		}
 	}
 	else
 	{
 		light.turnOff();
 		
+		if (isChandelier)
+		{
+			getModel(0).changeMaterial(3, &AssetManager::GetMaterial("chandelier_candle"));
+			getModel(0).changeMaterial(4, &AssetManager::GetMaterial("flame_off"));
+		}
+		else
+		{
+			getModel(0).changeMaterial(1, &AssetManager::GetMaterial("flame_off"));
+		}
 	}
 }

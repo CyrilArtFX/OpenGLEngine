@@ -6,6 +6,13 @@
 #include <vector>
 
 
+struct MeshMaterial
+{
+	Mesh* mesh;
+	Material* material;
+};
+
+
 class Model
 {
 public:
@@ -23,7 +30,12 @@ public:
 	*/
 	void addMeshes(MeshCollection* meshes, Material* material);
 
+	/**
+	* Change the material of the mesh at given index.
+	*/
+	void changeMaterial(int index, Material* newMaterial);
+
 private:
-	std::unordered_map<Material*, std::vector<Mesh*>> meshMaterials;
+	std::vector<MeshMaterial> meshMaterials;
 };
 
