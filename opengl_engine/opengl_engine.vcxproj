@@ -162,6 +162,7 @@
     <ClCompile Include="Objects\object.cpp" />
     <ClCompile Include="Objects\transform.cpp" />
     <ClCompile Include="Physics\ObjectChannels\collisionChannels.cpp" />
+    <ClCompile Include="Physics\OctTree\octTree.cpp" />
     <ClCompile Include="Physics\physics.cpp" />
     <ClCompile Include="Physics\raycast.cpp" />
     <ClCompile Include="Physics\raycastLine.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="Physics\AABB\raycastAABB.h" />
     <ClInclude Include="Physics\AABB\raycastAABBSweep.h" />
     <ClInclude Include="Physics\ObjectChannels\collisionChannels.h" />
+    <ClInclude Include="Physics\OctTree\octTree.h" />
     <ClInclude Include="Physics\physicEntity.h" />
     <ClInclude Include="Physics\raycastLine.h" />
     <ClInclude Include="Physics\rigidbodyComponent.h" />
