@@ -17,10 +17,13 @@
 ~ Retour sur la physique : mettre l'algo collide and slide à la place de ma répulsion (aaaaa) https://www.youtube.com/watch?v=YR6Q7dUz2uk
 	-> Faire un raycast sweep AABB (sera utile pour améliorer la physique et pour le step inversé) - fait
 		-> Inversed step mechanic - fait
-	-> Utiliser le raycast sweep AABB pour le collide and slide
+	-> Utiliser le raycast sweep AABB pour le collide and slide avec projection d'un vecteur sur une surface
 
 
 == MOYEN TERME ==
+
+~ Mettre le renderer en classe statique et donner l'accès aux classes statiques avec le pattern Service Locator
+	https://drive.google.com/file/d/1W174x3x0xS9eDg1xIUMdzxdSxznol8Zu/view?usp=drive_link page 285
 
 ~ Intégrer du son (avec fmod ?)
 
@@ -64,21 +67,8 @@
 
 == REFLEXIONS / PROBLEMES CONNUS ==
 
-~ Mettre le renderer en classe statique ? permettrait d'assigner certains assets (comme les materiaux) directement à la création par exemple + de ne pas avoir à le passer en paramètre pour le joueur qui va devoir créer des balles (par exemple)
-
 ~ Réfléchir au fonctionnement du load asset des scenes, est-ce qu'il faudrait faire gaffe à l'utilisation de ram et unload genre les textures qui ne sont plus nécessaires ?
 
-~ Les objets scenes sont créés avant que le loadDefaultAssets soit appelé par l'objet game ?
-
-~ Regarder la projection d'un vecteur sur une surface pour remplacer l'espèce d'harcoding bizarre pour annuler la vélocité vers la collision (en plus c'est un bon point de maths pour les entretiens)
-
-~ Si l'épaisseur de la collision d'un plafond est faible, il est possible de passer à travers en sautant d'en dessous (à cause de la step mechanic), il faudrait trouver pourquoi ça fait ça et le corriger
+~ Si l'épaisseur de la collision d'un plafond est faible, il est possible de passer à travers en sautant d'en dessous (à cause de la step mechanic ?), il faudrait trouver pourquoi ça fait ça et le corriger (vérifier si ça reste toujours après le changement avec le collide and slide)
 
 ~ Trouver une solution pour les problèmes de rotations avec la caméra (étudier unreal ? réussir à combiner la matrice de la caméra et celle du joueur ?)
-
-~ Essayer de comprendre pourquoi si les bullets sont pas stockées en unique_ptr ça fait complètement n'importe quoi (genre c'est abusé de fou)
-Infos sur le problème :
- - même en créant la bullet dans la liste directement et en faisant le setup depuis là ça bug
- - si y'en a qu'une à la fois ça a l'air d'aller
- - c'est le iter_swap qui pose problème ?
- - avec le système que j'avais, ça supprimait la première balle (seulement visuellement mais aucune fonction de suppression n'était appelée) et quand je spammais ça crashait
