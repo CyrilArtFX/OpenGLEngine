@@ -46,6 +46,9 @@ private:
 	float camHeight{ 0.0f };
 	float moveSpeed{ 0.0f };
 	float jumpForce{ 0.0f };
+	
+	Vector3 camPos{ Vector3::zero };
+	float camSpeed{ 8.8f };
 
 	//  fake shots
 	std::vector<std::unique_ptr<Bullet>> bullets;

@@ -36,7 +36,8 @@ void Player::setup(float height, float speed, float jump, float stepHeight, Rend
 	gunObject.setScale(0.1f);
 
 	setPosition(0.0f, 0.0f, 0.0f);
-	camera.setPosition(Vector3{ 0.0f, camHeight, 0.0f });
+	camPos = Vector3{ 0.0f, camHeight, 0.0f };
+	camera.setPosition(camPos);
 	camera.setSensitivity(0.08f);
 
 	BoxAABBColComp& collision = static_cast<BoxAABBColComp&>(rigidbody->getAssociatedCollisionNonConst());
@@ -128,7 +129,11 @@ void Player::update(float dt)
 	Vector2 mouse_delta = Input::GetMouseDelta(); 
 	camera.freecamMouseMovement(mouse_delta.x, mouse_delta.y); 
 
-	camera.setPosition(getPosition() + Vector3{0.0f, camHeight, 0.0f});
+	Vector3 target_cam_pos = getPosition() + Vector3{ 0.0f, camHeight, 0.0f };
+	float cam_dist_target = Vector3::Distance(camPos, target_cam_pos);
+	float cam_progress = Maths::min(camSpeed * dt / cam_dist_target, 1.0f);
+	camPos = Vector3::lerp(camPos, target_cam_pos, cam_progress);
+	camera.setPosition(camPos);
 
 
 	//  shoot
@@ -161,7 +166,7 @@ void Player::update(float dt)
 
 
 	//  move gun object to follow player
-	gunObject.setPosition(camera.getPosition());
+	gunObject.setPosition(camPos);
 	gunObject.addPositionRotated(Vector3{ 0.1f, -0.1f, -0.2f }); //  gun offset of camera
 	gunObject.setRotation(camera.getRotation());
 	gunObject.incrementRotation(Quaternion{ gunObject.getUp(), Maths::toRadians(180.0f) }); //  gun is rotated backward by default
