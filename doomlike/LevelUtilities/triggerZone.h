@@ -10,10 +10,12 @@ public:
 	TriggerZone() {}
 
 	void setup(Vector3 position, Vector3 size);
+	void disableZone();
 
 	Event<> onPlayerEnter;
 
 private:
 	void onBodyIntersect(class RigidbodyComponent& other);
+	RigidbodyComponent* rigidbody;
 };
 

@@ -8,12 +8,14 @@ void MovingPlatform::load()
 	setScale(Vector3{ 2.0f, 0.2f, 2.0f });
 }
 
-void MovingPlatform::setup(Vector3 pointA_, Vector3 pointB_, float timeAtoB_)
+void MovingPlatform::setup(Vector3 pointA_, Vector3 pointB_, float timeAtoB_, float waitTime_)
 {
 	pointA = pointA_;
 	pointB = pointB_;
 	timeAtoB = timeAtoB_;
+	waitTime = waitTime_;
 	timer = 0.0f;
+	waitTimer = 0.0f;
 	reverse = false;
 
 	setPosition(pointA);
@@ -23,7 +25,20 @@ void MovingPlatform::setup(Vector3 pointA_, Vector3 pointB_, float timeAtoB_)
 
 void MovingPlatform::updateObject(float dt)
 {
-	if (timeAtoB <= 0.0f || distance == 0.0f) return;
+	if (paused || timeAtoB <= 0.0f || distance == 0.0f) return;
+
+	if (waiting)
+	{
+		waitTimer -= dt;
+		if (waitTimer <= 0.0f)
+		{
+			waitTimer = 0.0f;
+			waiting = false;
+
+			resume();
+		}
+		return;
+	}
 
 	if (reverse)
 	{
@@ -33,6 +48,12 @@ void MovingPlatform::updateObject(float dt)
 			timer = 0.0f;
 			reverse = false;
 			rigidbody->setVelocity((pointB - pointA) * (1.0f / timeAtoB));
+			if (waitTime > 0.0f)
+			{
+				waitTimer = waitTime;
+				waiting = true;
+				rigidbody->setVelocity(Vector3::zero);
+			}
 		}
 	}
 	else
@@ -43,6 +64,25 @@ void MovingPlatform::updateObject(float dt)
 			timer = timeAtoB;
 			reverse = true;
 			rigidbody->setVelocity((pointA - pointB) * (1.0f / timeAtoB));
+			if (waitTime > 0.0f)
+			{
+				waitTimer = waitTime;
+				waiting = true;
+				rigidbody->setVelocity(Vector3::zero);
+			}
 		}
 	}
+}
+
+void MovingPlatform::pause()
+{
+	paused = true;
+	rigidbody->setVelocity(Vector3::zero);
+}
+
+void MovingPlatform::resume()
+{
+	paused = false;
+	if (waiting) return;
+	rigidbody->setVelocity((reverse ? (pointA - pointB) : (pointB - pointA)) * (1.0f / timeAtoB));
 }

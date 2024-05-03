@@ -12,6 +12,7 @@
 	-> Faire le système de trigger qui ferait réagir des parties du niveau (lumière, objets...) et changement de niveau - fait
 	-> Mettre un espèce de camera lag pour que les escaliers ça soit moins horrible - fait
 	-> Faire un bon niveau avec des salles et des éléments cinématiques sur les lumières et autres
+	-> Ajouter une petite lumière sur les balles (essayer de les rendre plus visible en fait)
 
 
 ~ Retour sur la physique : mettre l'algo collide and slide à la place de ma répulsion (aaaaa) https://www.youtube.com/watch?v=YR6Q7dUz2uk

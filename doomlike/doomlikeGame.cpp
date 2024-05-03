@@ -33,6 +33,7 @@ void DoomlikeGame::loadGameAssets()
 
 	AssetManager::LoadTexture("bullet_diffuse", "doomlike/bullet/bullet_basecolor.png", GL_RGB, false);
 	AssetManager::LoadTexture("bullet_specular", "doomlike/bullet/bullet_roughness.png", GL_RED, false); //  still need the system to automatically analyse texture color depth
+	AssetManager::LoadTexture("bullet_emissive", "doomlike/bullet/bullet_emissive.png", GL_RGBA, false);
 
 	AssetManager::LoadTexture("gun_diffuse", "doomlike/gun/gun_basecolor.png", GL_RGBA, false);
 	AssetManager::LoadTexture("gun_specular", "doomlike/gun/gun_roughness.png", GL_RGB16, false);
@@ -59,7 +60,7 @@ void DoomlikeGame::loadGameAssets()
 	Material& bullet_mat = AssetManager::CreateMaterial("bullet", &AssetManager::GetShader("lit_object"));
 	bullet_mat.addTexture(&AssetManager::GetTexture("bullet_diffuse"), TextureType::Diffuse);
 	bullet_mat.addTexture(&AssetManager::GetTexture("bullet_specular"), TextureType::Specular);
-	bullet_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
+	bullet_mat.addTexture(&AssetManager::GetTexture("bullet_emissive"), TextureType::Emissive);
 	bullet_mat.addParameter("material.shininess", 32.0f);
 
 	Material& gun_mat = AssetManager::CreateMaterial("gun", &AssetManager::GetShader("lit_object"));
@@ -115,7 +116,7 @@ void DoomlikeGame::loadGame()
 	player.setup(1.5f, 7.0f, 7.0f, 0.3f, renderer);
 	renderer->setCamera(&player.getCamera());
 
-	loadLevel(2);
+	loadLevel(3);
 }
 
 
@@ -143,6 +144,11 @@ void DoomlikeGame::updateGame(float dt)
 	{
 		loadLevel(2);
 	}
+
+	if (Input::IsKeyPressed(GLFW_KEY_KP_3))
+	{
+		loadLevel(3);
+	}
 }
 
 void DoomlikeGame::restartLevel()
@@ -152,7 +158,7 @@ void DoomlikeGame::restartLevel()
 
 void DoomlikeGame::changeLevel(int levelIndex)
 {
-	if (levelIndex < 0 || levelIndex > 2)
+	if (levelIndex < 0 || levelIndex > 3)
 	{
 		std::cout << "DOOMLIKE ERROR: Tried to change the level with index to a level that doesn't exist.\n";
 		return;
@@ -178,6 +184,10 @@ void DoomlikeGame::loadLevel(int index)
 	case 2:
 		loadScene(&levelStartScene);
 		player.respawn(levelStartScene);
+		break;
+	case 3:
+		loadScene(&levelAdvancedScene);
+		player.respawn(levelAdvancedScene);
 		break;
 	}
 }

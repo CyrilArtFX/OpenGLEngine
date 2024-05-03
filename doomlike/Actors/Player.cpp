@@ -193,7 +193,8 @@ void Player::respawn(PlayerSpawnPoint& spawnPoint)
 	setPosition(spawnPoint.spawnPosition);
 	//setRotation(spawnPoint.spawnRotation);
 
-	camera.setPosition(spawnPoint.spawnPosition + Vector3{ 0.0f, camHeight, 0.0f });
+	camPos = spawnPoint.spawnPosition + Vector3{ 0.0f, camHeight, 0.0f };
+	camera.setPosition(camPos);
 	//camera.setRotByQuaternion(spawnPoint.spawnRotation);
 }
 

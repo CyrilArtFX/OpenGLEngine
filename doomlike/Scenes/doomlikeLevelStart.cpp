@@ -58,7 +58,7 @@ void DoomlikeLevelStart::loadScene()
 	registerObject(new Lamp(Vector3{ -3.2f, 0.0f, 8.3f }, false, *this, 0.1f));
 	registerObject(new Lamp(Vector3{ 3.2f, 0.0f, 8.3f }, false, *this, 0.35f));
 	registerObject(new Lamp(Vector3{ 6.5f, 2.0f, 21.5f }, false, *this, 0.67f));
-	registerObject(new Lamp(Vector3{ -3.0f, 5.0f, 16.5f }, true, *this, 0.52f));
+	registerObject(new Lamp(Vector3{ -3.0f, 5.0f, 16.5f }, false, *this, 0.52f));
 
 
 	//  enemies
