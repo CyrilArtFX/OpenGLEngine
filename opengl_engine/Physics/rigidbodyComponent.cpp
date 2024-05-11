@@ -110,7 +110,7 @@ void RigidbodyComponent::setWeigth(float value)
 	weight = value;
 }
 
-void RigidbodyComponent::setUseGravity(float value)
+void RigidbodyComponent::setUseGravity(bool value)
 {
 	useGravity = value;
 }

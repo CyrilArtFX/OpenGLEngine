@@ -36,36 +36,39 @@ void DoomlikeLevelAdvanced::loadScene()
 	registerObject(new WallObj(Vector3{   0.0f, 5.0f, -10.0f }, Wall::FacingDirection::FacingPositiveZ, Vector2{ 20.0f, 10.0f }));
 	
 
-	//  decor
-	registerObject(new Lamp(Vector3{ -8.0f, 10.0f, -8.0f }, true, *this, 0.12f, true));
-	registerObject(new Lamp(Vector3{  8.0f, 10.0f, -8.0f }, true, *this, 0.37f, true));
-	registerObject(new Lamp(Vector3{ -8.0f, 10.0f,  8.0f }, true, *this, 0.56f, true));
-	registerObject(new Lamp(Vector3{  8.0f, 10.0f,  8.0f }, true, *this, 0.81f, true));
-	registerObject(new Lamp(Vector3{ -8.0f, 10.0f,  0.0f }, true, *this, 0.25f, true));
-	registerObject(new Lamp(Vector3{  8.0f, 10.0f,  0.0f }, true, *this, 0.43f, true));
-	registerObject(new Lamp(Vector3{  0.0f, 10.0f, -8.0f }, true, *this, 0.72f, true));
-	registerObject(new Lamp(Vector3{  0.0f, 10.0f,  8.0f }, true, *this, 0.97f, true));
+	//  decor - dynamic lights
+	ceilLamp1 = static_cast<Lamp*>(&registerObject(new Lamp(Vector3{ -8.0f, 10.0f, -8.0f }, true, *this, 0.12f, true)));
+	ceilLamp2 = static_cast<Lamp*>(&registerObject(new Lamp(Vector3{  8.0f, 10.0f, -8.0f }, true, *this, 0.37f, true)));
+	ceilLamp3 = static_cast<Lamp*>(&registerObject(new Lamp(Vector3{ -8.0f, 10.0f,  8.0f }, true, *this, 0.56f, true)));
+	ceilLamp4 = static_cast<Lamp*>(&registerObject(new Lamp(Vector3{  8.0f, 10.0f,  8.0f }, true, *this, 0.81f, true)));
+	ceilLamp5 = static_cast<Lamp*>(&registerObject(new Lamp(Vector3{ -8.0f, 10.0f,  0.0f }, true, *this, 0.25f, true)));
+	ceilLamp6 = static_cast<Lamp*>(&registerObject(new Lamp(Vector3{  8.0f, 10.0f,  0.0f }, true, *this, 0.43f, true)));
+	ceilLamp7 = static_cast<Lamp*>(&registerObject(new Lamp(Vector3{  0.0f, 10.0f, -8.0f }, true, *this, 0.72f, true)));
+	ceilLamp8 = static_cast<Lamp*>(&registerObject(new Lamp(Vector3{  0.0f, 10.0f,  8.0f }, true, *this, 0.97f, true)));
+	floorLamp = static_cast<Lamp*>(&registerObject(new Lamp(Vector3{  6.0f,  0.0f,  0.0f }, false, *this, 0.85f, false)));
 
 
 	//  elevator
 	elevator.addModel(&AssetManager::GetModel("crate"));
 	registerObject(&elevator);
-	elevator.setup(Vector3{ 0.0f, 0.1f, -2.5f }, Vector3{ 0.0f, 6.9f, -2.5f }, 4.0f, 2.0f);
+	elevator.setup(Vector3{ 2.5f, 0.1f, 0.0f }, Vector3{ 2.5f, 6.9f, 0.0f }, 4.0f, 2.0f);
 	elevator.pause();
 
 
 	//  trigger zones
-	elevatorUpZone.setup(Vector3{ 0.0f, 1.0f, -2.0f }, Vector3{ 0.2f, 0.2f, 0.2f });
+	elevatorUpZone.setup(Vector3{ 2.0f, 1.0f, 0.0f }, Vector3{ 0.2f, 0.2f, 0.2f });
 	elevatorUpZone.onPlayerEnter.registerObserver(this, Bind_0(&DoomlikeLevelAdvanced::onPlayerEnterElevatorUpZone));
+	enemySpawnZone.setup(Vector3{ 0.0f, 7.5f, 0.0f }, Vector3{ 0.2f, 0.2f, 0.2f });
+	enemySpawnZone.onPlayerEnter.registerObserver(this, Bind_0(&DoomlikeLevelAdvanced::onPlayerEnterEnemySpawnZone));
 
 
 	//  static lights
-	globalLight.load(Color{ 255, 238, 209, 255 }, Vector3::unitY, 0.35f, 0.0f);
+	globalLight.load(Color{ 255, 238, 209, 255 }, Vector3::unitY, 0.15f, 0.0f);
 	registerLight(&globalLight);
 
 
 	//  spawn point
-	spawnPosition = Vector3{ 0.0f, 0.0f, -9.0f };
+	spawnPosition = Vector3{ 9.0f, 0.0f, 0.0f };
 }
 
 void DoomlikeLevelAdvanced::updateScene(float dt)
@@ -91,4 +94,21 @@ void DoomlikeLevelAdvanced::onPlayerEnterElevatorUpZone()
 
 void DoomlikeLevelAdvanced::onPlayerEnterEnemySpawnZone()
 {
+	enemySpawnZone.onPlayerEnter.unregisterObserver(this);
+	enemySpawnZone.disableZone();
+
+	ceilLamp1->changeStatus(true);
+	ceilLamp2->changeStatus(true);
+	ceilLamp3->changeStatus(true);
+	ceilLamp4->changeStatus(true);
+	ceilLamp5->changeStatus(true);
+	ceilLamp6->changeStatus(true);
+	ceilLamp7->changeStatus(true);
+	ceilLamp8->changeStatus(true);
+	floorLamp->changeStatus(false);
+
+	registerObject(new Enemy()).setPosition(Vector3{ -5.0f, 7.5f, -5.0f });
+	registerObject(new Enemy()).setPosition(Vector3{ -5.0f, 7.5f,  5.0f });
+	registerObject(new Enemy()).setPosition(Vector3{  5.0f, 7.5f, -5.0f });
+	registerObject(new Enemy()).setPosition(Vector3{  5.0f, 7.5f,  5.0f });
 }

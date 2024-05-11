@@ -39,20 +39,7 @@ void Lamp::setup(Vector3 position, bool isCeiling, Scene& sceneRef, float rand, 
 		baseLightIntensity = 0.22f;
 	}
 
-	if (startOff)
-	{
-		light.turnOff();
-
-		if (isChandelier)
-		{
-			getModel(0).changeMaterial(3, &AssetManager::GetMaterial("chandelier_candle"));
-			getModel(0).changeMaterial(4, &AssetManager::GetMaterial("flame_off"));
-		}
-		else
-		{
-			getModel(0).changeMaterial(1, &AssetManager::GetMaterial("flame_off"));
-		}
-	}
+	changeStatus(!startOff);
 
 	
 	light.setUseDiffColorToSpecColor(true);

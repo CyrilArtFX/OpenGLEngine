@@ -136,7 +136,7 @@ void Player::update(float dt)
 	camera.setPosition(camPos);
 
 
-	//  shoot
+	//  bullets update
 	for (auto& bullet : bullets)
 	{
 		bullet->update(dt);

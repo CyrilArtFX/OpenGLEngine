@@ -40,7 +40,7 @@ public:
 	void setWeigth(float value);
 	inline float getWeight() const { return weight; }
 
-	void setUseGravity(float value);
+	void setUseGravity(bool value);
 	inline bool getUseGravity() const { return useGravity; }
 
 	void setStepHeight(float value);
