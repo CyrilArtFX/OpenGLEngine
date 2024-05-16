@@ -32,7 +32,7 @@ void Player::setup(float height, float speed, float jump, float stepHeight, Rend
 	rigidbody->setStepHeight(stepHeight);
 
 	gunObject.addModel(&AssetManager::GetModel("gun"));
-	rendererRef->addObject(&gunObject);
+	//rendererRef->addObject(&gunObject);
 	gunObject.setScale(0.1f);
 
 	setPosition(0.0f, 0.0f, 0.0f);

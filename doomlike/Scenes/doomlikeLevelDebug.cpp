@@ -1,6 +1,11 @@
 #include "doomlikeLevelDebug.h"
 #include <Physics/physics.h>
 #include <Physics/AABB/boxAABBColComp.h>
+#include <Decor/floorceiling.h>
+#include <Decor/stairs.h>
+#include <Inputs/Input.h>
+
+using Stairs::StairsObj;
 
 DoomlikeLevelDebug::DoomlikeLevelDebug()
 {
@@ -12,9 +17,6 @@ void DoomlikeLevelDebug::loadScene()
 
 
 	//  objects
-	ground1.addModel(&AssetManager::GetModel("ground"));
-	ground2.addModel(&AssetManager::GetModel("ground"));
-	ground3.addModel(&AssetManager::GetModel("ground"));
 	crate1.addModel(&AssetManager::GetModel("crate"));
 	crate2.addModel(&AssetManager::GetModel("crate"));
 	crate3.addModel(&AssetManager::GetModel("crate"));
@@ -24,9 +26,10 @@ void DoomlikeLevelDebug::loadScene()
 	movingPlatform1.addModel(&AssetManager::GetModel("crate"));
 	movingPlatform2.addModel(&AssetManager::GetModel("crate"));
 
-	registerObject(&ground1);
-	registerObject(&ground2);
-	registerObject(&ground3);
+	registerObject(new FloorObj(Vector3{ 0.0f, 0.0f, 0.0f }, false)).setScale(Vector3{ 10.0f, 1.0f, 10.0f });
+	registerObject(new FloorObj(Vector3{ 0.0f, 0.0f, 10.0f }, false)).setScale(Vector3{ 10.0f, 1.0f, 10.0f });
+	registerObject(new FloorObj(Vector3{ 10.0f, 0.0f, 10.0f }, false)).setScale(Vector3{ 10.0f, 1.0f, 10.0f });
+	registerObject(new StairsObj(Vector3{ 4.0f, 0.0f, 2.5f }, Stairs::FacingDirection::FacingNegativeX));
 	registerObject(&crate1);
 	registerObject(&crate2);
 	registerObject(&crate3);
@@ -34,12 +37,9 @@ void DoomlikeLevelDebug::loadScene()
 	registerObject(&stair1);
 	registerObject(&stair2);
 	registerObject(&movingPlatform1);
-	registerObject(&movingPlatform2);
-	Object& enemy_1 = registerObject(new Enemy()); //  better to add objects that can be altered like this
+	//registerObject(&movingPlatform2);
+	//Object& enemy_1 = registerObject(new Enemy()); //  better to add objects that can be altered like this
 
-	ground1.setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
-	ground2.setPosition(Vector3{ 0.0f, 0.0f, 10.0f });
-	ground3.setPosition(Vector3{ 10.0f, 0.0f, 10.0f });
 	crate1.setPosition(Vector3{ 2.0f, 0.5f, 0.0f });
 	crate2.setPosition(Vector3{ 3.0f, 1.0f, 13.0f });
 	crate2.setScale(Vector3{ 0.5f, 2.0f, 2.0f });
@@ -49,16 +49,14 @@ void DoomlikeLevelDebug::loadScene()
 	stair1.setPosition(Vector3{ 8.0f, 0.1f, 15.5f });
 	stair2.setScale(Vector3{ 1.0f, 0.2f, 1.0f });
 	stair2.setPosition(Vector3{ 9.0f, 0.3f, 15.5f });
-	enemy_1.setPosition(Vector3{ -1.0f, 1.2f, 12.0f });
+	//enemy_1.setPosition(Vector3{ -1.0f, 1.2f, 12.0f });
 
-	movingPlatform1.setup(Vector3{ 10.0f, -3.0f, 2.0f }, Vector3{ 10.0f, 7.0f, 2.0f }, 5.0f);
-	movingPlatform2.setup(Vector3{ 8.0f, 3.0f, 2.0f }, Vector3{ 3.0f, 3.0f, -2.0f }, 5.0f);
+	movingPlatform1.setup(Vector3{ 6.0f, 1.9f, 2.5f }, Vector3{ 9.0f, 3.0f, 11.5f }, 3.0f, 5.0f);
+	movingPlatform1.pause();
+	//movingPlatform2.setup(Vector3{ 8.0f, 3.0f, 2.0f }, Vector3{ 3.0f, 3.0f, -2.0f }, 5.0f);
 
 
 	//  collisions
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.5f, 0.0f}, Vector3{5.0f, 0.5f, 5.0f} }, &ground1, false, "solid"));
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.5f, 0.0f}, Vector3{5.0f, 0.5f, 5.0f} }, &ground2, false, "solid"));
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box{ Vector3{0.0f, -0.5f, 0.0f}, Vector3{5.0f, 0.5f, 5.0f} }, &ground3, false, "solid"));
 	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate1, false, "solid"));
 	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate2, false, "solid"));
 	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate3, false, "solid"));
@@ -84,6 +82,10 @@ void DoomlikeLevelDebug::loadScene()
 
 void DoomlikeLevelDebug::updateScene(float dt)
 {
+	if (Input::IsKeyPressed(GLFW_KEY_H))
+	{
+		movingPlatform1.resume();
+	}
 }
 
 void DoomlikeLevelDebug::unloadScene()

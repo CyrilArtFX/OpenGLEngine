@@ -22,7 +22,7 @@ public:
 	Engine(const Engine&) = delete;
 	Engine& operator=(const Engine&) = delete;
 
-	bool initialize(int wndw_width = 1024, int wndw_height = 720, std::string wndw_name = "OpenGL Engine", bool wndw_capturemouse = true);
+	bool initialize(int wndw_width = 1920, int wndw_height = 1080, std::string wndw_name = "OpenGL Engine", bool wndw_capturemouse = true);
 	void run();
 	void close();
 

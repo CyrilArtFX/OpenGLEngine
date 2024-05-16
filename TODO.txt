@@ -66,8 +66,6 @@
 
 ~ Mettre un système pour détecter automatiquement la profondeur de couleur au chargement de la texture pour éviter les problèmes (si la profondeur de couleur est 24, pas d'alpha (même avec un .png), donc charger avec GL_RGBA va faire un crash) -> regarder comment gregory a fait pour xenity
 
-~ Pouvoir avoir des box de collisions en trigger seulement (parce que là c'est un peu cringe faut passer par un rigidbody physic activated)
-
 
 == REFLEXIONS / PROBLEMES CONNUS ==
 

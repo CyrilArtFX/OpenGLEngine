@@ -32,9 +32,6 @@ protected:
 
 private:
 	//  scene objects
-	Object ground1;
-	Object ground2;
-	Object ground3;
 	Object crate1;
 	Object crate2;
 	Object crate3;
