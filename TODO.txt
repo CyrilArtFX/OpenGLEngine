@@ -13,14 +13,15 @@
 	-> Mettre un espèce de camera lag pour que les escaliers ça soit moins horrible - fait
 	-> Mettre les balles en emissive pour mieux les voir - fait
 	-> Faire un bon niveau avec des salles et des éléments cinématiques sur les lumières et autres - fait
+	-> Ajouter une distance max sur le camera lag
+	-> Vérifier que tout est nickel après le rework de la physique
 
-~ Comprendre pourquoi les plateformes mouvantes ont parfois des problèmes (pb de l'elevator du doomlike level 2) et le corriger
-
-
-~ Retour sur la physique : mettre l'algo collide and slide à la place de ma répulsion (aaaaa) https://www.youtube.com/watch?v=YR6Q7dUz2uk
-	-> Faire un raycast sweep AABB (sera utile pour améliorer la physique et pour le step inversé) - fait
-		-> Inversed step mechanic - fait
+~ Retour sur la physique : collide and slide (https://www.youtube.com/watch?v=YR6Q7dUz2uk)
+	-> Faire un raycast sweep AABB - fait
+	-> Faire la inversed step mechanic - fait
 	-> Utiliser le raycast sweep AABB pour le collide and slide avec projection d'un vecteur sur une surface
+	-> Regarder si le pb des plateformes mouvantes existe toujours et le fix
+	-> Rajouter des vraies trigger box
 
 
 == MOYEN TERME ==

@@ -17,7 +17,6 @@ void ExpositionGame::loadGameAssets()
 
 	//  shaders, textures and materials
 	AssetManager::CreateShaderProgram("lit_object", "Lit/object_lit.vert", "Lit/object_lit.frag", ShaderType::Lit);
-	AssetManager::CreateShaderProgram("flat_emissive", "Unlit/flat_emissive.vert", "Unlit/flat_emissive.frag", ShaderType::Unlit);
 
 	AssetManager::LoadTexture("container_diffuse", "container2.png", GL_RGBA, false);
 	AssetManager::LoadTexture("container_specular", "container2_specular.png", GL_RGBA, false);

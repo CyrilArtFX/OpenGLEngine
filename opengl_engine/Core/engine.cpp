@@ -13,16 +13,30 @@ Engine::Engine()
 
 bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, bool wndw_capturemouse)
 {
+	std::cout << "Initializing...\n\n\n";
+
+	std::cout << "==================================================" << std::endl;
+	std::cout << "   ____            _____             _            " << std::endl;
+	std::cout << "  / ___|   _      | ____|_ __   __ _(_)_ __   ___ " << std::endl;
+	std::cout << " | |  | | | |_____|  _| | '_ \\ / _` | | '_ \\ / _ \\ " << std::endl;
+	std::cout << " | |__| |_| |_____| |___| | | | (_| | | | | |  __/" << std::endl;
+	std::cout << "  \\____\\__, |     |_____|_| |_|\\__, |_|_| |_|\\___|" << std::endl;
+	std::cout << "       |___/                   |___/              " << std::endl;
+	std::cout << "==================================================" << std::endl << std::endl << std::endl;
+
+
 	//  create window and initialize glfw
+	std::cout << "Initializing window...";
 	window.createWindow(wndw_width, wndw_height, wndw_name, wndw_capturemouse);
 
 	GLFWwindow* gl_window = window.getGLFWwindow();
 	if (gl_window == NULL)
 	{
-		std::cout << "Failed to create GLFW window" << std::endl;
+		std::cout << std::endl << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
 		return false;
 	}
+	std::cout << " Done.\n";
 
 
 	glfwSetWindowUserPointer(gl_window, this);
@@ -60,7 +74,10 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 
 
 	//  create renderer
+	std::cout << "Initializing renderer...";
 	renderer.createRenderer(Color::black, Vector2Int{ window.getWidth(), window.getHeigth() });
+	std::cout << " Done.\n";
+
 
 	//  set freecam values
 	freecam.setSpeed(4.0f);
@@ -69,27 +86,36 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	//  initialize GLAD
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
-		std::cout << "Failed to initialize GLAD" << std::endl;
+		std::cout << std::endl << "Failed to initialize GLAD" << std::endl;
 		return false;
 	}
 
 
 	//  initialize input system
+	std::cout << "Initializing inputs...";
 	Input::Initialize();
+	std::cout << " Done.\n";
 
 	//  initialize physics
+	std::cout << "Initializing physics...";
 	Physics::InitialisePhysics();
+	std::cout << " Done.\n";
 
 
 	//  load "null" assets of AssetManager
+	std::cout << "Initializing asset manager...";
 	AssetManager::LoadNullAssets();
 
 	//  load debug assets
 	DefaultAssets::LoadDebugAssets();
+	std::cout << " Done.\n";
 
 
 	//  configure global OpenGL properties
 	glEnable(GL_DEPTH_TEST);
+
+
+	std::cout << "\nCy-Engine is ready to run.\n\n\n";
 
 
 	return true;
