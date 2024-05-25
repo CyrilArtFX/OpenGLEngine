@@ -28,12 +28,15 @@ void ExpositionScene::loadScene()
 	cube2.addModel(&AssetManager::GetModel("container"));
 	cube3.addModel(&AssetManager::GetModel("container"));
 
+	backpack.addModel(&AssetManager::GetModel("backpack"));
+
 	lightCube1.addModel(&AssetManager::GetModel("light_cube"));
 	lightCube2.addModel(&AssetManager::GetModel("light_cube"));
 
 	registerObject(&cube1);
 	registerObject(&cube2);
 	registerObject(&cube3);
+	registerObject(&backpack);
 	registerObject(&lightCube1);
 	registerObject(&lightCube2);
 
@@ -41,6 +44,8 @@ void ExpositionScene::loadScene()
 	cube1.setRotation(Quaternion{ Vector3::unitY, Maths::toRadians(45.0f) });
 	cube2.setPosition(Vector3{ 2.0f, 1.5f, 2.0f });
 	cube3.setPosition(Vector3{ 2.0f, -1.0f, -1.0f });
+	backpack.setPosition(Vector3{ 2.5f, 1.5f, -1.0f });
+	backpack.setScale(0.002f);
 	lightCube1.setPosition(Vector3{ 1.0f, 2.0f, 1.0f });
 	lightCube1.setScale(0.2f);
 	lightCube2.setPosition(Vector3{ 1.5f, 1.0f, -0.5f });

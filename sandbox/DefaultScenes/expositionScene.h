@@ -33,6 +33,7 @@ private:
 	Object cube1;
 	Object cube2;
 	Object cube3;
+	Object backpack;
 	Object lightCube1;
 	Object lightCube2;
 
