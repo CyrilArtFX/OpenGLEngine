@@ -129,10 +129,19 @@ void Player::update(float dt)
 	Vector2 mouse_delta = Input::GetMouseDelta(); 
 	camera.freecamMouseMovement(mouse_delta.x, mouse_delta.y); 
 
-	Vector3 target_cam_pos = getPosition() + Vector3{ 0.0f, camHeight, 0.0f };
-	float cam_dist_target = Vector3::Distance(camPos, target_cam_pos);
-	float cam_progress = Maths::min(camSpeed * dt / cam_dist_target, 1.0f);
-	camPos = Vector3::lerp(camPos, target_cam_pos, cam_progress);
+	//  camera lag
+	Vector3 target_cam_pos = getPosition() + Vector3{ 0.0f, camHeight, 0.0f }; //  head of the player (where the cam should be)
+	float cam_dist_target = Vector3::Distance(camPos, target_cam_pos); //  distance between the actual cam pos (end of last frame) and target for this frame
+	
+	if (cam_dist_target > camMaxDist) //  if distance is superior to max distance
+	{
+		Vector3 target_to_cam_dir = Vector3::normalize(target_cam_pos - camPos); //  direction from target to actual
+		camPos = target_cam_pos - target_to_cam_dir * camMaxDist; //  force change actual pos so it works with max distance
+		cam_dist_target = camMaxDist; // actualise distance
+	}
+
+	float cam_progress = Maths::min(camSpeed * dt / cam_dist_target, 1.0f); //  compute progress with cam speed and distance
+	camPos = Vector3::lerp(camPos, target_cam_pos, cam_progress); //  lerp cam pos with progress
 	camera.setPosition(camPos);
 
 
