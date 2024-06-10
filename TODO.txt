@@ -19,7 +19,7 @@
 ~ Retour sur la physique : collide and slide (https://www.youtube.com/watch?v=YR6Q7dUz2uk)
 	-> Faire un raycast sweep AABB - fait
 	-> Faire la inversed step mechanic - fait
-	-> Utiliser le raycast sweep AABB pour le collide and slide avec projection d'un vecteur sur une surface
+	-> Utiliser le raycast sweep AABB pour le collide and slide avec projection d'un vecteur sur une surface - en cours
 	-> Regarder si le pb des plateformes mouvantes existe toujours et le fix
 	-> Rajouter des vraies trigger box
 
