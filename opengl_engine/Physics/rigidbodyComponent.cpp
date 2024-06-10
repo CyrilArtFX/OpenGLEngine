@@ -47,8 +47,8 @@ void RigidbodyComponent::updatePhysicsPreCollision(float dt)
 	//  compute gravity in velocity
 	if (useGravity)
 	{
-		if(velocity.y > Physics::Gravity * 2.0f)
-			velocity.y += Physics::Gravity * dt * 2.5f;
+		if(gravityVelocity.y > Physics::Gravity * 2.0f)
+			gravityVelocity.y += Physics::Gravity * dt * 2.5f;
 
 		groundedLastFrame = onGround;
 		onGround = false;
@@ -56,13 +56,16 @@ void RigidbodyComponent::updatePhysicsPreCollision(float dt)
 
 	//  compute anticipated movement
 	movement = (velocity + velocityOneFrame) * dt;
+	gravityMovement = gravityVelocity * dt;
 	velocityOneFrame = Vector3::zero;
 
 	//  if rigidbody has no physic activated, it moves but without checking for collisions to repulse its movement
 	if (!isPhysicsActivated())
 	{
 		associatedCollision->addPosition(movement);
+		associatedCollision->addPosition(gravityMovement);
 		movement = Vector3::zero;
+		gravityMovement = Vector3::zero;
 	}
 }
 
@@ -77,7 +80,7 @@ void RigidbodyComponent::updatePhysicsPostCollision(float dt)
 	if (!isPhysicsActivated()) return;
 
 
-	//  inversed step mechanic
+	//  inversed step mechanic - NEED REWORK WITH GRAVITY MOVEMENT
 	if (getStepHeight() > 0.0f && groundedLastFrame && !isOnGround() && velocity.y < 0.0f)
 	{
 		Box box = associatedCollision->getEncapsulatingBox();
@@ -96,7 +99,9 @@ void RigidbodyComponent::updatePhysicsPostCollision(float dt)
 
 	//  apply real movement (anticipated movement modified by the collisions during physics step)
 	associatedCollision->addPosition(movement);
+	associatedCollision->addPosition(gravityMovement);
 	movement = Vector3::zero;
+	gravityMovement = Vector3::zero;
 }
 
 void RigidbodyComponent::setPhysicsActivated(bool value)
@@ -120,28 +125,20 @@ void RigidbodyComponent::setStepHeight(float value)
 	stepHeight = value;
 }
 
-void RigidbodyComponent::computeRepulsion(const Vector3& repulsion)
+void RigidbodyComponent::applyComputedMovement(const Vector3& computedMovement)
 {
 	if (!isPhysicsActivated()) return;
 
-	//  compute real movement and velocity with repulsion
-	movement += repulsion;
-	
+	movement = computedMovement;
+}
 
-	//  absolutely not sure that it is a really good way to do this, it has no linear repulsion
-	//  it will certainly be reworked later
-	if (!Maths::samesign(velocity.x, repulsion.x) && repulsion.x != 0.0f)
-	{
-		velocity.x = 0.0f;
-	}
-	if (!Maths::samesign(velocity.y, repulsion.y) && repulsion.y != 0.0f)
-	{
-		velocity.y = 0.0f;
-	}
-	if (!Maths::samesign(velocity.z, repulsion.z) && repulsion.z != 0.0f)
-	{
-		velocity.z = 0.0f;
-	}
+void RigidbodyComponent::applyComputedGravityMovement(const Vector3& computedGravityMovement)
+{
+	if (!isPhysicsActivated()) return;
+
+	gravityMovement = computedGravityMovement;
+
+	if (!(gravityMovement == computedGravityMovement)) gravityVelocity = Vector3::zero; //  TEMPORARY
 }
 
 void RigidbodyComponent::setVelocity(const Vector3& value)
@@ -200,7 +197,11 @@ void RigidbodyComponent::onCollisionIntersected(RigidbodyComponent& other)
 
 void RigidbodyComponent::onCollision(const CollisionResponse& collisionResponse)
 {
-	if (collisionResponse.impactNormal == Vector3::negUnitY) onGround = true;
+	if (collisionResponse.impactNormal == Vector3::negUnitY)
+	{
+		onGround = true;
+		gravityVelocity = Vector3::zero;
+	}
 	//  might change that later to allow onGround even on non perfectly flat surfaces using dot product
 	//  not necessary now since there is only AABB currently implemented in this engine
 }

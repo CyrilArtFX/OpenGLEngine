@@ -1,0 +1,83 @@
+#include "collisionTests.h"
+#include <Physics/physics.h>
+#include <Physics/rigidbodyComponent.h>
+#include <Physics/AABB/boxAABBColComp.h>
+#include <Maths/Geometry/box.h>
+
+#include <iostream>
+
+
+
+bool CollisionTests::RigidbodyCollideAndSlideAABB(const RigidbodyComponent& rigidbody, const bool gravityPass, Vector3& computedMovement)
+{
+	const Vector3 body_start_movement = gravityPass ? rigidbody.getAnticipatedGravityMovement() : rigidbody.getAnticipatedMovement();
+	if (body_start_movement == Vector3::zero)
+	{
+		computedMovement = body_start_movement;
+		return false; //  Do not check collisions if no movement
+	}
+
+	Box body_shape = static_cast<const BoxAABBColComp&>(rigidbody.getAssociatedCollision()).getTransformedBox();
+	const Vector3 body_start_pos = body_shape.getCenterPoint();
+	body_shape.setCenterPoint(Vector3::zero);
+	Vector3 computed_pos = Vector3::zero;
+
+	bool col_hit = CollideAndSlideAABB(rigidbody, body_shape, body_start_pos, body_start_movement, 0, gravityPass, computed_pos);
+	computedMovement = computed_pos - body_start_pos;
+	return col_hit;
+}
+
+
+
+
+bool CollisionTests::CollideAndSlideAABB(const RigidbodyComponent& rigidbody, const Box& boxAABB, const Vector3 startPos, const Vector3 movement, const int bounces, const bool gravityPass, Vector3& computedPos)
+{
+	RaycastHitInfos out_raycast;
+	bool col_encountered = Physics::AABBSweepRaycast(startPos, startPos + movement, boxAABB, rigidbody.getTestChannels(), out_raycast, 0.0f, true);
+
+	if (col_encountered) //  collision encountered, continuing recursion
+	{
+		const Vector3 out_location_secure = out_raycast.hitLocation += -movement * rigidbody.SECURITY_DIST;
+
+		if (bounces > rigidbody.MAX_BOUNCES) //  except if max bounces is reached
+		{
+			computedPos = out_location_secure;
+			return true;
+		}
+
+		float remaining_magnitude = movement.length() - out_raycast.hitDistance;
+
+		float col_flatness = Vector3::dot(Vector3::unitY, out_raycast.hitNormal); //  1 = perfectly flat
+		if (col_flatness > 0.5f) //  ground or walkable slope
+		{
+			if (gravityPass) //  doesn't slide if testing for gravity
+			{
+				computedPos = out_location_secure;
+				return true;
+			}
+		}
+		else //  wall or steep slope
+		{
+			float direction_dot = Maths::max(0.0f, 1.0f - Vector3::dot(Vector3::normalize(movement), -out_raycast.hitNormal));
+			remaining_magnitude *= direction_dot;
+		}
+
+		Vector3 remaining_movement = Vector3::projectOnPlane(movement, out_raycast.hitNormal);
+		remaining_movement.setMagnitude(remaining_magnitude);
+
+		if (remaining_movement == Vector3::zero || Maths::nearZero(remaining_magnitude)) //  if the remaining movement projected on plane is null, stop recursion
+		{
+			computedPos = out_location_secure;
+			return true;
+		}
+
+
+		CollideAndSlideAABB(rigidbody, boxAABB, out_location_secure, remaining_movement, bounces + 1, gravityPass, computedPos);
+		return true;
+	}
+	else //  no collision encountered, end of the recursion
+	{
+		computedPos = startPos + movement;
+		return false;
+	}
+}

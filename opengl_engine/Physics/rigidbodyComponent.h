@@ -47,7 +47,9 @@ public:
 	inline float getStepHeight() const { return stepHeight; }
 
 	inline Vector3 getAnticipatedMovement() const { return movement; }
-	void computeRepulsion(const Vector3& repulsion);
+	inline Vector3 getAnticipatedGravityMovement() const { return gravityMovement; }
+	void applyComputedMovement(const Vector3& computedMovement);
+	void applyComputedGravityMovement(const Vector3& computedGravityMovement);
 
 	void setVelocity(const Vector3& value);
 	void addVelocity(const Vector3& value);
@@ -75,6 +77,10 @@ public:
 	Event<> onRigidbodyDelete;
 	Event<const CollisionResponse&> onCollisionRepulsed;
 
+
+	const int MAX_BOUNCES = 5;
+	const float SECURITY_DIST = 0.01f;
+
 private:
 	CollisionComponent* associatedCollision{ nullptr };
 
@@ -86,8 +92,10 @@ private:
 	float stepHeight{ 0.0f };
 
 	Vector3 velocity{ Vector3::zero };
+	Vector3 gravityVelocity{ Vector3::zero };
 	Vector3 velocityOneFrame{ Vector3::zero };
 	Vector3 movement{ Vector3::zero };
+	Vector3 gravityMovement{ Vector3::zero };
 	bool useGravity{ false };
 
 	bool onGround{ false };

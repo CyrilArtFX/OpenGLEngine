@@ -136,6 +136,11 @@ bool CollisionsAABB::CollideBodyBox(const RigidbodyComponent& bodyAABB, Collisio
 		}
 	}
 
+
+	return interpolate;
+
+	///  DISABLE
+
 	//  step (make a moving rigidbody able to step on a collision if it is low enough)
 	//  it is identical for ccd and non ccd since step doesn't use ccd
 	if (interpolate && !(collision_normal == Vector3::unitY && bodyAABB.getUseCCD()) && (body_box.getMinPoint().y + bodyAABB.getStepHeight() > static_box.getMaxPoint().y))
@@ -178,37 +183,6 @@ bool CollisionsAABB::CollideBodies(const RigidbodyComponent& bodyAABBa, const Ri
 		body_a_box.setCenterPoint(body_a_box.getCenterPoint() + bodyAABBa.getAnticipatedMovement());
 		body_b_box.setCenterPoint(body_b_box.getCenterPoint() + bodyAABBb.getAnticipatedMovement());
 		interpolate = BoxesIntersection(body_a_box, body_b_box);
-
-		/*
-		* WIP of computing repulsion for physic activated rigidbodies without ccd
-		* Deactivated since I choosed to not include that in my physics engine for the moment
-		* 
-		* For information (for later me), it had a strange behavior when doing a [player/movable-crate] repulsion where the player would glitch in the crate and move back and forth
-		* Also it doesn't compute if the applied repulsion could put one of the body in another collision
-		* 
-		if (interpolate)
-		{
-			//  compute repulsion
-			Box minkowski_diff = Box::MinkowskiDifference(body_b_box, body_a_box);
-			Vector3 repulsion = minkowski_diff.getPointOnPerimeter(Vector3::zero);
-
-			float total_weights = bodyAABBa.getWeight() + bodyAABBb.getWeight();
-
-			Vector3 repulsion_a = repulsion * (bodyAABBb.getWeight() / total_weights);
-			Vector3 repulsion_b = -repulsion * (bodyAABBa.getWeight() / total_weights);
-
-			//  compute hit location
-			Vector3 hit_location = body_a_box.getCenterPoint() + bodyAABBa.getAnticipatedMovement() - repulsion_a + body_a_box.getHalfExtents() * Vector3::normalize(-repulsion_a);
-
-			//  set out body response;
-			outBodyAResponse.repulsion = repulsion_a;
-			outBodyAResponse.impactPoint = body_a_box.getPointOnPerimeter(hit_location);
-			outBodyAResponse.impactNormal = body_a_box_aabb.getNormal(outBodyAResponse.impactPoint);
-			outBodyBResponse.repulsion = repulsion_b;
-			outBodyBResponse.impactPoint = body_b_box.getPointOnPerimeter(hit_location);
-			outBodyBResponse.impactNormal = body_b_box_aabb.getNormal(outBodyBResponse.impactPoint);
-		}
-		*/
 	}
 	else //  ccd
 	{

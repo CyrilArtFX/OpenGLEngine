@@ -196,6 +196,13 @@ public:
 		};
 	}
 
+	// Project a vector onto a plane defined by its normal (plane normal must be normalized)
+	static Vector3 projectOnPlane(const Vector3& vec, const Vector3& planeNormal)
+	{
+		float dot = Vector3::dot(vec, planeNormal);
+		return vec - planeNormal * dot;
+	}
+
 	// Lerp from A to B by f
 	static Vector3 lerp(const Vector3& a, const Vector3& b, float f)
 	{

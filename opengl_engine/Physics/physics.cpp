@@ -3,6 +3,7 @@
 #include "raycastLine.h"
 #include "AABB/raycastAABB.h"
 #include "AABB/raycastAABBSweep.h"
+#include "collisionTests.h"
 
 #include "ObjectChannels/collisionChannels.h"
 
@@ -331,7 +332,7 @@ void Physics::UpdatePhysics(float dt)
 	for (auto& rigidbody : rigidbodiesComponents)
 	{
 		rigidbody->resetIntersected();
-		rigidbody->updatePhysicsPreCollision(dt); //  also compute the anticipated movements for physics activated rigidbodies, and apply the movement for non-physics activated ones
+		rigidbody->updatePhysicsPreCollision(dt); //  compute the anticipated movements for physics activated rigidbodies, and apply the movement for non-physics activated ones
 	}
 
 	//  delete raycasts that have run out of time
@@ -355,8 +356,48 @@ void Physics::UpdatePhysics(float dt)
 	{
 		RigidbodyComponent& rigidbody = *rigidbodiesComponents[i];
 		if (!rigidbody.isAssociatedCollisionValid()) continue;
-		bool rigidbody_physics = rigidbody.isPhysicsActivated();
 
+		if (rigidbody.isPhysicsActivated())
+		{
+			//  compute body movement with collisions
+			Vector3 body_movement = Vector3::zero;
+			bool hit = CollisionTests::RigidbodyCollideAndSlideAABB(rigidbody, false, body_movement);
+			if (hit)
+			{
+				rigidbody.getAssociatedCollision().forceIntersected();
+			}
+			rigidbody.applyComputedMovement(body_movement);
+
+			//  compute body gravity movement with collisions
+			Vector3 gravity_movement = Vector3::zero;
+			hit = CollisionTests::RigidbodyCollideAndSlideAABB(rigidbody, true, gravity_movement);
+			if (hit)
+			{
+				rigidbody.getAssociatedCollision().forceIntersected();
+			}
+			rigidbody.applyComputedGravityMovement(gravity_movement);
+
+			//  check body intersection with other physic activated bodies
+			for (int j = i; j < rigidbodiesComponents.size(); j++)
+			{
+				RigidbodyComponent& other_body = *rigidbodiesComponents[j];
+				if (!other_body.isAssociatedCollisionValid()) continue;
+				if (!other_body.isPhysicsActivated()) continue;
+
+				hit = rigidbody.getAssociatedCollision().resolveRigidbodySelf(other_body, rigidbody);
+				if (hit)
+				{
+					rigidbody.getAssociatedCollision().forceIntersected();
+					other_body.getAssociatedCollision().forceIntersected();
+					rigidbody.getAssociatedCollisionNonConst().onCollisionIntersect.broadcast(other_body);
+					other_body.getAssociatedCollisionNonConst().onCollisionIntersect.broadcast(rigidbody);
+				}
+			}
+		}
+
+
+
+		/*
 		//  test rigidbody / collisions
 		for (int j = 0; j < collisionsComponents.size(); j++)
 		{
@@ -435,7 +476,13 @@ void Physics::UpdatePhysics(float dt)
 			}
 		}
 
-		rigidbody.updatePhysicsPostCollision(dt); //  apply rigidbody real movement
+		rigidbody.updatePhysicsPostCollision(dt); //  apply rigidbody real movement*/
+	}
+
+
+	for (auto& rigidbody : rigidbodiesComponents)
+	{
+		rigidbody->updatePhysicsPostCollision(dt); // apply rigidbody movement for physic activated ones
 	}
 }
 
