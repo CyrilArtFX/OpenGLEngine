@@ -52,7 +52,6 @@ void Player::setup(float height, float speed, float jump, float stepHeight, Rend
 void Player::update(float dt)
 {
 	//  move player
-	Vector3 velocity = rigidbody->getVelocity();
 	Vector3 velocity_xz = Vector3::zero;
 
 	if (Input::IsKeyDown(GLFW_KEY_W))
@@ -67,22 +66,18 @@ void Player::update(float dt)
 	if (Input::IsKeyDown(GLFW_KEY_D))
 		velocity_xz -= camera.getRight() * moveSpeed;
 
-
 	//  clamp the velocity to max movement speed
 	velocity_xz.clampMagnitude(moveSpeed);
-	velocity.x = velocity_xz.x;
-	velocity.z = velocity_xz.z;
+
+	//  apply velocity to rigidbody
+	rigidbody->setVelocity(velocity_xz);
 
 
 	//  jump
 	if (Input::IsKeyPressed(GLFW_KEY_SPACE) && rigidbody->isOnGround())
 	{
-		velocity += Vector3::unitY * jumpForce;
+		rigidbody->addGravityVelocity(Vector3::unitY * jumpForce);
 	}
-
-
-	//  apply velocity to rigidbody
-	rigidbody->setVelocity(velocity);
 
 
 	//  shoot

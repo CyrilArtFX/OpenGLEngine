@@ -8,7 +8,7 @@
 
 
 
-bool CollisionTests::RigidbodyCollideAndSlideAABB(const RigidbodyComponent& rigidbody, const bool gravityPass, Vector3& computedMovement)
+bool CollisionTests::RigidbodyCollideAndSlideAABB(const RigidbodyComponent& rigidbody, const bool gravityPass, Vector3& computedMovement, std::vector<CollisionHit>& colResponses)
 {
 	const Vector3 body_start_movement = gravityPass ? rigidbody.getAnticipatedGravityMovement() : rigidbody.getAnticipatedMovement();
 	if (body_start_movement == Vector3::zero)
@@ -20,9 +20,10 @@ bool CollisionTests::RigidbodyCollideAndSlideAABB(const RigidbodyComponent& rigi
 	Box body_shape = static_cast<const BoxAABBColComp&>(rigidbody.getAssociatedCollision()).getTransformedBox();
 	const Vector3 body_start_pos = body_shape.getCenterPoint();
 	body_shape.setCenterPoint(Vector3::zero);
+
 	Vector3 computed_pos = Vector3::zero;
 
-	bool col_hit = CollideAndSlideAABB(rigidbody, body_shape, body_start_pos, body_start_movement, 0, gravityPass, computed_pos);
+	bool col_hit = CollideAndSlideAABB(rigidbody, body_shape, body_start_pos, body_start_movement, 0, gravityPass, computed_pos, colResponses);
 	computedMovement = computed_pos - body_start_pos;
 	return col_hit;
 }
@@ -30,16 +31,35 @@ bool CollisionTests::RigidbodyCollideAndSlideAABB(const RigidbodyComponent& rigi
 
 
 
-bool CollisionTests::CollideAndSlideAABB(const RigidbodyComponent& rigidbody, const Box& boxAABB, const Vector3 startPos, const Vector3 movement, const int bounces, const bool gravityPass, Vector3& computedPos)
+bool CollisionTests::CollideAndSlideAABB(const RigidbodyComponent& rigidbody, const Box& boxAABB, const Vector3 startPos, const Vector3 movement, const int bounces, const bool gravityPass, Vector3& computedPos, std::vector<CollisionHit>& colResponses)
 {
 	RaycastHitInfos out_raycast;
 	bool col_encountered = Physics::AABBSweepRaycast(startPos, startPos + movement, boxAABB, rigidbody.getTestChannels(), out_raycast, 0.0f, true);
 
 	if (col_encountered) //  collision encountered, continuing recursion
 	{
-		const Vector3 out_location_secure = out_raycast.hitLocation += -movement * rigidbody.SECURITY_DIST;
+		float step_mechanic = 0.0f;
+		if (rigidbody.checkStepMechanic(*out_raycast.hitCollision, startPos + movement, out_raycast.hitNormal, step_mechanic))
+		{
+			computedPos = startPos + movement + Vector3{ 0.0f, step_mechanic, 0.0f };
 
-		if (bounces > rigidbody.MAX_BOUNCES) //  except if max bounces is reached
+			colResponses.push_back(CollisionHit{
+				*out_raycast.hitCollision,
+				computedPos + Vector3::negUnitY * boxAABB.getHalfExtents(),
+				Vector3::unitY
+				});
+
+			return true;
+		}
+
+		colResponses.push_back(CollisionHit{ 
+			*out_raycast.hitCollision, 
+			out_raycast.hitLocation + (-out_raycast.hitNormal * boxAABB.getHalfExtents()), 
+			out_raycast.hitNormal});
+
+		const Vector3 out_location_secure = out_raycast.hitLocation += -movement * Rigidbody::SECURITY_DIST;
+
+		if (bounces > Rigidbody::MAX_BOUNCES) //  except if max bounces is reached
 		{
 			computedPos = out_location_secure;
 			return true;
@@ -72,7 +92,7 @@ bool CollisionTests::CollideAndSlideAABB(const RigidbodyComponent& rigidbody, co
 		}
 
 
-		CollideAndSlideAABB(rigidbody, boxAABB, out_location_secure, remaining_movement, bounces + 1, gravityPass, computedPos);
+		CollideAndSlideAABB(rigidbody, boxAABB, out_location_secure, remaining_movement, bounces + 1, gravityPass, computedPos, colResponses);
 		return true;
 	}
 	else //  no collision encountered, end of the recursion

@@ -33,6 +33,8 @@ public:
 
 	std::string toString() const;
 
+	bool containsPoint(const Vector3 point) const;
+
 
 	static std::string ToString(const Box& box);
 	static Box MinkowskiDifference(const Box& boxA, const Box& boxB);

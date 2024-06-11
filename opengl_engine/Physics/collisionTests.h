@@ -1,8 +1,17 @@
 #pragma once
 #include <Maths/Vector3.h>
+#include <vector>
 
 class RigidbodyComponent;
+class CollisionComponent;
 class Box;
+
+struct CollisionHit
+{
+	const CollisionComponent& collisionComponent;
+	const Vector3 impactPoint;
+	const Vector3 impactNormal;
+};
 
 /**
 * Static functions that will test collisions for rigidbodies.
@@ -17,9 +26,10 @@ public:
 	* @param	rigidbody			Rigidbody to compute.
 	* @param	gravityPass			Are we computing gravity?
 	* @param	computedMovement	Movement to apply to the rigidbody. [OUT]
+	* @param	colResponses		List of all collisions hit. [OUT]
 	* @return						True if the rigidbody encountered at least one collision.
 	*/
-	static bool RigidbodyCollideAndSlideAABB(const RigidbodyComponent& rigidbody, const bool gravityPass, Vector3& computedMovement);
+	static bool RigidbodyCollideAndSlideAABB(const RigidbodyComponent& rigidbody, const bool gravityPass, Vector3& computedMovement, std::vector<CollisionHit>& colResponses);
 
 
 private:
@@ -33,8 +43,9 @@ private:
 	* @param	bounces				Iteration number.
 	* @param	gravityPass			Are we computing gravity?
 	* @param	computedPos			End of the raycast for this iteration. [OUT]
+	* @param	colResponses		List of all collisions hit. [OUT/PASSTHROUGH]
 	* @return						True if this iteration's raycast encountered a collision.
 	*/
-	static bool CollideAndSlideAABB(const RigidbodyComponent& rigidbody, const Box& boxAABB, const Vector3 startPos, const Vector3 movement, const int bounces, const bool gravityPass, Vector3& computedPos);
+	static bool CollideAndSlideAABB(const RigidbodyComponent& rigidbody, const Box& boxAABB, const Vector3 startPos, const Vector3 movement, const int bounces, const bool gravityPass, Vector3& computedPos, std::vector<CollisionHit>& colResponses);
 };
 

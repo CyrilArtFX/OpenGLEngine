@@ -226,6 +226,17 @@ std::string Box::toString() const
 	return Box::ToString(*this);
 }
 
+bool Box::containsPoint(const Vector3 point) const
+{
+	Vector3 min = getMinPoint();
+	Vector3 max = getMaxPoint();
+
+	return
+		point.x >= min.x && point.x <= max.x &&
+		point.y >= min.y && point.y <= max.y &&
+		point.z >= min.z && point.z <= max.z;
+}
+
 std::string Box::ToString(const Box& box)
 {
 	return "Center: " + box.center.toString() + " | Half Extents: " + box.halfExtents.toString();

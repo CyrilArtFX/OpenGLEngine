@@ -47,8 +47,9 @@ void RigidbodyComponent::updatePhysicsPreCollision(float dt)
 	//  compute gravity in velocity
 	if (useGravity)
 	{
-		if(gravityVelocity.y > Physics::Gravity * 2.0f)
+		if (gravityVelocity.y > Physics::Gravity * 2.0f)
 			gravityVelocity.y += Physics::Gravity * dt * 2.5f;
+
 
 		groundedLastFrame = onGround;
 		onGround = false;
@@ -80,18 +81,18 @@ void RigidbodyComponent::updatePhysicsPostCollision(float dt)
 	if (!isPhysicsActivated()) return;
 
 
-	//  inversed step mechanic - NEED REWORK WITH GRAVITY MOVEMENT
-	if (getStepHeight() > 0.0f && groundedLastFrame && !isOnGround() && velocity.y < 0.0f)
+	//  inversed step mechanic
+	if (getStepHeight() > 0.0f && groundedLastFrame && !isOnGround() && gravityMovement.y < 0.0f)
 	{
 		Box box = associatedCollision->getEncapsulatingBox();
 		RaycastHitInfos out;
 
-		bool hit = Physics::AABBSweepRaycast(box.getCenterPoint(), box.getCenterPoint() + Vector3{0.0f, -stepHeight, 0.0f}, box, {"solid"}, out, 0.0f);
+		bool hit = Physics::AABBSweepRaycast(box.getCenterPoint() + gravityMovement, box.getCenterPoint() + Vector3{0.0f, -stepHeight, 0.0f}, box, {"solid"}, out, 0.0f);
 		if (hit)
 		{
 			if (out.hitNormal == Vector3::unitY)
 			{
-				movement += Vector3{ 0.0f, -out.hitDistance, 0.0f };
+				gravityMovement += Vector3{ 0.0f, -(out.hitDistance - Rigidbody::SECURITY_DIST), 0.0f };
 			}
 		}
 	}
@@ -137,8 +138,32 @@ void RigidbodyComponent::applyComputedGravityMovement(const Vector3& computedGra
 	if (!isPhysicsActivated()) return;
 
 	gravityMovement = computedGravityMovement;
+}
 
-	if (!(gravityMovement == computedGravityMovement)) gravityVelocity = Vector3::zero; //  TEMPORARY
+bool RigidbodyComponent::checkStepMechanic(const CollisionComponent& collidedComp, const Vector3 aimedDestination, const Vector3 hitNormal, float& stepMovement) const
+{
+	if (stepHeight <= 0.0f)
+		return false; //  continue only if this rigidbody use step mechanic
+
+	if (!Maths::abs(Vector3::dot(Vector3::unitY, hitNormal)) < 0.5f)
+		return false; //  continue only if collided with a wall
+	
+	Box body_box = associatedCollision->getEncapsulatingBox();
+	body_box.setCenterPoint(aimedDestination);
+	if (!collidedComp.resolveAABBRaycast(body_box, getTestChannels()))
+		return false; //  continue only if body intersect with collided at aimed destination
+
+	Box collided_box = collidedComp.getEncapsulatingBox();
+	stepMovement = collided_box.getMaxPoint().y - body_box.getMinPoint().y + Rigidbody::SECURITY_DIST; //  compute needed step movement
+
+	if (stepMovement > stepHeight)
+		return false; //  continue only if needed step movement is lower than this rigidbody step height
+
+	body_box.setCenterPoint(aimedDestination + Vector3{0.0f, stepMovement, 0.0f});
+	if(Physics::AABBRaycast(Vector3::zero, body_box, getTestChannels(), 0.0f, true))
+		return false; //  continue only if step destination is free
+
+	return true;
 }
 
 void RigidbodyComponent::setVelocity(const Vector3& value)
@@ -154,6 +179,21 @@ void RigidbodyComponent::addVelocity(const Vector3& value)
 Vector3 RigidbodyComponent::getVelocity() const 
 { 
 	return velocity;
+}
+
+void RigidbodyComponent::setGravityVelocity(const Vector3& value)
+{
+	gravityVelocity = value;
+}
+
+void RigidbodyComponent::addGravityVelocity(const Vector3& value)
+{
+	gravityVelocity += value;
+}
+
+Vector3 RigidbodyComponent::getGravityVelocity() const
+{
+	return gravityVelocity;
 }
 
 void RigidbodyComponent::addVelocityOneFrame(const Vector3& value)
@@ -197,7 +237,7 @@ void RigidbodyComponent::onCollisionIntersected(RigidbodyComponent& other)
 
 void RigidbodyComponent::onCollision(const CollisionResponse& collisionResponse)
 {
-	if (collisionResponse.impactNormal == Vector3::negUnitY)
+	if (collisionResponse.impactNormal == Vector3::unitY)
 	{
 		onGround = true;
 		gravityVelocity = Vector3::zero;

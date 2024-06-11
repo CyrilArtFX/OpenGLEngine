@@ -361,19 +361,37 @@ void Physics::UpdatePhysics(float dt)
 		{
 			//  compute body movement with collisions
 			Vector3 body_movement = Vector3::zero;
-			bool hit = CollisionTests::RigidbodyCollideAndSlideAABB(rigidbody, false, body_movement);
+			std::vector<CollisionHit> col_responses;
+			bool hit = CollisionTests::RigidbodyCollideAndSlideAABB(rigidbody, false, body_movement, col_responses);
 			if (hit)
 			{
 				rigidbody.getAssociatedCollision().forceIntersected();
+				for (int k = 0; k < col_responses.size(); k++)
+				{
+					col_responses[k].collisionComponent.onCollisionIntersect.broadcast(rigidbody);
+					col_responses[k].collisionComponent.forceIntersected();
+
+					if (k != 0) continue;
+					rigidbody.onCollisionRepulsed.broadcast(CollisionResponse{ col_responses[k].impactPoint, col_responses[k].impactNormal });
+				}
 			}
 			rigidbody.applyComputedMovement(body_movement);
 
 			//  compute body gravity movement with collisions
 			Vector3 gravity_movement = Vector3::zero;
-			hit = CollisionTests::RigidbodyCollideAndSlideAABB(rigidbody, true, gravity_movement);
+			col_responses.clear();
+			hit = CollisionTests::RigidbodyCollideAndSlideAABB(rigidbody, true, gravity_movement, col_responses);
 			if (hit)
 			{
 				rigidbody.getAssociatedCollision().forceIntersected();
+				for (int k = 0; k < col_responses.size(); k++)
+				{
+					col_responses[k].collisionComponent.onCollisionIntersect.broadcast(rigidbody);
+					col_responses[k].collisionComponent.forceIntersected();
+
+					if (k != 0) continue;
+					rigidbody.onCollisionRepulsed.broadcast(CollisionResponse{ col_responses[k].impactPoint, col_responses[k].impactNormal });
+				}
 			}
 			rigidbody.applyComputedGravityMovement(gravity_movement);
 

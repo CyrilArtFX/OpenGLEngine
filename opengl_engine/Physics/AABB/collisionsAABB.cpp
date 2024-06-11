@@ -97,7 +97,6 @@ bool CollisionsAABB::CollideBodyBox(const RigidbodyComponent& bodyAABB, Collisio
 			Vector3 hit_location = body_box_movement.getCenterPoint() + bodyAABB.getAnticipatedMovement() - repulsion + body_box_movement.getHalfExtents() * Vector3::normalize(-repulsion);
 
 			//  set out body response;
-			outBodyResponse.repulsion = repulsion;
 			outBodyResponse.impactPoint = body_box.getPointOnPerimeter(hit_location);
 			outBodyResponse.impactNormal = body_box_aabb.getNormal(outBodyResponse.impactPoint);
 
@@ -130,7 +129,6 @@ bool CollisionsAABB::CollideBodyBox(const RigidbodyComponent& bodyAABB, Collisio
 			if (!Maths::samesign(collision_normal.z, repulsion.z)) repulsion.z = 0.0f;
 
 			//  set out body response;
-			outBodyResponse.repulsion = repulsion;
 			outBodyResponse.impactPoint = body_box.getPointOnPerimeter(hit_location);
 			outBodyResponse.impactNormal = body_box_aabb.getNormal(outBodyResponse.impactPoint);
 		}
@@ -158,7 +156,6 @@ bool CollisionsAABB::CollideBodyBox(const RigidbodyComponent& bodyAABB, Collisio
 
 			const Vector3 body_pos_next_frame = body_box.getCenterPoint() + bodyAABB.getAnticipatedMovement();
 
-			outBodyResponse.repulsion = Vector3{ 0.0f, y_difference, 0.0f };
 			outBodyResponse.impactPoint = body_box.getPointOnPerimeter(body_pos_next_frame + Vector3{ 0.0f, y_difference - body_box.getHalfExtents().y, 0.0f });
 			outBodyResponse.impactNormal = body_box_aabb.getNormal(outBodyResponse.impactPoint);
 		}

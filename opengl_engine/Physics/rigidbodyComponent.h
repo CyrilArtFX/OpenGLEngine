@@ -5,9 +5,15 @@
 #include <Events/observer.h>
 
 
+namespace Rigidbody
+{
+	const int MAX_BOUNCES = 5;
+	const float SECURITY_DIST = 0.01f;
+}
+
+
 struct CollisionResponse
 {
-	Vector3 repulsion{ Vector3::zero };
 	Vector3 impactPoint{ Vector3::zero };
 	Vector3 impactNormal{ Vector3::zero };
 };
@@ -51,9 +57,15 @@ public:
 	void applyComputedMovement(const Vector3& computedMovement);
 	void applyComputedGravityMovement(const Vector3& computedGravityMovement);
 
+	bool checkStepMechanic(const CollisionComponent& collidedComp, const Vector3 aimedDestination, const Vector3 hitNormal, float& stepMovement) const;
+
 	void setVelocity(const Vector3& value);
 	void addVelocity(const Vector3& value);
 	Vector3 getVelocity() const;
+
+	void setGravityVelocity(const Vector3& value);
+	void addGravityVelocity(const Vector3& value);
+	Vector3 getGravityVelocity() const;
 
 	void addVelocityOneFrame(const Vector3& value);
 
@@ -78,8 +90,6 @@ public:
 	Event<const CollisionResponse&> onCollisionRepulsed;
 
 
-	const int MAX_BOUNCES = 5;
-	const float SECURITY_DIST = 0.01f;
 
 private:
 	CollisionComponent* associatedCollision{ nullptr };

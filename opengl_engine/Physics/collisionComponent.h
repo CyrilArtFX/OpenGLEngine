@@ -70,7 +70,7 @@ public:
 	
 	Event<> onCollisionDelete;
 	mutable Event<RaycastType, const Vector3&> onRaycastIntersect;
-	Event<RigidbodyComponent&> onCollisionIntersect;
+	mutable Event<RigidbodyComponent&> onCollisionIntersect;
 
 
 
