@@ -36,9 +36,6 @@ protected:
 	bool resolveLineRaycastIntersection(const Ray& raycast, RaycastHitInfos& outHitInfos) const override;
 	bool resolveAABBRaycastIntersection(const Box& raycast) const override;
 	bool resolveAABBSweepRaycastIntersection(const Ray& raycast, const Box& boxRaycast, RaycastHitInfos& outHitInfos) const override;
-	bool resolveCollisionIntersection(const CollisionComponent& otherCol) const override;
-	bool resolveRigidbodyIntersection(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse) const override;
-	bool resolveRigidbodySelfIntersection(const RigidbodyComponent& rigidbody, const RigidbodyComponent& selfRigidbody) const override;
 
 	void drawDebugMesh(Material& debugMaterial) const override;
 

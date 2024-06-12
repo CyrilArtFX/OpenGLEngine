@@ -20,7 +20,7 @@
 	-> Faire un raycast sweep AABB - fait
 	-> Faire la inversed step mechanic - fait
 	-> Utiliser le raycast sweep AABB pour le collide and slide avec projection d'un vecteur sur une surface - fait
-	-> Nettoyer l'ancien système
+	-> Nettoyer l'ancien système - fait
 	-> Fix les problèmes des plateformes mouvantes (bug du raycast quand commence dans la collision ?)
 	-> Rajouter des vraies trigger box (le collide and slide fait une collision avec les physic activated bodies)
 

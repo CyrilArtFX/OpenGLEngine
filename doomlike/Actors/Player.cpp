@@ -16,7 +16,7 @@
 
 
 Player::Player() :
-	rigidbody(&Physics::CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box::one, this, true, "player", false), true, false)))
+	rigidbody(&Physics::CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box::one, this, true, "player", false), false)))
 {
 	rigidbody->onRigidbodyDelete.registerObserver(this, Bind_0(&Player::onRigidbodyDeleted));
 	rigidbody->onCollisionRepulsed.registerObserver(this, Bind_1(&Player::onCollision));
@@ -193,6 +193,9 @@ void Player::unload()
 void Player::respawn(PlayerSpawnPoint& spawnPoint)
 {
 	unload();
+
+	rigidbody->setVelocity(Vector3::zero);
+	rigidbody->setGravityVelocity(Vector3::zero);
 
 	setPosition(spawnPoint.spawnPosition);
 	//setRotation(spawnPoint.spawnRotation);

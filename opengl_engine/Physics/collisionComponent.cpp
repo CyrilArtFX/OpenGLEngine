@@ -53,36 +53,6 @@ bool CollisionComponent::resolveAABBSweepRaycast(const Ray& raycast, const Box& 
 	return intersect;
 }
 
-bool CollisionComponent::resolveCollision(const CollisionComponent& otherCol, const std::vector<std::string> testChannels) const
-{
-	if (!channelTest(testChannels)) return false;
-
-	bool intersect = resolveCollisionIntersection(otherCol);
-	//  it's up to the physics manager to set the intersected last frame (for both collisions)
-	//  the physics manager also broadcast the onCollisionIntersect event (for both collisions)
-	return intersect;
-}
-
-bool CollisionComponent::resolveRigidbody(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse) const
-{
-	if (!channelTest(rigidbody.getTestChannels())) return false;
-
-	bool intersect = resolveRigidbodyIntersection(rigidbody, outResponse);
-	//  it's up to the physics manager to set the intersected last frame (for both collisions)
-	//  the physics manager also broadcast the onCollisionIntersect event (for both collisions)
-	return intersect;
-}
-
-bool CollisionComponent::resolveRigidbodySelf(const RigidbodyComponent& rigidbody, const RigidbodyComponent& selfRigidbody) const
-{
-	if (!channelTest(rigidbody.getTestChannels()) || !rigidbody.getAssociatedCollision().channelTest(selfRigidbody.getTestChannels())) return false;
-
-	bool intersect = resolveRigidbodySelfIntersection(rigidbody, selfRigidbody);
-	//  it's up to the physics manager to set the intersected last frame (for both collisions)
-	//  the physics manager also broadcast the onCollisionIntersect event (for both collisions)
-	return intersect;
-}
-
 void CollisionComponent::drawDebug(Material& debugMaterial) const
 {
 	debugMaterial.getShader().setVec3("color", intersectedLastFrame ? Color::red : Color::green);
@@ -117,9 +87,20 @@ void CollisionComponent::setCollisionChannel(std::string newCollisionChannel)
 	collisionChannel = newCollisionChannel;
 }
 
+bool CollisionComponent::usedByRigidbody() const
+{
+	return owningBody != nullptr;
+}
+
+RigidbodyComponent* CollisionComponent::getOwningRigidbody() const
+{
+	return owningBody;
+}
+
 CollisionComponent::CollisionComponent(CollisionType collisionType_, Object* associatedObject_, Mesh* debugMesh_, bool loadPersistent_, std::string collisionChannel_) :
 	PhysicEntity(loadPersistent_),
-	collisionType(collisionType_), associatedObject(associatedObject_), debugMesh(debugMesh_), collisionChannel(collisionChannel_)
+	collisionType(collisionType_), associatedObject(associatedObject_), debugMesh(debugMesh_), collisionChannel(collisionChannel_),
+	owningBody(nullptr)
 {
 }
 
@@ -135,4 +116,9 @@ bool CollisionComponent::channelTest(const std::vector<std::string> testChannels
 	}
 
 	return false;
+}
+
+void CollisionComponent::setRigidbody(RigidbodyComponent* rigidbody)
+{
+	owningBody = rigidbody;
 }

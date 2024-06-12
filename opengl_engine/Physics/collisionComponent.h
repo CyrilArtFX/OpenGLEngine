@@ -13,7 +13,6 @@
 
 class Material;
 class RigidbodyComponent;
-struct CollisionResponse;
 
 
 enum class CollisionType : uint8_t
@@ -40,9 +39,6 @@ public:
 	bool resolveLineRaycast(const Ray& raycast, RaycastHitInfos& outHitInfos, const std::vector<std::string> testChannels) const;
 	bool resolveAABBRaycast(const Box& raycast, const std::vector<std::string> testChannels) const;
 	bool resolveAABBSweepRaycast(const Ray& raycast, const Box& boxRaycast, RaycastHitInfos& outHitInfos, const std::vector<std::string> testChannels) const;
-	bool resolveCollision(const CollisionComponent& otherCol, const std::vector<std::string> testChannels) const;
-	bool resolveRigidbody(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse) const;
-	bool resolveRigidbodySelf(const RigidbodyComponent& rigidbody, const RigidbodyComponent& selfRigidbody) const; //  doesn't have response since body/body doesn't compute repulsion (yet (lol...) )
 
 	void drawDebug(Material& debugMaterial) const;
 
@@ -61,6 +57,10 @@ public:
 
 	void setCollisionChannel(std::string newCollisionChannel);
 	std::string getCollisionChannel() const { return collisionChannel; }
+
+	bool usedByRigidbody() const;
+	RigidbodyComponent* getOwningRigidbody() const;
+
 
 
 	//  for physics manager
@@ -84,9 +84,6 @@ protected:
 	virtual bool resolveLineRaycastIntersection(const Ray& raycast, RaycastHitInfos& outHitInfos) const = 0;
 	virtual bool resolveAABBRaycastIntersection(const Box& raycast) const = 0;
 	virtual bool resolveAABBSweepRaycastIntersection(const Ray& raycast, const Box& boxRaycast, RaycastHitInfos& outHitInfos) const = 0;
-	virtual bool resolveCollisionIntersection(const CollisionComponent& otherCol) const = 0;
-	virtual bool resolveRigidbodyIntersection(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse) const = 0;
-	virtual bool resolveRigidbodySelfIntersection(const RigidbodyComponent& rigidbody, const RigidbodyComponent& selfRigidbody) const = 0;
 
 	virtual void drawDebugMesh(Material& debugMaterial) const = 0;
 
@@ -102,4 +99,9 @@ private:
 	mutable bool intersectedLastFrame{ false };
 
 	std::string collisionChannel{ "" };
+
+	friend class RigidbodyComponent;
+
+	void setRigidbody(RigidbodyComponent* rigidbody);
+	RigidbodyComponent* owningBody;
 };

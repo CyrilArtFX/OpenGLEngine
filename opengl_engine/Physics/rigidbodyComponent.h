@@ -22,15 +22,11 @@ struct CollisionResponse
 /** Rigidbody Component
 * Will tests other colliders and react with physics if it is activated.
 * If physics is not activated, will act as a static collision (even if it moves with velocity).
-* CCD works with the rigidbody velocity and won't have effect if physics is not activated.
-* Step mechanic only works with static collisions (or with rigidbodies with physics not activated that act as statif collisions).
-* Collisions between physics activated rigidbodies are not implemented. They will call the onCollision event, but won't compute repulsion.
-* Rigidbody weight cannot be inferior or equal to 0 (and weight currently has no effect as bodies collisions doesn't work).
 */
 class RigidbodyComponent : public PhysicEntity, public Observer
 {
 public:
-	RigidbodyComponent(CollisionComponent* collisionToAssociate, bool useCCD, bool activatePhysics);
+	RigidbodyComponent(CollisionComponent* collisionToAssociate, bool activatePhysics);
 	~RigidbodyComponent();
 
 	void associateCollision(CollisionComponent* collisionToAssociate);
@@ -42,9 +38,6 @@ public:
 
 	void setPhysicsActivated(bool value);
 	inline bool isPhysicsActivated() const { return physicsActivated && associatedCollision; }
-
-	void setWeigth(float value);
-	inline float getWeight() const { return weight; }
 
 	void setUseGravity(bool value);
 	inline bool getUseGravity() const { return useGravity; }
@@ -73,9 +66,6 @@ public:
 
 	inline bool isOnGround() const { return onGround && getUseGravity(); }
 
-	void setUseCCD(bool value);
-	inline bool getUseCCD() const { return ccd; }
-
 	void setTestChannels(std::vector<std::string> newTestChannels);
 	void addTestChannel(std::string newTestChannel);
 	std::vector<std::string> getTestChannels() const;
@@ -95,9 +85,6 @@ private:
 	CollisionComponent* associatedCollision{ nullptr };
 
 	bool physicsActivated{ false };
-	float weight{ 1.0f };
-
-	bool ccd{ false };
 
 	float stepHeight{ 0.0f };
 

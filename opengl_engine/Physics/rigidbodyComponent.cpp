@@ -3,9 +3,8 @@
 #include "ObjectChannels/collisionChannels.h"
 #include <iostream>
 
-RigidbodyComponent::RigidbodyComponent(CollisionComponent* collisionToAssociate, bool useCCD, bool activatePhysics) :
-	PhysicEntity(collisionToAssociate->loadedPersistent),
-	ccd(useCCD), physicsActivated(activatePhysics), useGravity(activatePhysics)
+RigidbodyComponent::RigidbodyComponent(CollisionComponent* collisionToAssociate, bool activatePhysics) :
+	PhysicEntity(collisionToAssociate->loadedPersistent), physicsActivated(activatePhysics), useGravity(activatePhysics)
 {
 	associateCollision(collisionToAssociate);
 
@@ -35,6 +34,8 @@ void RigidbodyComponent::associateCollision(CollisionComponent* collisionToAssoc
 	if (associatedCollision)
 	{
 		//  do initialization things with the newly associated collision
+		associatedCollision->setRigidbody(this);
+
 		associatedCollision->onCollisionIntersect.registerObserver(this, Bind_1(&RigidbodyComponent::onCollisionIntersected));
 	}
 }
@@ -108,12 +109,6 @@ void RigidbodyComponent::updatePhysicsPostCollision(float dt)
 void RigidbodyComponent::setPhysicsActivated(bool value)
 {
 	physicsActivated = value;
-}
-
-void RigidbodyComponent::setWeigth(float value)
-{
-	if (weight <= 0.0f) return;
-	weight = value;
 }
 
 void RigidbodyComponent::setUseGravity(bool value)
@@ -199,11 +194,6 @@ Vector3 RigidbodyComponent::getGravityVelocity() const
 void RigidbodyComponent::addVelocityOneFrame(const Vector3& value)
 {
 	velocityOneFrame += value;
-}
-
-void RigidbodyComponent::setUseCCD(bool value)
-{
-	ccd = value;
 }
 
 void RigidbodyComponent::setTestChannels(std::vector<std::string> newTestChannels)

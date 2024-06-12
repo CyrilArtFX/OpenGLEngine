@@ -371,6 +371,11 @@ void Physics::UpdatePhysics(float dt)
 					col_responses[k].collisionComponent.onCollisionIntersect.broadcast(rigidbody);
 					col_responses[k].collisionComponent.forceIntersected();
 
+					if (col_responses[k].collisionComponent.usedByRigidbody())
+					{
+						rigidbody.getAssociatedCollisionNonConst().onCollisionIntersect.broadcast(*(col_responses[k].collisionComponent.getOwningRigidbody()));
+					}
+
 					if (k != 0) continue;
 					rigidbody.onCollisionRepulsed.broadcast(CollisionResponse{ col_responses[k].impactPoint, col_responses[k].impactNormal });
 				}
@@ -389,112 +394,17 @@ void Physics::UpdatePhysics(float dt)
 					col_responses[k].collisionComponent.onCollisionIntersect.broadcast(rigidbody);
 					col_responses[k].collisionComponent.forceIntersected();
 
+					if (col_responses[k].collisionComponent.usedByRigidbody())
+					{
+						rigidbody.getAssociatedCollisionNonConst().onCollisionIntersect.broadcast(*(col_responses[k].collisionComponent.getOwningRigidbody()));
+					}
+
 					if (k != 0) continue;
 					rigidbody.onCollisionRepulsed.broadcast(CollisionResponse{ col_responses[k].impactPoint, col_responses[k].impactNormal });
 				}
 			}
 			rigidbody.applyComputedGravityMovement(gravity_movement);
-
-			//  check body intersection with other physic activated bodies
-			for (int j = i; j < rigidbodiesComponents.size(); j++)
-			{
-				RigidbodyComponent& other_body = *rigidbodiesComponents[j];
-				if (!other_body.isAssociatedCollisionValid()) continue;
-				if (!other_body.isPhysicsActivated()) continue;
-
-				hit = rigidbody.getAssociatedCollision().resolveRigidbodySelf(other_body, rigidbody);
-				if (hit)
-				{
-					rigidbody.getAssociatedCollision().forceIntersected();
-					other_body.getAssociatedCollision().forceIntersected();
-					rigidbody.getAssociatedCollisionNonConst().onCollisionIntersect.broadcast(other_body);
-					other_body.getAssociatedCollisionNonConst().onCollisionIntersect.broadcast(rigidbody);
-				}
-			}
 		}
-
-
-
-		/*
-		//  test rigidbody / collisions
-		for (int j = 0; j < collisionsComponents.size(); j++)
-		{
-			CollisionComponent& col = *collisionsComponents[j];
-
-			if (rigidbody_physics)
-			{
-				CollisionResponse response;
-
-				bool hit = col.resolveRigidbody(rigidbody, response);
-
-				if (hit)
-				{
-					rigidbody.getAssociatedCollision().forceIntersected();
-					col.forceIntersected();
-					rigidbody.onCollisionRepulsed.broadcast(response);
-					col.onCollisionIntersect.broadcast(rigidbody);
-
-					rigidbody.computeRepulsion(response.repulsion);
-				}
-			}
-			else
-			{
-				bool hit = col.resolveCollision(rigidbody.getAssociatedCollision(), rigidbody.getTestChannels());
-
-				if (hit)
-				{
-					rigidbody.getAssociatedCollision().forceIntersected();
-					col.forceIntersected();
-
-					col.onCollisionIntersect.broadcast(rigidbody);
-				}
-			}
-		}
-
-		//  test rigidbody / other rigidbodies
-		for (int k = i + 1; k < rigidbodiesComponents.size(); k++)
-		{
-			RigidbodyComponent& other_rigidbody = *rigidbodiesComponents[k];
-			if (!other_rigidbody.isAssociatedCollisionValid()) continue;
-			bool other_rigidbody_physics = other_rigidbody.isPhysicsActivated();
-
-			CollisionResponse response;
-			CollisionResponse response_other;
-
-			bool hit;
-			if (rigidbody_physics && other_rigidbody_physics) hit = rigidbody.getAssociatedCollision().resolveRigidbodySelf(other_rigidbody, rigidbody);
-			else if (!rigidbody_physics && other_rigidbody_physics) hit = rigidbody.getAssociatedCollision().resolveRigidbody(other_rigidbody, response_other);
-			else if (rigidbody_physics) hit = other_rigidbody.getAssociatedCollision().resolveRigidbody(rigidbody, response);
-			else hit = rigidbody.getAssociatedCollision().resolveCollision(other_rigidbody.getAssociatedCollision(), rigidbody.getTestChannels());
-
-			if (hit)
-			{
-				rigidbody.getAssociatedCollision().forceIntersected();
-				other_rigidbody.getAssociatedCollision().forceIntersected();
-
-				if (rigidbody_physics && !other_rigidbody_physics)
-				{
-					rigidbody.onCollisionRepulsed.broadcast(response);
-					rigidbody.computeRepulsion(response.repulsion);
-				}
-				else
-				{
-					rigidbody.getAssociatedCollisionNonConst().onCollisionIntersect.broadcast(other_rigidbody);
-				}
-
-				if (other_rigidbody_physics && !rigidbody_physics)
-				{
-					other_rigidbody.onCollisionRepulsed.broadcast(response_other);
-					other_rigidbody.computeRepulsion(response_other.repulsion);
-				}
-				else
-				{
-					other_rigidbody.getAssociatedCollisionNonConst().onCollisionIntersect.broadcast(rigidbody);
-				}
-			}
-		}
-
-		rigidbody.updatePhysicsPostCollision(dt); //  apply rigidbody real movement*/
 	}
 
 
