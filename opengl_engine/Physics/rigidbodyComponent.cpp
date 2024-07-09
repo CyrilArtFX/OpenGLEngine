@@ -57,6 +57,13 @@ void RigidbodyComponent::updatePhysicsPreCollision(float dt)
 	}
 
 	//  compute anticipated movement
+	if (velocityOneFrame.y != 0.0f)
+	{
+		//  y velocity one frame will make the rigidbody start the test inside the collision that gave it
+		associatedCollision->addPosition(Vector3{ 0.0f, velocityOneFrame.y, 0.0f } *dt);
+		velocityOneFrame.y = 0.0f;
+	}
+
 	movement = (velocity + velocityOneFrame) * dt;
 	gravityMovement = gravityVelocity * dt;
 	velocityOneFrame = Vector3::zero;
@@ -88,7 +95,7 @@ void RigidbodyComponent::updatePhysicsPostCollision(float dt)
 		Box box = associatedCollision->getEncapsulatingBox();
 		RaycastHitInfos out;
 
-		bool hit = Physics::AABBSweepRaycast(box.getCenterPoint() + gravityMovement, box.getCenterPoint() + Vector3{0.0f, -stepHeight, 0.0f}, box, {"solid"}, out, 0.0f);
+		bool hit = Physics::AABBSweepRaycast(box.getCenterPoint() + gravityMovement, box.getCenterPoint() + Vector3{ 0.0f, -stepHeight, 0.0f }, box, { "solid" }, out, 0.0f);
 		if (hit)
 		{
 			if (out.hitNormal == Vector3::unitY)
@@ -142,7 +149,7 @@ bool RigidbodyComponent::checkStepMechanic(const CollisionComponent& collidedCom
 
 	if (!Maths::abs(Vector3::dot(Vector3::unitY, hitNormal)) < 0.5f)
 		return false; //  continue only if collided with a wall
-	
+
 	Box body_box = associatedCollision->getEncapsulatingBox();
 	body_box.setCenterPoint(aimedDestination);
 	if (!collidedComp.resolveAABBRaycast(body_box, getTestChannels()))
@@ -154,8 +161,8 @@ bool RigidbodyComponent::checkStepMechanic(const CollisionComponent& collidedCom
 	if (stepMovement > stepHeight)
 		return false; //  continue only if needed step movement is lower than this rigidbody step height
 
-	body_box.setCenterPoint(aimedDestination + Vector3{0.0f, stepMovement, 0.0f});
-	if(Physics::AABBRaycast(Vector3::zero, body_box, getTestChannels(), 0.0f, true))
+	body_box.setCenterPoint(aimedDestination + Vector3{ 0.0f, stepMovement, 0.0f });
+	if (Physics::AABBRaycast(Vector3::zero, body_box, getTestChannels(), 0.0f, true))
 		return false; //  continue only if step destination is free
 
 	return true;
@@ -171,8 +178,8 @@ void RigidbodyComponent::addVelocity(const Vector3& value)
 	velocity += value;
 }
 
-Vector3 RigidbodyComponent::getVelocity() const 
-{ 
+Vector3 RigidbodyComponent::getVelocity() const
+{
 	return velocity;
 }
 

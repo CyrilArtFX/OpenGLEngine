@@ -41,6 +41,7 @@ private:
 
 	MovingPlatform movingPlatform1;
 	MovingPlatform movingPlatform2;
+	MovingPlatform movingPlatform3;
 
 	DirectionalLight dirLight;
 	PointLight pointLight1;
