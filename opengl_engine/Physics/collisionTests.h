@@ -27,9 +27,10 @@ public:
 	* @param	gravityPass			Are we computing gravity?
 	* @param	computedMovement	Movement to apply to the rigidbody. [OUT]
 	* @param	colResponses		List of all collisions hit. [OUT]
+	* @param	triggers			List of all triggers detected. [OUT]
 	* @return						True if the rigidbody encountered at least one collision.
 	*/
-	static bool RigidbodyCollideAndSlideAABB(const RigidbodyComponent& rigidbody, const bool gravityPass, Vector3& computedMovement, std::vector<CollisionHit>& colResponses);
+	static bool RigidbodyCollideAndSlideAABB(const RigidbodyComponent& rigidbody, const bool gravityPass, Vector3& computedMovement, std::vector<CollisionHit>& colResponses, std::vector<const CollisionComponent*>& triggers);
 
 
 private:
@@ -44,8 +45,9 @@ private:
 	* @param	gravityPass			Are we computing gravity?
 	* @param	computedPos			End of the raycast for this iteration. [OUT]
 	* @param	colResponses		List of all collisions hit. [OUT/PASSTHROUGH]
+	* @param	triggers			List of all triggers detected. [OUT/PASSTHROUGH]
 	* @return						True if this iteration's raycast encountered a collision.
 	*/
-	static bool CollideAndSlideAABB(const RigidbodyComponent& rigidbody, const Box& boxAABB, const Vector3 startPos, const Vector3 movement, const int bounces, const bool gravityPass, Vector3& computedPos, std::vector<CollisionHit>& colResponses);
+	static bool CollideAndSlideAABB(const RigidbodyComponent& rigidbody, const Box& boxAABB, const Vector3 startPos, const Vector3 movement, const int bounces, const bool gravityPass, Vector3& computedPos, std::vector<CollisionHit>& colResponses, std::vector<const CollisionComponent*>& triggers);
 };
 

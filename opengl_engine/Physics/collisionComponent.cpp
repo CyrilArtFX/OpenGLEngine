@@ -97,9 +97,9 @@ RigidbodyComponent* CollisionComponent::getOwningRigidbody() const
 	return owningBody;
 }
 
-CollisionComponent::CollisionComponent(CollisionType collisionType_, Object* associatedObject_, Mesh* debugMesh_, bool loadPersistent_, std::string collisionChannel_) :
+CollisionComponent::CollisionComponent(CollisionShape collisionShape_, CollisionType collisionType_, Object* associatedObject_, Mesh* debugMesh_, bool loadPersistent_, std::string collisionChannel_) :
 	PhysicEntity(loadPersistent_),
-	collisionType(collisionType_), associatedObject(associatedObject_), debugMesh(debugMesh_), collisionChannel(collisionChannel_),
+	collisionShape(collisionShape_), collisionType(collisionType_), associatedObject(associatedObject_), debugMesh(debugMesh_), collisionChannel(collisionChannel_),
 	owningBody(nullptr)
 {
 }

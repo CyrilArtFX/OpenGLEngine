@@ -22,7 +22,8 @@
 	-> Utiliser le raycast sweep AABB pour le collide and slide avec projection d'un vecteur sur une surface - fait
 	-> Nettoyer l'ancien système - fait
 	-> Fix les problèmes des plateformes mouvantes (bug du raycast quand commence dans la collision ?) - fait
-	-> Rajouter des vraies trigger box (le collide and slide fait une collision avec les physic activated bodies)
+	-> Rajouter des vraies trigger box (le collide and slide fait une collision avec les physic activated bodies) - fait
+	-> Fix le fait de pouvoir passer par dessous les plateformes
 
 ~ Petit fix camera lag : ne pas prendre en compte le mouvement de la souris pour le calcul du lag, sinon quand on bouge la cam très vite ça fait un effet de merde.
 

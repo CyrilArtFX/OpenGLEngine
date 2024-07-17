@@ -51,6 +51,13 @@ bool CollisionsAABB::IntersectAABBSweepRaycast(const BoxAABBColComp& boxAABB, co
 
 	bool intersect = CCDBoxIntersectionRaycast(boxRaycast, raycast, box, hit_distance, hit_location);
 
+	//  check if it is trigger
+	if(intersect && boxAABB.getCollisionType() == CollisionType::Trigger)
+	{
+		outHitInfos.triggersDetected.push_back(&boxAABB);
+		return false;
+	}
+
 	//  check if it is the closest collision found
 	if (intersect && hit_distance < outHitInfos.hitDistance)
 	{

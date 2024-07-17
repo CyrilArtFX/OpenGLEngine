@@ -41,6 +41,7 @@ void DoomlikeLevelDebug::loadScene()
 	registerObject(&movingPlatform2);
 	registerObject(&movingPlatform3);
 	//Object& enemy_1 = registerObject(new Enemy()); //  better to add objects that can be altered like this
+	triggerZone1.setup(Vector3{ 12.0f, 1.0f, 12.0f }, Vector3::one);
 
 	crate1.setPosition(Vector3{ 2.0f, 0.5f, 0.0f });
 	crate2.setPosition(Vector3{ 3.0f, 1.0f, 13.0f });

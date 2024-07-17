@@ -8,7 +8,7 @@
 
 
 
-bool CollisionTests::RigidbodyCollideAndSlideAABB(const RigidbodyComponent& rigidbody, const bool gravityPass, Vector3& computedMovement, std::vector<CollisionHit>& colResponses)
+bool CollisionTests::RigidbodyCollideAndSlideAABB(const RigidbodyComponent& rigidbody, const bool gravityPass, Vector3& computedMovement, std::vector<CollisionHit>& colResponses, std::vector<const CollisionComponent*>& triggers)
 {
 	const Vector3 body_start_movement = gravityPass ? rigidbody.getAnticipatedGravityMovement() : rigidbody.getAnticipatedMovement();
 	if (body_start_movement == Vector3::zero)
@@ -23,7 +23,7 @@ bool CollisionTests::RigidbodyCollideAndSlideAABB(const RigidbodyComponent& rigi
 
 	Vector3 computed_pos = Vector3::zero;
 
-	bool col_hit = CollideAndSlideAABB(rigidbody, body_shape, body_start_pos, body_start_movement, 0, gravityPass, computed_pos, colResponses);
+	bool col_hit = CollideAndSlideAABB(rigidbody, body_shape, body_start_pos, body_start_movement, 0, gravityPass, computed_pos, colResponses, triggers);
 	computedMovement = computed_pos - body_start_pos;
 	return col_hit;
 }
@@ -31,10 +31,21 @@ bool CollisionTests::RigidbodyCollideAndSlideAABB(const RigidbodyComponent& rigi
 
 
 
-bool CollisionTests::CollideAndSlideAABB(const RigidbodyComponent& rigidbody, const Box& boxAABB, const Vector3 startPos, const Vector3 movement, const int bounces, const bool gravityPass, Vector3& computedPos, std::vector<CollisionHit>& colResponses)
+bool CollisionTests::CollideAndSlideAABB(const RigidbodyComponent& rigidbody, const Box& boxAABB, const Vector3 startPos, const Vector3 movement, const int bounces, const bool gravityPass, Vector3& computedPos, std::vector<CollisionHit>& colResponses, std::vector<const CollisionComponent*>& triggers)
 {
 	RaycastHitInfos out_raycast;
 	bool col_encountered = Physics::AABBSweepRaycast(startPos, startPos + movement, boxAABB, rigidbody.getTestChannels(), out_raycast, 0.0f, true);
+
+	//  check for triggers
+	if (!out_raycast.triggersDetected.empty())
+	{
+		for (auto& trigger : out_raycast.triggersDetected)
+		{
+			auto iter = std::find(triggers.begin(), triggers.end(), trigger);
+			if (iter == triggers.end())
+				triggers.push_back(trigger);
+		}
+	}
 
 	if (col_encountered) //  collision encountered, continuing recursion
 	{
@@ -92,7 +103,7 @@ bool CollisionTests::CollideAndSlideAABB(const RigidbodyComponent& rigidbody, co
 		}
 
 
-		CollideAndSlideAABB(rigidbody, boxAABB, out_location_secure, remaining_movement, bounces + 1, gravityPass, computedPos, colResponses);
+		CollideAndSlideAABB(rigidbody, boxAABB, out_location_secure, remaining_movement, bounces + 1, gravityPass, computedPos, colResponses, triggers);
 		return true;
 	}
 	else //  no collision encountered, end of the recursion

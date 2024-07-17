@@ -362,7 +362,8 @@ void Physics::UpdatePhysics(float dt)
 			//  compute body movement with collisions
 			Vector3 body_movement = Vector3::zero;
 			std::vector<CollisionHit> col_responses;
-			bool hit = CollisionTests::RigidbodyCollideAndSlideAABB(rigidbody, false, body_movement, col_responses);
+			std::vector<const CollisionComponent*> triggers_detected;
+			bool hit = CollisionTests::RigidbodyCollideAndSlideAABB(rigidbody, false, body_movement, col_responses, triggers_detected);
 			if (hit)
 			{
 				rigidbody.getAssociatedCollision().forceIntersected();
@@ -385,7 +386,7 @@ void Physics::UpdatePhysics(float dt)
 			//  compute body gravity movement with collisions
 			Vector3 gravity_movement = Vector3::zero;
 			col_responses.clear();
-			hit = CollisionTests::RigidbodyCollideAndSlideAABB(rigidbody, true, gravity_movement, col_responses);
+			hit = CollisionTests::RigidbodyCollideAndSlideAABB(rigidbody, true, gravity_movement, col_responses, triggers_detected);
 			if (hit)
 			{
 				rigidbody.getAssociatedCollision().forceIntersected();
@@ -404,6 +405,16 @@ void Physics::UpdatePhysics(float dt)
 				}
 			}
 			rigidbody.applyComputedGravityMovement(gravity_movement);
+
+			//  call event on detected triggers
+			if (!triggers_detected.empty())
+			{
+				for (auto trigger_detected : triggers_detected)
+				{
+					trigger_detected->onTriggerEnter.broadcast(rigidbody);
+					trigger_detected->forceIntersected();
+				}
+			}
 		}
 	}
 

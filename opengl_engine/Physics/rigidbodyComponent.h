@@ -8,7 +8,7 @@
 namespace Rigidbody
 {
 	const int MAX_BOUNCES = 5;
-	const float SECURITY_DIST = 0.01f;
+	const float SECURITY_DIST = 0.001f;
 }
 
 

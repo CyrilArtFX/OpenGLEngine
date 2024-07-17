@@ -15,11 +15,19 @@ class Material;
 class RigidbodyComponent;
 
 
-enum class CollisionType : uint8_t
+enum class CollisionShape : uint8_t
 {
 	Null = 0,
 	BoxAABB = 1
 };
+
+enum class CollisionType : uint8_t
+{
+	Solid = 0,
+	Trigger = 1
+};
+
+
 
 
 /** Collision Component
@@ -30,6 +38,7 @@ class CollisionComponent : public PhysicEntity
 public:
 	virtual ~CollisionComponent();
 
+	inline CollisionShape getCollisionShape() const { return collisionShape; }
 	inline CollisionType getCollisionType() const { return collisionType; }
 
 	void setAssociatedObject(Object* newObject);
@@ -71,6 +80,7 @@ public:
 	Event<> onCollisionDelete;
 	mutable Event<RaycastType, const Vector3&> onRaycastIntersect;
 	mutable Event<RigidbodyComponent&> onCollisionIntersect;
+	mutable Event<RigidbodyComponent&> onTriggerEnter;
 
 
 
@@ -78,7 +88,7 @@ public:
 
 
 protected:
-	CollisionComponent(CollisionType collisionType_, Object* associatedObject_, Mesh* debugMesh_, bool loadPersistent_, std::string collisionChannel_);
+	CollisionComponent(CollisionShape collisionShape_, CollisionType collisionType_, Object* associatedObject_, Mesh* debugMesh_, bool loadPersistent_, std::string collisionChannel_);
 
 	virtual bool resolvePointIntersection(const Vector3& point) const = 0;
 	virtual bool resolveLineRaycastIntersection(const Ray& raycast, RaycastHitInfos& outHitInfos) const = 0;
@@ -88,7 +98,8 @@ protected:
 	virtual void drawDebugMesh(Material& debugMaterial) const = 0;
 
 
-	CollisionType collisionType{ CollisionType::Null };
+	CollisionShape collisionShape{ CollisionShape::Null };
+	CollisionType collisionType{ CollisionType::Solid };
 	Object* associatedObject{ nullptr };
 
 

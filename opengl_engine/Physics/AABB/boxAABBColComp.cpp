@@ -4,14 +4,14 @@
 #include <Assets/assetManager.h>
 #include <Rendering/material.h>
 
-BoxAABBColComp::BoxAABBColComp() : 
-	CollisionComponent(CollisionType::BoxAABB, nullptr, &AssetManager::GetSingleMesh("debug_cube"), false, "")
+BoxAABBColComp::BoxAABBColComp() :
+	CollisionComponent(CollisionShape::BoxAABB, CollisionType::Solid, nullptr, & AssetManager::GetSingleMesh("debug_cube"), false, "")
 {
 }
 
-BoxAABBColComp::BoxAABBColComp(const Box& boxValues, Object* objectToAssociate, bool loadPersistent, std::string collisionChannel, bool scaleBoxSizeWithTransform, bool moveBoxCenterWithObjectScale) :
+BoxAABBColComp::BoxAABBColComp(const Box& boxValues, Object* objectToAssociate, bool loadPersistent, std::string collisionChannel, CollisionType collisionType, bool scaleBoxSizeWithTransform, bool moveBoxCenterWithObjectScale) :
 	box(boxValues), useTransformScaleForBoxSize(scaleBoxSizeWithTransform), useTransformScaleForBoxCenter(moveBoxCenterWithObjectScale),
-	CollisionComponent(CollisionType::BoxAABB, objectToAssociate, &AssetManager::GetSingleMesh("debug_cube"), loadPersistent, collisionChannel)
+	CollisionComponent(CollisionShape::BoxAABB, collisionType, objectToAssociate, &AssetManager::GetSingleMesh("debug_cube"), loadPersistent, collisionChannel)
 {
 }
 
