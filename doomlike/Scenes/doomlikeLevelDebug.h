@@ -37,6 +37,7 @@ private:
 	Object crate2;
 	Object crate3;
 	Object crate4;
+	Object crate5;
 	Object stair1;
 	Object stair2;
 

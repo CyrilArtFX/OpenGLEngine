@@ -369,12 +369,14 @@ void Physics::UpdatePhysics(float dt)
 				rigidbody.getAssociatedCollision().forceIntersected();
 				for (int k = 0; k < col_responses.size(); k++)
 				{
-					col_responses[k].collisionComponent.onCollisionIntersect.broadcast(rigidbody);
+					CollisionResponse col_datas = { col_responses[k].impactPoint, col_responses[k].impactNormal };
+
+					col_responses[k].collisionComponent.onCollisionIntersect.broadcast(rigidbody, col_datas);
 					col_responses[k].collisionComponent.forceIntersected();
 
 					if (col_responses[k].collisionComponent.usedByRigidbody())
 					{
-						rigidbody.getAssociatedCollisionNonConst().onCollisionIntersect.broadcast(*(col_responses[k].collisionComponent.getOwningRigidbody()));
+						rigidbody.getAssociatedCollisionNonConst().onCollisionIntersect.broadcast(*(col_responses[k].collisionComponent.getOwningRigidbody()), col_datas);
 					}
 
 					if (k != 0) continue;
@@ -392,12 +394,14 @@ void Physics::UpdatePhysics(float dt)
 				rigidbody.getAssociatedCollision().forceIntersected();
 				for (int k = 0; k < col_responses.size(); k++)
 				{
-					col_responses[k].collisionComponent.onCollisionIntersect.broadcast(rigidbody);
+					CollisionResponse col_datas = { col_responses[k].impactPoint, col_responses[k].impactNormal };
+
+					col_responses[k].collisionComponent.onCollisionIntersect.broadcast(rigidbody, col_datas);
 					col_responses[k].collisionComponent.forceIntersected();
 
 					if (col_responses[k].collisionComponent.usedByRigidbody())
 					{
-						rigidbody.getAssociatedCollisionNonConst().onCollisionIntersect.broadcast(*(col_responses[k].collisionComponent.getOwningRigidbody()));
+						rigidbody.getAssociatedCollisionNonConst().onCollisionIntersect.broadcast(*(col_responses[k].collisionComponent.getOwningRigidbody()), col_datas);
 					}
 
 					if (k != 0) continue;

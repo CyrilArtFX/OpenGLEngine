@@ -36,7 +36,7 @@ void RigidbodyComponent::associateCollision(CollisionComponent* collisionToAssoc
 		//  do initialization things with the newly associated collision
 		associatedCollision->setRigidbody(this);
 
-		associatedCollision->onCollisionIntersect.registerObserver(this, Bind_1(&RigidbodyComponent::onCollisionIntersected));
+		associatedCollision->onCollisionIntersect.registerObserver(this, Bind_2(&RigidbodyComponent::onCollisionIntersected));
 	}
 }
 
@@ -225,10 +225,15 @@ void RigidbodyComponent::resetIntersected()
 	associatedCollision->resetIntersected();
 }
 
-void RigidbodyComponent::onCollisionIntersected(RigidbodyComponent& other)
+void RigidbodyComponent::onCollisionIntersected(RigidbodyComponent& other, const CollisionResponse& collisionResponse)
 {
 	if (isPhysicsActivated() || !other.isPhysicsActivated()) return;
+	//  continue only if this rigidbody isn't physics activated and the other is physic activated
 
+	float col_top = Vector3::dot(Vector3::unitY, collisionResponse.impactNormal);
+	if (col_top < 0.5f) return;
+	//  continue only if the other body is on top of this body
+	
 	other.addVelocityOneFrame(getVelocity());
 }
 

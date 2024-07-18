@@ -212,4 +212,8 @@ void Player::onRigidbodyDeleted()
 
 void Player::onCollision(const CollisionResponse& collisionResponse)
 {
+	if (collisionResponse.impactNormal == Vector3::negUnitY)
+	{
+		rigidbody->setGravityVelocity(Vector3::zero); //  cancel the jump velocity if hit a roof
+	}
 }

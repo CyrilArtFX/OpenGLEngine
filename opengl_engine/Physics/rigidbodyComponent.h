@@ -104,7 +104,7 @@ private:
 	std::vector<std::string> testChannels;
 
 
-	void onCollisionIntersected(RigidbodyComponent& other);
+	void onCollisionIntersected(RigidbodyComponent& other, const CollisionResponse& collisionResponse);
 	void onCollision(const CollisionResponse& collisionResponse);
 };
 
