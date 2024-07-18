@@ -238,7 +238,7 @@ bool Physics::AABBRaycast(const Vector3& location, const Box& aabbBox, const std
 	}
 }
 
-bool Physics::AABBSweepRaycast(const Vector3& start, const Vector3& end, const Box& aabbBox, const std::vector<std::string> testChannels, RaycastHitInfos& outHitInfos, float drawDebugTime, bool createOnScene)
+bool Physics::AABBSweepRaycast(const Vector3& start, const Vector3& end, const Box& aabbBox, const std::vector<std::string> testChannels, RaycastHitInfos& outHitInfos, float drawDebugTime, bool createOnScene, bool forCollisionTest)
 {
 	outHitInfos = RaycastHitInfos();
 
@@ -260,13 +260,13 @@ bool Physics::AABBSweepRaycast(const Vector3& start, const Vector3& end, const B
 
 		for (auto& col : collisionsComponents)
 		{
-			bool col_hit = col->resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels);
+			bool col_hit = col->resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels, forCollisionTest);
 			hit = hit || col_hit;
 		}
 		for (auto& body : rigidbodiesComponents)
 		{
 			const CollisionComponent& col = body->getAssociatedCollision();
-			bool col_hit = col.resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels);
+			bool col_hit = col.resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels, forCollisionTest);
 			hit = hit || col_hit;
 		}
 
@@ -288,13 +288,13 @@ bool Physics::AABBSweepRaycast(const Vector3& start, const Vector3& end, const B
 
 		for (auto& col : collisionsComponents)
 		{
-			bool col_hit = col->resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels);
+			bool col_hit = col->resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels, forCollisionTest);
 			hit = hit || col_hit;
 		}
 		for (auto& body : rigidbodiesComponents)
 		{
 			const CollisionComponent& col = body->getAssociatedCollision();
-			bool col_hit = col.resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels);
+			bool col_hit = col.resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels, forCollisionTest);
 			hit = hit || col_hit;
 		}
 

@@ -42,14 +42,14 @@ bool CollisionsAABB::IntersectAABBRaycast(const BoxAABBColComp& boxAABB, const B
 	return intersect;
 }
 
-bool CollisionsAABB::IntersectAABBSweepRaycast(const BoxAABBColComp& boxAABB, const Ray& raycast, const Box& boxRaycast, RaycastHitInfos& outHitInfos)
+bool CollisionsAABB::IntersectAABBSweepRaycast(const BoxAABBColComp& boxAABB, const Ray& raycast, const Box& boxRaycast, RaycastHitInfos& outHitInfos, bool forCollisionTest)
 {
 	Box box = boxAABB.getTransformedBox();
 
 	float hit_distance = 0.0f;
 	Vector3 hit_location = Vector3::zero;
 
-	bool intersect = CCDBoxIntersectionRaycast(boxRaycast, raycast, box, hit_distance, hit_location);
+	bool intersect = CCDBoxIntersectionRaycast(boxRaycast, raycast, box, hit_distance, hit_location, forCollisionTest);
 
 	//  check if it is trigger
 	if(intersect && boxAABB.getCollisionType() == CollisionType::Trigger)
@@ -146,7 +146,7 @@ bool CollisionsAABB::BoxRayIntersection(const Box& box, const Ray& ray, float& d
 	return true;
 }
 
-bool CollisionsAABB::CCDBoxIntersectionRaycast(const Box& boxRaycast, const Ray& ray, const Box& boxObject, float& distance, Vector3& centerLocation)
+bool CollisionsAABB::CCDBoxIntersectionRaycast(const Box& boxRaycast, const Ray& ray, const Box& boxObject, float& distance, Vector3& centerLocation, bool forCollisionTest)
 {
 	Vector3 box_raycast_pos = boxRaycast.getCenterPoint();
 
@@ -161,7 +161,7 @@ bool CollisionsAABB::CCDBoxIntersectionRaycast(const Box& boxRaycast, const Ray&
 	Box box_static = boxObject;
 	box_static.addHalfExtents(boxRaycast);
 
-	bool intersect = BoxRayIntersection(box_static, ray, distance, centerLocation, false);
+	bool intersect = BoxRayIntersection(box_static, ray, distance, centerLocation, forCollisionTest);
 
 	return intersect;
 }

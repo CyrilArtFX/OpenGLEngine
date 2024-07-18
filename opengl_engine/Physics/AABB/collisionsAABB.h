@@ -14,7 +14,7 @@ public:
 
 	static bool IntersectAABBRaycast(const BoxAABBColComp& boxAABB, const Box& raycast);
 
-	static bool IntersectAABBSweepRaycast(const BoxAABBColComp& boxAABB, const Ray& raycast, const Box& boxRaycast, RaycastHitInfos& outHitInfos);
+	static bool IntersectAABBSweepRaycast(const BoxAABBColComp& boxAABB, const Ray& raycast, const Box& boxRaycast, RaycastHitInfos& outHitInfos, bool forCollisionTest);
 
 
 private:
@@ -24,6 +24,6 @@ private:
 
 	static bool BoxRayIntersection(const Box& box, const Ray& ray, float& distance, Vector3& location, bool computeCollision = false);
 
-	static bool CCDBoxIntersectionRaycast(const Box& boxRaycast, const Ray& ray, const Box& boxObject, float& distance, Vector3& centerLocation);
+	static bool CCDBoxIntersectionRaycast(const Box& boxRaycast, const Ray& ray, const Box& boxObject, float& distance, Vector3& centerLocation, bool forCollisionTest);
 };
 

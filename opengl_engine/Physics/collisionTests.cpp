@@ -34,7 +34,7 @@ bool CollisionTests::RigidbodyCollideAndSlideAABB(const RigidbodyComponent& rigi
 bool CollisionTests::CollideAndSlideAABB(const RigidbodyComponent& rigidbody, const Box& boxAABB, const Vector3 startPos, const Vector3 movement, const int bounces, const bool gravityPass, Vector3& computedPos, std::vector<CollisionHit>& colResponses, std::vector<const CollisionComponent*>& triggers)
 {
 	RaycastHitInfos out_raycast;
-	bool col_encountered = Physics::AABBSweepRaycast(startPos, startPos + movement, boxAABB, rigidbody.getTestChannels(), out_raycast, 0.0f, true);
+	bool col_encountered = Physics::AABBSweepRaycast(startPos, startPos + movement, boxAABB, rigidbody.getTestChannels(), out_raycast, 0.0f, true, false);
 
 	//  check for triggers
 	if (!out_raycast.triggersDetected.empty())
