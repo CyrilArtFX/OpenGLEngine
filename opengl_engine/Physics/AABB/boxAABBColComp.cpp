@@ -4,14 +4,14 @@
 #include <Assets/assetManager.h>
 #include <Rendering/material.h>
 
-BoxAABBColComp::BoxAABBColComp() : 
-	CollisionComponent(CollisionType::BoxAABB, nullptr, &AssetManager::GetSingleMesh("debug_cube"), false, "")
+BoxAABBColComp::BoxAABBColComp() :
+	CollisionComponent(CollisionShape::BoxAABB, CollisionType::Solid, nullptr, & AssetManager::GetSingleMesh("debug_cube"), false, "")
 {
 }
 
-BoxAABBColComp::BoxAABBColComp(const Box& boxValues, Object* objectToAssociate, bool loadPersistent, std::string collisionChannel, bool scaleBoxSizeWithTransform, bool moveBoxCenterWithObjectScale) :
+BoxAABBColComp::BoxAABBColComp(const Box& boxValues, Object* objectToAssociate, bool loadPersistent, std::string collisionChannel, CollisionType collisionType, bool scaleBoxSizeWithTransform, bool moveBoxCenterWithObjectScale) :
 	box(boxValues), useTransformScaleForBoxSize(scaleBoxSizeWithTransform), useTransformScaleForBoxCenter(moveBoxCenterWithObjectScale),
-	CollisionComponent(CollisionType::BoxAABB, objectToAssociate, &AssetManager::GetSingleMesh("debug_cube"), loadPersistent, collisionChannel)
+	CollisionComponent(CollisionShape::BoxAABB, collisionType, objectToAssociate, &AssetManager::GetSingleMesh("debug_cube"), loadPersistent, collisionChannel)
 {
 }
 
@@ -36,49 +36,9 @@ bool BoxAABBColComp::resolveAABBRaycastIntersection(const Box& raycast) const
 	return CollisionsAABB::IntersectAABBRaycast(*this, raycast);
 }
 
-bool BoxAABBColComp::resolveAABBSweepRaycastIntersection(const Ray& raycast, const Box& boxRaycast, RaycastHitInfos& outHitInfos) const
+bool BoxAABBColComp::resolveAABBSweepRaycastIntersection(const Ray& raycast, const Box& boxRaycast, RaycastHitInfos& outHitInfos, bool forCollisionTest) const
 {
-	return CollisionsAABB::IntersectAABBSweepRaycast(*this, raycast, boxRaycast, outHitInfos);
-}
-
-bool BoxAABBColComp::resolveCollisionIntersection(const CollisionComponent& otherCol) const
-{
-	switch (otherCol.getCollisionType())
-	{
-	case CollisionType::BoxAABB:
-		{
-		const BoxAABBColComp& other_col_as_aabb = static_cast<const BoxAABBColComp&>(otherCol);
-		return CollisionsAABB::IntersectBoxAABB(*this, other_col_as_aabb);
-		} //  {} are here to encapsulate the local variable other_col_as_aabb
-		
-
-	default:
-		return false;
-	}
-}
-
-bool BoxAABBColComp::resolveRigidbodyIntersection(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse) const
-{
-	switch (rigidbody.getAssociatedCollision().getCollisionType())
-	{
-	case CollisionType::BoxAABB:
-		return CollisionsAABB::CollideBodyBox(rigidbody, outResponse, *this);
-	
-	default:
-		return false;
-	}
-}
-
-bool BoxAABBColComp::resolveRigidbodySelfIntersection(const RigidbodyComponent& rigidbody, const RigidbodyComponent& selfRigidbody) const
-{
-	switch (rigidbody.getAssociatedCollision().getCollisionType())
-	{
-	case CollisionType::BoxAABB:
-		return CollisionsAABB::CollideBodies(rigidbody, selfRigidbody);
-
-	default:
-		return false;
-	}
+	return CollisionsAABB::IntersectAABBSweepRaycast(*this, raycast, boxRaycast, outHitInfos, forCollisionTest);
 }
 
 

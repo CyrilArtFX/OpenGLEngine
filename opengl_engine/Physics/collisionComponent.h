@@ -13,14 +13,21 @@
 
 class Material;
 class RigidbodyComponent;
-struct CollisionResponse;
 
 
-enum class CollisionType : uint8_t
+enum class CollisionShape : uint8_t
 {
 	Null = 0,
 	BoxAABB = 1
 };
+
+enum class CollisionType : uint8_t
+{
+	Solid = 0,
+	Trigger = 1
+};
+
+
 
 
 /** Collision Component
@@ -31,6 +38,7 @@ class CollisionComponent : public PhysicEntity
 public:
 	virtual ~CollisionComponent();
 
+	inline CollisionShape getCollisionShape() const { return collisionShape; }
 	inline CollisionType getCollisionType() const { return collisionType; }
 
 	void setAssociatedObject(Object* newObject);
@@ -39,10 +47,7 @@ public:
 	bool resolvePoint(const Vector3& point) const;
 	bool resolveLineRaycast(const Ray& raycast, RaycastHitInfos& outHitInfos, const std::vector<std::string> testChannels) const;
 	bool resolveAABBRaycast(const Box& raycast, const std::vector<std::string> testChannels) const;
-	bool resolveAABBSweepRaycast(const Ray& raycast, const Box& boxRaycast, RaycastHitInfos& outHitInfos, const std::vector<std::string> testChannels) const;
-	bool resolveCollision(const CollisionComponent& otherCol, const std::vector<std::string> testChannels) const;
-	bool resolveRigidbody(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse) const;
-	bool resolveRigidbodySelf(const RigidbodyComponent& rigidbody, const RigidbodyComponent& selfRigidbody) const; //  doesn't have response since body/body doesn't compute repulsion (yet (lol...) )
+	bool resolveAABBSweepRaycast(const Ray& raycast, const Box& boxRaycast, RaycastHitInfos& outHitInfos, const std::vector<std::string> testChannels, bool forCollisionTest = false) const;
 
 	void drawDebug(Material& debugMaterial) const;
 
@@ -62,6 +67,10 @@ public:
 	void setCollisionChannel(std::string newCollisionChannel);
 	std::string getCollisionChannel() const { return collisionChannel; }
 
+	bool usedByRigidbody() const;
+	RigidbodyComponent* getOwningRigidbody() const;
+
+
 
 	//  for physics manager
 	bool registered{ false };
@@ -70,7 +79,8 @@ public:
 	
 	Event<> onCollisionDelete;
 	mutable Event<RaycastType, const Vector3&> onRaycastIntersect;
-	Event<RigidbodyComponent&> onCollisionIntersect;
+	mutable Event<RigidbodyComponent&, const struct CollisionResponse&> onCollisionIntersect;
+	mutable Event<RigidbodyComponent&> onTriggerEnter;
 
 
 
@@ -78,20 +88,18 @@ public:
 
 
 protected:
-	CollisionComponent(CollisionType collisionType_, Object* associatedObject_, Mesh* debugMesh_, bool loadPersistent_, std::string collisionChannel_);
+	CollisionComponent(CollisionShape collisionShape_, CollisionType collisionType_, Object* associatedObject_, Mesh* debugMesh_, bool loadPersistent_, std::string collisionChannel_);
 
 	virtual bool resolvePointIntersection(const Vector3& point) const = 0;
 	virtual bool resolveLineRaycastIntersection(const Ray& raycast, RaycastHitInfos& outHitInfos) const = 0;
 	virtual bool resolveAABBRaycastIntersection(const Box& raycast) const = 0;
-	virtual bool resolveAABBSweepRaycastIntersection(const Ray& raycast, const Box& boxRaycast, RaycastHitInfos& outHitInfos) const = 0;
-	virtual bool resolveCollisionIntersection(const CollisionComponent& otherCol) const = 0;
-	virtual bool resolveRigidbodyIntersection(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse) const = 0;
-	virtual bool resolveRigidbodySelfIntersection(const RigidbodyComponent& rigidbody, const RigidbodyComponent& selfRigidbody) const = 0;
+	virtual bool resolveAABBSweepRaycastIntersection(const Ray& raycast, const Box& boxRaycast, RaycastHitInfos& outHitInfos, bool forCollisionTest) const = 0;
 
 	virtual void drawDebugMesh(Material& debugMaterial) const = 0;
 
 
-	CollisionType collisionType{ CollisionType::Null };
+	CollisionShape collisionShape{ CollisionShape::Null };
+	CollisionType collisionType{ CollisionType::Solid };
 	Object* associatedObject{ nullptr };
 
 
@@ -102,4 +110,9 @@ private:
 	mutable bool intersectedLastFrame{ false };
 
 	std::string collisionChannel{ "" };
+
+	friend class RigidbodyComponent;
+
+	void setRigidbody(RigidbodyComponent* rigidbody);
+	RigidbodyComponent* owningBody;
 };

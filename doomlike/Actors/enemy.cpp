@@ -14,7 +14,7 @@ void Enemy::load()
 {
 	addModel(&AssetManager::GetModel("enemy"));
 
-	rigidbody = &Physics::CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box{Vector3::zero, Vector3{0.7f, 0.7f, 0.7f}}, this, false, "enemy"), false, true));
+	rigidbody = &Physics::CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box{Vector3::zero, Vector3{0.7f, 0.7f, 0.7f}}, this, false, "enemy"), true));
 	rigidbody->getAssociatedCollisionNonConst().onCollisionIntersect.registerObserver(this, Bind_1(&Enemy::onBodyIntersect));
 	rigidbody->setTestChannels(CollisionChannels::GetRegisteredTestChannel("Enemy"));
 

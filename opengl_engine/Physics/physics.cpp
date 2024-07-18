@@ -3,6 +3,7 @@
 #include "raycastLine.h"
 #include "AABB/raycastAABB.h"
 #include "AABB/raycastAABBSweep.h"
+#include "collisionTests.h"
 
 #include "ObjectChannels/collisionChannels.h"
 
@@ -237,7 +238,7 @@ bool Physics::AABBRaycast(const Vector3& location, const Box& aabbBox, const std
 	}
 }
 
-bool Physics::AABBSweepRaycast(const Vector3& start, const Vector3& end, const Box& aabbBox, const std::vector<std::string> testChannels, RaycastHitInfos& outHitInfos, float drawDebugTime, bool createOnScene)
+bool Physics::AABBSweepRaycast(const Vector3& start, const Vector3& end, const Box& aabbBox, const std::vector<std::string> testChannels, RaycastHitInfos& outHitInfos, float drawDebugTime, bool createOnScene, bool forCollisionTest)
 {
 	outHitInfos = RaycastHitInfos();
 
@@ -259,13 +260,13 @@ bool Physics::AABBSweepRaycast(const Vector3& start, const Vector3& end, const B
 
 		for (auto& col : collisionsComponents)
 		{
-			bool col_hit = col->resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels);
+			bool col_hit = col->resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels, forCollisionTest);
 			hit = hit || col_hit;
 		}
 		for (auto& body : rigidbodiesComponents)
 		{
 			const CollisionComponent& col = body->getAssociatedCollision();
-			bool col_hit = col.resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels);
+			bool col_hit = col.resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels, forCollisionTest);
 			hit = hit || col_hit;
 		}
 
@@ -287,13 +288,13 @@ bool Physics::AABBSweepRaycast(const Vector3& start, const Vector3& end, const B
 
 		for (auto& col : collisionsComponents)
 		{
-			bool col_hit = col->resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels);
+			bool col_hit = col->resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels, forCollisionTest);
 			hit = hit || col_hit;
 		}
 		for (auto& body : rigidbodiesComponents)
 		{
 			const CollisionComponent& col = body->getAssociatedCollision();
-			bool col_hit = col.resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels);
+			bool col_hit = col.resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels, forCollisionTest);
 			hit = hit || col_hit;
 		}
 
@@ -331,7 +332,7 @@ void Physics::UpdatePhysics(float dt)
 	for (auto& rigidbody : rigidbodiesComponents)
 	{
 		rigidbody->resetIntersected();
-		rigidbody->updatePhysicsPreCollision(dt); //  also compute the anticipated movements for physics activated rigidbodies, and apply the movement for non-physics activated ones
+		rigidbody->updatePhysicsPreCollision(dt); //  compute the anticipated movements for physics activated rigidbodies, and apply the movement for non-physics activated ones
 	}
 
 	//  delete raycasts that have run out of time
@@ -355,87 +356,76 @@ void Physics::UpdatePhysics(float dt)
 	{
 		RigidbodyComponent& rigidbody = *rigidbodiesComponents[i];
 		if (!rigidbody.isAssociatedCollisionValid()) continue;
-		bool rigidbody_physics = rigidbody.isPhysicsActivated();
 
-		//  test rigidbody / collisions
-		for (int j = 0; j < collisionsComponents.size(); j++)
+		if (rigidbody.isPhysicsActivated())
 		{
-			CollisionComponent& col = *collisionsComponents[j];
-
-			if (rigidbody_physics)
-			{
-				CollisionResponse response;
-
-				bool hit = col.resolveRigidbody(rigidbody, response);
-
-				if (hit)
-				{
-					rigidbody.getAssociatedCollision().forceIntersected();
-					col.forceIntersected();
-					rigidbody.onCollisionRepulsed.broadcast(response);
-					col.onCollisionIntersect.broadcast(rigidbody);
-
-					rigidbody.computeRepulsion(response.repulsion);
-				}
-			}
-			else
-			{
-				bool hit = col.resolveCollision(rigidbody.getAssociatedCollision(), rigidbody.getTestChannels());
-
-				if (hit)
-				{
-					rigidbody.getAssociatedCollision().forceIntersected();
-					col.forceIntersected();
-
-					col.onCollisionIntersect.broadcast(rigidbody);
-				}
-			}
-		}
-
-		//  test rigidbody / other rigidbodies
-		for (int k = i + 1; k < rigidbodiesComponents.size(); k++)
-		{
-			RigidbodyComponent& other_rigidbody = *rigidbodiesComponents[k];
-			if (!other_rigidbody.isAssociatedCollisionValid()) continue;
-			bool other_rigidbody_physics = other_rigidbody.isPhysicsActivated();
-
-			CollisionResponse response;
-			CollisionResponse response_other;
-
-			bool hit;
-			if (rigidbody_physics && other_rigidbody_physics) hit = rigidbody.getAssociatedCollision().resolveRigidbodySelf(other_rigidbody, rigidbody);
-			else if (!rigidbody_physics && other_rigidbody_physics) hit = rigidbody.getAssociatedCollision().resolveRigidbody(other_rigidbody, response_other);
-			else if (rigidbody_physics) hit = other_rigidbody.getAssociatedCollision().resolveRigidbody(rigidbody, response);
-			else hit = rigidbody.getAssociatedCollision().resolveCollision(other_rigidbody.getAssociatedCollision(), rigidbody.getTestChannels());
-
+			//  compute body movement with collisions
+			Vector3 body_movement = Vector3::zero;
+			std::vector<CollisionHit> col_responses;
+			std::vector<const CollisionComponent*> triggers_detected;
+			bool hit = CollisionTests::RigidbodyCollideAndSlideAABB(rigidbody, false, body_movement, col_responses, triggers_detected);
 			if (hit)
 			{
 				rigidbody.getAssociatedCollision().forceIntersected();
-				other_rigidbody.getAssociatedCollision().forceIntersected();
+				for (int k = 0; k < col_responses.size(); k++)
+				{
+					CollisionResponse col_datas = { col_responses[k].impactPoint, col_responses[k].impactNormal };
 
-				if (rigidbody_physics && !other_rigidbody_physics)
-				{
-					rigidbody.onCollisionRepulsed.broadcast(response);
-					rigidbody.computeRepulsion(response.repulsion);
-				}
-				else
-				{
-					rigidbody.getAssociatedCollisionNonConst().onCollisionIntersect.broadcast(other_rigidbody);
-				}
+					col_responses[k].collisionComponent.onCollisionIntersect.broadcast(rigidbody, col_datas);
+					col_responses[k].collisionComponent.forceIntersected();
 
-				if (other_rigidbody_physics && !rigidbody_physics)
-				{
-					other_rigidbody.onCollisionRepulsed.broadcast(response_other);
-					other_rigidbody.computeRepulsion(response_other.repulsion);
+					if (col_responses[k].collisionComponent.usedByRigidbody())
+					{
+						rigidbody.getAssociatedCollisionNonConst().onCollisionIntersect.broadcast(*(col_responses[k].collisionComponent.getOwningRigidbody()), col_datas);
+					}
+
+					if (k != 0) continue;
+					rigidbody.onCollisionRepulsed.broadcast(CollisionResponse{ col_responses[k].impactPoint, col_responses[k].impactNormal });
 				}
-				else
+			}
+			rigidbody.applyComputedMovement(body_movement);
+
+			//  compute body gravity movement with collisions
+			Vector3 gravity_movement = Vector3::zero;
+			col_responses.clear();
+			hit = CollisionTests::RigidbodyCollideAndSlideAABB(rigidbody, true, gravity_movement, col_responses, triggers_detected);
+			if (hit)
+			{
+				rigidbody.getAssociatedCollision().forceIntersected();
+				for (int k = 0; k < col_responses.size(); k++)
 				{
-					other_rigidbody.getAssociatedCollisionNonConst().onCollisionIntersect.broadcast(rigidbody);
+					CollisionResponse col_datas = { col_responses[k].impactPoint, col_responses[k].impactNormal };
+
+					col_responses[k].collisionComponent.onCollisionIntersect.broadcast(rigidbody, col_datas);
+					col_responses[k].collisionComponent.forceIntersected();
+
+					if (col_responses[k].collisionComponent.usedByRigidbody())
+					{
+						rigidbody.getAssociatedCollisionNonConst().onCollisionIntersect.broadcast(*(col_responses[k].collisionComponent.getOwningRigidbody()), col_datas);
+					}
+
+					if (k != 0) continue;
+					rigidbody.onCollisionRepulsed.broadcast(CollisionResponse{ col_responses[k].impactPoint, col_responses[k].impactNormal });
+				}
+			}
+			rigidbody.applyComputedGravityMovement(gravity_movement);
+
+			//  call event on detected triggers
+			if (!triggers_detected.empty())
+			{
+				for (auto trigger_detected : triggers_detected)
+				{
+					trigger_detected->onTriggerEnter.broadcast(rigidbody);
+					trigger_detected->forceIntersected();
 				}
 			}
 		}
+	}
 
-		rigidbody.updatePhysicsPostCollision(dt); //  apply rigidbody real movement
+
+	for (auto& rigidbody : rigidbodiesComponents)
+	{
+		rigidbody->updatePhysicsPostCollision(dt); // apply rigidbody movement for physic activated ones
 	}
 }
 

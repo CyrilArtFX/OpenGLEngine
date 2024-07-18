@@ -15,7 +15,8 @@ public:
 	Event<> onPlayerEnter;
 
 private:
-	void onBodyIntersect(class RigidbodyComponent& other);
-	RigidbodyComponent* rigidbody;
+	void onTriggerZoneEnter(class RigidbodyComponent& other);
+	class CollisionComponent* triggerCol{ nullptr };
+	bool disabled{ false };
 };
 

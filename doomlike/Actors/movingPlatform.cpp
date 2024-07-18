@@ -3,7 +3,7 @@
 
 void MovingPlatform::load()
 {
-	rigidbody = &Physics::CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box::one, this, false, "solid"), false, false));
+	rigidbody = &Physics::CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box::one, this, false, "solid"), false));
 
 	setScale(Vector3{ 2.0f, 0.2f, 2.0f });
 }

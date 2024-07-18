@@ -7,6 +7,7 @@
 
 #include <Actors/movingPlatform.h>
 #include <Actors/enemy.h>
+#include <LevelUtilities/triggerZone.h>
 
 #include <Maths/vector3.h>
 #include <Utils/color.h>
@@ -36,11 +37,15 @@ private:
 	Object crate2;
 	Object crate3;
 	Object crate4;
+	Object crate5;
 	Object stair1;
 	Object stair2;
 
 	MovingPlatform movingPlatform1;
 	MovingPlatform movingPlatform2;
+	MovingPlatform movingPlatform3;
+
+	TriggerZone triggerZone1;
 
 	DirectionalLight dirLight;
 	PointLight pointLight1;

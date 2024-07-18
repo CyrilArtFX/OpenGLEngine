@@ -16,7 +16,7 @@
 
 
 Player::Player() :
-	rigidbody(&Physics::CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box::one, this, true, "player", false), true, false)))
+	rigidbody(&Physics::CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box::one, this, true, "player", CollisionType::Solid, false), false)))
 {
 	rigidbody->onRigidbodyDelete.registerObserver(this, Bind_0(&Player::onRigidbodyDeleted));
 	rigidbody->onCollisionRepulsed.registerObserver(this, Bind_1(&Player::onCollision));
@@ -52,7 +52,6 @@ void Player::setup(float height, float speed, float jump, float stepHeight, Rend
 void Player::update(float dt)
 {
 	//  move player
-	Vector3 velocity = rigidbody->getVelocity();
 	Vector3 velocity_xz = Vector3::zero;
 
 	if (Input::IsKeyDown(GLFW_KEY_W))
@@ -67,22 +66,18 @@ void Player::update(float dt)
 	if (Input::IsKeyDown(GLFW_KEY_D))
 		velocity_xz -= camera.getRight() * moveSpeed;
 
-
 	//  clamp the velocity to max movement speed
 	velocity_xz.clampMagnitude(moveSpeed);
-	velocity.x = velocity_xz.x;
-	velocity.z = velocity_xz.z;
+
+	//  apply velocity to rigidbody
+	rigidbody->setVelocity(velocity_xz);
 
 
 	//  jump
 	if (Input::IsKeyPressed(GLFW_KEY_SPACE) && rigidbody->isOnGround())
 	{
-		velocity += Vector3::unitY * jumpForce;
+		rigidbody->addGravityVelocity(Vector3::unitY * jumpForce);
 	}
-
-
-	//  apply velocity to rigidbody
-	rigidbody->setVelocity(velocity);
 
 
 	//  shoot
@@ -199,6 +194,9 @@ void Player::respawn(PlayerSpawnPoint& spawnPoint)
 {
 	unload();
 
+	rigidbody->setVelocity(Vector3::zero);
+	rigidbody->setGravityVelocity(Vector3::zero);
+
 	setPosition(spawnPoint.spawnPosition);
 	//setRotation(spawnPoint.spawnRotation);
 
@@ -214,4 +212,8 @@ void Player::onRigidbodyDeleted()
 
 void Player::onCollision(const CollisionResponse& collisionResponse)
 {
+	if (collisionResponse.impactNormal == Vector3::negUnitY)
+	{
+		rigidbody->setGravityVelocity(Vector3::zero); //  cancel the jump velocity if hit a roof
+	}
 }

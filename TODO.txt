@@ -19,9 +19,14 @@
 ~ Retour sur la physique : collide and slide (https://www.youtube.com/watch?v=YR6Q7dUz2uk)
 	-> Faire un raycast sweep AABB - fait
 	-> Faire la inversed step mechanic - fait
-	-> Utiliser le raycast sweep AABB pour le collide and slide avec projection d'un vecteur sur une surface
-	-> Regarder si le pb des plateformes mouvantes existe toujours et le fix
-	-> Rajouter des vraies trigger box
+	-> Utiliser le raycast sweep AABB pour le collide and slide avec projection d'un vecteur sur une surface - fait
+	-> Nettoyer l'ancien système - fait
+	-> Fix les problèmes des plateformes mouvantes (bug du raycast quand commence dans la collision ?) - fait
+	-> Rajouter des vraies trigger box (le collide and slide fait une collision avec les physic activated bodies) - fait
+	-> Fix le fait de pouvoir passer par dessous les plateformes - fait (à moitié)
+	-> Fix le raycast qui détecte les collisions collées au départ pour enlever le besoin de security dist - echec
+
+~ Petit fix camera lag : ne pas prendre en compte le mouvement de la souris pour le calcul du lag, sinon quand on bouge la cam très vite ça fait un effet de merde.
 
 
 == MOYEN TERME ==

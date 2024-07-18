@@ -14,7 +14,7 @@ class BoxAABBColComp : public CollisionComponent
 {
 public:
 	BoxAABBColComp();
-	BoxAABBColComp(const Box& boxValues, Object* objectToAssociate, bool loadPersistent, std::string collisionChannel, bool scaleBoxSizeWithTransform = true, bool moveBoxCenterWithObjectScale = true);
+	BoxAABBColComp(const Box& boxValues, Object* objectToAssociate, bool loadPersistent, std::string collisionChannel, CollisionType collisionType = CollisionType::Solid, bool scaleBoxSizeWithTransform = true, bool moveBoxCenterWithObjectScale = true);
 
 	void changeBox(const Box& boxValues);
 
@@ -35,10 +35,7 @@ protected:
 	bool resolvePointIntersection(const Vector3& point) const override;
 	bool resolveLineRaycastIntersection(const Ray& raycast, RaycastHitInfos& outHitInfos) const override;
 	bool resolveAABBRaycastIntersection(const Box& raycast) const override;
-	bool resolveAABBSweepRaycastIntersection(const Ray& raycast, const Box& boxRaycast, RaycastHitInfos& outHitInfos) const override;
-	bool resolveCollisionIntersection(const CollisionComponent& otherCol) const override;
-	bool resolveRigidbodyIntersection(const RigidbodyComponent& rigidbody, CollisionResponse& outResponse) const override;
-	bool resolveRigidbodySelfIntersection(const RigidbodyComponent& rigidbody, const RigidbodyComponent& selfRigidbody) const override;
+	bool resolveAABBSweepRaycastIntersection(const Ray& raycast, const Box& boxRaycast, RaycastHitInfos& outHitInfos, bool forCollisionTest) const override;
 
 	void drawDebugMesh(Material& debugMaterial) const override;
 

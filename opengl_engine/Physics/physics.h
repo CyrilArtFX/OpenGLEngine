@@ -46,7 +46,7 @@ public:
 	* For a raycast that don't draw debug, enter 0.0f to drawDebugTime.
 	* For a raycast that never disappear from debug, enter negative value to drawDebugTime.
 	*/
-	static bool AABBSweepRaycast(const Vector3& start, const Vector3& end, const Box& aabbBox, const std::vector<std::string> testChannels = {}, RaycastHitInfos& outHitInfos = RaycastHitInfos::defaultInfos, float drawDebugTime = 5.0f, bool createOnScene = true);
+	static bool AABBSweepRaycast(const Vector3& start, const Vector3& end, const Box& aabbBox, const std::vector<std::string> testChannels = {}, RaycastHitInfos& outHitInfos = RaycastHitInfos::defaultInfos, float drawDebugTime = 5.0f, bool createOnScene = true, bool forCollisionTest = false);
 
 
 

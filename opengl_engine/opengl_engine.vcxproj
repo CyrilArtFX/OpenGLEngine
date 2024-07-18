@@ -161,6 +161,7 @@
     <ClCompile Include="Objects\Lights\spotLight.cpp" />
     <ClCompile Include="Objects\object.cpp" />
     <ClCompile Include="Objects\transform.cpp" />
+    <ClCompile Include="Physics\collisionTests.cpp" />
     <ClCompile Include="Physics\ObjectChannels\collisionChannels.cpp" />
     <ClCompile Include="Physics\physics.cpp" />
     <ClCompile Include="Physics\raycast.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="GameplayStatics\gameplayStatics.h" />
     <ClInclude Include="Physics\AABB\raycastAABB.h" />
     <ClInclude Include="Physics\AABB\raycastAABBSweep.h" />
+    <ClInclude Include="Physics\collisionTests.h" />
     <ClInclude Include="Physics\ObjectChannels\collisionChannels.h" />
     <ClInclude Include="Physics\physicEntity.h" />
     <ClInclude Include="Physics\raycastLine.h" />
