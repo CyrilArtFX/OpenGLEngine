@@ -26,7 +26,7 @@
 	-> Fix le fait de pouvoir passer par dessous les plateformes - fait (à moitié)
 	-> Fix le raycast qui détecte les collisions collées au départ pour enlever le besoin de security dist - echec
 
-~ Petit fix camera lag : ne pas prendre en compte le mouvement de la souris pour le calcul du lag, sinon quand on bouge la cam très vite ça fait un effet de merde.
+~ Petit fix : le gun bougeait bizarre quand on bougeait la souris - fait
 
 
 == MOYEN TERME ==

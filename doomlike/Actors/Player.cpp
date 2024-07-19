@@ -122,7 +122,7 @@ void Player::update(float dt)
 
 
 	Vector2 mouse_delta = Input::GetMouseDelta(); 
-	camera.freecamMouseMovement(mouse_delta.x, mouse_delta.y); 
+	camera.freecamMouseMovement(mouse_delta.x, mouse_delta.y);
 
 	//  camera lag
 	Vector3 target_cam_pos = getPosition() + Vector3{ 0.0f, camHeight, 0.0f }; //  head of the player (where the cam should be)
@@ -171,9 +171,9 @@ void Player::update(float dt)
 
 	//  move gun object to follow player
 	gunObject.setPosition(camPos);
-	gunObject.addPositionRotated(Vector3{ 0.1f, -0.1f, -0.2f }); //  gun offset of camera
 	gunObject.setRotation(camera.getRotation());
 	gunObject.incrementRotation(Quaternion{ gunObject.getUp(), Maths::toRadians(180.0f) }); //  gun is rotated backward by default
+	gunObject.addPositionRotated(Vector3{ 0.1f, -0.1f, -0.2f }); //  gun offset of camera
 }
 
 Vector3 Player::getEyePosition() const
