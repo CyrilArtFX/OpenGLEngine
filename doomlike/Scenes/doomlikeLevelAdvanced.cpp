@@ -56,7 +56,7 @@ void DoomlikeLevelAdvanced::loadScene()
 
 
 	//  trigger zones
-	elevatorUpZone.setup(Vector3{ 2.0f, 1.0f, 0.0f }, Vector3{ 0.2f, 0.2f, 0.2f });
+	elevatorUpZone.setup(Vector3{ 2.5f, 1.0f, 0.0f }, Vector3{ 0.3f, 0.3f, 0.3f });
 	elevatorUpZone.onPlayerEnter.registerObserver(this, Bind_0(&DoomlikeLevelAdvanced::onPlayerEnterElevatorUpZone));
 	enemySpawnZone.setup(Vector3{ 0.0f, 7.5f, 0.0f }, Vector3{ 0.2f, 0.2f, 0.2f });
 	enemySpawnZone.onPlayerEnter.registerObserver(this, Bind_0(&DoomlikeLevelAdvanced::onPlayerEnterEnemySpawnZone));
