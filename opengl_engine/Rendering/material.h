@@ -50,3 +50,13 @@ private:
 	std::unordered_map<std::string, float> floatParameters;
 	std::unordered_map<std::string, Vector3> vector3Parameters;
 };
+
+
+/**
+* Material collections does not "possess" the materials.
+* If a material from the collection is modified (by adding a parameter or a texture for exemple), all collections that include this material will be modified.
+*/
+struct MaterialCollection
+{
+	std::vector<Material*> collection;
+};

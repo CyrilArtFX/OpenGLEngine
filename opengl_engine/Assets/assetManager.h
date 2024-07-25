@@ -121,9 +121,20 @@ public:
 	static Material& CreateMaterial(std::string name, Shader* shaderUsed);
 
 	/**
+	* Stores a material collection.
+	* Name = the name you want to give to this material collection in the asset storage.
+	*/
+	static MaterialCollection& CreateMaterialCollection(std::string name, MaterialCollection materialCollection);
+
+	/**
 	* Retrieve a material from the asset storage.
 	*/
 	static Material& GetMaterial(std::string name);
+
+	/**
+	* Retrieve a material collection from the asset storage.
+	*/
+	static MaterialCollection& GetMaterialCollection(std::string name);
 
 	/**
 	* Delete a material from the asset storage.
@@ -138,5 +149,6 @@ private:
 	static std::unordered_map<std::string, Model> models;
 	static std::unordered_map<std::string, Shader> shaders;
 	static std::unordered_map<std::string, Material> materials;
+	static std::unordered_map<std::string, MaterialCollection> materialsCollection;
 };
 

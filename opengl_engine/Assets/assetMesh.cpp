@@ -87,6 +87,8 @@ Mesh AssetMesh::processMesh(aiMesh* mesh, aiNode* node, const aiScene* scene)
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
 
+    int material = mesh->mMaterialIndex;
+
     //  vertices
     for (int i = 0; i < mesh->mNumVertices; i++)
     {
@@ -138,7 +140,7 @@ Mesh AssetMesh::processMesh(aiMesh* mesh, aiNode* node, const aiScene* scene)
         }
     }
 
-    return Mesh(vertices, indices);
+    return Mesh(vertices, indices, material);
 }
 
 aiMatrix4x4 AssetMesh::retrieveParentTransform(aiNode* node)

@@ -92,19 +92,19 @@ namespace LampsSetup
 
 		AssetManager::LoadMeshCollection("lamp", "doomlike/lamp/lamp.fbx");
 		AssetManager::LoadMeshCollection("chandelier", "doomlike/chandelier/chandelier.fbx");
+		
+		AssetManager::CreateMaterialCollection("lamp", MaterialCollection{ {&AssetManager::GetMaterial("lamp"), &AssetManager::GetMaterial("flame")} });
+		AssetManager::CreateMaterialCollection("chandelier", MaterialCollection{ {
+			&AssetManager::GetMaterial("chandelier_base"),
+			&AssetManager::GetMaterial("chandelier_leather"),
+			&AssetManager::GetMaterial("flame"), //  allows a better visibility than the candle material
+			&AssetManager::GetMaterial("flame")} });
 
 		Model& lamp = AssetManager::CreateModel("lamp");
-		MeshCollection& lamp_meshes = AssetManager::GetMeshCollection("lamp");
-		lamp.addMesh(&lamp_meshes.collection.at(0), &AssetManager::GetMaterial("lamp"));
-		lamp.addMesh(&lamp_meshes.collection.at(1), &AssetManager::GetMaterial("flame"));
+		lamp.addMeshes(&AssetManager::GetMeshCollection("lamp"), &AssetManager::GetMaterialCollection("lamp"));
 
 		Model& chandelier = AssetManager::CreateModel("chandelier");
-		MeshCollection& chandelier_meshes = AssetManager::GetMeshCollection("chandelier");
-		chandelier.addMesh(&chandelier_meshes.collection.at(0), &AssetManager::GetMaterial("chandelier_base"));
-		chandelier.addMesh(&chandelier_meshes.collection.at(1), &AssetManager::GetMaterial("chandelier_base"));
-		chandelier.addMesh(&chandelier_meshes.collection.at(2), &AssetManager::GetMaterial("chandelier_leather"));
-		chandelier.addMesh(&chandelier_meshes.collection.at(3), &AssetManager::GetMaterial("flame")); //  allows a better visibility than the candle material
-		chandelier.addMesh(&chandelier_meshes.collection.at(4), &AssetManager::GetMaterial("flame"));
+		chandelier.addMeshes(&AssetManager::GetMeshCollection("chandelier"), &AssetManager::GetMaterialCollection("chandelier"));
 	}
 
 

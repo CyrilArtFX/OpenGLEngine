@@ -8,6 +8,7 @@ std::unordered_map<std::string, MeshCollection> AssetManager::meshesCollection;
 std::unordered_map<std::string, Model> AssetManager::models;
 std::unordered_map<std::string, Shader> AssetManager::shaders;
 std::unordered_map<std::string, Material> AssetManager::materials;
+std::unordered_map<std::string, MaterialCollection> AssetManager::materialsCollection;
 
 
 void AssetManager::LoadTexture(std::string name, const std::string texturePath, unsigned int glFormat, bool flipVertical)
@@ -207,6 +208,18 @@ Material& AssetManager::CreateMaterial(std::string name, Shader* shaderUsed)
 	return materials[name];
 }
 
+MaterialCollection& AssetManager::CreateMaterialCollection(std::string name, MaterialCollection materialCollection)
+{
+	if (materialsCollection.find(name) != materialsCollection.end())
+	{
+		std::cout << "Asset Manager Error: Tried to create a material collection with a name that already exists. Name is " << name << ".\n";
+		return materialsCollection["null_mat_collection"];
+	}
+
+	materialsCollection.emplace(name, materialCollection);
+	return materialsCollection[name];
+}
+
 Material& AssetManager::GetMaterial(std::string name)
 {
 	if (materials.find(name) == materials.end())
@@ -216,6 +229,17 @@ Material& AssetManager::GetMaterial(std::string name)
 	}
 
 	return materials[name];
+}
+
+MaterialCollection& AssetManager::GetMaterialCollection(std::string name)
+{
+	if (materialsCollection.find(name) == materialsCollection.end())
+	{
+		std::cout << "Asset Manager Error: Tried to get a material collection with a name that doesn't exists. Name is " << name << ".\n";
+		return materialsCollection["null_mat_collection"];
+	}
+
+	return materialsCollection[name];
 }
 
 void AssetManager::DeleteMaterial(std::string name)
@@ -262,4 +286,5 @@ void AssetManager::LoadNullAssets()
 	models.emplace("null_model", Model());
 	shaders.emplace("null_shader", Shader());
 	materials.emplace("null_material", Material());
+	materialsCollection.emplace("null_mat_collection", MaterialCollection{});
 }

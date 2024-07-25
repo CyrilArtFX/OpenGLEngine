@@ -1,6 +1,6 @@
 == COURT TERME ==
 
-~ Utiliser les infos dans les meshs pour sortir les IDs des materiaux et permettre une assignation de materiaux plus poussée et plus simple
+~ Utiliser les infos dans les meshs pour sortir les IDs des materiaux et permettre une assignation de materiaux plus poussée et plus simple - fait
 
 ~ Mettre un système pour détecter automatiquement la profondeur de couleur au chargement de la texture pour éviter les problèmes (si la profondeur de couleur est 24, pas d'alpha (même avec un .png), donc charger avec GL_RGBA va faire un crash) -> regarder comment gregory a fait pour xenity
 
@@ -47,6 +47,8 @@
 == REFLEXIONS / PROBLEMES CONNUS ==
 
 ~ Réfléchir au fonctionnement du load asset des scenes, est-ce qu'il faudrait faire gaffe à l'utilisation de ram et unload genre les textures qui ne sont plus nécessaires ?
+
+~ La manière de stocker les mesh collection ne fait pas de la duplication ? à vérifier
 
 ~ Il peut y avoir des problèmes avec la physique notamment dans les coins ou entre des collisions quand on bouge et qu'on spam le saut, genre on est téléporté à travers d'autres collisions. Source inconnue.
 

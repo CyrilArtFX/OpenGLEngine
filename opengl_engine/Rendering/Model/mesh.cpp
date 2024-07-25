@@ -1,17 +1,17 @@
 #include "mesh.h"
 
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices) : 
-	vertexArray(vertices, indices)
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, int matId) : 
+	vertexArray(vertices, indices), materialIndex(matId)
 {
 }
 
 Mesh::Mesh() :
-	vertexArray()
+	vertexArray(), materialIndex(0)
 {
 }
 
 Mesh::Mesh(const Mesh& other) :
-	vertexArray(other.vertexArray)
+	vertexArray(other.vertexArray), materialIndex(other.materialIndex)
 {
 }
 
