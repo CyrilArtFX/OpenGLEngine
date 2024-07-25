@@ -89,7 +89,7 @@ void DoomlikeLevelAdvanced::onPlayerEnterElevatorUpZone()
 {
 	elevatorUpZone.onPlayerEnter.unregisterObserver(this);
 	elevatorUpZone.disableZone();
-	elevatorTimer = 0.5f;
+	elevatorTimer = 0.1f;
 }
 
 void DoomlikeLevelAdvanced::onPlayerEnterEnemySpawnZone()
