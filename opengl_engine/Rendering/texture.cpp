@@ -5,7 +5,7 @@ Texture::Texture()
 {
 }
 
-void Texture::load(const std::string texturePath, unsigned int glFormat, bool flipVertical)
+void Texture::load(const std::string texturePath, bool flipVertical)
 {
 	std::string tex_path = RESOURCES_PATH + texturePath;
 
@@ -24,11 +24,12 @@ void Texture::load(const std::string texturePath, unsigned int glFormat, bool fl
 	int width, height, nr_channels;
 	stbi_set_flip_vertically_on_load(flipVertical);
 	unsigned char* data = stbi_load(tex_path.c_str(), &width, &height, &nr_channels, 0);
+	unsigned int gl_format = getGlFormat(nr_channels);
 
 	if (data)
 	{
 		//  be careful to not load with GL_RGBA if color depth is 24 (even with png)
-		glTexImage2D(GL_TEXTURE_2D, 0, glFormat, width, height, 0, glFormat, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, gl_format, width, height, 0, gl_format, GL_UNSIGNED_BYTE, data);
 		//  in some cases, the glGenerateMipmap function can cause crashes (it's related to the size of the image, but I don't know exactly what causes this problem)
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
@@ -74,4 +75,22 @@ void Texture::setFilteringParameters(unsigned int minifying, unsigned int magnif
 	use();
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minifying);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magnifying);
+}
+
+unsigned int Texture::getGlFormat(const int nbChannels)
+{
+	switch (nbChannels)
+	{
+	case 1:
+		return GL_RGB8;
+
+	case 2:
+		return GL_RGB16;
+
+	case 3:
+		return GL_RGB;
+
+	default:
+		return GL_RGBA;
+	}
 }

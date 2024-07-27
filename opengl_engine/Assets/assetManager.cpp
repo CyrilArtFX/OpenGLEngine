@@ -11,7 +11,7 @@ std::unordered_map<std::string, Material> AssetManager::materials;
 std::unordered_map<std::string, MaterialCollection> AssetManager::materialsCollection;
 
 
-void AssetManager::LoadTexture(std::string name, const std::string texturePath, unsigned int glFormat, bool flipVertical)
+void AssetManager::LoadTexture(std::string name, const std::string texturePath, bool flipVertical)
 {
 	if (textures.find(name) != textures.end())
 	{
@@ -19,7 +19,7 @@ void AssetManager::LoadTexture(std::string name, const std::string texturePath, 
 		return;
 	}
 	
-	textures.emplace(name, AssetTexture::LoadTexture(texturePath, glFormat, flipVertical));
+	textures.emplace(name, AssetTexture::LoadTexture(texturePath, flipVertical));
 }
 
 Texture& AssetManager::GetTexture(std::string name)
@@ -280,7 +280,7 @@ void AssetManager::DeleteObjects()
 
 void AssetManager::LoadNullAssets()
 {
-	LoadTexture("null_texture", "Default/notexture.png", GL_RGBA, false);
+	LoadTexture("null_texture", "Default/notexture.png", false);
 	meshesSingle.emplace("null_mesh", Mesh());
 	meshesCollection.emplace("null_collection", MeshCollection{});
 	models.emplace("null_model", Model());

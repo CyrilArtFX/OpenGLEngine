@@ -46,14 +46,14 @@ namespace LampsSetup
 {
 	static void SetupLamps(Renderer& rendererRef)
 	{
-		AssetManager::LoadTexture("lamp_diffuse", "doomlike/lamp/lamp_basecolor.png", GL_RGB, false);
-		AssetManager::LoadTexture("lamp_specular", "doomlike/lamp/lamp_roughness.png", GL_RED, false);
+		AssetManager::LoadTexture("lamp_diffuse", "doomlike/lamp/lamp_basecolor.png", false);
+		AssetManager::LoadTexture("lamp_specular", "doomlike/lamp/lamp_roughness.png", false);
 
-		AssetManager::LoadTexture("chandelier_candle_diffuse", "doomlike/chandelier/ch_candles_basecolor.jpeg", GL_RGB, false);
-		AssetManager::LoadTexture("chandelier_base_diffuse", "doomlike/chandelier/ch_chandelier_basecolor.jpeg", GL_RGB, false);
-		AssetManager::LoadTexture("chandelier_base_specular", "doomlike/chandelier/ch_chandelier_roughness.jpeg", GL_RED, false);
-		AssetManager::LoadTexture("chandelier_leather_diffuse", "doomlike/chandelier/ch_leather_basecolor.jpeg", GL_RGB, false);
-		AssetManager::LoadTexture("chandelier_leather_specular", "doomlike/chandelier/ch_leather_roughness.jpeg", GL_RED, false);
+		AssetManager::LoadTexture("chandelier_candle_diffuse", "doomlike/chandelier/ch_candles_basecolor.jpeg", false);
+		AssetManager::LoadTexture("chandelier_base_diffuse", "doomlike/chandelier/ch_chandelier_basecolor.jpeg", false);
+		AssetManager::LoadTexture("chandelier_base_specular", "doomlike/chandelier/ch_chandelier_roughness.jpeg", false);
+		AssetManager::LoadTexture("chandelier_leather_diffuse", "doomlike/chandelier/ch_leather_basecolor.jpeg", false);
+		AssetManager::LoadTexture("chandelier_leather_specular", "doomlike/chandelier/ch_leather_roughness.jpeg", false);
 
 		Material& lamp_mat = AssetManager::CreateMaterial("lamp", &AssetManager::GetShader("lit_object"));
 		lamp_mat.addTexture(&AssetManager::GetTexture("lamp_diffuse"), TextureType::Diffuse);

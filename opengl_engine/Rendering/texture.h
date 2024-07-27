@@ -12,7 +12,7 @@ class Texture
 {
 public:
 	Texture();
-	void load(const std::string texturePath = "Default/notexture.png", unsigned int glFormat = GL_RGBA, bool flipVertical = false);
+	void load(const std::string texturePath = "Default/notexture.png", bool flipVertical = false);
 
 	void use(); //  use (bind) the texture
 
@@ -27,5 +27,7 @@ private:
 	bool loaded = false;
 
 	unsigned int ID = 0; //  texture ID
+
+	unsigned int getGlFormat(const int nbChannels);
 };
 

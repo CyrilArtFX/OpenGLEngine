@@ -18,12 +18,12 @@ void ExpositionGame::loadGameAssets()
 	//  shaders, textures and materials
 	AssetManager::CreateShaderProgram("lit_object", "Lit/object_lit.vert", "Lit/object_lit.frag", ShaderType::Lit);
 
-	AssetManager::LoadTexture("container_diffuse", "container2.png", GL_RGBA, false);
-	AssetManager::LoadTexture("container_specular", "container2_specular.png", GL_RGBA, false);
-	AssetManager::LoadTexture("container_emissive", "matrix.jpg", GL_RGB, false);
+	AssetManager::LoadTexture("container_diffuse", "container2.png", false);
+	AssetManager::LoadTexture("container_specular", "container2_specular.png", false);
+	AssetManager::LoadTexture("container_emissive", "matrix.jpg", false);
 
-	AssetManager::LoadTexture("backpack_diffuse", "backpack/backpack_basecolor.jpg", GL_RGB, false);
-	AssetManager::LoadTexture("backpack_specular", "backpack/backpack_specular.jpg", GL_RED, false);
+	AssetManager::LoadTexture("backpack_diffuse", "backpack/backpack_basecolor.jpg", false);
+	AssetManager::LoadTexture("backpack_specular", "backpack/backpack_specular.jpg", false);
 
 	Material& container_mat = AssetManager::CreateMaterial("container", &AssetManager::GetShader("lit_object"));
 	container_mat.addTexture(&AssetManager::GetTexture("container_diffuse"), TextureType::Diffuse);

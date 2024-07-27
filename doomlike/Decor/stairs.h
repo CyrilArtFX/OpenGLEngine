@@ -55,7 +55,7 @@ namespace StairsSetup
 {
 	static void SetupStairs(Renderer& rendererRef)
 	{
-		AssetManager::LoadTexture("stairs_diffuse", "doomlike/stairs/stairs_basecolor.png", GL_RGB, false);
+		AssetManager::LoadTexture("stairs_diffuse", "doomlike/stairs/stairs_basecolor.png", false);
 
 		Material& stairs_mat = AssetManager::CreateMaterial("stairs", &AssetManager::GetShader("lit_object"));
 		stairs_mat.addTexture(&AssetManager::GetTexture("stairs_diffuse"), TextureType::Diffuse);

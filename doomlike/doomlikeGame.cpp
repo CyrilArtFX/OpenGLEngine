@@ -21,23 +21,23 @@ void DoomlikeGame::loadGameAssets()
 	//  shaders, textures and materials
 	AssetManager::CreateShaderProgram("lit_object", "Lit/object_lit.vert", "Lit/object_lit.frag", Lit);
 
-	AssetManager::LoadTexture("crate_diffuse", "container2.png", GL_RGBA, false);
-	AssetManager::LoadTexture("crate_specular", "container2_specular.png", GL_RGBA, false);
+	AssetManager::LoadTexture("crate_diffuse", "container2.png", false);
+	AssetManager::LoadTexture("crate_specular", "container2_specular.png", false);
 
-	AssetManager::LoadTexture("taxi_diffuse", "taxi/taxi_basecolor.png", GL_RGBA, false);
-	AssetManager::LoadTexture("taxi_emissive", "taxi/taxi_emissive.png", GL_RGB, false);
+	AssetManager::LoadTexture("taxi_diffuse", "taxi/taxi_basecolor.png", false);
+	AssetManager::LoadTexture("taxi_emissive", "taxi/taxi_emissive.png", false);
 
-	AssetManager::LoadTexture("enemy_diffuse", "doomlike/enemy/enemy_basecolor.jpeg", GL_RGB, false);
-	AssetManager::LoadTexture("enemy_specular", "doomlike/enemy/enemy_roughness.jpeg", GL_RGB, false);
-	AssetManager::LoadTexture("enemy_emissive", "doomlike/enemy/enemy_emissive.jpeg", GL_RGB, false);
+	AssetManager::LoadTexture("enemy_diffuse", "doomlike/enemy/enemy_basecolor.jpeg", false);
+	AssetManager::LoadTexture("enemy_specular", "doomlike/enemy/enemy_roughness.jpeg", false);
+	AssetManager::LoadTexture("enemy_emissive", "doomlike/enemy/enemy_emissive.jpeg", false);
 
-	AssetManager::LoadTexture("bullet_diffuse", "doomlike/bullet/bullet_basecolor.png", GL_RGB, false);
-	AssetManager::LoadTexture("bullet_specular", "doomlike/bullet/bullet_roughness.png", GL_RED, false); //  still need the system to automatically analyse texture color depth
-	AssetManager::LoadTexture("bullet_emissive", "doomlike/bullet/bullet_emissive.png", GL_RGBA, false);
+	AssetManager::LoadTexture("bullet_diffuse", "doomlike/bullet/bullet_basecolor.png", false);
+	AssetManager::LoadTexture("bullet_specular", "doomlike/bullet/bullet_roughness.png", false);
+	AssetManager::LoadTexture("bullet_emissive", "doomlike/bullet/bullet_emissive.png", false);
 
-	AssetManager::LoadTexture("gun_diffuse", "doomlike/gun/gun_basecolor.png", GL_RGBA, false);
-	AssetManager::LoadTexture("gun_specular", "doomlike/gun/gun_roughness.png", GL_RGB16, false);
-	AssetManager::LoadTexture("gun_emissive", "doomlike/gun/gun_emissive.png", GL_RED, false);
+	AssetManager::LoadTexture("gun_diffuse", "doomlike/gun/gun_basecolor.png", false);
+	AssetManager::LoadTexture("gun_specular", "doomlike/gun/gun_roughness.png", false);
+	AssetManager::LoadTexture("gun_emissive", "doomlike/gun/gun_emissive.png", false);
 
 	Material& crate_mat = AssetManager::CreateMaterial("crate", &AssetManager::GetShader("lit_object"));
 	crate_mat.addTexture(&AssetManager::GetTexture("crate_diffuse"), TextureType::Diffuse);

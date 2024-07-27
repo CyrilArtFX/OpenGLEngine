@@ -6,7 +6,7 @@
 void DefaultAssets::LoadDefaultAssets(Renderer& renderer)
 {
 	//  default textures (black)
-	AssetManager::LoadTexture("default_black", "Default/black.png", GL_RGBA, false);
+	AssetManager::LoadTexture("default_black", "Default/black.png", false);
 
 
 	//  default meshes (cube and plane)

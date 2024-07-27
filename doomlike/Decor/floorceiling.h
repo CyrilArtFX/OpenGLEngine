@@ -42,13 +42,13 @@ namespace FloorCeilingSetup
 {
 	static void SetupFloorCeilings(Renderer& rendererRef)
 	{
-		AssetManager::LoadTexture("floor_diffuse", "pavement.jpg", GL_RGB, false);
+		AssetManager::LoadTexture("floor_diffuse", "pavement.jpg", false);
 
-		AssetManager::LoadTexture("ceiling_diffuse", "doomlike/tex_woodceiling/woodceiling_basecolor.jpg", GL_RGB, false);
+		AssetManager::LoadTexture("ceiling_diffuse", "doomlike/tex_woodceiling/woodceiling_basecolor.jpg", false);
 		//AssetManager::LoadTexture("ceiling_specular", "doomlike/tex_woodceiling/woodceiling_roughness.jpg", GL_RED, false);
 
-		AssetManager::LoadTexture("floor_wood_diffuse", "doomlike/tex_woodfloor/woodfloor_basecolor.jpg", GL_RGB, false);
-		AssetManager::LoadTexture("floor_wood_specular", "doomlike/tex_woodfloor/woodfloor_specular.jpg", GL_RGB, false);
+		AssetManager::LoadTexture("floor_wood_diffuse", "doomlike/tex_woodfloor/woodfloor_basecolor.jpg", false);
+		AssetManager::LoadTexture("floor_wood_specular", "doomlike/tex_woodfloor/woodfloor_specular.jpg", false);
 
 		Material& floor_mat = AssetManager::CreateMaterial("floor", &AssetManager::GetShader("lit_object"));
 		floor_mat.addTexture(&AssetManager::GetTexture("floor_diffuse"), TextureType::Diffuse);

@@ -26,7 +26,7 @@ public:
 	* Load a texture from file using stbi.
 	* Name = the name you want to give to this texture in the asset storage.
 	*/
-	static void LoadTexture(std::string name, const std::string texturePath, unsigned int glFormat = GL_RGBA, bool flipVertical = false);
+	static void LoadTexture(std::string name, const std::string texturePath, bool flipVertical = false);
 
 	/**
 	* Retrieve a texture from the asset storage.
