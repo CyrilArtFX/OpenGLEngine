@@ -1,5 +1,6 @@
 #include "enemy.h"
-#include <Physics/physics.h>
+#include <ServiceLocator/locator.h>
+#include <ServiceLocator/physics.h>
 #include <Physics/ObjectChannels/collisionChannels.h>
 #include <Assets/assetManager.h>
 
@@ -12,9 +13,11 @@
 
 void Enemy::load()
 {
+	Physics& physics = Locator::getPhysics();
+
 	addModel(&AssetManager::GetModel("enemy"));
 
-	rigidbody = &Physics::CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box{Vector3::zero, Vector3{0.7f, 0.7f, 0.7f}}, this, false, "enemy"), true));
+	rigidbody = &physics.CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box{Vector3::zero, Vector3{0.7f, 0.7f, 0.7f}}, this, false, "enemy"), true));
 	rigidbody->getAssociatedCollisionNonConst().onCollisionIntersect.registerObserver(this, Bind_1(&Enemy::onBodyIntersect));
 	rigidbody->setTestChannels(CollisionChannels::GetRegisteredTestChannel("Enemy"));
 
@@ -40,7 +43,7 @@ void Enemy::updateObject(float dt)
 	if (!playerRef) return;
 
 	RaycastHitInfos out;
-	bool test_player = Physics::LineRaycast(getPosition(), playerRef->getEyePosition(), { "solid", "player" }, out, 0.0f);
+	bool test_player = Locator::getPhysics().LineRaycast(getPosition(), playerRef->getEyePosition(), { "solid", "player" }, out, 0.0f);
 	if (!test_player) return;
 
 	if (out.hitDistance > range) return;

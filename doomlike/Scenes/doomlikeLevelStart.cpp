@@ -3,7 +3,6 @@
 #include <GameplayStatics/gameplayStatics.h>
 
 #include <Assets/assetManager.h>
-#include <Physics/physics.h>
 
 #include <Maths/vector3.h>
 #include <Utils/Color.h>

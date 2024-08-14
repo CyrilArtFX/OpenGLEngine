@@ -2,7 +2,8 @@
 
 #include <Inputs/input.h>
 #include <Maths/maths.h>
-#include <Physics/physics.h>
+#include <ServiceLocator/locator.h>
+#include <ServiceLocator/physics.h>
 #include <Physics/ObjectChannels/collisionChannels.h>
 #include <Assets/assetManager.h>
 #include <Rendering/renderer.h>
@@ -16,7 +17,7 @@
 
 
 Player::Player() :
-	rigidbody(&Physics::CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box::one, this, true, "player", CollisionType::Solid, false), false)))
+	rigidbody(&Locator::getPhysics().CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box::one, this, true, "player", CollisionType::Solid, false), false)))
 {
 	rigidbody->onRigidbodyDelete.registerObserver(this, Bind_0(&Player::onRigidbodyDeleted));
 	rigidbody->onCollisionRepulsed.registerObserver(this, Bind_1(&Player::onCollision));
@@ -51,6 +52,9 @@ void Player::setup(float height, float speed, float jump, float stepHeight, Rend
 
 void Player::update(float dt)
 {
+	Physics& physics = Locator::getPhysics();
+
+
 	//  move player
 	Vector3 velocity_xz = Vector3::zero;
 
@@ -86,7 +90,7 @@ void Player::update(float dt)
 		if (rendererRef)
 		{
 			RaycastHitInfos out;
-			bool ray_hit = Physics::LineRaycast(camera.getPosition(), camera.getPosition() + camera.getForward() * 1000.0f, CollisionChannels::GetRegisteredTestChannel("PlayerEntity"), out, 0.0f);
+			bool ray_hit = physics.LineRaycast(camera.getPosition(), camera.getPosition() + camera.getForward() * 1000.0f, CollisionChannels::GetRegisteredTestChannel("PlayerEntity"), out, 0.0f);
 
 			Quaternion bullet_rotation;
 			Vector3 bullet_direction;
@@ -117,7 +121,7 @@ void Player::update(float dt)
 		Vector3 raycast_end = raycast_start + camera.getForward() * 5.0f;
 
 		//Physics::LineRaycast(raycast_start, raycast_end, CollisionChannels::GetRegisteredTestChannel("PlayerEntity"));
-		Physics::AABBSweepRaycast(raycast_start, raycast_end, Box{ Vector3::zero, Vector3{0.1f, 0.1f, 0.1f} }, CollisionChannels::GetRegisteredTestChannel("PlayerEntity"));
+		physics.AABBSweepRaycast(raycast_start, raycast_end, Box{ Vector3::zero, Vector3{0.1f, 0.1f, 0.1f} }, CollisionChannels::GetRegisteredTestChannel("PlayerEntity"));
 	}
 
 

@@ -5,14 +5,15 @@
 
 #include <Assets/assetManager.h>
 
-#include <Physics/physics.h>
+#include <ServiceLocator/locator.h>
+#include <ServiceLocator/physics.h>
 #include <Physics/ObjectChannels/collisionChannels.h>
 
 #include <iostream>
 
 
 Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_, Renderer* renderer_) :
-	rigidbody(&Physics::CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box{ Vector3::zero, Vector3{0.05f, 0.05f, 0.05f} }, &object, true, "bullet", CollisionType::Solid, false), true)))
+	rigidbody(&Locator::getPhysics().CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box{ Vector3::zero, Vector3{0.05f, 0.05f, 0.05f} }, &object, true, "bullet", CollisionType::Solid, false), true)))
 {
 	lifetime = lifetime_;
 	renderer = renderer_;

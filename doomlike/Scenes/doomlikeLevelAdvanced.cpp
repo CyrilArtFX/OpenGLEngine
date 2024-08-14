@@ -1,7 +1,6 @@
 #include "doomlikeLevelAdvanced.h"
 
 #include <Assets/assetManager.h>
-#include <Physics/physics.h>
 #include <Physics/AABB/boxAABBColComp.h>
 
 #include <Maths/vector3.h>

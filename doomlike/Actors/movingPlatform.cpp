@@ -1,9 +1,12 @@
 #include "movingPlatform.h"
-#include <Physics/physics.h>
+#include <ServiceLocator/locator.h>
+#include <ServiceLocator/physics.h>
 
 void MovingPlatform::load()
 {
-	rigidbody = &Physics::CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box::one, this, false, "solid"), false));
+	Physics& physics = Locator::getPhysics();
+
+	rigidbody = &physics.CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box::one, this, false, "solid"), false));
 
 	setScale(Vector3{ 2.0f, 0.2f, 2.0f });
 }

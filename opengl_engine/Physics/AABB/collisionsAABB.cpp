@@ -1,6 +1,5 @@
 #include "collisionsAABB.h"
 #include <Maths/maths.h>
-#include <Physics/physics.h>
 #include <iostream>
 
 using Maths::max;

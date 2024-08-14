@@ -1,5 +1,5 @@
 #include "rigidbodyComponent.h"
-#include "physics.h"
+#include <ServiceLocator/locator.h>
 #include "ObjectChannels/collisionChannels.h"
 #include <iostream>
 
@@ -15,7 +15,7 @@ RigidbodyComponent::~RigidbodyComponent()
 {
 	if (registered)
 	{
-		Physics::RemoveRigidbody(this);
+		Locator::getPhysics().RemoveRigidbody(this);
 	}
 
 	onRigidbodyDelete.broadcast();
@@ -48,8 +48,10 @@ void RigidbodyComponent::updatePhysicsPreCollision(float dt)
 	//  compute gravity in velocity
 	if (useGravity)
 	{
-		if (gravityVelocity.y > Physics::Gravity * 2.0f)
-			gravityVelocity.y += Physics::Gravity * dt * 2.5f;
+		float gravity_strength = Locator::getPhysics().GetGravityValue();
+
+		if (gravityVelocity.y > gravity_strength * 2.0f)
+			gravityVelocity.y += gravity_strength * dt * 2.5f;
 
 
 		groundedLastFrame = onGround;
@@ -95,7 +97,7 @@ void RigidbodyComponent::updatePhysicsPostCollision(float dt)
 		Box box = associatedCollision->getEncapsulatingBox();
 		RaycastHitInfos out;
 
-		bool hit = Physics::AABBSweepRaycast(box.getCenterPoint() + gravityMovement, box.getCenterPoint() + Vector3{ 0.0f, -stepHeight, 0.0f }, box, { "solid" }, out, 0.0f);
+		bool hit = Locator::getPhysics().AABBSweepRaycast(box.getCenterPoint() + gravityMovement, box.getCenterPoint() + Vector3{ 0.0f, -stepHeight, 0.0f }, box, { "solid" }, out, 0.0f);
 		if (hit)
 		{
 			if (out.hitNormal == Vector3::unitY)
@@ -162,7 +164,7 @@ bool RigidbodyComponent::checkStepMechanic(const CollisionComponent& collidedCom
 		return false; //  continue only if needed step movement is lower than this rigidbody step height
 
 	body_box.setCenterPoint(aimedDestination + Vector3{ 0.0f, stepMovement, 0.0f });
-	if (Physics::AABBRaycast(Vector3::zero, body_box, getTestChannels(), 0.0f, true))
+	if (Locator::getPhysics().AABBRaycast(Vector3::zero, body_box, getTestChannels(), 0.0f, true))
 		return false; //  continue only if step destination is free
 
 	return true;

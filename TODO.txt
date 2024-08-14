@@ -4,8 +4,10 @@
 
 ~ Mettre un système pour détecter automatiquement la profondeur de couleur au chargement de la texture pour éviter les problèmes (si la profondeur de couleur est 24, pas d'alpha (même avec un .png), donc charger avec GL_RGBA va faire un crash) - fait
 
-~ Mettre le renderer en classe statique et donner l'accès aux classes statiques avec le pattern Service Locator
-	(https://drive.google.com/file/d/1W174x3x0xS9eDg1xIUMdzxdSxznol8Zu/view?usp=drive_link page 285)
+~ Utiliser le pattern Service Locator pour les différentes classes statiques importantes - en cours
+  (https://drive.google.com/file/d/1W174x3x0xS9eDg1xIUMdzxdSxznol8Zu/view?usp=drive_link page 285)
+	- la classe Physics - fait
+	- la classe Renderer
 
 
 == MOYEN TERME ==

@@ -1,6 +1,7 @@
 #include "doomlikeLevelDebug.h"
-#include <Physics/physics.h>
 #include <Physics/AABB/boxAABBColComp.h>
+#include <ServiceLocator/locator.h>
+#include <ServiceLocator/physics.h>
 #include <Decor/floorceiling.h>
 #include <Decor/stairs.h>
 #include <Inputs/Input.h>
@@ -65,13 +66,15 @@ void DoomlikeLevelDebug::loadScene()
 
 
 	//  collisions
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate1, false, "solid"));
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate2, false, "solid"));
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate3, false, "solid"));
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate4, false, "solid"));
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate5, false, "solid"));
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &stair1, false, "solid"));
-	Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, &stair2, false, "solid"));
+	Physics& physics = Locator::getPhysics();
+
+	physics.CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate1, false, "solid"));
+	physics.CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate2, false, "solid"));
+	physics.CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate3, false, "solid"));
+	physics.CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate4, false, "solid"));
+	physics.CreateCollisionComponent(new BoxAABBColComp(Box::one, &crate5, false, "solid"));
+	physics.CreateCollisionComponent(new BoxAABBColComp(Box::one, &stair1, false, "solid"));
+	physics.CreateCollisionComponent(new BoxAABBColComp(Box::one, &stair2, false, "solid"));
 
 
 	//  lights

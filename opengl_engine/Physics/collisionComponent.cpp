@@ -1,5 +1,5 @@
 #include "collisionComponent.h"
-#include "physics.h"
+#include <ServiceLocator/locator.h>
 #include "rigidbodyComponent.h"
 #include "ObjectChannels/collisionChannels.h"
 #include <Rendering/material.h>
@@ -9,7 +9,7 @@ CollisionComponent::~CollisionComponent()
 {
 	if (registered)
 	{
-		Physics::RemoveCollision(this);
+		Locator::getPhysics().RemoveCollision(this);
 	}
 
 	onCollisionDelete.broadcast();

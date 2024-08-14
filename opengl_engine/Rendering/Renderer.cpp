@@ -1,6 +1,6 @@
 #include "renderer.h"
 #include <Assets/assetManager.h>
-#include <Physics/physics.h>
+#include <ServiceLocator/locator.h>
 
 #include <iostream>
 #include <algorithm>
@@ -109,7 +109,7 @@ void Renderer::draw()
 
 		debug_collision_mat.use();
 
-		Physics::DrawCollisionsDebug(debug_collision_mat);
+		Locator::getPhysics().DrawCollisionsDebug(debug_collision_mat);
 	}
 }
 

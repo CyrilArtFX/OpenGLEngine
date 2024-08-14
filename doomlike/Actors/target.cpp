@@ -1,10 +1,13 @@
 #include "target.h"
-#include <Physics/physics.h>
+#include <ServiceLocator/locator.h>
+#include <ServiceLocator/physics.h>
 #include <iostream>
 
 void Target::load()
 {
-	collision = static_cast<BoxAABBColComp*>(&Physics::CreateCollisionComponent(new BoxAABBColComp(Box::one, this, false, "solid")));
+	Physics& physics = Locator::getPhysics();
+
+	collision = static_cast<BoxAABBColComp*>(&physics.CreateCollisionComponent(new BoxAABBColComp(Box::one, this, false, "solid")));
 	
 	collision->onRaycastIntersect.registerObserver(this, Bind_2(&Target::onIntersectedByRaycast));
 }
