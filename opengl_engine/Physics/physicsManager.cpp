@@ -1,4 +1,4 @@
-#include "physics.h"
+#include "physicsManager.h"
 
 #include "raycastLine.h"
 #include "AABB/raycastAABB.h"
@@ -11,19 +11,12 @@
 #include <algorithm>
 
 
-std::vector<CollisionComponent*> Physics::collisionsComponents;
-std::vector<RigidbodyComponent*> Physics::rigidbodiesComponents;
-std::vector<Raycast*> Physics::raycasts;
-
-const float Physics::Gravity = -9.8f;
-
-
 
 // ===============================================
 //  ---- Collisions & Rigidbodies management ----
 // ===============================================
 
-CollisionComponent& Physics::CreateCollisionComponent(CollisionComponent* colComp)
+CollisionComponent& PhysicsManager::CreateCollisionComponent(CollisionComponent* colComp)
 {
 	//std::cout << "PHYSICS_INFO: Create a collision.\n";
 	collisionsComponents.push_back(colComp);
@@ -33,7 +26,7 @@ CollisionComponent& Physics::CreateCollisionComponent(CollisionComponent* colCom
 	return col;
 }
 
-void Physics::RemoveCollision(CollisionComponent* colComp)
+void PhysicsManager::RemoveCollision(CollisionComponent* colComp)
 {
 	auto iter = std::find(collisionsComponents.begin(), collisionsComponents.end(), colComp);
 	if (iter == collisionsComponents.end())
@@ -50,7 +43,7 @@ void Physics::RemoveCollision(CollisionComponent* colComp)
 	//std::cout << "PHYSICS_INFO: Successfully removed a collision.\n";
 }
 
-RigidbodyComponent& Physics::CreateRigidbodyComponent(RigidbodyComponent* rigidbodyComp)
+RigidbodyComponent& PhysicsManager::CreateRigidbodyComponent(RigidbodyComponent* rigidbodyComp)
 {
 	//std::cout << "PHYSICS_INFO: Create a rigidbody.\n";
 	rigidbodiesComponents.push_back(rigidbodyComp);
@@ -60,7 +53,7 @@ RigidbodyComponent& Physics::CreateRigidbodyComponent(RigidbodyComponent* rigidb
 	return rigidbody;
 }
 
-void Physics::RemoveRigidbody(RigidbodyComponent* rigidbodyComp)
+void PhysicsManager::RemoveRigidbody(RigidbodyComponent* rigidbodyComp)
 {
 	auto iter = std::find(rigidbodiesComponents.begin(), rigidbodiesComponents.end(), rigidbodyComp);
 	if (iter == rigidbodiesComponents.end())
@@ -83,7 +76,7 @@ void Physics::RemoveRigidbody(RigidbodyComponent* rigidbodyComp)
 //  ---------------- Raycasts -------------------
 // ===============================================
 
-bool Physics::LineRaycast(const Vector3& start, const Vector3& end, const std::vector<std::string> testChannels, RaycastHitInfos& outHitInfos, float drawDebugTime, bool createOnScene)
+bool PhysicsManager::LineRaycast(const Vector3& start, const Vector3& end, const std::vector<std::string> testChannels, RaycastHitInfos& outHitInfos, float drawDebugTime, bool createOnScene)
 {
 	outHitInfos = RaycastHitInfos();
 
@@ -155,7 +148,7 @@ bool Physics::LineRaycast(const Vector3& start, const Vector3& end, const std::v
 	}
 }
 
-bool Physics::AABBRaycast(const Vector3& location, const Box& aabbBox, const std::vector<std::string> testChannels, float drawDebugTime, bool createOnScene)
+bool PhysicsManager::AABBRaycast(const Vector3& location, const Box& aabbBox, const std::vector<std::string> testChannels, float drawDebugTime, bool createOnScene)
 {
 	bool hit = false;
 
@@ -238,7 +231,7 @@ bool Physics::AABBRaycast(const Vector3& location, const Box& aabbBox, const std
 	}
 }
 
-bool Physics::AABBSweepRaycast(const Vector3& start, const Vector3& end, const Box& aabbBox, const std::vector<std::string> testChannels, RaycastHitInfos& outHitInfos, float drawDebugTime, bool createOnScene, bool forCollisionTest)
+bool PhysicsManager::AABBSweepRaycast(const Vector3& start, const Vector3& end, const Box& aabbBox, const std::vector<std::string> testChannels, RaycastHitInfos& outHitInfos, float drawDebugTime, bool createOnScene, bool forCollisionTest)
 {
 	outHitInfos = RaycastHitInfos();
 
@@ -317,12 +310,12 @@ bool Physics::AABBSweepRaycast(const Vector3& start, const Vector3& end, const B
 //  ----------------- Update --------------------
 // ===============================================
 
-void Physics::InitialisePhysics()
+void PhysicsManager::InitialisePhysics()
 {
 	CollisionChannels::RegisterTestChannel("TestEverything", { CollisionChannels::DefaultEverything() });
 }
 
-void Physics::UpdatePhysics(float dt)
+void PhysicsManager::UpdatePhysics(float dt)
 {
 	//  reset the 'intersected last frame' parameter
 	for (auto& col : collisionsComponents)
@@ -430,7 +423,7 @@ void Physics::UpdatePhysics(float dt)
 }
 
 
-void Physics::DrawCollisionsDebug(Material& debugMaterial)
+void PhysicsManager::DrawCollisionsDebug(Material& debugMaterial)
 {
 	for (auto& col : collisionsComponents)
 	{
@@ -455,7 +448,7 @@ void Physics::DrawCollisionsDebug(Material& debugMaterial)
 //  ------------- Clear Physics -----------------
 // ===============================================
 
-void Physics::ClearAllCollisions(bool engineClosing)
+void PhysicsManager::ClearAllCollisions(bool engineClosing)
 {
 	if (engineClosing) 
 	{
@@ -529,4 +522,9 @@ void Physics::ClearAllCollisions(bool engineClosing)
 	}
 	raycasts.clear();
 	raycasts = game_raycasts;
+}
+
+float PhysicsManager::GetGravityValue()
+{
+	return gravity;
 }

@@ -2,7 +2,8 @@
 #include <Assets/assetManager.h>
 #include <Assets/defaultAssets.h>
 #include <Inputs/input.h>
-#include <Physics/physics.h>
+#include <ServiceLocator/locator.h>
+#include <Physics/physicsManager.h>
 #include <GameplayStatics/gameplayStatics.h>
 
 
@@ -73,6 +74,12 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	); //  link mouse button callback function
 
 
+	//  initialize service locator
+	std::cout << "Initializing service locator...";
+	Locator::initialize();
+	std::cout << " Done.\n";
+
+
 	//  create renderer
 	std::cout << "Initializing renderer...";
 	renderer.createRenderer(Color::black, Vector2Int{ window.getWidth(), window.getHeigth() });
@@ -98,7 +105,8 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 
 	//  initialize physics
 	std::cout << "Initializing physics...";
-	Physics::InitialisePhysics();
+	Physics& physics = Locator::providePhysics(new PhysicsManager());
+	physics.InitialisePhysics();
 	std::cout << " Done.\n";
 
 
@@ -146,7 +154,7 @@ void Engine::run()
 
 		if (!gamePaused || (gamePaused && oneFrame))
 		{
-			Physics::UpdatePhysics(deltaTime);
+			Locator::getPhysics().UpdatePhysics(deltaTime);
 
 			if (game)
 			{

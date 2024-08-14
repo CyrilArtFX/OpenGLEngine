@@ -163,7 +163,7 @@
     <ClCompile Include="Objects\transform.cpp" />
     <ClCompile Include="Physics\collisionTests.cpp" />
     <ClCompile Include="Physics\ObjectChannels\collisionChannels.cpp" />
-    <ClCompile Include="Physics\physics.cpp" />
+    <ClCompile Include="Physics\physicsManager.cpp" />
     <ClCompile Include="Physics\raycast.cpp" />
     <ClCompile Include="Physics\raycastLine.cpp" />
     <ClCompile Include="Physics\rigidbodyComponent.cpp" />
@@ -179,6 +179,7 @@
     <ClCompile Include="Rendering\shader.cpp" />
     <ClCompile Include="Rendering\texture.cpp" />
     <ClCompile Include="Core\window.cpp" />
+    <ClCompile Include="ServiceLocator\locator.cpp" />
     <ClCompile Include="Utils\color.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -220,7 +221,7 @@
     <ClInclude Include="Objects\Lights\spotLight.h" />
     <ClInclude Include="Objects\object.h" />
     <ClInclude Include="Objects\transform.h" />
-    <ClInclude Include="Physics\physics.h" />
+    <ClInclude Include="Physics\physicsManager.h" />
     <ClInclude Include="Physics\raycast.h" />
     <ClInclude Include="Rendering\camera.h" />
     <ClInclude Include="Rendering\Debug\point.h" />
@@ -232,6 +233,9 @@
     <ClInclude Include="Rendering\shader.h" />
     <ClInclude Include="Rendering\texture.h" />
     <ClInclude Include="Core\window.h" />
+    <ClInclude Include="ServiceLocator\locator.h" />
+    <ClInclude Include="ServiceLocator\nullPhysics.h" />
+    <ClInclude Include="ServiceLocator\physics.h" />
     <ClInclude Include="Utils\color.h" />
     <ClInclude Include="Utils\defines.h" />
   </ItemGroup>

@@ -1,5 +1,5 @@
 #include "scene.h"
-#include <Physics/physics.h>
+#include <ServiceLocator/locator.h>
 #include <algorithm>
 #include <iostream>
 
@@ -13,7 +13,7 @@ void Scene::load(Renderer* renderer_)
 void Scene::unload(bool exitGame)
 {
 	//  TODO: remove this when a proper integrations of collisions as components is done
-	Physics::ClearAllCollisions(exitGame);
+	Locator::getPhysics().ClearAllCollisions(exitGame);
 
 	for (auto object : sceneregisteredObjects)
 	{
