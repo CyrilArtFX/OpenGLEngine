@@ -7,12 +7,11 @@
 #include <Physics/rigidbodyComponent.h>
 #include <Events/observer.h>
 
-class Renderer;
 
 class Bullet : private Observer
 {
 public:
-	Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_, Renderer* renderer_);
+	Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_);
 
 	void destroy();
 
@@ -26,7 +25,6 @@ public:
 
 private:
 	float lifetime{ 0.0f };
-	Renderer* renderer{ nullptr };
 
 	Object object;
 

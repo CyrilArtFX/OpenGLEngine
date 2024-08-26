@@ -6,7 +6,7 @@
 #include <ServiceLocator/physics.h>
 #include <Physics/ObjectChannels/collisionChannels.h>
 #include <Assets/assetManager.h>
-#include <Rendering/renderer.h>
+#include <ServiceLocator/locator.h>
 
 #include <GameplayStatics/gameplayStatics.h>
 #include <doomlikeGame.h>
@@ -23,17 +23,18 @@ Player::Player() :
 	rigidbody->onCollisionRepulsed.registerObserver(this, Bind_1(&Player::onCollision));
 }
 
-void Player::setup(float height, float speed, float jump, float stepHeight, Renderer* renderer)
+void Player::setup(float height, float speed, float jump, float stepHeight)
 {
 	camHeight = height;
 	moveSpeed = speed;
 	jumpForce = jump;
-	rendererRef = renderer;
+
+	Renderer& renderer = Locator::getRenderer();
 
 	rigidbody->setStepHeight(stepHeight);
 
 	gunObject.addModel(&AssetManager::GetModel("gun"));
-	rendererRef->addObject(&gunObject);
+	renderer.AddObject(&gunObject);
 	gunObject.setScale(0.1f);
 
 	setPosition(0.0f, 0.0f, 0.0f);
@@ -87,30 +88,23 @@ void Player::update(float dt)
 	//  shoot
 	if (Input::IsKeyPressed(GLFW_MOUSE_BUTTON_LEFT))
 	{
-		if (rendererRef)
+		RaycastHitInfos out;
+		bool ray_hit = physics.LineRaycast(camera.getPosition(), camera.getPosition() + camera.getForward() * 1000.0f, CollisionChannels::GetRegisteredTestChannel("PlayerEntity"), out, 0.0f);
+
+		Quaternion bullet_rotation;
+		Vector3 bullet_direction;
+		if (!ray_hit)
 		{
-			RaycastHitInfos out;
-			bool ray_hit = physics.LineRaycast(camera.getPosition(), camera.getPosition() + camera.getForward() * 1000.0f, CollisionChannels::GetRegisteredTestChannel("PlayerEntity"), out, 0.0f);
-
-			Quaternion bullet_rotation;
-			Vector3 bullet_direction;
-			if (!ray_hit)
-			{
-				bullet_rotation = Quaternion::concatenate(camera.getRotation(), Quaternion{ camera.getUp(), Maths::toRadians(90.0f) });
-				bullet_direction = camera.getForward();
-			}
-			else
-			{
-				bullet_rotation = Quaternion::createLookAt(gunObject.getPosition(), out.hitLocation, Vector3::unitY);
-				bullet_direction = Vector3::normalize(out.hitLocation - gunObject.getPosition());
-			}
-
-			bullets.push_back(std::make_unique<Bullet>(gunObject.getPosition(), bullet_rotation, bullet_direction, shootVelocity, bulletLifeTime, rendererRef));
+			bullet_rotation = Quaternion::concatenate(camera.getRotation(), Quaternion{ camera.getUp(), Maths::toRadians(90.0f) });
+			bullet_direction = camera.getForward();
 		}
 		else
 		{
-			std::cout << "Doomlike game error : Player has not his renderer ref setup !\n";
+			bullet_rotation = Quaternion::createLookAt(gunObject.getPosition(), out.hitLocation, Vector3::unitY);
+			bullet_direction = Vector3::normalize(out.hitLocation - gunObject.getPosition());
 		}
+
+		bullets.push_back(std::make_unique<Bullet>(gunObject.getPosition(), bullet_rotation, bullet_direction, shootVelocity, bulletLifeTime));
 	}
 
 

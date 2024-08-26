@@ -14,7 +14,9 @@ DoomlikeLevelDebug::DoomlikeLevelDebug()
 
 void DoomlikeLevelDebug::loadScene()
 {
-	renderer->setClearColor(Color{ 50, 75, 75, 255 });
+	Renderer& renderer = Locator::getRenderer();
+
+	renderer.SetClearColor(Color{ 50, 75, 75, 255 });
 
 
 	//  objects

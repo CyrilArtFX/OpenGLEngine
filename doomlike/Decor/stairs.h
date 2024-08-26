@@ -2,7 +2,7 @@
 #include <Objects/object.h>
 
 #include <Assets/assetManager.h>
-#include <Rendering/renderer.h>
+#include <ServiceLocator/locator.h>
 
 
 namespace Stairs
@@ -53,8 +53,10 @@ namespace Stairs
 
 namespace StairsSetup
 {
-	static void SetupStairs(Renderer& rendererRef)
+	static void SetupStairs()
 	{
+		Renderer& renderer = Locator::getRenderer();
+
 		AssetManager::LoadTexture("stairs_diffuse", "doomlike/stairs/stairs_basecolor.png", false);
 
 		Material& stairs_mat = AssetManager::CreateMaterial("stairs", &AssetManager::GetShader("lit_object"));
@@ -64,7 +66,7 @@ namespace StairsSetup
 		stairs_mat.addParameter("material.shininess", 32.0f);
 		//stairs_mat.addParameter("beta_prevent_tex_scaling", false);
 
-		rendererRef.addMaterial(&AssetManager::GetMaterial("stairs"));
+		renderer.AddMaterial(&AssetManager::GetMaterial("stairs"));
 
 		AssetManager::LoadMeshCollection("stairs", "doomlike/stairs/stairs.fbx");
 
@@ -73,8 +75,10 @@ namespace StairsSetup
 	}
 
 
-	static void ReleaseStairs(Renderer& rendererRef)
+	static void ReleaseStairs()
 	{
-		rendererRef.removeMaterial(&AssetManager::GetMaterial("stairs"));
+		Renderer& renderer = Locator::getRenderer();
+
+		renderer.RemoveMaterial(&AssetManager::GetMaterial("stairs"));
 	}
 };

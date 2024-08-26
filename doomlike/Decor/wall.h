@@ -2,7 +2,7 @@
 #include <Objects/object.h>
 
 #include <Assets/assetManager.h>
-#include <Rendering/renderer.h>
+#include <ServiceLocator/locator.h>
 
 
 namespace Wall
@@ -47,8 +47,10 @@ namespace Wall
 
 namespace WallSetup
 { 
-	static void SetupWalls(Renderer& rendererRef)
+	static void SetupWalls()
 	{
+		Renderer& renderer = Locator::getRenderer();
+
 		AssetManager::LoadTexture("wall_diffuse", "doomlike/tex_stonewall/stonewall_basecolor.jpg", false);
 		AssetManager::LoadTexture("wall_specular", "doomlike/tex_stonewall/stonewall_specular.jpg", false);
 
@@ -59,15 +61,17 @@ namespace WallSetup
 		wall_mat.addParameter("material.shininess", 32.0f);
 		wall_mat.addParameter("beta_prevent_tex_scaling", true);
 
-		rendererRef.addMaterial(&AssetManager::GetMaterial("wall"));
+		renderer.AddMaterial(&AssetManager::GetMaterial("wall"));
 
 		AssetManager::CreateModel("wall");
 		AssetManager::GetModel("wall").addMesh(&AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("wall"));
 	}
 
 
-	static void ReleaseWalls(Renderer& rendererRef)
+	static void ReleaseWalls()
 	{
-		rendererRef.removeMaterial(&AssetManager::GetMaterial("wall"));
+		Renderer& renderer = Locator::getRenderer();
+
+		renderer.RemoveMaterial(&AssetManager::GetMaterial("wall"));
 	}
 };

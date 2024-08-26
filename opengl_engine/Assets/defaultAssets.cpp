@@ -1,10 +1,12 @@
 #include "defaultAssets.h"
 #include "assetManager.h"
-#include <Rendering/renderer.h>
+#include <ServiceLocator/locator.h>
 #include <Utils/color.h>
 
-void DefaultAssets::LoadDefaultAssets(Renderer& renderer)
+void DefaultAssets::LoadDefaultAssets()
 {
+	Renderer& renderer = Locator::getRenderer();
+
 	//  default textures (black)
 	AssetManager::LoadTexture("default_black", "Default/black.png", false);
 
@@ -75,11 +77,11 @@ void DefaultAssets::LoadDefaultAssets(Renderer& renderer)
 
 	Material& black_emissive_mat = AssetManager::CreateMaterial("default_black_emissive", &AssetManager::GetShader("flat_emissive"));
 	black_emissive_mat.addParameter("emissive", Color::black);
-	renderer.addMaterial(&black_emissive_mat);
+	renderer.AddMaterial(&black_emissive_mat);
 
 	Material& white_emissive_mat = AssetManager::CreateMaterial("default_white_emissive", &AssetManager::GetShader("flat_emissive"));
 	white_emissive_mat.addParameter("emissive", Color::white);
-	renderer.addMaterial(&white_emissive_mat);
+	renderer.AddMaterial(&white_emissive_mat);
 }
 
 

@@ -3,6 +3,7 @@
 #include <GameplayStatics/gameplayStatics.h>
 
 #include <Assets/assetManager.h>
+#include <ServiceLocator/locator.h>
 
 #include <Maths/vector3.h>
 #include <Utils/Color.h>
@@ -20,7 +21,9 @@ DoomlikeLevelStart::DoomlikeLevelStart()
 
 void DoomlikeLevelStart::loadScene()
 {
-	renderer->setClearColor(Color{ 50, 75, 75, 255 });
+	Renderer& renderer = Locator::getRenderer();
+
+	renderer.SetClearColor(Color{ 50, 75, 75, 255 });
 
 	//  floors, ceilings, walls and stairs
 	registerObject(new FloorObj(Vector3{ 0.0f, 0.0f,  2.5f }, true)).setScale(Vector3{ 5.0f, 1.0f, 10.0f });

@@ -54,7 +54,7 @@
     <ClCompile Include="Objects\object.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Rendering\renderer.cpp">
+    <ClCompile Include="Rendering\rendererOpenGL.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Utils\color.cpp">
@@ -203,7 +203,7 @@
     <ClInclude Include="Rendering\material.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering\renderer.h">
+    <ClInclude Include="Rendering\rendererOpenGL.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Lights\light.h">
@@ -324,6 +324,12 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="ServiceLocator\nullPhysics.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceLocator\renderer.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceLocator\nullRenderer.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

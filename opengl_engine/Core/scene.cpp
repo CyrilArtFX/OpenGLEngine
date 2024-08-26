@@ -1,12 +1,12 @@
 #include "scene.h"
 #include <ServiceLocator/locator.h>
+#include <Objects/object.h>
+#include <Objects/Lights/light.h>
 #include <algorithm>
 #include <iostream>
 
-void Scene::load(Renderer* renderer_) 
+void Scene::load() 
 { 
-	renderer = renderer_; 
-
 	loadScene();
 }
 
@@ -15,15 +15,17 @@ void Scene::unload(bool exitGame)
 	//  TODO: remove this when a proper integrations of collisions as components is done
 	Locator::getPhysics().ClearAllCollisions(exitGame);
 
+	Renderer& renderer = Locator::getRenderer();
+
 	for (auto object : sceneregisteredObjects)
 	{
-		renderer->removeObject(object);
+		renderer.RemoveObject(object);
 	}
 	sceneregisteredObjects.clear();
 
 	for (auto light : sceneregisteredLights)
 	{
-		renderer->removeLight(light);
+		renderer.RemoveLight(light);
 	}
 	sceneregisteredLights.clear();
 
@@ -55,14 +57,14 @@ Object& Scene::registerObject(Object* object)
 {
 	sceneregisteredObjects.push_back(object);
 	object->load();
-	renderer->addObject(object);
+	Locator::getRenderer().AddObject(object);
 	return *sceneregisteredObjects.back();
 }
 
 Light& Scene::registerLight(Light* light)
 {
 	sceneregisteredLights.push_back(light);
-	renderer->addLight(light);
+	Locator::getRenderer().AddLight(light);
 	return *sceneregisteredLights.back();
 }
 
@@ -75,7 +77,7 @@ void Scene::unregisterObject(Object* object)
 		return;
 	}
 
-	renderer->removeObject(object);
+	Locator::getRenderer().RemoveObject(object);
 
 	sceneregisteredObjects.erase(iter);
 }
@@ -89,7 +91,7 @@ void Scene::unregisterLight(Light* light)
 		return;
 	}
 
-	renderer->removeLight(light);
+	Locator::getRenderer().RemoveLight(light);
 
 	sceneregisteredLights.erase(iter);
 }

@@ -13,13 +13,12 @@
 
 #include <vector>
 
-class Renderer;
 
 class Player : public Object, public Observer
 {
 public:
 	Player();
-	void setup(float height, float speed, float jump, float stepHeight, Renderer* renderer);
+	void setup(float height, float speed, float jump, float stepHeight);
 
 	void update(float dt);
 
@@ -40,8 +39,6 @@ public:
 
 private:
 	Camera camera;
-
-	Renderer* rendererRef{ nullptr };
 
 	float camHeight{ 0.0f };
 	float moveSpeed{ 0.0f };

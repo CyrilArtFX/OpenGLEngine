@@ -1,5 +1,4 @@
 #pragma once
-#include <Rendering/renderer.h>
 #include "scene.h"
 
 class Camera;
@@ -9,7 +8,7 @@ class Game
 public:
 	virtual ~Game() {}
 
-	void load(Renderer* renderer_);
+	void load();
 	void unload();
 
 	virtual void updateGame(float dt) = 0; //  updateGame come before updateScene during a frame
@@ -28,7 +27,6 @@ protected:
 	void loadScene(Scene* scene);
 	void unloadActiveScene(bool loadNewScene);
 
-	Renderer* renderer{ nullptr };
 	Scene* activeScene{ nullptr };
 
 private:

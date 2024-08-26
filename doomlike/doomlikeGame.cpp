@@ -1,6 +1,7 @@
 #include "doomlikeGame.h"
 #include <Assets/defaultAssets.h>
 #include <Assets/assetManager.h>
+#include <ServiceLocator/locator.h>
 #include <Physics/ObjectChannels/collisionChannels.h>
 #include <Inputs/Input.h>
 #include <GameplayStatics/gameplayStatics.h>
@@ -16,7 +17,9 @@ DoomlikeGame::DoomlikeGame()
 
 void DoomlikeGame::loadGameAssets()
 {
-	DefaultAssets::LoadDefaultAssets(*renderer);
+	Renderer& renderer = Locator::getRenderer();
+
+	DefaultAssets::LoadDefaultAssets();
 
 	//  shaders, textures and materials
 	AssetManager::CreateShaderProgram("lit_object", "Lit/object_lit.vert", "Lit/object_lit.frag", Lit);
@@ -69,12 +72,12 @@ void DoomlikeGame::loadGameAssets()
 	gun_mat.addTexture(&AssetManager::GetTexture("gun_emissive"), TextureType::Emissive);
 	gun_mat.addParameter("material.shininess", 32.0f);
 
-	renderer->addMaterial(&AssetManager::GetMaterial("crate"));
-	renderer->addMaterial(&AssetManager::GetMaterial("taxi"));
-	renderer->addMaterial(&AssetManager::GetMaterial("gun"));
-	renderer->addMaterial(&AssetManager::GetMaterial("enemy"));
-	renderer->addMaterial(&AssetManager::GetMaterial("bullet"));
-	renderer->addMaterial(&AssetManager::GetMaterial("gun"));
+	renderer.AddMaterial(&AssetManager::GetMaterial("crate"));
+	renderer.AddMaterial(&AssetManager::GetMaterial("taxi"));
+	renderer.AddMaterial(&AssetManager::GetMaterial("gun"));
+	renderer.AddMaterial(&AssetManager::GetMaterial("enemy"));
+	renderer.AddMaterial(&AssetManager::GetMaterial("bullet"));
+	renderer.AddMaterial(&AssetManager::GetMaterial("gun"));
 
 
 	//  meshes and models
@@ -100,10 +103,10 @@ void DoomlikeGame::loadGameAssets()
 
 
 	//  decor setups
-	WallSetup::SetupWalls(*renderer);
-	FloorCeilingSetup::SetupFloorCeilings(*renderer);
-	StairsSetup::SetupStairs(*renderer);
-	LampsSetup::SetupLamps(*renderer);
+	WallSetup::SetupWalls();
+	FloorCeilingSetup::SetupFloorCeilings();
+	StairsSetup::SetupStairs();
+	LampsSetup::SetupLamps();
 
 
 	//  object channels
@@ -113,8 +116,8 @@ void DoomlikeGame::loadGameAssets()
 
 void DoomlikeGame::loadGame()
 {
-	player.setup(1.5f, 7.0f, 7.0f, 0.3f, renderer);
-	renderer->setCamera(&player.getCamera());
+	player.setup(1.5f, 7.0f, 7.0f, 0.3f);
+	Locator::getRenderer().SetCamera(&player.getCamera());
 
 	loadLevel(2);
 }
@@ -200,17 +203,19 @@ Camera& DoomlikeGame::getActiveCamera()
 
 void DoomlikeGame::unloadGame()
 {
+	Renderer& renderer = Locator::getRenderer();
+
 	player.unload();
 
-	renderer->removeMaterial(&AssetManager::GetMaterial("crate"));
-	renderer->removeMaterial(&AssetManager::GetMaterial("taxi"));
-	renderer->removeMaterial(&AssetManager::GetMaterial("gun"));
-	renderer->removeMaterial(&AssetManager::GetMaterial("enemy"));
-	renderer->removeMaterial(&AssetManager::GetMaterial("bullet"));
-	renderer->removeMaterial(&AssetManager::GetMaterial("gun"));
+	renderer.RemoveMaterial(&AssetManager::GetMaterial("crate"));
+	renderer.RemoveMaterial(&AssetManager::GetMaterial("taxi"));
+	renderer.RemoveMaterial(&AssetManager::GetMaterial("gun"));
+	renderer.RemoveMaterial(&AssetManager::GetMaterial("enemy"));
+	renderer.RemoveMaterial(&AssetManager::GetMaterial("bullet"));
+	renderer.RemoveMaterial(&AssetManager::GetMaterial("gun"));
 
-	WallSetup::ReleaseWalls(*renderer);
-	FloorCeilingSetup::ReleaseFloorCeilings(*renderer);
-	StairsSetup::ReleaseStairs(*renderer);
-	LampsSetup::ReleaseLamps(*renderer);
+	WallSetup::ReleaseWalls();
+	FloorCeilingSetup::ReleaseFloorCeilings();
+	StairsSetup::ReleaseStairs();
+	LampsSetup::ReleaseLamps();
 }

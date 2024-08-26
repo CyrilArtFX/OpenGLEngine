@@ -1,14 +1,12 @@
 #pragma once
 
-class Renderer;
-
 class DefaultAssets
 {
 public:
 	/**
 	* Load every default assets (textures, meshes, materials)
 	*/
-	static void LoadDefaultAssets(Renderer& renderer);
+	static void LoadDefaultAssets();
 
 	/**
 	* Load assets that are needed for debug mode

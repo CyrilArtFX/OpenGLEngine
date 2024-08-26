@@ -1,4 +1,5 @@
 #include "expositionGame.h"
+#include <ServiceLocator/locator.h>
 #include <Assets/defaultAssets.h>
 #include <Assets/assetManager.h>
 
@@ -13,7 +14,9 @@ void ExpositionGame::updateGame(float dt)
 
 void ExpositionGame::loadGameAssets()
 {
-	DefaultAssets::LoadDefaultAssets(*renderer);
+	Renderer& renderer = Locator::getRenderer();
+
+	DefaultAssets::LoadDefaultAssets();
 
 	//  shaders, textures and materials
 	AssetManager::CreateShaderProgram("lit_object", "Lit/object_lit.vert", "Lit/object_lit.frag", ShaderType::Lit);
@@ -40,9 +43,9 @@ void ExpositionGame::loadGameAssets()
 	Material& light_source_mat = AssetManager::CreateMaterial("light_source", &AssetManager::GetShader("flat_emissive"));
 	light_source_mat.addParameter("emissive", 1.0f, 1.0f, 1.0f);
 
-	renderer->addMaterial(&AssetManager::GetMaterial("container"));
-	renderer->addMaterial(&AssetManager::GetMaterial("light_source"));
-	renderer->addMaterial(&AssetManager::GetMaterial("backpack"));
+	renderer.AddMaterial(&AssetManager::GetMaterial("container"));
+	renderer.AddMaterial(&AssetManager::GetMaterial("light_source"));
+	renderer.AddMaterial(&AssetManager::GetMaterial("backpack"));
 
 
 	//  models 
@@ -64,7 +67,9 @@ void ExpositionGame::loadGame()
 
 void ExpositionGame::unloadGame()
 {
-	renderer->removeMaterial(&AssetManager::GetMaterial("container"));
-	renderer->removeMaterial(&AssetManager::GetMaterial("light_source"));
-	renderer->removeMaterial(&AssetManager::GetMaterial("backpack"));
+	Renderer& renderer = Locator::getRenderer();
+
+	renderer.RemoveMaterial(&AssetManager::GetMaterial("container"));
+	renderer.RemoveMaterial(&AssetManager::GetMaterial("light_source"));
+	renderer.RemoveMaterial(&AssetManager::GetMaterial("backpack"));
 }

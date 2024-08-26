@@ -1,12 +1,10 @@
 #include "game.h"
+#include <ServiceLocator/locator.h>
 #include <GameplayStatics/gameplayStatics.h>
 
-#include <iostream>
 
-void Game::load(Renderer* renderer_)
+void Game::load()
 {
-	renderer = renderer_;
-
 	loadGameAssets();
 	loadGame();
 }
@@ -37,22 +35,16 @@ bool Game::hasActiveScene()
 
 void Game::loadScene(Scene* scene)
 {
-	if (!renderer)
-	{
-		std::cout << "Game doesn't have access to the renderer !\n";
-		return;
-	}
-
 	unloadActiveScene(true);
 	activeScene = scene;
 	GameplayStatics::SetCurrentScene(activeScene);
-	activeScene->load(renderer);
+	activeScene->load();
 }
 
 void Game::unloadActiveScene(bool loadNewScene)
 {
 	if (activeScene) activeScene->unload(!loadNewScene);
-	if(!loadNewScene) renderer->setCamera(&gamedefaultsNocam);
+	if (!loadNewScene) Locator::getRenderer().SetCamera(&gamedefaultsNocam);
 
 	if (!loadNewScene) GameplayStatics::SetCurrentScene(nullptr);
 }

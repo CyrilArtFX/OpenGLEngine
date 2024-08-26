@@ -1,4 +1,5 @@
 #include "ExpositionScene.h"
+#include <ServiceLocator/locator.h>
 
 #include <Inputs/input.h>
 #include <GLFW/glfw3.h>
@@ -11,16 +12,18 @@ ExpositionScene::ExpositionScene()
 
 void ExpositionScene::loadScene()
 {
-	renderer->setClearColor(Color{ 50, 75, 75, 255 });
+	Renderer& renderer = Locator::getRenderer();
 
-	renderer->addMaterial(&AssetManager::GetMaterial("container"));
-	renderer->addMaterial(&AssetManager::GetMaterial("light_source"));
+	renderer.SetClearColor(Color{ 50, 75, 75, 255 });
+
+	renderer.AddMaterial(&AssetManager::GetMaterial("container"));
+	renderer.AddMaterial(&AssetManager::GetMaterial("light_source"));
 
 
 	//  camera
 	camera.setPosition(Vector3{ 0.0f, 0.0f, -3.0f });
 	currentCam = &camera;
-	renderer->setCamera(&camera);
+	renderer.SetCamera(&camera);
 
 
 	//  objects

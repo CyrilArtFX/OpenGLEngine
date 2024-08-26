@@ -2,7 +2,7 @@
 #include <Objects/object.h>
 
 #include <Assets/assetManager.h>
-#include <Rendering/renderer.h>
+#include <ServiceLocator/locator.h>
 
 
 class FloorObj : public Object
@@ -40,8 +40,10 @@ public:
 
 namespace FloorCeilingSetup
 {
-	static void SetupFloorCeilings(Renderer& rendererRef)
+	static void SetupFloorCeilings()
 	{
+		Renderer& renderer = Locator::getRenderer();
+
 		AssetManager::LoadTexture("floor_diffuse", "pavement.jpg", false);
 
 		AssetManager::LoadTexture("ceiling_diffuse", "doomlike/tex_woodceiling/woodceiling_basecolor.jpg", false);
@@ -71,9 +73,9 @@ namespace FloorCeilingSetup
 		ceiling_mat.addParameter("material.shininess", 32.0f);
 		ceiling_mat.addParameter("beta_prevent_tex_scaling", true);
 
-		rendererRef.addMaterial(&AssetManager::GetMaterial("floor"));
-		rendererRef.addMaterial(&AssetManager::GetMaterial("floor_wood"));
-		rendererRef.addMaterial(&AssetManager::GetMaterial("ceiling"));
+		renderer.AddMaterial(&AssetManager::GetMaterial("floor"));
+		renderer.AddMaterial(&AssetManager::GetMaterial("floor_wood"));
+		renderer.AddMaterial(&AssetManager::GetMaterial("ceiling"));
 
 		AssetManager::CreateModel("floor");
 		AssetManager::GetModel("floor").addMesh(&AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("floor"));
@@ -85,10 +87,12 @@ namespace FloorCeilingSetup
 		AssetManager::GetModel("ceiling").addMesh(&AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("ceiling"));
 	}
 
-	static void ReleaseFloorCeilings(Renderer& rendererRef)
+	static void ReleaseFloorCeilings()
 	{
-		rendererRef.removeMaterial(&AssetManager::GetMaterial("floor"));
-		rendererRef.removeMaterial(&AssetManager::GetMaterial("floor_wood"));
-		rendererRef.removeMaterial(&AssetManager::GetMaterial("ceiling"));
+		Renderer& renderer = Locator::getRenderer();
+
+		renderer.RemoveMaterial(&AssetManager::GetMaterial("floor"));
+		renderer.RemoveMaterial(&AssetManager::GetMaterial("floor_wood"));
+		renderer.RemoveMaterial(&AssetManager::GetMaterial("ceiling"));
 	}
 };

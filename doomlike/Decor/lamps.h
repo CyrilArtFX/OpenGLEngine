@@ -3,7 +3,7 @@
 #include <Objects/Lights/pointLight.h>
 
 #include <Assets/assetManager.h>
-#include <Rendering/renderer.h>
+#include <ServiceLocator/locator.h>
 
 class Scene;
 
@@ -44,8 +44,10 @@ private:
 
 namespace LampsSetup
 {
-	static void SetupLamps(Renderer& rendererRef)
+	static void SetupLamps()
 	{
+		Renderer& renderer = Locator::getRenderer();
+
 		AssetManager::LoadTexture("lamp_diffuse", "doomlike/lamp/lamp_basecolor.png", false);
 		AssetManager::LoadTexture("lamp_specular", "doomlike/lamp/lamp_roughness.png", false);
 
@@ -83,12 +85,12 @@ namespace LampsSetup
 		Material& flame_off = AssetManager::CreateMaterial("flame_off", &AssetManager::GetShader("flat_emissive"));
 		flame_off.addParameter("emissive", Color{ 20, 14 ,3, 255 });
 
-		rendererRef.addMaterial(&AssetManager::GetMaterial("lamp"));
-		rendererRef.addMaterial(&AssetManager::GetMaterial("chandelier_candle"));
-		rendererRef.addMaterial(&AssetManager::GetMaterial("chandelier_base"));
-		rendererRef.addMaterial(&AssetManager::GetMaterial("chandelier_leather"));
-		rendererRef.addMaterial(&AssetManager::GetMaterial("flame"));
-		rendererRef.addMaterial(&AssetManager::GetMaterial("flame_off"));
+		renderer.AddMaterial(&AssetManager::GetMaterial("lamp"));
+		renderer.AddMaterial(&AssetManager::GetMaterial("chandelier_candle"));
+		renderer.AddMaterial(&AssetManager::GetMaterial("chandelier_base"));
+		renderer.AddMaterial(&AssetManager::GetMaterial("chandelier_leather"));
+		renderer.AddMaterial(&AssetManager::GetMaterial("flame"));
+		renderer.AddMaterial(&AssetManager::GetMaterial("flame_off"));
 
 		AssetManager::LoadMeshCollection("lamp", "doomlike/lamp/lamp.fbx");
 		AssetManager::LoadMeshCollection("chandelier", "doomlike/chandelier/chandelier.fbx");
@@ -108,13 +110,15 @@ namespace LampsSetup
 	}
 
 
-	static void ReleaseLamps(Renderer& rendererRef)
+	static void ReleaseLamps()
 	{
-		rendererRef.removeMaterial(&AssetManager::GetMaterial("lamp"));
-		rendererRef.removeMaterial(&AssetManager::GetMaterial("chandelier_candle"));
-		rendererRef.removeMaterial(&AssetManager::GetMaterial("chandelier_base"));
-		rendererRef.removeMaterial(&AssetManager::GetMaterial("chandelier_leather"));
-		rendererRef.removeMaterial(&AssetManager::GetMaterial("flame"));
-		rendererRef.removeMaterial(&AssetManager::GetMaterial("flame_off"));
+		Renderer& renderer = Locator::getRenderer();
+
+		renderer.RemoveMaterial(&AssetManager::GetMaterial("lamp"));
+		renderer.RemoveMaterial(&AssetManager::GetMaterial("chandelier_candle"));
+		renderer.RemoveMaterial(&AssetManager::GetMaterial("chandelier_base"));
+		renderer.RemoveMaterial(&AssetManager::GetMaterial("chandelier_leather"));
+		renderer.RemoveMaterial(&AssetManager::GetMaterial("flame"));
+		renderer.RemoveMaterial(&AssetManager::GetMaterial("flame_off"));
 	}
 };

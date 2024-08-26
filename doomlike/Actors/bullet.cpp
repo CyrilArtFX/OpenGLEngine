@@ -1,6 +1,6 @@
 #include "bullet.h"
 
-#include <Rendering/renderer.h>
+#include <ServiceLocator/locator.h>
 #include <Rendering/shader.h>
 
 #include <Assets/assetManager.h>
@@ -12,11 +12,12 @@
 #include <iostream>
 
 
-Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_, Renderer* renderer_) :
+Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float velocity_, float lifetime_) :
 	rigidbody(&Locator::getPhysics().CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box{ Vector3::zero, Vector3{0.05f, 0.05f, 0.05f} }, &object, true, "bullet", CollisionType::Solid, false), true)))
 {
 	lifetime = lifetime_;
-	renderer = renderer_;
+
+	Renderer& renderer = Locator::getRenderer();
 
 	object.addModel(&AssetManager::GetModel("bullet"));
 
@@ -25,7 +26,7 @@ Bullet::Bullet(Vector3 spawnPos, Quaternion spawnRot, Vector3 direction_, float 
 	object.incrementRotation(Quaternion{ object.getUp(), Maths::toRadians(90.0f)});
 	object.setScale(0.0002f); //  faut pas mettre l'unit en kilometre sur maya hein (genre il abuse du bail le frero la)
 
-	renderer->addObject(&object);
+	renderer.AddObject(&object);
 
 	rigidbody->onCollisionRepulsed.registerObserver(this, Bind_1(&Bullet::onBulletWallHit));
 	rigidbody->getAssociatedCollisionNonConst().onCollisionIntersect.registerObserver(this, Bind_1(&Bullet::onBulletEntityHit));
@@ -42,7 +43,9 @@ void Bullet::destroy()
 {
 	if(rigidbody) delete rigidbody; //  this will properly remove the rigidbody from physics manager
 
-	renderer->removeObject(&object);
+	Renderer& renderer = Locator::getRenderer();
+
+	renderer.RemoveObject(&object);
 }
 
 

@@ -1,4 +1,5 @@
 #include "doomlikeLevelAdvanced.h"
+#include <ServiceLocator/locator.h>
 
 #include <Assets/assetManager.h>
 #include <Physics/AABB/boxAABBColComp.h>
@@ -17,7 +18,9 @@ DoomlikeLevelAdvanced::DoomlikeLevelAdvanced()
 
 void DoomlikeLevelAdvanced::loadScene()
 {
-	renderer->setClearColor(Color{ 50, 75, 75, 255 });
+	Renderer& renderer = Locator::getRenderer();
+
+	renderer.SetClearColor(Color{ 50, 75, 75, 255 });
 
 	//  floors, ceilings, walls and stairs
 	registerObject(new FloorObj(Vector3{ 0.0f, 0.0f, 0.0f }, false)).setScale(Vector3{ 20.0f, 1.0f, 20.0f });
