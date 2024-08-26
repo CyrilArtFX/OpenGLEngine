@@ -82,7 +82,9 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 
 	//  create renderer
 	std::cout << "Initializing renderer...";
-	renderer.createRenderer(Color::black, Vector2Int{ window.getWidth(), window.getHeigth() });
+	renderer = new RendererOpenGL();
+	Locator::provideRenderer(renderer);
+	renderer->initializeRenderer(Color::black, Vector2Int{ window.getWidth(), window.getHeigth() });
 	std::cout << " Done.\n";
 
 
@@ -168,7 +170,7 @@ void Engine::run()
 
 		//  rendering part
 		// ----------------
-		renderer.draw();
+		renderer->draw();
 
 
 		//  events and buffer swap part
@@ -193,7 +195,7 @@ void Engine::loadGame(std::weak_ptr<Game> game_)
 {
 	game = game_.lock();
 	GameplayStatics::SetCurrentGame(game.get());
-	game->load(&renderer);
+	game->load();
 }
 
 void Engine::unloadGame()
@@ -305,7 +307,7 @@ void Engine::enableFreecam()
 	if (!gamePaused) pauseGame();
 	std::cout << "Freecam mode enabled.\n";
 	freecam.copyCameraTransform(game->getActiveCamera());
-	renderer.setCamera(&freecam);
+	renderer->SetCamera(&freecam);
 	freecam.setSpeed(4.0f);
 }
 
@@ -313,21 +315,21 @@ void Engine::disableFreecam()
 {
 	freecamMode = false;
 	std::cout << "Freecam mode disabled.\n";
-	renderer.setCamera(&game->getActiveCamera());
+	renderer->SetCamera(&game->getActiveCamera());
 }
 
 void Engine::enableDebugView()
 {
 	debugViewMode = true;
 	std::cout << "Debug view mode enabled.\n";
-	renderer.drawDebugMode = true;
+	renderer->drawDebugMode = true;
 }
 
 void Engine::disableDebugView()
 {
 	debugViewMode = false;
 	std::cout << "Debug view mode disabled.\n";
-	renderer.drawDebugMode = false;
+	renderer->drawDebugMode = false;
 }
 
 
@@ -336,5 +338,5 @@ void Engine::windowResize(GLFWwindow* glWindow, int width, int height)
 {
 	glViewport(0, 0, width, height); //  resize OpenGL viewport when GLFW is resized
 	window.changeSize(width, height);
-	renderer.setWindowSize(Vector2Int{ window.getWidth(), window.getHeigth() });
+	renderer->setWindowSize(Vector2Int{ window.getWidth(), window.getHeigth() });
 }

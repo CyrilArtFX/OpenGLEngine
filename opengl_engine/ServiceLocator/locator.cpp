@@ -2,6 +2,8 @@
 
 Physics* Locator::physicsService;
 NullPhysics Locator::nullPhysicsService;
+Renderer* Locator::rendererService;
+NullRenderer Locator::nullRendererService;
 
 Physics& Locator::getPhysics()
 {
@@ -12,7 +14,7 @@ Physics& Locator::providePhysics(Physics* physicsService_)
 {
 	if (physicsService_ == NULL)
 	{
-		initialize(); //  revert to null service
+		physicsService = &nullPhysicsService;
 		return getPhysics();
 	}
 	else
@@ -22,7 +24,27 @@ Physics& Locator::providePhysics(Physics* physicsService_)
 	}
 }
 
+Renderer& Locator::getRenderer()
+{
+	return *rendererService;
+}
+
+Renderer& Locator::provideRenderer(Renderer* rendererService_)
+{
+	if (rendererService_ == NULL)
+	{
+		rendererService = &nullRendererService;
+		return getRenderer();
+	}
+	else
+	{
+		rendererService = rendererService_;
+		return getRenderer();
+	}
+}
+
 void Locator::initialize()
 {
 	physicsService = &nullPhysicsService;
+	rendererService = &nullRendererService;
 }

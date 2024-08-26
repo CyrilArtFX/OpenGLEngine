@@ -7,7 +7,7 @@
 ~ Utiliser le pattern Service Locator pour les différentes classes statiques importantes - en cours
   (https://drive.google.com/file/d/1W174x3x0xS9eDg1xIUMdzxdSxznol8Zu/view?usp=drive_link page 285)
 	- la classe Physics - fait
-	- la classe Renderer
+	- la classe Renderer - en cours
 
 
 == MOYEN TERME ==

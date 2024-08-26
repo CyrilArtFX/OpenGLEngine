@@ -2,7 +2,7 @@
 
 #include "game.h"
 #include "window.h"
-#include <Rendering/renderer.h>
+#include <Rendering/rendererOpenGL.h>
 #include <Rendering/camera.h>
 #include <Rendering/texture.h>
 
@@ -42,7 +42,7 @@ private:
 	Window window;
 
 	//  renderer
-	Renderer renderer;
+	RendererOpenGL* renderer;
 
 	//  freecam
 	Camera freecam;

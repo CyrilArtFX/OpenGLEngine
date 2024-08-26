@@ -1,4 +1,6 @@
 #pragma once
+#include <ServiceLocator/renderer.h>
+
 #include <Utils/color.h>
 #include <Maths/matrix4.h>
 #include <Maths/vector3.h>
@@ -12,32 +14,29 @@
 #include <vector>
 #include <unordered_map>
 
-
-class Renderer
+/**
+* The renderer service provider class.
+*/
+class RendererOpenGL : public Renderer
 {
 public:
-	Renderer();
-	void createRenderer(Color clearColor_, Vector2Int windowSize_);
+	void SetCamera(Camera* camera) override;
+	const Camera& GetCamera() const override;
 
-	void draw();
+	void SetClearColor(Color clearColor_) override;
+	const Color GetClearColor() const override;
 
+	void AddMaterial(Material* material) override;
+	void RemoveMaterial(Material* material) override;
 
-	void setCamera(Camera* camera);
-	inline const Camera& getCamera() const { return *currentCam; }
+	void AddLight(Light* light) override;
+	void RemoveLight(Light* light) override;
 
-	void addMaterial(Material* material);
-	void removeMaterial(Material* material);
-
-	void addLight(Light* light);
-	void addObject(Object* object);
-	void removeLight(Light* light);
-	void removeObject(Object* object);
+	void AddObject(Object* object) override;
+	void RemoveObject(Object* object) override;
 
 
-	inline void setClearColor(Color newClearColor) { clearColor = newClearColor; }
-	inline Color getClearColor() { return clearColor; }
 
-	inline void setWindowSize(Vector2Int newWindowSize) { windowSize = newWindowSize; }
 
 private:
 	std::unordered_map<LightType, std::vector<Light*>> lights;
@@ -58,7 +57,16 @@ private:
 	};
 
 
+
+
+//  exclusive to engine which is the only class to access the full renderer
 public:
+	void initializeRenderer(Color clearColor_, Vector2Int windowSize_);
+
+	void draw();
+
+	void setWindowSize(Vector2Int windowSize_);
+
 	bool drawDebugMode{ false };
 };
 

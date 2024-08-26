@@ -103,6 +103,6 @@ private:
 	virtual void InitialisePhysics() = 0;
 	virtual void UpdatePhysics(float dt) = 0;
 
-	friend class Renderer;
+	friend class RendererOpenGL;
 	virtual void DrawCollisionsDebug(Material& debugMaterial) = 0;
 };

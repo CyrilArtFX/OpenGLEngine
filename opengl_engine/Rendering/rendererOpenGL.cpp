@@ -1,4 +1,4 @@
-#include "renderer.h"
+#include "rendererOpenGL.h"
 #include <Assets/assetManager.h>
 #include <ServiceLocator/locator.h>
 
@@ -6,17 +6,7 @@
 #include <algorithm>
 
 
-Renderer::Renderer()
-{
-}
-
-void Renderer::createRenderer(Color clearColor_, Vector2Int windowSize_)
-{
-	clearColor = clearColor_;
-	windowSize = windowSize_;
-}
-
-void Renderer::draw()
+void RendererOpenGL::draw()
 {
 	//  clear with flat color
 	glClearColor(clearColor.r / 255.0f, clearColor.g / 255.0f, clearColor.b / 255.0f, clearColor.a / 255.0f);
@@ -114,17 +104,35 @@ void Renderer::draw()
 }
 
 
-void Renderer::setCamera(Camera* camera)
+
+void RendererOpenGL::SetCamera(Camera* camera)
 {
 	currentCam = camera;
 }
 
-void Renderer::addMaterial(Material* material)
+const Camera& RendererOpenGL::GetCamera() const
+{
+	return *currentCam;
+}
+
+
+void RendererOpenGL::SetClearColor(Color clearColor_)
+{
+	clearColor = clearColor_;
+}
+
+const Color RendererOpenGL::GetClearColor() const
+{
+	return clearColor;
+}
+
+
+void RendererOpenGL::AddMaterial(Material* material)
 {
 	materials[material->getShaderPtr()].push_back(material);
 }
 
-void Renderer::removeMaterial(Material* material)
+void RendererOpenGL::RemoveMaterial(Material* material)
 {
 	auto iter = std::find(materials[material->getShaderPtr()].begin(), materials[material->getShaderPtr()].end(), material);
 	if (iter == materials[material->getShaderPtr()].end())
@@ -137,7 +145,8 @@ void Renderer::removeMaterial(Material* material)
 	materials[material->getShaderPtr()].pop_back();
 }
 
-void Renderer::addLight(Light* light)
+
+void RendererOpenGL::AddLight(Light* light)
 {
 	lights[light->getLightType()].push_back(light);
 
@@ -147,12 +156,7 @@ void Renderer::addLight(Light* light)
 	}
 }
 
-void Renderer::addObject(Object* object)
-{
-	objects.push_back(object);
-}
-
-void Renderer::removeLight(Light* light)
+void RendererOpenGL::RemoveLight(Light* light)
 {
 	auto iter = std::find(lights[light->getLightType()].begin(), lights[light->getLightType()].end(), light);
 	if (iter == lights[light->getLightType()].end())
@@ -165,7 +169,13 @@ void Renderer::removeLight(Light* light)
 	lights[light->getLightType()].pop_back();
 }
 
-void Renderer::removeObject(Object* object)
+
+void RendererOpenGL::AddObject(Object* object)
+{
+	objects.push_back(object);
+}
+
+void RendererOpenGL::RemoveObject(Object* object)
 {
 	auto iter = std::find(objects.begin(), objects.end(), object);
 	if (iter == objects.end())
@@ -176,4 +186,17 @@ void Renderer::removeObject(Object* object)
 
 	std::iter_swap(iter, objects.end() - 1);
 	objects.pop_back();
+}
+
+
+
+void RendererOpenGL::initializeRenderer(Color clearColor_, Vector2Int windowSize_)
+{
+	clearColor = clearColor_;
+	windowSize = windowSize_;
+}
+
+void RendererOpenGL::setWindowSize(Vector2Int windowSize_)
+{
+	windowSize = windowSize_;
 }
