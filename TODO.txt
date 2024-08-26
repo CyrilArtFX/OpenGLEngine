@@ -1,24 +1,29 @@
 == COURT TERME ==
 
-~ Utiliser les infos dans les meshs pour sortir les IDs des materiaux et permettre une assignation de materiaux plus poussée et plus simple - fait
+~ Intégrer du son avec FMod
+	- Installer FMod dans la librairie OpenGL
+	- Initialiser FMod dans le moteur
+	- Faire l'Audio Manager (avec le pattern service locator)
+	- Tester tout ça
 
-~ Mettre un système pour détecter automatiquement la profondeur de couleur au chargement de la texture pour éviter les problèmes (si la profondeur de couleur est 24, pas d'alpha (même avec un .png), donc charger avec GL_RGBA va faire un crash) - fait
-
-~ Utiliser le pattern Service Locator pour les différentes classes statiques importantes - fait
-  (https://drive.google.com/file/d/1W174x3x0xS9eDg1xIUMdzxdSxznol8Zu/view?usp=drive_link page 285)
-	- la classe Physics - fait
-	- la classe Renderer - fait
+~ Rajouter du son dans le doomlike
+	- Musique de fond (différente pour chaque niveau ?)
+	- Son de pas
+	- Son de tir
+	- Son de mort des ennemis
+	- Son de mort du joueur
+	- Son de mouvement des ennemis
+	- Son pour les ascenceurs
+	- Son pour les réactions de l'environnement (mur qui s'ouvre, lumières qui s'allument)
 
 
 == MOYEN TERME ==
 
-~ Intégrer du son (avec fmod ?)
-
-~ Créer un système de HUD (intégrer le texte tout de suite ?)
+~ Créer un système de HUD (affichage de sprites et de texte au dessus du jeu)
 
 ~ Faire une classe debug qui permet de gérer les logs dans la console et sur l'écran (à la manière d'unreal)
 
-~ Utiliser le système d'event pour les fonctionnalités importantes du moteur (pause, etc.)
+~ Créer des events publlics bindables pour les evenements importantes du moteur (pause, etc.)
 
 
 == LONG TERME ==
@@ -48,10 +53,10 @@
 
 == REFLEXIONS / PROBLEMES CONNUS ==
 
+~ Trouver une solution pour les problèmes de rotations avec la caméra qui fait qu'on ne peut pas lui forcer une rotation sans casser le système de pitch et de yaw intégré.
+
 ~ Réfléchir au fonctionnement du load asset des scenes, est-ce qu'il faudrait faire gaffe à l'utilisation de ram et unload genre les textures qui ne sont plus nécessaires ?
 
 ~ La manière de stocker les mesh collection ne fait pas de la duplication ? à vérifier
 
-~ Il peut y avoir des problèmes avec la physique notamment dans les coins ou entre des collisions quand on bouge et qu'on spam le saut, genre on est téléporté à travers d'autres collisions. Source inconnue.
-
-~ Trouver une solution pour les problèmes de rotations avec la caméra (étudier unreal ? réussir à combiner la matrice de la caméra et celle du joueur ?)
+~ Il peut y avoir des problèmes avec la physique notamment dans les coins ou entre des collisions quand on bouge et qu'on spam le saut, genre on est téléporté à travers d'autres collisions. Raison inconnue.
