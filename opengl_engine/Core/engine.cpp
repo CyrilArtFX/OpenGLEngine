@@ -125,6 +125,11 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	glEnable(GL_DEPTH_TEST);
 
 
+	//  initialize audio manager (temp)
+	audio = new AudioManager();
+	audio->Initialize();
+
+
 	std::cout << "\nCy-Engine is ready to run.\n\n\n";
 
 

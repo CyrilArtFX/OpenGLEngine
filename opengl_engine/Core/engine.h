@@ -6,6 +6,8 @@
 #include <Rendering/camera.h>
 #include <Rendering/texture.h>
 
+#include <Audio/audioManager.h>
+
 #include <Maths/matrix4.h>
 #include <Maths/vector3.h>
 
@@ -43,6 +45,9 @@ private:
 
 	//  renderer
 	RendererOpenGL* renderer;
+
+	//  audio manager (temp)
+	AudioManager* audio;
 
 	//  freecam
 	Camera freecam;

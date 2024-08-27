@@ -1,9 +1,9 @@
 == COURT TERME ==
 
 ~ Intégrer du son avec FMod
-	- Installer FMod dans la librairie OpenGL - fait (j'espère)
-	- Initialiser FMod dans le moteur - fait (j'espère tellement)
-	- Faire l'Audio Manager (avec le pattern service locator)
+	- Installer FMod dans la librairie OpenGL - fait
+	- Initialiser FMod dans le moteur - fait
+	- Faire l'Audio Manager (avec le pattern service locator) - en cours
 	- Tester tout ça
 
 ~ Rajouter du son dans le doomlike
