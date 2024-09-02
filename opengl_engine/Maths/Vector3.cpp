@@ -3,6 +3,7 @@
 #include "quaternion.h"
 #include "vector2.h"
 #include <Utils/color.h>
+#include <FMod/fmod_common.h> //  fmod vectors
 
 const Vector3 Vector3::zero(0.0f, 0.0f, 0.f);
 const Vector3 Vector3::one(1.0f, 1.0f, 1.0f);
@@ -144,6 +145,11 @@ float Vector3::Distance(const Vector3& a, const Vector3& b)
 {
 	Vector3 c = b - a;
 	return c.length();
+}
+
+FMOD_VECTOR Vector3::toFMOD() const
+{
+	return FMOD_VECTOR{ x, y, z };
 }
 
 Vector3 operator+(const Vector3& a, const Vector2& b)

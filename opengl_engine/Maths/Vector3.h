@@ -235,6 +235,8 @@ public:
 		return std::to_string(x) + "  " + std::to_string(y) + "  " + std::to_string(z);
 	}
 
+	struct FMOD_VECTOR toFMOD() const;
+
 	static const Vector3 zero;
 	static const Vector3 one;
 	static const Vector3 unitX;

@@ -178,6 +178,12 @@ void Engine::run()
 		renderer->draw();
 
 
+		//  temp audio
+		const Camera& current_cam = renderer->GetCamera();
+		audio->UpdateListener(current_cam.getPosition(), current_cam.getUp(), current_cam.getForward());
+		audio->Update();
+
+
 		//  events and buffer swap part
 		// -----------------------------
 		glfwSwapBuffers(window.getGLFWwindow());
@@ -186,6 +192,7 @@ void Engine::run()
 
 	//  close engine
 	unloadGame();
+	audio->Quit();
 	AssetManager::DeleteObjects();
 }
 
@@ -248,6 +255,12 @@ void Engine::engineUpdate(GLFWwindow* glWindow)
 		else disableDebugView();
 	}
 
+	//  test audio (temp)
+	if (Input::IsKeyPressed(GLFW_KEY_L))
+	{
+		audio->TestPlaySound("Resources/TestMusic.mp3");
+	}
+
 	if (freecamMode)
 	{
 		//  move freecam
@@ -286,12 +299,14 @@ void Engine::engineUpdate(GLFWwindow* glWindow)
 void Engine::pauseGame()
 {
 	gamePaused = true;
+	audio->PauseAll();
 	std::cout << "Game paused.\n";
 }
 
 void Engine::unpauseGame()
 {
 	gamePaused = false;
+	audio->ResumeAll();
 	if (freecamMode) disableFreecam();
 	std::cout << "Game unpaused.\n";
 }
