@@ -48,6 +48,9 @@ private:
 
 	//  audio manager (temp)
 	AudioManager* audio;
+	int channelID;
+	AudioSound sound;
+	AudioSound music;
 
 	//  freecam
 	Camera freecam;

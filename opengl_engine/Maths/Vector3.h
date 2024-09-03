@@ -237,6 +237,8 @@ public:
 
 	struct FMOD_VECTOR toFMOD() const;
 
+	static Vector3 FromFMOD(const struct FMOD_VECTOR fmod);
+
 	static const Vector3 zero;
 	static const Vector3 one;
 	static const Vector3 unitX;

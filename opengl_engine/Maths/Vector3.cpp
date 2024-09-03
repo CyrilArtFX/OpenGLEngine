@@ -152,6 +152,11 @@ FMOD_VECTOR Vector3::toFMOD() const
 	return FMOD_VECTOR{ x, y, z };
 }
 
+Vector3 Vector3::FromFMOD(const FMOD_VECTOR fmod)
+{
+	return Vector3{ fmod.x, fmod.y, fmod.z };
+}
+
 Vector3 operator+(const Vector3& a, const Vector2& b)
 {
 	return Vector3(a.x + b.x, a.y + b.y, a.z);

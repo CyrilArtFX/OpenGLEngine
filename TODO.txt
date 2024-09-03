@@ -5,7 +5,8 @@
 	- Initialiser FMod dans le moteur - fait
 	- Faire l'Audio Manager (avec le pattern service locator) - en cours
 	- Faire un load et un stockage propre des sons via l'Asset Manager
-	- Donner une possibilité simple aux objets pour jouer leurs sons
+	- Faire les Audio Source Component
+	- Intégrer la géométrie de FMod avec les collisions
 	- Tester tout ça
 
 ~ Rajouter du son dans le doomlike
@@ -54,8 +55,6 @@
 
 
 == REFLEXIONS / PROBLEMES CONNUS ==
-
-~ Utiliser la géométrie dans le système de son de FMOD ?
 
 ~ Trouver une solution pour les problèmes de rotations avec la caméra qui fait qu'on ne peut pas lui forcer une rotation sans casser le système de pitch et de yaw intégré.
 

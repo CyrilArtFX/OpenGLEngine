@@ -129,6 +129,10 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	audio = new AudioManager();
 	audio->Initialize();
 
+	channelID = audio->CreateAudioSourceGroup("engine");
+	sound = audio->LoadSound("Resources/fartreverb.mp3");
+	music = audio->LoadSound("Resources/TestMusic.mp3");
+
 
 	std::cout << "\nCy-Engine is ready to run.\n\n\n";
 
@@ -258,8 +262,26 @@ void Engine::engineUpdate(GLFWwindow* glWindow)
 	//  test audio (temp)
 	if (Input::IsKeyPressed(GLFW_KEY_L))
 	{
-		audio->TestPlaySound("Resources/TestMusic.mp3");
+		audio->InstantPlaySound2D(sound);
 	}
+	if (Input::IsKeyPressed(GLFW_KEY_KP_0))
+	{
+		audio->PlaySoundOnAudioSource(channelID, music);
+	}
+	if (Input::IsKeyPressed(GLFW_KEY_KP_1))
+	{
+		audio->PauseAudioSource(channelID, true);
+	}
+	if (Input::IsKeyPressed(GLFW_KEY_KP_2))
+	{
+		audio->PauseAudioSource(channelID, false);
+	}
+	if (Input::IsKeyPressed(GLFW_KEY_KP_3))
+	{
+		audio->StopAudioSource(channelID);
+	}
+
+
 
 	if (freecamMode)
 	{
