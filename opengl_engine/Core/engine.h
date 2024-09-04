@@ -16,6 +16,7 @@
 
 #include <string>
 #include <iostream>
+#include <unordered_map>
 
 class Engine
 {
@@ -49,8 +50,8 @@ private:
 	//  audio manager (temp)
 	AudioManager* audio;
 	int channelID;
-	AudioSound sound;
-	AudioSound music;
+
+	std::unordered_map<std::string, AudioSound> sounds;
 
 	//  freecam
 	Camera freecam;

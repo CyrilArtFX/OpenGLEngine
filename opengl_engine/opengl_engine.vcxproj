@@ -139,6 +139,7 @@
     <ClCompile Include="Assets\assetTexture.cpp" />
     <ClCompile Include="Assets\defaultAssets.cpp" />
     <ClCompile Include="Audio\audioManager.cpp" />
+    <ClCompile Include="Audio\audioSound.cpp" />
     <ClCompile Include="GameplayStatics\gameplayStatics.cpp" />
     <ClCompile Include="Maths\Geometry\box.cpp" />
     <ClCompile Include="Maths\Geometry\ray.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="Assets\assetTexture.h" />
     <ClInclude Include="Assets\defaultAssets.h" />
     <ClInclude Include="Audio\audioManager.h" />
+    <ClInclude Include="Audio\audioSound.h" />
     <ClInclude Include="Events\event.h" />
     <ClInclude Include="Events\observer.h" />
     <ClInclude Include="GameplayStatics\gameplayStatics.h" />

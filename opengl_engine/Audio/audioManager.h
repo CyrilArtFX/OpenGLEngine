@@ -2,6 +2,8 @@
 #include <FMod/fmod.hpp>
 #include <FMod/fmod_errors.h>
 
+#include "audioSound.h"
+
 #include <Maths/Vector3.h>
 
 #include <string>
@@ -10,34 +12,38 @@
 
 const int MAX_CHANNELS = 512;
 
-struct AudioSound
-{
-	FMOD::Sound* FModSound{ nullptr };
-};
-
 
 class AudioManager
 {
 public:
+
+	// ---------------------------------
+	//  Core
+	// ---------------------------------
 	bool Initialize();
 	void Quit();
+
 	void Update();
 	void UpdateListener(const Vector3 listenerPos, const Vector3 listenerUp, const Vector3 listenerForward);
 
-	void PauseAll(); //  for engine pause
+
+	// ---------------------------------
+	//  Engine pause
+	// ---------------------------------
+	void PauseAll();
 	void ResumeAll();
 
 
 	// ---------------------------------
 	//  Load Sound
 	// ---------------------------------
-	AudioSound LoadSound(std::string soundFile);
+	AudioSound LoadSound(std::string soundFile, SpatializationMode spatialization, LoadingMode loadMode);
 
 
 	// ---------------------------------
-	//  Audio Source part
+	//  Audio Source
 	// ---------------------------------
-	std::uint32_t CreateAudioSourceGroup(const std::string name = "");
+	std::uint32_t CreateAudioSourceGroup(SpatializationMode spatialization, const std::string name = "");
 	void ReleaseAudioSourceGroup(const std::uint32_t index);
 
 	void PlaySoundOnAudioSource(const std::uint32_t index, const AudioSound& sound);
@@ -46,7 +52,8 @@ public:
 	void PauseAudioSource(const std::uint32_t index, const bool pause);
 	bool GetAudioSourcePaused(const std::uint32_t index);
 
-	// volume (set and get) (check what is max volume for fmod)
+	void SetAudioSourceGroupVolume(const std::uint32_t index, const float volume); //  between 0 and 1
+	float GetAudioSourceGroupVolume(const std::uint32_t index);
 
 	void SetAudioSourceGroupPos(const std::uint32_t index, const Vector3 position);
 	Vector3 GetAudioSourceGroupPos(const std::uint32_t index);
@@ -60,10 +67,18 @@ public:
 
 	void TestPlaySound(std::string soundFile);
 
+
+
 private:
 	FMOD::System* system{ nullptr };
 
 	std::unordered_map<std::uint32_t, FMOD::ChannelGroup*> audioSourcesGroups;
 	std::uint32_t audioSourcesGroupsID{ 0 };
+
+
+	// ---------------------------------
+	//  Helping Functions
+	// ---------------------------------
+	SpatializationMode GetGroupSpatialization(FMOD::ChannelGroup* group);
 };
 

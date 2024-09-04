@@ -129,9 +129,11 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	audio = new AudioManager();
 	audio->Initialize();
 
-	channelID = audio->CreateAudioSourceGroup("engine");
-	sound = audio->LoadSound("Resources/fartreverb.mp3");
-	music = audio->LoadSound("Resources/TestMusic.mp3");
+	channelID = audio->CreateAudioSourceGroup(SpatializationMode::Spatialization3D, "engine");
+	sounds.emplace("sound", audio->LoadSound("Resources/fartreverb.mp3", SpatializationMode::Spatialization2D, LoadingMode::LoadSample));
+	sounds.emplace("music", audio->LoadSound("Resources/TestMusic.mp3", SpatializationMode::Spatialization3D, LoadingMode::LoadStream));
+	sounds["music"].setMinMaxDistance(0.0f, 3.0f);
+	audio->SetAudioSourceGroupPos(channelID, Vector3{ 0.0f, 5.0f, 0.0f });
 
 
 	std::cout << "\nCy-Engine is ready to run.\n\n\n";
@@ -262,11 +264,11 @@ void Engine::engineUpdate(GLFWwindow* glWindow)
 	//  test audio (temp)
 	if (Input::IsKeyPressed(GLFW_KEY_L))
 	{
-		audio->InstantPlaySound2D(sound);
+		audio->InstantPlaySound2D(sounds["sound"]);
 	}
 	if (Input::IsKeyPressed(GLFW_KEY_KP_0))
 	{
-		audio->PlaySoundOnAudioSource(channelID, music);
+		audio->PlaySoundOnAudioSource(channelID, sounds["music"]);
 	}
 	if (Input::IsKeyPressed(GLFW_KEY_KP_1))
 	{
@@ -279,6 +281,18 @@ void Engine::engineUpdate(GLFWwindow* glWindow)
 	if (Input::IsKeyPressed(GLFW_KEY_KP_3))
 	{
 		audio->StopAudioSource(channelID);
+	}
+	if (Input::IsKeyPressed(GLFW_KEY_KP_4))
+	{
+		audio->SetAudioSourceGroupPos(channelID, Vector3{-1.0f, 0.0f, 0.0f});
+	}
+	if (Input::IsKeyPressed(GLFW_KEY_KP_5))
+	{
+		audio->SetAudioSourceGroupPos(channelID, Vector3{ 0.0f, 0.0f, 0.0f });
+	}
+	if (Input::IsKeyPressed(GLFW_KEY_KP_6))
+	{
+		audio->SetAudioSourceGroupPos(channelID, Vector3{ 1.0f, 0.0f, 0.0f });
 	}
 
 

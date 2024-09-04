@@ -1,6 +1,12 @@
 #include "audioManager.h"
 #include <iostream>
 
+
+// --------------------------------------------------------------
+//            Core part
+// --------------------------------------------------------------
+
+//  Initialize and Quit
 bool AudioManager::Initialize()
 {
 	FMOD_RESULT result;
@@ -9,7 +15,7 @@ bool AudioManager::Initialize()
 	result = FMOD::Debug_Initialize(FMOD_DEBUG_LEVEL_ERROR, FMOD_DEBUG_MODE_TTY);
 	if (result != FMOD_OK)
 	{
-		std::cout << "FMOD Init Error: Failed to initialize FMOD debug: " << FMOD_ErrorString(result) << "\n";
+		std::cout << "Audio Manager Init Error: Failed to initialize FMOD debug: " << FMOD_ErrorString(result) << "\n";
 		return false;
 	}
 
@@ -17,7 +23,7 @@ bool AudioManager::Initialize()
 	result = FMOD::System_Create(&system);
 	if (result != FMOD_OK)
 	{
-		std::cout << "FMOD Init Error: Failed to create FMOD core system: " << FMOD_ErrorString(result) << "\n";
+		std::cout << "Audio Manager Init Error: Failed to create FMOD core system: " << FMOD_ErrorString(result) << "\n";
 		return false;
 	}
 
@@ -25,7 +31,7 @@ bool AudioManager::Initialize()
 	result = system->init(MAX_CHANNELS, FMOD_INIT_3D_RIGHTHANDED, 0);
 	if (result != FMOD_OK)
 	{
-		std::cout << "FMOD Init Error: Failed to initialize FMOD core system: " << FMOD_ErrorString(result) << "\n";
+		std::cout << "Audio Manager Init Error: Failed to initialize FMOD core system: " << FMOD_ErrorString(result) << "\n";
 		return false;
 	}
 
@@ -33,7 +39,7 @@ bool AudioManager::Initialize()
 	result = system->set3DSettings(1.0f, 1.0f, 1.0f);
 	if (result != FMOD_OK)
 	{
-		std::cout << "FMOD Init Error: Failed to setup FMOD 3D settings: " << FMOD_ErrorString(result) << "\n";
+		std::cout << "Audio Manager Init Error: Failed to setup FMOD 3D settings: " << FMOD_ErrorString(result) << "\n";
 		return false;
 	}
 
@@ -47,6 +53,8 @@ void AudioManager::Quit()
 	system->release();
 }
 
+
+//  Updates
 void AudioManager::Update()
 {
 	if (!system) return;
@@ -72,6 +80,12 @@ void AudioManager::UpdateListener(const Vector3 listenerPos, const Vector3 liste
 	}
 }
 
+
+
+// --------------------------------------------------------------
+//            Engine pause part
+// --------------------------------------------------------------
+
 void AudioManager::PauseAll()
 {
 	if (!system) return;
@@ -90,7 +104,55 @@ void AudioManager::ResumeAll()
 	master->setPaused(false);
 }
 
-std::uint32_t AudioManager::CreateAudioSourceGroup(const std::string name)
+
+
+// --------------------------------------------------------------
+//            Load Sound part
+// --------------------------------------------------------------
+
+AudioSound AudioManager::LoadSound(std::string soundFile, SpatializationMode spatialization, LoadingMode loadMode)
+{
+	FMOD_MODE spatialization_mode = FMOD_2D;
+	switch (spatialization)
+	{
+	case SpatializationMode::Spatialization2D:
+		spatialization_mode = FMOD_2D;
+		break;
+	case SpatializationMode::Spatialization3D:
+		spatialization_mode = FMOD_3D;
+		break;
+	}
+
+	FMOD_MODE load_mode = FMOD_CREATESAMPLE;
+	switch (loadMode)
+	{
+	case LoadingMode::LoadSample:
+		load_mode = FMOD_CREATESAMPLE;
+		break;
+	case LoadingMode::LoadStream:
+		load_mode = FMOD_CREATESTREAM;
+		break;
+	}
+
+	FMOD::Sound* sound;
+	FMOD_RESULT result;
+	result = system->createSound(soundFile.c_str(), spatialization_mode | load_mode | FMOD_3D_LINEARSQUAREROLLOFF, 0, &sound);
+	if (result != FMOD_OK)
+	{
+		std::cout << "Audio Manager Error: Failed to load a sound from file. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+	}
+
+	return AudioSound(sound);
+}
+
+
+
+// --------------------------------------------------------------
+//            Audio Source part
+// --------------------------------------------------------------
+
+//  Create and Release
+std::uint32_t AudioManager::CreateAudioSourceGroup(SpatializationMode spatialization, const std::string name)
 {
 	if (!system) return 0;
 
@@ -98,11 +160,18 @@ std::uint32_t AudioManager::CreateAudioSourceGroup(const std::string name)
 
 	audioSourcesGroups.emplace(audioSourcesGroupsID, nullptr);
 	result = system->createChannelGroup(name.c_str(), &audioSourcesGroups[audioSourcesGroupsID]);
+	FMOD::ChannelGroup* group_create = audioSourcesGroups[audioSourcesGroupsID];
 	audioSourcesGroupsID++;
 
 	if (result != FMOD_OK)
 	{
 		std::cout << "Audio Manager Error: Failed to create a new audio source group. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		return audioSourcesGroupsID - 1;
+	}
+
+	if (spatialization == SpatializationMode::Spatialization3D)
+	{
+		group_create->setMode(FMOD_3D);
 	}
 
 	return audioSourcesGroupsID - 1;
@@ -128,6 +197,144 @@ void AudioManager::ReleaseAudioSourceGroup(const std::uint32_t index)
 	audioSourcesGroups.erase(index);
 }
 
+
+//  Play and Stop
+void AudioManager::PlaySoundOnAudioSource(const std::uint32_t index, const AudioSound& sound)
+{
+	if (!system) return;
+
+	if (!sound.isValid())
+	{
+		std::cout << "Audio Manager Error: Tried to play a sound on an audio source group with an unitialized sound.\n";
+		return;
+	}
+
+	FMOD::ChannelGroup* group_sound = audioSourcesGroups[index];
+	if (group_sound == nullptr)
+	{
+		std::cout << "Audio Manager Error: Tried to play a sound on an audio source group with a non-registered index." << "\n";
+		return;
+	}
+
+	if (sound.getSpatialization() != GetGroupSpatialization(group_sound))
+	{
+		std::cout << "Audio Manager Error: Tried to play a sound on an audio source that hasn't the same spatialization." << "\n";
+		return;
+	}
+
+
+	group_sound->stop();
+
+	FMOD::Channel* channel;
+	FMOD_RESULT result;
+	result = system->playSound(sound.getFMod(), group_sound, false, &channel);
+	if (result != FMOD_OK)
+	{
+		std::cout << "Audio Manager Error: Failed to play a sound on an audio source group. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		return;
+	}
+
+	if (sound.getSpatialization() == SpatializationMode::Spatialization3D)
+	{
+		FMOD_VECTOR pos;
+		FMOD_VECTOR vel;
+		group_sound->get3DAttributes(&pos, &vel);
+		channel->set3DAttributes(&pos, &vel);
+	}
+
+	group_sound->setPaused(false);
+}
+
+void AudioManager::StopAudioSource(const std::uint32_t index)
+{
+	FMOD::ChannelGroup* group_stop = audioSourcesGroups[index];
+	if (group_stop == nullptr)
+	{
+		std::cout << "Audio Manager Error: Tried to stop an audio source group with a non-registered index." << "\n";
+		return;
+	}
+
+	group_stop->stop();
+}
+
+
+//  Pause (set and get)
+void AudioManager::PauseAudioSource(const std::uint32_t index, const bool pause)
+{
+	FMOD::ChannelGroup* group_pause = audioSourcesGroups[index];
+	if (group_pause == nullptr)
+	{
+		std::cout << "Audio Manager Error: Tried to pause an audio source group with a non-registered index." << "\n";
+		return;
+	}
+
+	group_pause->setPaused(pause);
+}
+
+bool AudioManager::GetAudioSourcePaused(const std::uint32_t index)
+{
+	FMOD::ChannelGroup* group_pause = audioSourcesGroups[index];
+	if (group_pause == nullptr)
+	{
+		std::cout << "Audio Manager Error: Tried to get an audio source group paused with a non-registered index." << "\n";
+		return false;
+	}
+
+	bool paused = false;
+
+	FMOD_RESULT result;
+	result = group_pause->getPaused(&paused);
+	if (result != FMOD_OK)
+	{
+		std::cout << "Audio Manager Error: Failed to get an audio source group paused. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		return false;
+	}
+
+	return paused;
+}
+
+
+//  Volume (set and get)
+void AudioManager::SetAudioSourceGroupVolume(const std::uint32_t index, const float volume)
+{
+	FMOD::ChannelGroup* group_volume = audioSourcesGroups[index];
+	if (group_volume == nullptr)
+	{
+		std::cout << "Audio Manager Error: Tried to set an audio source group volume with a non-registered index." << "\n";
+		return;
+	}
+
+	FMOD_RESULT result;
+	result = group_volume->setVolume(volume);
+	if (result != FMOD_OK)
+	{
+		std::cout << "Audio Manager Error: Failed to set an audio source group volume. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+	}
+}
+
+float AudioManager::GetAudioSourceGroupVolume(const std::uint32_t index)
+{
+	FMOD::ChannelGroup* group_volume = audioSourcesGroups[index];
+	if (group_volume == nullptr)
+	{
+		std::cout << "Audio Manager Error: Tried to get an audio source group volume with a non-registered index." << "\n";
+		return 0.0f;
+	}
+
+	float volume;
+	FMOD_RESULT result;
+	result = group_volume->getVolume(&volume);
+	if (result != FMOD_OK)
+	{
+		std::cout << "Audio Manager Error: Failed to get an audio source group volume. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		return 0.0f;
+	}
+
+	return volume;
+}
+
+
+//  Position (set and get)
 void AudioManager::SetAudioSourceGroupPos(const std::uint32_t index, const Vector3 position)
 {
 	FMOD::ChannelGroup* group_pos = audioSourcesGroups[index];
@@ -146,54 +353,6 @@ void AudioManager::SetAudioSourceGroupPos(const std::uint32_t index, const Vecto
 	{
 		std::cout << "Audio Manager Error: Failed to set an audio source group position. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
 	}
-}
-
-void AudioManager::PlaySoundOnAudioSource(const std::uint32_t index, const AudioSound& sound)
-{
-	if (!system) return;
-
-	FMOD::ChannelGroup* group_sound = audioSourcesGroups[index];
-	if (group_sound == nullptr)
-	{
-		std::cout << "Audio Manager Error: Tried to play a sound on an audio source group with a non-registered index." << "\n";
-		return;
-	}
-
-	group_sound->stop();
-
-	FMOD_RESULT result;
-	result = system->playSound(sound.FModSound, group_sound, false, 0);
-	if (result != FMOD_OK)
-	{
-		std::cout << "Audio Manager Error: Failed to play a sound on an audio source group. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
-		return;
-	}
-
-	group_sound->setPaused(false);
-}
-
-void AudioManager::PauseAudioSource(const std::uint32_t index, const bool pause)
-{
-	FMOD::ChannelGroup* group_pause = audioSourcesGroups[index];
-	if (group_pause == nullptr)
-	{
-		std::cout << "Audio Manager Error: Tried to pause an audio source group with a non-registered index." << "\n";
-		return;
-	}
-
-	group_pause->setPaused(pause);
-}
-
-void AudioManager::StopAudioSource(const std::uint32_t index)
-{
-	FMOD::ChannelGroup* group_stop = audioSourcesGroups[index];
-	if (group_stop == nullptr)
-	{
-		std::cout << "Audio Manager Error: Tried to stop an audio source group with a non-registered index." << "\n";
-		return;
-	}
-
-	group_stop->stop();
 }
 
 Vector3 AudioManager::GetAudioSourceGroupPos(const std::uint32_t index)
@@ -219,49 +378,30 @@ Vector3 AudioManager::GetAudioSourceGroupPos(const std::uint32_t index)
 	return Vector3::FromFMOD(pos);
 }
 
-bool AudioManager::GetAudioSourcePaused(const std::uint32_t index)
-{
-	FMOD::ChannelGroup* group_pause = audioSourcesGroups[index];
-	if (group_pause == nullptr)
-	{
-		std::cout << "Audio Manager Error: Tried to get an audio source group paused with a non-registered index." << "\n";
-		return false;
-	}
 
-	bool paused = false;
 
-	FMOD_RESULT result;
-	result = group_pause->getPaused(&paused);
-	if (result != FMOD_OK)
-	{
-		std::cout << "Audio Manager Error: Failed to get an audio source group paused. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
-		return false;
-	}
-	
-	return paused;
-}
-
-AudioSound AudioManager::LoadSound(std::string soundFile)
-{
-	FMOD::Sound* sound;
-	FMOD_RESULT result;
-	result = system->createSound(soundFile.c_str(), FMOD_2D | FMOD_CREATESAMPLE, 0, &sound);
-	if (result != FMOD_OK)
-	{
-		std::cout << "Audio Manager Error: Failed to load a sound from file. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
-	}
-
-	sound->set3DMinMaxDistance(0.5f, 5000.0f);
-
-	return AudioSound{ sound };
-}
+// --------------------------------------------------------------
+//            Instant Play Sound part
+// --------------------------------------------------------------
 
 void AudioManager::InstantPlaySound2D(const AudioSound& sound)
 {
 	if (!system) return;
 
+	if (!sound.isValid())
+	{
+		std::cout << "Audio Manager Error: Tried to instantly play a 2D sound with an unitialized sound.\n";
+		return;
+	}
+
+	if (sound.getSpatialization() != SpatializationMode::Spatialization2D)
+	{
+		std::cout << "Audio Manager Error: Tried to instantly play a 2D sound with a 3D sound.\n";
+		return;
+	}
+
 	FMOD_RESULT result;
-	result = system->playSound(sound.FModSound, 0, false, 0);
+	result = system->playSound(sound.getFMod(), 0, false, 0);
 	if (result != FMOD_OK)
 	{
 		std::cout << "Audio Manager Error: Failed to instantly play a 2D sound. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
@@ -272,9 +412,21 @@ void AudioManager::InstantPlaySound3D(const AudioSound& sound, const Vector3 pla
 {
 	if (!system) return;
 
+	if (!sound.isValid())
+	{
+		std::cout << "Audio Manager Error: Tried to instantly play a 3D sound with an unitialized sound.\n";
+		return;
+	}
+
+	if (sound.getSpatialization() != SpatializationMode::Spatialization3D)
+	{
+		std::cout << "Audio Manager Error: Tried to instantly play a 3D sound with a 2D sound.\n";
+		return;
+	}
+
 	FMOD::Channel* channel;
 	FMOD_RESULT result;
-	result = system->playSound(sound.FModSound, 0, false, &channel);
+	result = system->playSound(sound.getFMod(), 0, false, &channel);
 	if (result != FMOD_OK)
 	{
 		std::cout << "Audio Manager Error: Failed to instantly play a 3D sound. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
@@ -305,4 +457,33 @@ void AudioManager::TestPlaySound(std::string soundFile)
 	FMOD_VECTOR sound_vel = { 0.0f, 0.0f, 0.0f };
 	channel->set3DAttributes(&sound_pos, &sound_vel);
 	channel->setPaused(false);
+}
+
+
+
+// --------------------------------------------------------------
+//            Helping Functions part
+// --------------------------------------------------------------
+
+SpatializationMode AudioManager::GetGroupSpatialization(FMOD::ChannelGroup* group)
+{
+	FMOD_RESULT result;
+	FMOD_MODE mode;
+
+	result = group->getMode(&mode);
+	if (result != FMOD_OK)
+	{
+		std::cout << "Audio Manager Error: Failed to get the mode of a channel group. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		return SpatializationMode::Spatialization2D;
+	}
+
+	if (mode & FMOD_2D)
+	{
+		return SpatializationMode::Spatialization2D;
+	}
+
+	if (mode & FMOD_3D)
+	{
+		return SpatializationMode::Spatialization3D;
+	}
 }
