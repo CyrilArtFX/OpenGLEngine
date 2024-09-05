@@ -129,11 +129,12 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	audio = new AudioManager();
 	audio->Initialize();
 
-	channelID = audio->CreateAudioSourceGroup(SpatializationMode::Spatialization3D, "engine");
-	sounds.emplace("sound", audio->LoadSound("Resources/fartreverb.mp3", SpatializationMode::Spatialization2D, LoadingMode::LoadSample));
-	sounds.emplace("music", audio->LoadSound("Resources/TestMusic.mp3", SpatializationMode::Spatialization3D, LoadingMode::LoadStream));
-	sounds["music"].setMinMaxDistance(0.0f, 3.0f);
+	channelID = audio->CreateAudioSourceGroup(ChannelSpatialization::Channel3D, "engine");
+	sounds.emplace("sound", audio->LoadSound("Resources/bol.mp3", ACTIVATE_LOOP));
+	sounds.emplace("music", audio->LoadSound("Resources/TestMusic.mp3", ACTIVATE_3D | ACTIVATE_STREAM));
+	sounds["music"].setMinMaxDistance(0.0f, 20.0f);
 	audio->SetAudioSourceGroupPos(channelID, Vector3{ 0.0f, 5.0f, 0.0f });
+	audio->SetAudioSourceGroupVolume(channelID, 0.1f);
 
 
 	std::cout << "\nCy-Engine is ready to run.\n\n\n";
@@ -264,7 +265,7 @@ void Engine::engineUpdate(GLFWwindow* glWindow)
 	//  test audio (temp)
 	if (Input::IsKeyPressed(GLFW_KEY_L))
 	{
-		audio->InstantPlaySound2D(sounds["sound"]);
+		audio->InstantPlaySound2D(sounds["sound"], 0.5f, 1);
 	}
 	if (Input::IsKeyPressed(GLFW_KEY_KP_0))
 	{
