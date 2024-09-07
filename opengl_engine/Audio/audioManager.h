@@ -48,6 +48,13 @@ public:
 
 
 	// ---------------------------------
+	//  Global settings
+	// ---------------------------------
+	void SetGlobalVolume(const float volume); //  between 0 and 1
+	float GetGlobalVolume();
+
+
+	// ---------------------------------
 	//  Audio Source
 	// ---------------------------------
 	std::uint32_t CreateAudioSourceGroup(ChannelSpatialization spatialization, const std::string name = "");
@@ -71,8 +78,6 @@ public:
 	// ---------------------------------
 	void InstantPlaySound2D(const AudioSound& sound, const float volume = 1.0f, const int loop = 0);
 	void InstantPlaySound3D(const AudioSound& sound, const Vector3 playPosition, const float volume = 1.0f, const int loop = 0);
-
-	void TestPlaySound(std::string soundFile);
 
 
 
