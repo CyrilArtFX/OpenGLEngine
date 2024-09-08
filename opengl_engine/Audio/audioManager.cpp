@@ -444,7 +444,7 @@ Vector3 AudioManager::GetAudioSourceGroupPos(const std::uint32_t index)
 	if (GetGroupSpatialization(group_pos) != ChannelSpatialization::Channel3D)
 	{
 		std::cout << "Audio Manager Warning: Tried to get an audio source group position on a 2D audio source.\n";
-		return;
+		return Vector3::zero;
 	}
 
 	FMOD_VECTOR pos;

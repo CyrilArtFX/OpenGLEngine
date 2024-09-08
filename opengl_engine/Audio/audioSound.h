@@ -1,18 +1,11 @@
 #pragma once
+#include "audioUtils.h"
 #include <stdint.h>
 
 namespace FMOD //  avoid including "fmod.hpp"
 {
 	class Sound;
 }
-
-
-//  unsigned char cause we don't need more than 8 bits
-typedef unsigned char SoundSettings;
-#define ACTIVATE_3D		1 << 0	//  Make this sound a 3D sound, capable of being played at a certain position in the world
-#define ACTIVATE_STREAM	1 << 1	//  Make the sound streaming from its file at runtime (use on big sound files)
-#define ACTIVATE_LOOP	1 << 2	//  Enable loop playing on this sound
-
 
 class AudioSound
 {

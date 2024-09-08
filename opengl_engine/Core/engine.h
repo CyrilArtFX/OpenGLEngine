@@ -7,6 +7,7 @@
 #include <Rendering/texture.h>
 
 #include <Audio/audioManager.h>
+#include <Audio/audioSound.h>
 
 #include <Maths/matrix4.h>
 #include <Maths/vector3.h>
@@ -47,10 +48,11 @@ private:
 	//  renderer
 	RendererOpenGL* renderer;
 
-	//  audio manager (temp)
+	//  audio manager
 	AudioManager* audio;
-	int channelID;
 
+	//  test audio (temp)
+	int channelID;
 	std::unordered_map<std::string, AudioSound> sounds;
 
 	//  freecam

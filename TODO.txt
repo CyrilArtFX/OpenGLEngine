@@ -3,7 +3,7 @@
 ~ Intégrer du son avec FMod
 	- Installer FMod dans la librairie OpenGL - fait
 	- Initialiser FMod dans le moteur - fait
-	- Faire l'Audio Manager (avec le pattern service locator) - en cours
+	- Faire l'Audio Manager (avec le pattern service locator) - fait
 	- Faire un load et un stockage propre des sons via l'Asset Manager
 	- Faire les Audio Source Component
 	- Intégrer la géométrie de FMod avec les collisions

@@ -192,6 +192,7 @@
     <ClInclude Include="Assets\defaultAssets.h" />
     <ClInclude Include="Audio\audioManager.h" />
     <ClInclude Include="Audio\audioSound.h" />
+    <ClInclude Include="Audio\audioUtils.h" />
     <ClInclude Include="Events\event.h" />
     <ClInclude Include="Events\observer.h" />
     <ClInclude Include="GameplayStatics\gameplayStatics.h" />
@@ -237,7 +238,9 @@
     <ClInclude Include="Rendering\shader.h" />
     <ClInclude Include="Rendering\texture.h" />
     <ClInclude Include="Core\window.h" />
+    <ClInclude Include="ServiceLocator\audio.h" />
     <ClInclude Include="ServiceLocator\locator.h" />
+    <ClInclude Include="ServiceLocator\nullAudio.h" />
     <ClInclude Include="ServiceLocator\nullPhysics.h" />
     <ClInclude Include="ServiceLocator\nullRenderer.h" />
     <ClInclude Include="ServiceLocator\physics.h" />

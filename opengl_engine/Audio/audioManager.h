@@ -1,7 +1,10 @@
 #pragma once
+#include <ServiceLocator/audio.h>
+
 #include <FMod/fmod.hpp>
 #include <FMod/fmod_errors.h>
 
+#include "audioUtils.h"
 #include "audioSound.h"
 
 #include <Maths/Vector3.h>
@@ -12,21 +15,57 @@
 
 const int MAX_CHANNELS = 512;
 
-
-enum class ChannelSpatialization : uint8_t
-{
-	Channel2D = 0,	//  For a channel that can play 2D sound
-	Channel3D = 1	//  For a channel that can play 3D sound (movable in space)
-};
-
-
-class AudioManager
+/**
+* The audio service provider class.
+*/
+class AudioManager : public Audio
 {
 public:
 
-	// ---------------------------------
-	//  Core
-	// ---------------------------------
+	// ----------------------------------------------------------
+	//  Load Sound (available from audio interface)
+	// ----------------------------------------------------------
+	AudioSound LoadSound(std::string soundFile, SoundSettings settings) override;
+
+
+	// ----------------------------------------------------------
+	//  Global settings (available from audio interface)
+	// ----------------------------------------------------------
+	void SetGlobalVolume(const float volume) override;
+	float GetGlobalVolume() override;
+
+
+	// ----------------------------------------------------------
+	//  Audio Source (available from audio interface)
+	// ----------------------------------------------------------
+	std::uint32_t CreateAudioSourceGroup(ChannelSpatialization spatialization, const std::string name) override;
+	void ReleaseAudioSourceGroup(const std::uint32_t index) override;
+
+	void PlaySoundOnAudioSource(const std::uint32_t index, const AudioSound& sound, const int loop) override;
+ 	void StopAudioSource(const std::uint32_t index) override;
+
+	void PauseAudioSource(const std::uint32_t index, const bool pause) override;
+	bool GetAudioSourcePaused(const std::uint32_t index) override;
+
+	void SetAudioSourceGroupVolume(const std::uint32_t index, const float volume) override;
+	float GetAudioSourceGroupVolume(const std::uint32_t index) override;
+
+	void SetAudioSourceGroupPos(const std::uint32_t index, const Vector3 position) override;
+	Vector3 GetAudioSourceGroupPos(const std::uint32_t index) override;
+
+
+	// ----------------------------------------------------------
+	//  Instant Play Sound (available from audio interface)
+	// ----------------------------------------------------------
+	void InstantPlaySound2D(const AudioSound& sound, const float volume, const int loop);
+	void InstantPlaySound3D(const AudioSound& sound, const Vector3 playPosition, const float volume, const int loop);
+
+
+
+
+	// ----------------------------------------------------------
+	//  Core (reserved to Engine class)
+	// ----------------------------------------------------------
 	bool Initialize();
 	void Quit();
 
@@ -34,51 +73,11 @@ public:
 	void UpdateListener(const Vector3 listenerPos, const Vector3 listenerUp, const Vector3 listenerForward);
 
 
-	// ---------------------------------
-	//  Engine pause
-	// ---------------------------------
+	// ----------------------------------------------------------
+	//  Engine pause (reserved to Engine class)
+	// ----------------------------------------------------------
 	void PauseAll();
 	void ResumeAll();
-
-
-	// ---------------------------------
-	//  Load Sound
-	// ---------------------------------
-	AudioSound LoadSound(std::string soundFile, SoundSettings settings = 0);
-
-
-	// ---------------------------------
-	//  Global settings
-	// ---------------------------------
-	void SetGlobalVolume(const float volume); //  between 0 and 1
-	float GetGlobalVolume();
-
-
-	// ---------------------------------
-	//  Audio Source
-	// ---------------------------------
-	std::uint32_t CreateAudioSourceGroup(ChannelSpatialization spatialization, const std::string name = "");
-	void ReleaseAudioSourceGroup(const std::uint32_t index);
-
-	void PlaySoundOnAudioSource(const std::uint32_t index, const AudioSound& sound, const int loop = 0); //  loop -1 = infinite, loop 0 = play only once
- 	void StopAudioSource(const std::uint32_t index);
-
-	void PauseAudioSource(const std::uint32_t index, const bool pause);
-	bool GetAudioSourcePaused(const std::uint32_t index);
-
-	void SetAudioSourceGroupVolume(const std::uint32_t index, const float volume); //  between 0 and 1
-	float GetAudioSourceGroupVolume(const std::uint32_t index);
-
-	void SetAudioSourceGroupPos(const std::uint32_t index, const Vector3 position);
-	Vector3 GetAudioSourceGroupPos(const std::uint32_t index);
-
-
-	// ---------------------------------
-	//  Instant Play Sound
-	// ---------------------------------
-	void InstantPlaySound2D(const AudioSound& sound, const float volume = 1.0f, const int loop = 0);
-	void InstantPlaySound3D(const AudioSound& sound, const Vector3 playPosition, const float volume = 1.0f, const int loop = 0);
-
 
 
 private:
@@ -88,9 +87,9 @@ private:
 	std::uint32_t audioSourcesGroupsID{ 0 };
 
 
-	// ---------------------------------
-	//  Helping Functions
-	// ---------------------------------
+	// ----------------------------------------------------------
+	//  Helping Functions (private)
+	// ----------------------------------------------------------
 	ChannelSpatialization GetGroupSpatialization(FMOD::ChannelGroup* group);
 };
 

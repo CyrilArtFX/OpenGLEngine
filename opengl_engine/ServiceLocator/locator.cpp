@@ -4,6 +4,8 @@ Physics* Locator::physicsService;
 NullPhysics Locator::nullPhysicsService;
 Renderer* Locator::rendererService;
 NullRenderer Locator::nullRendererService;
+Audio* Locator::audioService;
+NullAudio Locator::nullAudioService;
 
 Physics& Locator::getPhysics()
 {
@@ -43,8 +45,28 @@ Renderer& Locator::provideRenderer(Renderer* rendererService_)
 	}
 }
 
+Audio& Locator::getAudio()
+{
+	return *audioService;
+}
+
+Audio& Locator::provideAudio(Audio* audioService_)
+{
+	if (audioService_ == NULL)
+	{
+		audioService = &nullAudioService;
+		return getAudio();
+	}
+	else
+	{
+		audioService = audioService_;
+		return getAudio();
+	}
+}
+
 void Locator::initialize()
 {
 	physicsService = &nullPhysicsService;
 	rendererService = &nullRendererService;
+	audioService = &nullAudioService;
 }
