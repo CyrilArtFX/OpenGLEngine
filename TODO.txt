@@ -26,6 +26,10 @@
 
 ~ Faire une classe debug qui permet de gérer les logs dans la console et sur l'écran (à la manière d'unreal)
 
+~ Corriger le problème sur l'affichage des textures à longue distance (anti alliasing ? anisatropy truc ? (jsp))
+
+~ Mettre de meilleurs visuels pour le doomlike
+
 ~ Créer des events publlics bindables pour les evenements importantes du moteur (pause, etc.)
 
 
