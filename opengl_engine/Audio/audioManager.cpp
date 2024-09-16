@@ -1,4 +1,5 @@
 #include "audioManager.h"
+#include "Utils/defines.h"
 #include <iostream>
 
 
@@ -124,6 +125,8 @@ void AudioManager::ResumeAll()
 
 AudioSound AudioManager::LoadSound(std::string soundFile, SoundSettings settings)
 {
+	const std::string sound_path = RESOURCES_PATH + soundFile;
+
 	//  convert SoundSettings into FMOD settings
 	FMOD_MODE spatialization_mode = FMOD_2D;
 	if (settings & ACTIVATE_3D)
@@ -141,7 +144,7 @@ AudioSound AudioManager::LoadSound(std::string soundFile, SoundSettings settings
 	//  load the sound from file with chosen settings
 	FMOD::Sound* sound;
 	FMOD_RESULT result;
-	result = system->createSound(soundFile.c_str(), spatialization_mode | load_mode | loop_mode | FMOD_3D_LINEARSQUAREROLLOFF, 0, &sound);
+	result = system->createSound(sound_path.c_str(), spatialization_mode | load_mode | loop_mode | FMOD_3D_LINEARSQUAREROLLOFF, 0, &sound);
 	if (result != FMOD_OK)
 	{
 		std::cout << "Audio Manager Error: Failed to load a sound from file. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";

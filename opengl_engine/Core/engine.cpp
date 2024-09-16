@@ -135,9 +135,9 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	//  test audio (temp)
 	Audio& audioref = Locator::getAudio();
 	channelID = audioref.CreateAudioSourceGroup(ChannelSpatialization::Channel3D, "engine");
-	sounds.emplace("sound", audioref.LoadSound("Resources/bol.mp3", ACTIVATE_LOOP));
-	sounds.emplace("music", audioref.LoadSound("Resources/TestMusic.mp3", ACTIVATE_3D | ACTIVATE_STREAM));
-	sounds["music"].setMinMaxDistance(0.0f, 20.0f);
+	AssetManager::CreateSound("sound", "fartreverb.mp3", ACTIVATE_LOOP);
+	AudioSound& music = AssetManager::CreateSound("music", "TestMusic.mp3", ACTIVATE_3D | ACTIVATE_STREAM);
+	music.setMinMaxDistance(0.0f, 20.0f);
 	audioref.SetAudioSourceGroupPos(channelID, Vector3{ 0.0f, 5.0f, 0.0f });
 	audioref.SetAudioSourceGroupVolume(channelID, 0.1f);
 
@@ -272,11 +272,11 @@ void Engine::engineUpdate(GLFWwindow* glWindow)
 	//  test audio (temp)
 	if (Input::IsKeyPressed(GLFW_KEY_L))
 	{
-		audioref.InstantPlaySound2D(sounds["sound"], 0.5f, 1);
+		audioref.InstantPlaySound2D(AssetManager::GetSound("sound"), 0.5f, 1);
 	}
 	if (Input::IsKeyPressed(GLFW_KEY_KP_0))
 	{
-		audioref.PlaySoundOnAudioSource(channelID, sounds["music"]);
+		audioref.PlaySoundOnAudioSource(channelID, AssetManager::GetSound("music"));
 	}
 	if (Input::IsKeyPressed(GLFW_KEY_KP_1))
 	{

@@ -3,6 +3,7 @@
 #include "assetTexture.h"
 #include "assetMaterial.h"
 #include <Rendering/Model/model.h>
+#include <Audio/audioSound.h>
 
 #include <unordered_map>
 #include <string>
@@ -142,6 +143,29 @@ public:
 	static void DeleteMaterial(std::string name);
 
 
+	/**
+	* Create a sound from file and stores it.
+	* @param	name		The name you want to this sound in the asset storage.
+	* @param	filePath	The path to the sound file to read.
+	* @param	settings	(optionnal) Additionnal load settings for the sound.
+	* @return				The newly created sound.
+	*/
+	static AudioSound& CreateSound(std::string name, std::string filePath, SoundSettings settings);
+
+	/**
+	* Retrieve a sound from the asset storage.
+	* @param	name	The name of the sound you want to retrieve.
+	* @return			The sound with corresponding name (if it exists).
+	*/
+	static AudioSound& GetSound(std::string name);
+
+	/**
+	* Delete a sound from the asset storage.
+	* @param	name	The name of the sound you want to delete.
+	*/
+	static void DeleteSound(std::string name);
+
+
 private:
 	static std::unordered_map<std::string, Texture> textures;
 	static std::unordered_map<std::string, Mesh> meshesSingle;
@@ -150,5 +174,6 @@ private:
 	static std::unordered_map<std::string, Shader> shaders;
 	static std::unordered_map<std::string, Material> materials;
 	static std::unordered_map<std::string, MaterialCollection> materialsCollection;
+	static std::unordered_map<std::string, AudioSound> sounds;
 };
 

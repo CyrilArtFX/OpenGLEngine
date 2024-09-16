@@ -1,4 +1,5 @@
 #include "assetManager.h"
+#include "ServiceLocator/locator.h"
 #include <iostream>
 
 
@@ -9,6 +10,7 @@ std::unordered_map<std::string, Model> AssetManager::models;
 std::unordered_map<std::string, Shader> AssetManager::shaders;
 std::unordered_map<std::string, Material> AssetManager::materials;
 std::unordered_map<std::string, MaterialCollection> AssetManager::materialsCollection;
+std::unordered_map<std::string, AudioSound> AssetManager::sounds;
 
 
 void AssetManager::LoadTexture(std::string name, const std::string texturePath, bool flipVertical)
@@ -253,6 +255,42 @@ void AssetManager::DeleteMaterial(std::string name)
 	materials.erase(name);
 }
 
+AudioSound& AssetManager::CreateSound(std::string name, std::string filePath, SoundSettings settings)
+{
+	if (sounds.find(name) != sounds.end())
+	{
+		std::cout << "Asset Manager Error: Tried to create a sound with a name that already exists. Name is " << name << ".\n";
+		return sounds["null_sound"];
+	}
+
+	Audio& audio_manager = Locator::getAudio();
+	sounds.emplace(name, audio_manager.LoadSound(filePath, settings));
+	return sounds[name];
+}
+
+AudioSound& AssetManager::GetSound(std::string name)
+{
+	if (sounds.find(name) == sounds.end())
+	{
+		std::cout << "Asset Manager Error: Tried to get a sound with a name that doesn't exists. Name is " << name << ".\n";
+		return sounds["null_sound"];
+	}
+
+	return sounds[name];
+}
+
+void AssetManager::DeleteSound(std::string name)
+{
+	if (sounds.find(name) == sounds.end())
+	{
+		std::cout << "Asset Manager Error: Tried to delete a sound with a name that doesn't exists. Name is " << name << ".\n";
+		return;
+	}
+
+	sounds[name].releaseFMod();
+	sounds.erase(name);
+}
+
 
 
 
@@ -287,4 +325,5 @@ void AssetManager::LoadNullAssets()
 	shaders.emplace("null_shader", Shader());
 	materials.emplace("null_material", Material());
 	materialsCollection.emplace("null_mat_collection", MaterialCollection{});
+	sounds.emplace("null_sound", AudioSound(nullptr, 0));
 }
