@@ -114,7 +114,7 @@ public:
 	/**
 	* Set the position in world space of an Audio Source component. It must've been loaded with a 3D ChannelGroup.
 	* @param	index		The index of the ChannelGroup of the Audio Source component.
-	* @param	poition		The position value to set. Between 0 and 1.
+	* @param	poition		The position value to set.
 	*/
 	virtual void SetAudioSourceGroupPos(const std::uint32_t index, const Vector3 position) = 0;
 

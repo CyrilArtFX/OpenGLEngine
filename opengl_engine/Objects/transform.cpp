@@ -121,4 +121,5 @@ void Transform::computeMatrix()
 	normalMatrix.transpose();
 
 	matrixDirty = false;
+	onTransformUpdated.broadcast();
 }

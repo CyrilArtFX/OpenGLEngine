@@ -5,7 +5,7 @@
 	- Initialiser FMod dans le moteur - fait
 	- Faire l'Audio Manager (avec le pattern service locator) - fait
 	- Faire un load et un stockage propre des sons via l'Asset Manager - fait
-	- Faire les Audio Source Component
+	- Faire les Audio Source Component - en cours
 	- Intégrer la géométrie de FMod avec les collisions
 	- Tester tout ça
 

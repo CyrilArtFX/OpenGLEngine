@@ -4,6 +4,9 @@
 #include <Maths/quaternion.h>
 #include <Maths/matrix4.h>
 
+#include <Events/event.h>
+
+
 class Transform
 {
 public:
@@ -39,6 +42,9 @@ public:
 	const Vector3 getForward() const;
 	const Vector3 getUp() const;
 	const Vector3 getRight() const;
+
+
+	Event<> onTransformUpdated;
 
 private:
 	void computeMatrix();
