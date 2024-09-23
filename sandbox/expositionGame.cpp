@@ -57,6 +57,12 @@ void ExpositionGame::loadGameAssets()
 
 	AssetManager::LoadMeshCollection("backpack", "backpack/backpack.fbx");
 	AssetManager::CreateModel("backpack").addMeshes(&AssetManager::GetMeshCollection("backpack"), &AssetManager::GetMaterial("backpack"));
+
+
+	//  audio
+	AssetManager::CreateSound("sound", "fartreverb.mp3", ACTIVATE_LOOP);
+	AudioSound& music = AssetManager::CreateSound("music", "TestMusic.mp3", ACTIVATE_3D | ACTIVATE_STREAM);
+	music.setMinMaxDistance(0.0f, 20.0f);
 }
 
 void ExpositionGame::loadGame()

@@ -50,9 +50,6 @@ private:
 	//  audio manager
 	AudioManager* audio;
 
-	//  test audio (temp)
-	int channelID;
-
 	//  freecam
 	Camera freecam;
 

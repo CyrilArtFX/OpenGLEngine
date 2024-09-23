@@ -111,7 +111,7 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	physics.InitialisePhysics();
 	std::cout << " Done.\n";
 
-	//  initialize audio manager (temp)
+	//  initialize audio manager
 	std::cout << "Initializing audio...";
 	audio = new AudioManager();
 	Locator::provideAudio(audio);
@@ -130,16 +130,6 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 
 	//  configure global OpenGL properties
 	glEnable(GL_DEPTH_TEST);
-
-
-	//  test audio (temp)
-	Audio& audioref = Locator::getAudio();
-	channelID = audioref.CreateAudioSourceGroup(ChannelSpatialization::Channel3D, "engine");
-	AssetManager::CreateSound("sound", "fartreverb.mp3", ACTIVATE_LOOP);
-	AudioSound& music = AssetManager::CreateSound("music", "TestMusic.mp3", ACTIVATE_3D | ACTIVATE_STREAM);
-	music.setMinMaxDistance(0.0f, 20.0f);
-	audioref.SetAudioSourceGroupPos(channelID, Vector3{ 0.0f, 5.0f, 0.0f });
-	audioref.SetAudioSourceGroupVolume(channelID, 0.1f);
 
 
 	std::cout << "\nCy-Engine is ready to run.\n\n\n";
@@ -190,7 +180,8 @@ void Engine::run()
 		renderer->draw();
 
 
-		//  temp audio
+		//  audio part
+		// ------------
 		const Camera& current_cam = renderer->GetCamera();
 		audio->UpdateListener(current_cam.getPosition(), current_cam.getUp(), current_cam.getForward());
 		audio->Update();
@@ -265,42 +256,6 @@ void Engine::engineUpdate(GLFWwindow* glWindow)
 	{
 		if (!debugViewMode) enableDebugView();
 		else disableDebugView();
-	}
-
-	Audio& audioref = Locator::getAudio();
-
-	//  test audio (temp)
-	if (Input::IsKeyPressed(GLFW_KEY_L))
-	{
-		audioref.InstantPlaySound2D(AssetManager::GetSound("sound"), 0.5f, 1);
-	}
-	if (Input::IsKeyPressed(GLFW_KEY_KP_0))
-	{
-		audioref.PlaySoundOnAudioSource(channelID, AssetManager::GetSound("music"));
-	}
-	if (Input::IsKeyPressed(GLFW_KEY_KP_1))
-	{
-		audioref.PauseAudioSource(channelID, true);
-	}
-	if (Input::IsKeyPressed(GLFW_KEY_KP_2))
-	{
-		audioref.PauseAudioSource(channelID, false);
-	}
-	if (Input::IsKeyPressed(GLFW_KEY_KP_3))
-	{
-		audioref.StopAudioSource(channelID);
-	}
-	if (Input::IsKeyPressed(GLFW_KEY_KP_4))
-	{
-		audioref.SetAudioSourceGroupPos(channelID, Vector3{-1.0f, 0.0f, 0.0f});
-	}
-	if (Input::IsKeyPressed(GLFW_KEY_KP_5))
-	{
-		audioref.SetAudioSourceGroupPos(channelID, Vector3{ 0.0f, 0.0f, 0.0f });
-	}
-	if (Input::IsKeyPressed(GLFW_KEY_KP_6))
-	{
-		audioref.SetAudioSourceGroupPos(channelID, Vector3{ 1.0f, 0.0f, 0.0f });
 	}
 
 

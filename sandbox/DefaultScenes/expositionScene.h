@@ -11,6 +11,8 @@
 #include <Objects/Lights/pointLight.h>
 #include <Objects/Lights/spotLight.h>
 
+#include <Audio/audioSourceComponent.h>
+
 
 class ExpositionScene : public Scene
 {
@@ -37,9 +39,13 @@ private:
 	Object lightCube1;
 	Object lightCube2;
 
+	AudioSourceComponent musicSource{ &cube3, ChannelSpatialization::Channel3D };
+
 	DirectionalLight sunLight;
 	PointLight pointLight1;
 	PointLight pointLight2;
 	SpotLight flashLight;
+
+	float time{ 0.0f };
 };
 

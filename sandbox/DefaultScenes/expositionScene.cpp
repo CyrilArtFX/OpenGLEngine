@@ -55,6 +55,11 @@ void ExpositionScene::loadScene()
 	lightCube2.setScale(0.2f);
 
 
+	//  audio
+	musicSource.playSound(AssetManager::GetSound("music"));
+	musicSource.setVolume(0.2f);
+
+
 	//  lights
 	sunLight.load(Color::white, Vector3{ -0.4f, -0.5f, 1.0f });
 	pointLight1.load(Color::white, Vector3{ 1.0f, 2.0f, 1.0f });
@@ -105,4 +110,7 @@ void ExpositionScene::updateScene(float dt)
 	flashLight.setDirection(camera.getForward());
 
 	cube3.incrementRotation(Quaternion{ Vector3::unitX, Maths::toRadians(90.0f) * dt });
+
+	time += dt;
+	cube3.setPosition(Vector3{ 2.0f, -1.0f, -1.0f } + Vector3{ 0.0f, Maths::sin(time), Maths::cos(time) });
 }
