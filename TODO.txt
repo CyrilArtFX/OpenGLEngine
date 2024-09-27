@@ -23,6 +23,7 @@
 == MOYEN TERME ==
 
 ~ Créer un système de HUD (affichage de sprites et de texte au dessus du jeu)
+	(thread pour rendre le HUD qui tourne moins vite parce que le HUD a besoin d'être actualisé moins régulièrement ?)
 
 ~ Faire une classe debug qui permet de gérer les logs dans la console et sur l'écran (à la manière d'unreal)
 
