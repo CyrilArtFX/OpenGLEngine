@@ -11,6 +11,7 @@ std::unordered_map<std::string, Shader> AssetManager::shaders;
 std::unordered_map<std::string, Material> AssetManager::materials;
 std::unordered_map<std::string, MaterialCollection> AssetManager::materialsCollection;
 std::unordered_map<std::string, AudioSound> AssetManager::sounds;
+std::unordered_map<std::string, AudioCollisionOcclusion> AssetManager::audioCollisionTypes;
 
 
 void AssetManager::LoadTexture(std::string name, const std::string texturePath, bool flipVertical)
@@ -255,6 +256,7 @@ void AssetManager::DeleteMaterial(std::string name)
 	materials.erase(name);
 }
 
+
 AudioSound& AssetManager::CreateSound(std::string name, std::string filePath, SoundSettings settings)
 {
 	if (sounds.find(name) != sounds.end())
@@ -292,6 +294,41 @@ void AssetManager::DeleteSound(std::string name)
 }
 
 
+AudioCollisionOcclusion& AssetManager::RegisterAudioCollisionType(std::string name, AudioCollisionOcclusion audioCollisionType)
+{
+	if (audioCollisionTypes.find(name) != audioCollisionTypes.end())
+	{
+		std::cout << "Asset Manager Error: Tried to create an audioCollisionType with a name that already exists. Name is " << name << ".\n";
+		return audioCollisionTypes["null_audio_collision_type"];
+	}
+
+	audioCollisionTypes.emplace(name, audioCollisionType);
+	return audioCollisionTypes[name];
+}
+
+AudioCollisionOcclusion& AssetManager::GetAudioCollisionType(std::string name)
+{
+	if (audioCollisionTypes.find(name) == audioCollisionTypes.end())
+	{
+		std::cout << "Asset Manager Error: Tried to get an audioCollisionType with a name that doesn't exists. Name is " << name << ".\n";
+		return audioCollisionTypes["null_audio_collision_type"];
+	}
+
+	return audioCollisionTypes[name];
+}
+
+void AssetManager::DeleteAudioCollisionType(std::string name)
+{
+	if (audioCollisionTypes.find(name) == audioCollisionTypes.end())
+	{
+		std::cout << "Asset Manager Error: Tried to delete an audioCollisionType with a name that doesn't exists. Name is " << name << ".\n";
+		return;
+	}
+
+	audioCollisionTypes.erase(name);
+}
+
+
 
 
 
@@ -326,4 +363,5 @@ void AssetManager::LoadNullAssets()
 	materials.emplace("null_material", Material());
 	materialsCollection.emplace("null_mat_collection", MaterialCollection{});
 	sounds.emplace("null_sound", AudioSound(nullptr, 0));
+	audioCollisionTypes.emplace("null_audio_collision_type", AudioCollisionOcclusion{ 0.0f, 0.0f });
 }

@@ -23,6 +23,8 @@ public:
 	Vector3 getCenterDownPos() const override;
 	Box getEncapsulatingBox() const override;
 
+	void setupAudioCollision(const AudioCollisionOcclusion& audioCollisionType) override;
+
 	Box getTransformedBox(bool forDrawDebug = false) const;
 
 	/** 
@@ -38,6 +40,8 @@ protected:
 	bool resolveAABBSweepRaycastIntersection(const Ray& raycast, const Box& boxRaycast, RaycastHitInfos& outHitInfos, bool forCollisionTest) const override;
 
 	void drawDebugMesh(Material& debugMaterial) const override;
+
+	void onAssociatedTransformUpdated() override;
 
 private:
 	Box box{ Box::zero };

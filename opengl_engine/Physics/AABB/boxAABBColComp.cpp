@@ -1,6 +1,9 @@
 #include "boxAABBColComp.h"
 #include "collisionsAABB.h"
 
+#include <ServiceLocator/locator.h>
+#include <ServiceLocator/audio.h>
+
 #include <Assets/assetManager.h>
 #include <Rendering/material.h>
 
@@ -53,6 +56,21 @@ void BoxAABBColComp::drawDebugMesh(Material& debugMaterial) const
 	}
 }
 
+void BoxAABBColComp::onAssociatedTransformUpdated()
+{
+	if (!isAudioCollision) return;
+
+	Audio& audio = Locator::getAudio();
+	
+	Transform audio_col_transform;
+	audio_col_transform.setPosition(associatedObject->getPosition() + box.getCenterPoint());
+	audio_col_transform.setScale(associatedObject->getScale() * box.getHalfExtents());
+
+	audio.SetCollisionTransform(audioCollisionIndex, audio_col_transform);
+
+
+}
+
 const Matrix4 BoxAABBColComp::getModelMatrix() const
 {
 	Box transform_box = getTransformedBox(true);
@@ -73,6 +91,42 @@ Vector3 BoxAABBColComp::getCenterDownPos() const
 Box BoxAABBColComp::getEncapsulatingBox() const
 {
 	return getTransformedBox();
+}
+
+void BoxAABBColComp::setupAudioCollision(const AudioCollisionOcclusion& audioCollisionType)
+{
+	if (isAudioCollision) return;
+	isAudioCollision = true;
+
+	Audio& audio = Locator::getAudio();
+	audioCollisionIndex = audio.CreateCollision(6, 24);
+
+	// b/f > backward/forward (X axis)  | b/t > bottom/top (Y axis)  | l/r > left/right (Z axis)
+	const Vector3 vertex_bbl{ -1.0f, -1.0f, -1.0f };
+	const Vector3 vertex_bbr{ -1.0f, -1.0f,  1.0f };
+	const Vector3 vertex_btl{ -1.0f,  1.0f, -1.0f };
+	const Vector3 vertex_btr{ -1.0f,  1.0f,  1.0f };
+	const Vector3 vertex_fbl{  1.0f, -1.0f, -1.0f };
+	const Vector3 vertex_fbr{  1.0f, -1.0f,  1.0f };
+	const Vector3 vertex_ftl{  1.0f,  1.0f, -1.0f };
+	const Vector3 vertex_ftr{  1.0f,  1.0f,  1.0f };
+	
+	audio.AddPolygonToCollision(audioCollisionIndex, { 1.0f, 1.0f }, true,
+		{ vertex_bbl, vertex_bbr, vertex_btl, vertex_btr }); //  backward polygon
+	audio.AddPolygonToCollision(audioCollisionIndex, { 1.0f, 1.0f }, true,
+		{ vertex_fbl, vertex_fbr, vertex_ftl, vertex_ftr }); //  forward polygon
+	audio.AddPolygonToCollision(audioCollisionIndex, { 1.0f, 1.0f }, true,
+		{ vertex_bbl, vertex_bbr, vertex_fbl, vertex_fbr }); //  bottom polygon
+	audio.AddPolygonToCollision(audioCollisionIndex, { 1.0f, 1.0f }, true,
+		{ vertex_btl, vertex_btr, vertex_ftl, vertex_ftr }); //  top polygon
+	audio.AddPolygonToCollision(audioCollisionIndex, { 1.0f, 1.0f }, true,
+		{ vertex_bbl, vertex_btl, vertex_fbl, vertex_ftl }); //  left polygon
+	audio.AddPolygonToCollision(audioCollisionIndex, { 1.0f, 1.0f }, true,
+		{ vertex_bbr, vertex_btr, vertex_fbr, vertex_ftr }); //  left polygon
+
+	associatedObject->onTransformUpdated.registerObserver(this, Bind_0(&BoxAABBColComp::onAssociatedTransformUpdated));
+
+	onAssociatedTransformUpdated(); //  call it at audio collision setup to set the audio collision transform
 }
 
 

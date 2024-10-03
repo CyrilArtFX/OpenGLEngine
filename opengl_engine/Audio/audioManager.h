@@ -8,6 +8,7 @@
 #include "audioSound.h"
 
 #include <Maths/Vector3.h>
+#include <Objects/transform.h>
 
 #include <string>
 #include <unordered_map>
@@ -57,8 +58,19 @@ public:
 	// ----------------------------------------------------------
 	//  Instant Play Sound (available from audio interface)
 	// ----------------------------------------------------------
-	void InstantPlaySound2D(const AudioSound& sound, const float volume, const int loop);
-	void InstantPlaySound3D(const AudioSound& sound, const Vector3 playPosition, const float volume, const int loop);
+	void InstantPlaySound2D(const AudioSound& sound, const float volume, const int loop) override;
+	void InstantPlaySound3D(const AudioSound& sound, const Vector3 playPosition, const float volume, const int loop) override;
+
+
+
+	// ----------------------------------------------------------
+	//  Collisions (available from audio interface)
+	// ----------------------------------------------------------
+	std::uint32_t CreateCollision(const int maxPolygons, const int maxVertices) override;
+	void ReleaseCollision(const std::uint32_t index) override;
+
+	void AddPolygonToCollision(const std::uint32_t index, const AudioCollisionOcclusion& audioCollisionType, const bool doubleSided, const std::vector<Vector3> vertices) override;
+	void SetCollisionTransform(const std::uint32_t index, const Transform& transform) override;
 
 
 
@@ -66,7 +78,7 @@ public:
 	// ----------------------------------------------------------
 	//  Core (reserved to Engine class)
 	// ----------------------------------------------------------
-	bool Initialize();
+	bool Initialize(const float maxWorldSize);
 	void Quit();
 
 	void Update();
@@ -85,6 +97,9 @@ private:
 
 	std::unordered_map<std::uint32_t, FMOD::ChannelGroup*> audioSourcesGroups;
 	std::uint32_t audioSourcesGroupsID{ 0 };
+
+	std::unordered_map<std::uint32_t, FMOD::Geometry*> collisions;
+	std::uint32_t collisionsID{ 0 };
 
 
 	// ----------------------------------------------------------

@@ -5,8 +5,10 @@
 #include "raycastLine.h"
 #include "AABB/raycastAABB.h"
 #include <Maths/Geometry/box.h>
+#include <Audio/audioUtils.h>
 
 #include <Events/event.h>
+#include <Events/observer.h>
 #include <vector>
 
 #include <Rendering/Model/mesh.h>
@@ -33,7 +35,7 @@ enum class CollisionType : uint8_t
 /** Collision Component
 * Base class for every collision component
 */
-class CollisionComponent : public PhysicEntity
+class CollisionComponent : public PhysicEntity, public Observer
 {
 public:
 	virtual ~CollisionComponent();
@@ -70,6 +72,8 @@ public:
 	bool usedByRigidbody() const;
 	RigidbodyComponent* getOwningRigidbody() const;
 
+	virtual void setupAudioCollision(const AudioCollisionOcclusion& audioCollisionType) {}
+
 
 
 	//  for physics manager
@@ -97,10 +101,15 @@ protected:
 
 	virtual void drawDebugMesh(Material& debugMaterial) const = 0;
 
+	virtual void onAssociatedTransformUpdated() {}
+
 
 	CollisionShape collisionShape{ CollisionShape::Null };
 	CollisionType collisionType{ CollisionType::Solid };
 	Object* associatedObject{ nullptr };
+
+	bool isAudioCollision{ false };
+	std::uint32_t audioCollisionIndex{ 0 };
 
 
 	//  for debug drawing

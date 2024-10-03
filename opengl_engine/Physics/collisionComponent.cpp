@@ -12,6 +12,11 @@ CollisionComponent::~CollisionComponent()
 		Locator::getPhysics().RemoveCollision(this);
 	}
 
+	if (isAudioCollision)
+	{
+		Locator::getAudio().ReleaseCollision(audioCollisionIndex);
+	}
+
 	onCollisionDelete.broadcast();
 }
 

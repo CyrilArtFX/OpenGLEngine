@@ -115,7 +115,7 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	std::cout << "Initializing audio...";
 	audio = new AudioManager();
 	Locator::provideAudio(audio);
-	audio->Initialize();
+	audio->Initialize(100.0f);
 	std::cout << " Done.\n";
 
 

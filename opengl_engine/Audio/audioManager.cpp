@@ -8,7 +8,7 @@
 // --------------------------------------------------------------
 
 //  Initialize and Quit
-bool AudioManager::Initialize()
+bool AudioManager::Initialize(const float maxWorldSize)
 {
 	FMOD_RESULT result;
 
@@ -41,6 +41,14 @@ bool AudioManager::Initialize()
 	if (result != FMOD_OK)
 	{
 		std::cout << "Audio Manager Init Error: Failed to setup FMOD 3D settings: " << FMOD_ErrorString(result) << "\n";
+		return false;
+	}
+
+	//  setup geometry settings
+	result = system->setGeometrySettings(maxWorldSize);
+	if (result != FMOD_OK)
+	{
+		std::cout << "Audio Manager Init Error: Failed to setup FMOD Geometry settings: " << FMOD_ErrorString(result) << "\n";
 		return false;
 	}
 
@@ -79,6 +87,11 @@ void AudioManager::UpdateListener(const Vector3 listenerPos, const Vector3 liste
 	{
 		std::cout << "FMOD Update Listener Error: " << FMOD_ErrorString(result) << "\n";
 	}
+
+	float directoccl, reverboccl;
+	FMOD_VECTOR source = Vector3{ 3.5f, -1.0f, -3.0f }.toFMOD();
+	system->getGeometryOcclusion(&listener_pos, &source, &directoccl, &reverboccl);
+	//std::cout << "Direct occlusion: " << directoccl << "  | Reverb occlusion: " << reverboccl << "\n";
 }
 
 
@@ -576,6 +589,127 @@ void AudioManager::InstantPlaySound3D(const AudioSound& sound, const Vector3 pla
 	{
 		std::cout << "Audio Manager Error: Failed to set position on an instantly played 3D sound. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
 	}
+}
+
+
+
+// --------------------------------------------------------------
+//            Geometry (Collisions) part
+// --------------------------------------------------------------
+
+std::uint32_t AudioManager::CreateCollision(const int maxPolygons, const int maxVertices)
+{
+	if (!system) return 0;
+
+	FMOD_RESULT result;
+
+	collisions.emplace(collisionsID, nullptr); //  reserve the memory in the map
+	result = system->createGeometry(maxPolygons, maxVertices, &collisions[collisionsID]); //  actually create the Geometry object
+	collisionsID++; //  increment the total collision count (even if it failed)
+
+	if (result != FMOD_OK) //  check if the Geometry was correctly created
+	{
+		std::cout << "Audio Manager Error: Failed to create a new collision. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		return collisionsID - 1;
+	}
+
+	//collisions[collisionsID - 1]->setActive(true);
+
+	return collisionsID - 1; //  return the index of the created collision
+}
+
+void AudioManager::ReleaseCollision(const std::uint32_t index)
+{
+	//  retrieve the collision to release
+	FMOD::Geometry* collision_release = collisions[index];
+	if (collision_release == nullptr)
+	{
+		std::cout << "Audio Manager Error: Tried to release a collision with a non-registered index.\n";
+		return;
+	}
+
+	//  release the collision (fmod)
+	FMOD_RESULT result;
+	result = collision_release->release();
+	if (result != FMOD_OK)
+	{
+		std::cout << "Audio Manager Error: Failed to release a collision. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		return;
+	}
+
+	collisions.erase(index); //  free the unused memory in the map
+}
+
+void AudioManager::AddPolygonToCollision(const std::uint32_t index, const AudioCollisionOcclusion& audioCollisionType, const bool doubleSided, const std::vector<Vector3> vertices)
+{
+	//  retrieve the collision to modify
+	FMOD::Geometry* collision_polygon = collisions[index];
+	if (collision_polygon == nullptr)
+	{
+		std::cout << "Audio Manager Error: Tried to add a polygon to a collision with a non-registered index.\n";
+		return;
+	}
+
+	//  converts Vector3 to FMOD_VECTOR
+	std::vector<FMOD_VECTOR> vertices_fmod;
+	vertices_fmod.reserve(vertices.size());
+	for (Vector3 vertex : vertices)
+	{
+		vertices_fmod.push_back(vertex.toFMOD());
+	}
+
+	//  add the polygon
+	FMOD_RESULT result;
+	result = collision_polygon->addPolygon(audioCollisionType.directOcclusion, audioCollisionType.reverbOcclusion, doubleSided, vertices.size(), &vertices_fmod[0], 0);
+	if (result != FMOD_OK)
+	{
+		std::cout << "Audio Manager Error: Failed to add a polygon to a collision. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		return;
+	}
+}
+
+void AudioManager::SetCollisionTransform(const std::uint32_t index, const Transform& transform)
+{
+	//  retrieve the collision to modify
+	FMOD::Geometry* collision_transform = collisions[index];
+	if (collision_transform == nullptr)
+	{
+		std::cout << "Audio Manager Error: Tried to set the transform of a collision with a non-registered index.\n";
+		return;
+	}
+
+	FMOD_RESULT result;
+	const FMOD_VECTOR position = transform.getPosition().toFMOD();
+	const FMOD_VECTOR scale = transform.getScale().toFMOD();
+
+	//  set position
+	result = collision_transform->setPosition(&position);
+	if (result != FMOD_OK)
+	{
+		std::cout << "Audio Manager Error: Failed to set a collision position. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		return;
+	}
+
+	//  set scale
+	result = collision_transform->setScale(&scale);
+	if (result != FMOD_OK)
+	{
+		std::cout << "Audio Manager Error: Failed to set a collision scale. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		return;
+	}
+
+
+	int polynum = 0;
+	FMOD_VECTOR polyvertex;
+	FMOD_VECTOR geomscale;
+	bool geomactive;
+	collision_transform->getNumPolygons(&polynum);
+	collision_transform->getPolygonVertex(2, 2, &polyvertex);
+	collision_transform->getScale(&geomscale);
+	collision_transform->getActive(&geomactive);
+	std::cout << "Polygon vertex (3e polygon 3e vertex): " << Vector3::FromFMOD(polyvertex).toString() << "\n";
+	std::cout << "Geometry scale: " << Vector3::FromFMOD(geomscale).toString() << "\n";
+	std::cout << "Geometry active: " << geomactive << "\n";
 }
 
 

@@ -82,6 +82,8 @@ void DefaultAssets::LoadDefaultAssets()
 	Material& white_emissive_mat = AssetManager::CreateMaterial("default_white_emissive", &AssetManager::GetShader("flat_emissive"));
 	white_emissive_mat.addParameter("emissive", Color::white);
 	renderer.AddMaterial(&white_emissive_mat);
+
+	AssetManager::RegisterAudioCollisionType("default_audio_collision", AudioCollisionOcclusion{ 1.0f, 0.5f });
 }
 
 

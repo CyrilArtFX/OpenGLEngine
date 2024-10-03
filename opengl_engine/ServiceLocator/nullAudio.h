@@ -33,4 +33,11 @@ public:
 
 	void InstantPlaySound2D(const AudioSound& sound, const float volume = 1.0f, const int loop = 0) override {}
 	void InstantPlaySound3D(const AudioSound& sound, const Vector3 playPosition, const float volume = 1.0f, const int loop = 0) override {}
+
+
+	std::uint32_t CreateCollision(const int maxPolygons, const int maxVertices) override { return 0; }
+	void ReleaseCollision(const std::uint32_t index) override {}
+
+	void AddPolygonToCollision(const std::uint32_t index, const AudioCollisionOcclusion& audioCollisionType, const bool doubleSided, const std::vector<Vector3> vertices) override {}
+	void SetCollisionTransform(const std::uint32_t index, const Transform& transform) override {}
 };

@@ -12,6 +12,7 @@
 #include <Objects/Lights/spotLight.h>
 
 #include <Audio/audioSourceComponent.h>
+#include <Physics/AABB/boxAABBColComp.h>
 
 
 class ExpositionScene : public Scene
@@ -38,6 +39,7 @@ private:
 	Object backpack;
 	Object lightCube1;
 	Object lightCube2;
+	Object soundWall;
 
 	AudioSourceComponent musicSource{ &cube3, ChannelSpatialization::Channel3D };
 

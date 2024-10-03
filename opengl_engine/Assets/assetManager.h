@@ -166,6 +166,29 @@ public:
 	static void DeleteSound(std::string name);
 
 
+
+	/**
+	* Register an audio collision type in the asset storage.
+	* @param	name					The name you want to this audio collision type in the asset storage.
+	* @param	audioCollisionType		The value of the audio collision type you want to register.
+	* @return							The registered audio collision type.
+	*/
+	static AudioCollisionOcclusion& RegisterAudioCollisionType(std::string name, AudioCollisionOcclusion audioCollisionType);
+
+	/**
+	* Retrieve an audio collision type from the asset storage.
+	* @param	name	The name of the audio collision type you want to retrieve.
+	* @return			The audio collision type with corresponding name (if it exists).
+	*/
+	static AudioCollisionOcclusion& GetAudioCollisionType(std::string name);
+
+	/**
+	* Delete an audio collision type from the asset storage.
+	* @param	name	The name of the audio collision type you want to delete.
+	*/
+	static void DeleteAudioCollisionType(std::string name);
+
+
 private:
 	static std::unordered_map<std::string, Texture> textures;
 	static std::unordered_map<std::string, Mesh> meshesSingle;
@@ -175,5 +198,6 @@ private:
 	static std::unordered_map<std::string, Material> materials;
 	static std::unordered_map<std::string, MaterialCollection> materialsCollection;
 	static std::unordered_map<std::string, AudioSound> sounds;
+	static std::unordered_map<std::string, AudioCollisionOcclusion> audioCollisionTypes;
 };
 
