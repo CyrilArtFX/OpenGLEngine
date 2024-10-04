@@ -68,8 +68,10 @@ void ExpositionScene::loadScene()
 
 	//  physics
 	Physics& physics = Locator::getPhysics();
-	CollisionComponent& sound_wall = physics.CreateCollisionComponent(new BoxAABBColComp(Box::one, &soundWall, false, "nothing"));
-	sound_wall.setupAudioCollision(AssetManager::GetAudioCollisionType("default_audio_collision"));
+	BoxAABBColComp& sound_wall = static_cast<BoxAABBColComp&>(physics.CreateCollisionComponent(new BoxAABBColComp(Box::one, &soundWall, false, "nothing")));
+	const Box a = sound_wall.getTransformedBox();
+	std::cout << "Wall min: " << a.getMinPoint().toString() << "   | Wall max: " << a.getMaxPoint().toString() << "\n\n";
+	//sound_wall.setupAudioCollision(AssetManager::GetAudioCollisionType("default_audio_collision"));
 
 
 	//  lights
@@ -121,8 +123,8 @@ void ExpositionScene::updateScene(float dt)
 	flashLight.setPosition(camera.getPosition());
 	flashLight.setDirection(camera.getForward());
 
-	cube3.incrementRotation(Quaternion{ Vector3::unitX, Maths::toRadians(90.0f) * dt });
+	//cube3.incrementRotation(Quaternion{ Vector3::unitX, Maths::toRadians(90.0f) * dt });
 
 	time += dt;
-	cube3.setPosition(Vector3{ 3.5f, -1.0f, -3.0f } + Vector3{ 0.0f, Maths::sin(time), Maths::cos(time) });
+	//cube3.setPosition(Vector3{ 3.5f, -1.0f, -3.0f } + Vector3{ 0.0f, Maths::sin(time), Maths::cos(time) });
 }

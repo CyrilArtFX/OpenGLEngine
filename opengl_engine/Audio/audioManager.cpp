@@ -16,7 +16,7 @@ bool AudioManager::Initialize(const float maxWorldSize)
 	result = FMOD::Debug_Initialize(FMOD_DEBUG_LEVEL_ERROR, FMOD_DEBUG_MODE_TTY);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Init Error: Failed to initialize FMOD debug: " << FMOD_ErrorString(result) << "\n";
+		std::cout << "\nAudio Manager Init Error: Failed to initialize FMOD debug: " << FMOD_ErrorString(result) << "\n";
 		return false;
 	}
 
@@ -24,7 +24,7 @@ bool AudioManager::Initialize(const float maxWorldSize)
 	result = FMOD::System_Create(&system);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Init Error: Failed to create FMOD core system: " << FMOD_ErrorString(result) << "\n";
+		std::cout << "\nAudio Manager Init Error: Failed to create FMOD core system: " << FMOD_ErrorString(result) << "\n";
 		return false;
 	}
 
@@ -32,7 +32,7 @@ bool AudioManager::Initialize(const float maxWorldSize)
 	result = system->init(MAX_CHANNELS, FMOD_INIT_3D_RIGHTHANDED, 0);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Init Error: Failed to initialize FMOD core system: " << FMOD_ErrorString(result) << "\n";
+		std::cout << "\nAudio Manager Init Error: Failed to initialize FMOD core system: " << FMOD_ErrorString(result) << "\n";
 		return false;
 	}
 
@@ -40,7 +40,7 @@ bool AudioManager::Initialize(const float maxWorldSize)
 	result = system->set3DSettings(1.0f, 1.0f, 1.0f);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Init Error: Failed to setup FMOD 3D settings: " << FMOD_ErrorString(result) << "\n";
+		std::cout << "\nAudio Manager Init Error: Failed to setup FMOD 3D settings: " << FMOD_ErrorString(result) << "\n";
 		return false;
 	}
 
@@ -48,9 +48,48 @@ bool AudioManager::Initialize(const float maxWorldSize)
 	result = system->setGeometrySettings(maxWorldSize);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Init Error: Failed to setup FMOD Geometry settings: " << FMOD_ErrorString(result) << "\n";
+		std::cout << "\nAudio Manager Init Error: Failed to setup FMOD Geometry settings: " << FMOD_ErrorString(result) << "\n";
 		return false;
 	}
+
+
+	FMOD::Geometry* geomtest;
+	system->createGeometry(1, 4, &geomtest);
+	/*
+	FMOD_VECTOR vertices1[4]{
+		{0.0f,  1.0f,  1.0f},
+		{0.0f, -1.0f,  1.0f},
+		{0.0f,  1.0f, -1.0f},
+		{0.0f, -1.0f, -1.0f}
+	};
+	geomtest->addPolygon(1.0f, 1.0f, true, 4, vertices1, 0);
+	*/
+
+	FMOD_VECTOR vertices_transformed[4]{
+		FMOD_VECTOR{2.25f,  0.5f, -1.5f},
+		FMOD_VECTOR{2.25f, -2.5f, -1.5f},
+		FMOD_VECTOR{2.25f,  0.5f, -4.5f},
+		FMOD_VECTOR{2.25f, -2.5f, -4.5f}
+	};
+	result = geomtest->addPolygon(1.0f, 1.0f, true, 4, vertices_transformed, 0);
+	std::cout << "\n" << FMOD_ErrorString(result) << "\n";
+
+	geomtest->setActive(true);
+
+	FMOD_VECTOR pos;
+	geomtest->getPosition(&pos);
+	std::cout << "Pos: " << Vector3::FromFMOD(pos).toString();
+
+	/*
+	FMOD_VECTOR pos = Vector3{ 2.0f, -1.0f, -3.0f }.toFMOD();
+	FMOD_VECTOR scale = Vector3{ 0.5f, 3.0f, 3.0f }.toFMOD();
+	geomtest->setPosition(&pos);
+	geomtest->setScale(&scale);
+	*/
+
+	/*
+	* 
+	*/
 
 	return true;
 }
@@ -87,11 +126,6 @@ void AudioManager::UpdateListener(const Vector3 listenerPos, const Vector3 liste
 	{
 		std::cout << "FMOD Update Listener Error: " << FMOD_ErrorString(result) << "\n";
 	}
-
-	float directoccl, reverboccl;
-	FMOD_VECTOR source = Vector3{ 3.5f, -1.0f, -3.0f }.toFMOD();
-	system->getGeometryOcclusion(&listener_pos, &source, &directoccl, &reverboccl);
-	//std::cout << "Direct occlusion: " << directoccl << "  | Reverb occlusion: " << reverboccl << "\n";
 }
 
 
