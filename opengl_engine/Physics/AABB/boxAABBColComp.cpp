@@ -67,8 +67,6 @@ void BoxAABBColComp::onAssociatedTransformUpdated()
 	audio_col_transform.setScale(associatedObject->getScale() * box.getHalfExtents());
 
 	audio.SetCollisionTransform(audioCollisionIndex, audio_col_transform);
-
-
 }
 
 const Matrix4 BoxAABBColComp::getModelMatrix() const
@@ -111,17 +109,17 @@ void BoxAABBColComp::setupAudioCollision(const AudioCollisionOcclusion& audioCol
 	const Vector3 vertex_ftl{  1.0f,  1.0f, -1.0f };
 	const Vector3 vertex_ftr{  1.0f,  1.0f,  1.0f };
 	
-	audio.AddPolygonToCollision(audioCollisionIndex, { 1.0f, 1.0f }, true,
+	audio.AddPolygonToCollision(audioCollisionIndex, audioCollisionType, true,
 		{ vertex_bbl, vertex_bbr, vertex_btl, vertex_btr }); //  backward polygon
-	audio.AddPolygonToCollision(audioCollisionIndex, { 1.0f, 1.0f }, true,
+	audio.AddPolygonToCollision(audioCollisionIndex, audioCollisionType, true,
 		{ vertex_fbl, vertex_fbr, vertex_ftl, vertex_ftr }); //  forward polygon
-	audio.AddPolygonToCollision(audioCollisionIndex, { 1.0f, 1.0f }, true,
+	audio.AddPolygonToCollision(audioCollisionIndex, audioCollisionType, true,
 		{ vertex_bbl, vertex_bbr, vertex_fbl, vertex_fbr }); //  bottom polygon
-	audio.AddPolygonToCollision(audioCollisionIndex, { 1.0f, 1.0f }, true,
+	audio.AddPolygonToCollision(audioCollisionIndex, audioCollisionType, true,
 		{ vertex_btl, vertex_btr, vertex_ftl, vertex_ftr }); //  top polygon
-	audio.AddPolygonToCollision(audioCollisionIndex, { 1.0f, 1.0f }, true,
+	audio.AddPolygonToCollision(audioCollisionIndex, audioCollisionType, true,
 		{ vertex_bbl, vertex_btl, vertex_fbl, vertex_ftl }); //  left polygon
-	audio.AddPolygonToCollision(audioCollisionIndex, { 1.0f, 1.0f }, true,
+	audio.AddPolygonToCollision(audioCollisionIndex, audioCollisionType, true,
 		{ vertex_bbr, vertex_btr, vertex_fbr, vertex_ftr }); //  left polygon
 
 	associatedObject->onTransformUpdated.registerObserver(this, Bind_0(&BoxAABBColComp::onAssociatedTransformUpdated));

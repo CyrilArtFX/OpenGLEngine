@@ -52,45 +52,6 @@ bool AudioManager::Initialize(const float maxWorldSize)
 		return false;
 	}
 
-
-	FMOD::Geometry* geomtest;
-	system->createGeometry(1, 4, &geomtest);
-	/*
-	FMOD_VECTOR vertices1[4]{
-		{0.0f,  1.0f,  1.0f},
-		{0.0f, -1.0f,  1.0f},
-		{0.0f,  1.0f, -1.0f},
-		{0.0f, -1.0f, -1.0f}
-	};
-	geomtest->addPolygon(1.0f, 1.0f, true, 4, vertices1, 0);
-	*/
-
-	FMOD_VECTOR vertices_transformed[4]{
-		FMOD_VECTOR{2.25f,  0.5f, -1.5f},
-		FMOD_VECTOR{2.25f, -2.5f, -1.5f},
-		FMOD_VECTOR{2.25f,  0.5f, -4.5f},
-		FMOD_VECTOR{2.25f, -2.5f, -4.5f}
-	};
-	result = geomtest->addPolygon(1.0f, 1.0f, true, 4, vertices_transformed, 0);
-	std::cout << "\n" << FMOD_ErrorString(result) << "\n";
-
-	geomtest->setActive(true);
-
-	FMOD_VECTOR pos;
-	geomtest->getPosition(&pos);
-	std::cout << "Pos: " << Vector3::FromFMOD(pos).toString();
-
-	/*
-	FMOD_VECTOR pos = Vector3{ 2.0f, -1.0f, -3.0f }.toFMOD();
-	FMOD_VECTOR scale = Vector3{ 0.5f, 3.0f, 3.0f }.toFMOD();
-	geomtest->setPosition(&pos);
-	geomtest->setScale(&scale);
-	*/
-
-	/*
-	* 
-	*/
-
 	return true;
 }
 
@@ -635,6 +596,8 @@ std::uint32_t AudioManager::CreateCollision(const int maxPolygons, const int max
 {
 	if (!system) return 0;
 
+	return 0; //  geometry disabled until I achieve to make it work
+
 	FMOD_RESULT result;
 
 	collisions.emplace(collisionsID, nullptr); //  reserve the memory in the map
@@ -647,13 +610,13 @@ std::uint32_t AudioManager::CreateCollision(const int maxPolygons, const int max
 		return collisionsID - 1;
 	}
 
-	//collisions[collisionsID - 1]->setActive(true);
-
 	return collisionsID - 1; //  return the index of the created collision
 }
 
 void AudioManager::ReleaseCollision(const std::uint32_t index)
 {
+	return; //  geometry disabled until I achieve to make it work
+
 	//  retrieve the collision to release
 	FMOD::Geometry* collision_release = collisions[index];
 	if (collision_release == nullptr)
@@ -676,6 +639,8 @@ void AudioManager::ReleaseCollision(const std::uint32_t index)
 
 void AudioManager::AddPolygonToCollision(const std::uint32_t index, const AudioCollisionOcclusion& audioCollisionType, const bool doubleSided, const std::vector<Vector3> vertices)
 {
+	return; //  geometry disabled until I achieve to make it work
+
 	//  retrieve the collision to modify
 	FMOD::Geometry* collision_polygon = collisions[index];
 	if (collision_polygon == nullptr)
@@ -704,6 +669,8 @@ void AudioManager::AddPolygonToCollision(const std::uint32_t index, const AudioC
 
 void AudioManager::SetCollisionTransform(const std::uint32_t index, const Transform& transform)
 {
+	return; //  geometry disabled until I achieve to make it work
+
 	//  retrieve the collision to modify
 	FMOD::Geometry* collision_transform = collisions[index];
 	if (collision_transform == nullptr)
@@ -731,19 +698,6 @@ void AudioManager::SetCollisionTransform(const std::uint32_t index, const Transf
 		std::cout << "Audio Manager Error: Failed to set a collision scale. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
 		return;
 	}
-
-
-	int polynum = 0;
-	FMOD_VECTOR polyvertex;
-	FMOD_VECTOR geomscale;
-	bool geomactive;
-	collision_transform->getNumPolygons(&polynum);
-	collision_transform->getPolygonVertex(2, 2, &polyvertex);
-	collision_transform->getScale(&geomscale);
-	collision_transform->getActive(&geomactive);
-	std::cout << "Polygon vertex (3e polygon 3e vertex): " << Vector3::FromFMOD(polyvertex).toString() << "\n";
-	std::cout << "Geometry scale: " << Vector3::FromFMOD(geomscale).toString() << "\n";
-	std::cout << "Geometry active: " << geomactive << "\n";
 }
 
 

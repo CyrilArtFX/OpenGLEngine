@@ -62,15 +62,13 @@ void ExpositionScene::loadScene()
 	musicSource.playSound(AssetManager::GetSound("music"));
 	musicSource.setVolume(0.2f);
 
-	Audio& audio = Locator::getAudio();
+	//Audio& audio = Locator::getAudio();
 	//audio.SetGlobalVolume(0.0f);
 
 
 	//  physics
 	Physics& physics = Locator::getPhysics();
 	BoxAABBColComp& sound_wall = static_cast<BoxAABBColComp&>(physics.CreateCollisionComponent(new BoxAABBColComp(Box::one, &soundWall, false, "nothing")));
-	const Box a = sound_wall.getTransformedBox();
-	std::cout << "Wall min: " << a.getMinPoint().toString() << "   | Wall max: " << a.getMaxPoint().toString() << "\n\n";
 	//sound_wall.setupAudioCollision(AssetManager::GetAudioCollisionType("default_audio_collision"));
 
 
