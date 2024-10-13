@@ -12,8 +12,8 @@
 ~ Rajouter du son dans le doomlike - en cours
 	- Musique de fond (différente pour chaque niveau ?)
 	- Son de pas - fait
-	- Son de tir
-	- Son de mort des ennemis
+	- Son de tir - fait
+	- Son de mort des ennemis - fait
 	- Son de mort du joueur
 	- Son de mouvement des ennemis
 	- Son pour les ascenceurs

@@ -110,8 +110,11 @@ void DoomlikeGame::loadGameAssets()
 
 
 	//  sounds
-	AssetManager::CreateSound("feet1", "doomlike/sounds/bruit_pas_1.mp3", ACTIVATE_3D);
-	AssetManager::CreateSound("feet2", "doomlike/sounds/bruit_pas_2.mp3", ACTIVATE_3D);
+	AssetManager::CreateSound("feet1", "doomlike/sounds/foot_1.mp3", ACTIVATE_3D);
+	AssetManager::CreateSound("feet2", "doomlike/sounds/foot_2.mp3", ACTIVATE_3D);
+	AssetManager::CreateSound("shoot", "doomlike/sounds/shoot.mp3", 0);
+	AudioSound& enemydeath_sound = AssetManager::CreateSound("enemydeath", "doomlike/sounds/enemy_death.mp3", ACTIVATE_3D);
+	enemydeath_sound.setMinMaxDistance(1.0f, 20.0f);
 
 
 	//  object channels

@@ -1,6 +1,7 @@
 #include "enemy.h"
 #include <ServiceLocator/locator.h>
 #include <ServiceLocator/physics.h>
+#include <ServiceLocator/audio.h>
 #include <Physics/ObjectChannels/collisionChannels.h>
 #include <Assets/assetManager.h>
 
@@ -62,6 +63,10 @@ void Enemy::onBodyIntersect(RigidbodyComponent& other)
 		dead = true;
 		//  not safe to delete rigidbody here cause it's during the update physics step
 		//  might need a way to automate this with a pending system
+
+
+		//  play death sound
+		Locator::getAudio().InstantPlaySound3D(AssetManager::GetSound("enemydeath"), getPosition(), 0.6f);
 	}
 	else if (other.getAssociatedCollision().getCollisionChannel() == "player")
 	{
