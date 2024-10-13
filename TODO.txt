@@ -6,12 +6,12 @@
 	- Faire l'Audio Manager (avec le pattern service locator) - fait
 	- Faire un load et un stockage propre des sons via l'Asset Manager - fait
 	- Faire les Audio Source Component - fait
-	- Intégrer la géométrie de FMod avec les collisions
-	- Tester tout ça
+	- Intégrer la géométrie de FMod avec les collisions - canceled
+	- Tester tout ça - fait
 
-~ Rajouter du son dans le doomlike
+~ Rajouter du son dans le doomlike - en cours
 	- Musique de fond (différente pour chaque niveau ?)
-	- Son de pas
+	- Son de pas - fait
 	- Son de tir
 	- Son de mort des ennemis
 	- Son de mort du joueur

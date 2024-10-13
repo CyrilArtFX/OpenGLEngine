@@ -109,6 +109,11 @@ void DoomlikeGame::loadGameAssets()
 	LampsSetup::SetupLamps();
 
 
+	//  sounds
+	AssetManager::CreateSound("feet1", "doomlike/sounds/bruit_pas_1.mp3", ACTIVATE_3D);
+	AssetManager::CreateSound("feet2", "doomlike/sounds/bruit_pas_2.mp3", ACTIVATE_3D);
+
+
 	//  object channels
 	CollisionChannels::RegisterTestChannel("PlayerEntity", { "solid", "enemy", "trigger_zone" }); //  for player and player bullets
 	CollisionChannels::RegisterTestChannel("Enemy", { "solid", "player", "bullet" });

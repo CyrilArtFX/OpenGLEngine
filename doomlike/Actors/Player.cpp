@@ -4,6 +4,7 @@
 #include <Maths/maths.h>
 #include <ServiceLocator/locator.h>
 #include <ServiceLocator/physics.h>
+#include <ServiceLocator/audio.h>
 #include <Physics/ObjectChannels/collisionChannels.h>
 #include <Assets/assetManager.h>
 #include <ServiceLocator/locator.h>
@@ -17,10 +18,14 @@
 
 
 Player::Player() :
-	rigidbody(&Locator::getPhysics().CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box::one, this, true, "player", CollisionType::Solid, false), false)))
+	rigidbody(&Locator::getPhysics().CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box::one, this, true, "player", CollisionType::Solid, false), false))),
+	audioSource(new AudioSourceComponent(this, ChannelSpatialization::Channel3D, "PlayerFeets"))
 {
 	rigidbody->onRigidbodyDelete.registerObserver(this, Bind_0(&Player::onRigidbodyDeleted));
 	rigidbody->onCollisionRepulsed.registerObserver(this, Bind_1(&Player::onCollision));
+
+	audioSource->setOffset(Vector3{ 0.0f, -1.1f, 0.0f });
+	audioSource->setVolume(0.2f);
 }
 
 void Player::setup(float height, float speed, float jump, float stepHeight)
@@ -76,6 +81,24 @@ void Player::update(float dt)
 
 	//  apply velocity to rigidbody
 	rigidbody->setVelocity(velocity_xz);
+
+
+	//  feet sound
+	feetSoundTimer -= dt;
+	if (rigidbody->isOnGround())
+	{
+		if (!(velocity_xz == Vector3::zero) || !onGroundLastFrame)
+		{
+			if (feetSoundTimer <= 0.0f)
+			{
+				audioSource->playSound(AssetManager::GetSound(feetSoundAlternance ? "feet1" : "feet2"));
+
+				feetSoundAlternance = !feetSoundAlternance;
+				feetSoundTimer = 0.5f;
+			}
+		}
+	}
+	
 
 
 	//  jump
@@ -144,6 +167,7 @@ void Player::update(float dt)
 		bullet->update(dt);
 	}
 	
+	//  replace this with an event?
 	for (int i = 0; i < bullets.size(); i++)
 	{
 		if (bullets[i]->isLTOver())
@@ -172,6 +196,13 @@ void Player::update(float dt)
 	gunObject.setRotation(camera.getRotation());
 	gunObject.incrementRotation(Quaternion{ gunObject.getUp(), Maths::toRadians(180.0f) }); //  gun is rotated backward by default
 	gunObject.addPositionRotated(Vector3{ 0.1f, -0.1f, -0.2f }); //  gun offset of camera
+
+
+	//  force the update of the transform of the player -> will broadcast the on transform updated event
+	getModelMatrix();
+
+
+	onGroundLastFrame = rigidbody->isOnGround();
 }
 
 Vector3 Player::getEyePosition() const

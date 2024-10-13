@@ -7,6 +7,8 @@
 #include <Physics/AABB/boxAABBColComp.h>
 #include <Physics/rigidbodyComponent.h>
 
+#include <Audio/audioSourceComponent.h>
+
 #include <GameLogic/playerSpawnPoint.h>
 
 #include <Events/observer.h>
@@ -53,8 +55,13 @@ private:
 	float shootVelocity{ 15.0f };
 	float bulletLifeTime{ 3.0f };
 
+	float feetSoundTimer{ 0.0f };
+	bool feetSoundAlternance{ false };
+	bool onGroundLastFrame{ true };
+
 	Object gunObject;
 
 	RigidbodyComponent* rigidbody;
+	AudioSourceComponent* audioSource;
 };
 
