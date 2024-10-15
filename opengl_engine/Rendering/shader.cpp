@@ -6,6 +6,17 @@
 
 Shader::Shader()
 {
+	//  default constructor will create a unloaded shader that will be unable to do anything
+}
+
+Shader::Shader(const std::string vertexName, const std::string fragmentName, ShaderType shaderType)
+{
+	load(vertexName, fragmentName, shaderType);
+}
+
+Shader::~Shader()
+{
+	deleteProgram();
 }
 
 void Shader::load(const std::string vertexName, const std::string fragmentName, ShaderType shaderType)

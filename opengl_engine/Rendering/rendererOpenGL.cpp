@@ -34,7 +34,7 @@ void RendererOpenGL::draw()
 		ShaderType shader_type = shader->getShaderType();
 		switch (shader_type) //  feels a bit hardcoded, should be cool to find a better way to do this
 		{
-		case Lit:
+		case ShaderType::Lit:
 			//  use lights
 			for (auto light_t : lights)
 			{
@@ -69,7 +69,7 @@ void RendererOpenGL::draw()
 
 			break;
 
-		case Unlit:
+		case ShaderType::Unlit:
 			//  nothing else to do
 			break;
 		}

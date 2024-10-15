@@ -3,7 +3,7 @@
 Shader AssetMaterial::LoadShaderProgram(const std::string vertexName, const std::string fragmentName, ShaderType shaderType)
 {
 	Shader shader;
-	shader.load(vertexName, fragmentName, shaderType);
+	//shader.load(vertexName, fragmentName, shaderType);
 	return shader;
 }
 

@@ -31,7 +31,7 @@ void DoomlikeGame::loadGameAssets()
 
 
 	//  shaders, textures and materials
-	AssetManager::CreateShaderProgram("lit_object", "Lit/object_lit.vert", "Lit/object_lit.frag", Lit);
+	AssetManager::CreateShaderProgram("lit_object", "Lit/object_lit.vert", "Lit/object_lit.frag", ShaderType::Lit);
 
 	std::cout << "Load default Assets time: " << glfwGetTime() - load_time << std::endl;
 	load_time = glfwGetTime();

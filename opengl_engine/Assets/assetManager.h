@@ -13,11 +13,6 @@ class AssetManager
 {
 public:
 	/**
-	* Delete all necessary objects.
-	*/
-	static void DeleteObjects();
-
-	/**
 	* Load the "null" assest (the assets that will be returned if user ask for a non-existing asset.
 	*/
 	static void LoadNullAssets();
@@ -194,7 +189,7 @@ private:
 	static std::unordered_map<std::string, std::unique_ptr<Mesh>> meshesSingle;
 	static std::unordered_map<std::string, std::unique_ptr<MeshCollection>> meshesCollection;
 	static std::unordered_map<std::string, Model> models;
-	static std::unordered_map<std::string, Shader> shaders;
+	static std::unordered_map<std::string, std::unique_ptr<Shader>> shaders;
 	static std::unordered_map<std::string, Material> materials;
 	static std::unordered_map<std::string, MaterialCollection> materialsCollection;
 	static std::unordered_map<std::string, AudioSound> sounds;

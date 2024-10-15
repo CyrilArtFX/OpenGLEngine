@@ -7,7 +7,7 @@ std::unordered_map<std::string, std::unique_ptr<Texture>> AssetManager::textures
 std::unordered_map<std::string, std::unique_ptr<Mesh>> AssetManager::meshesSingle;
 std::unordered_map<std::string, std::unique_ptr<MeshCollection>> AssetManager::meshesCollection;
 std::unordered_map<std::string, Model> AssetManager::models;
-std::unordered_map<std::string, Shader> AssetManager::shaders;
+std::unordered_map<std::string, std::unique_ptr<Shader>> AssetManager::shaders;
 std::unordered_map<std::string, Material> AssetManager::materials;
 std::unordered_map<std::string, MaterialCollection> AssetManager::materialsCollection;
 std::unordered_map<std::string, AudioSound> AssetManager::sounds;
@@ -177,7 +177,7 @@ void AssetManager::CreateShaderProgram(std::string name, const std::string verte
 		return;
 	}
 
-	shaders.emplace(name, AssetMaterial::LoadShaderProgram(vertexName, fragmentName, shaderType));
+	shaders.emplace(name, std::make_unique<Shader>(vertexName, fragmentName, shaderType));
 }
 
 Shader& AssetManager::GetShader(std::string name)
@@ -185,10 +185,10 @@ Shader& AssetManager::GetShader(std::string name)
 	if (shaders.find(name) == shaders.end())
 	{
 		std::cout << "Asset Manager Error: Tried to get a shader with a name that doesn't exists. Name is " << name << ".\n";
-		return shaders["null_shader"];
+		return *shaders["null_shader"];
 	}
 
-	return shaders[name];
+	return *shaders[name];
 }
 
 void AssetManager::DeleteShader(std::string name)
@@ -199,7 +199,6 @@ void AssetManager::DeleteShader(std::string name)
 		return;
 	}
 
-	shaders[name].deleteProgram();
 	shaders.erase(name);
 }
 
@@ -335,22 +334,13 @@ void AssetManager::DeleteAudioCollisionType(std::string name)
 
 
 
-
-void AssetManager::DeleteObjects()
-{
-	for (auto& shader : shaders)
-	{
-		shader.second.deleteProgram();
-	}
-}
-
 void AssetManager::LoadNullAssets()
 {
 	LoadTexture("null_texture", "Default/notexture.png", false);
 	meshesSingle.emplace("null_mesh", std::make_unique<Mesh>());
 	meshesCollection.emplace("null_collection", std::make_unique<MeshCollection>());
 	models.emplace("null_model", Model());
-	shaders.emplace("null_shader", Shader());
+	shaders.emplace("null_shader", std::make_unique<Shader>());
 	materials.emplace("null_material", Material());
 	materialsCollection.emplace("null_mat_collection", MaterialCollection{});
 	sounds.emplace("null_sound", AudioSound(nullptr, 0));

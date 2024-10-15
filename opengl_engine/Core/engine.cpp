@@ -198,7 +198,6 @@ void Engine::run()
 	//  close engine
 	unloadGame();
 	audio->Quit();
-	AssetManager::DeleteObjects();
 }
 
 

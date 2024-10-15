@@ -7,7 +7,7 @@
 #include <sstream>
 #include <iostream>
 
-enum ShaderType
+enum class ShaderType : uint8_t
 {
 	Null,
 	Lit,
@@ -18,8 +18,8 @@ class Shader
 {
 public:
 	Shader();
-	//  reads and builds the shader program
-	void load(const std::string vertexName, const std::string fragmentName, ShaderType shaderType);
+	Shader(const std::string vertexName, const std::string fragmentName, ShaderType shaderType);
+	~Shader();
 
 	void use(); //  use (activate) the shader
 	void deleteProgram();
@@ -32,16 +32,20 @@ public:
 	void setVec3(const std::string& name, float xValue, float yValue, float zValue) const;
 	void setMatrix4(const std::string& name, const float* value) const;
 
-	unsigned int getProgram() { return ID; }
+	unsigned int getProgram() const { return ID; }
 
-	ShaderType getShaderType() { return type; }
+	ShaderType getShaderType() const { return type; }
 
 	bool isLoaded() const { return loaded; }
 
 private:
-	bool loaded = false;
+	bool loaded{ false };
 
-	unsigned int ID = 0; //  program ID
+	unsigned int ID{ 0 }; //  program ID
 
-	ShaderType type = ShaderType::Null;
+	ShaderType type{ ShaderType::Null };
+
+
+	//  reads and builds the shader program
+	void load(const std::string vertexName, const std::string fragmentName, ShaderType shaderType);
 };
