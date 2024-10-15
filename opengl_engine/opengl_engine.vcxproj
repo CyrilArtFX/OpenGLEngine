@@ -136,7 +136,6 @@
     <ClCompile Include="Assets\assetManager.cpp" />
     <ClCompile Include="Assets\assetMesh.cpp" />
     <ClCompile Include="Assets\assetMaterial.cpp" />
-    <ClCompile Include="Assets\assetTexture.cpp" />
     <ClCompile Include="Assets\defaultAssets.cpp" />
     <ClCompile Include="Audio\audioManager.cpp" />
     <ClCompile Include="Audio\audioSound.cpp" />
@@ -189,7 +188,6 @@
     <ClInclude Include="Assets\assetManager.h" />
     <ClInclude Include="Assets\assetMesh.h" />
     <ClInclude Include="Assets\assetMaterial.h" />
-    <ClInclude Include="Assets\assetTexture.h" />
     <ClInclude Include="Assets\defaultAssets.h" />
     <ClInclude Include="Audio\audioManager.h" />
     <ClInclude Include="Audio\audioSound.h" />

@@ -12,7 +12,9 @@ class Texture
 {
 public:
 	Texture();
-	void load(const std::string texturePath = "Default/notexture.png", bool flipVertical = false);
+	Texture(const std::string texturePath, const bool flipVertical);
+	Texture(const Texture&) = delete;
+	Texture& operator=(const Texture&) = delete;
 
 	void use(); //  use (bind) the texture
 
@@ -21,13 +23,10 @@ public:
 
 	unsigned int getTextureID() const { return ID; }
 
-	bool isLoaded() const { return loaded; }
-
 private:
-	bool loaded = false;
+	unsigned int ID{ 0 }; //  texture ID
 
-	unsigned int ID = 0; //  texture ID
-
+	void load(const std::string texturePath, bool flipVertical);
 	unsigned int getGlFormat(const int nbChannels);
 };
 

@@ -78,13 +78,13 @@ namespace FloorCeilingSetup
 		renderer.AddMaterial(&AssetManager::GetMaterial("ceiling"));
 
 		AssetManager::CreateModel("floor");
-		AssetManager::GetModel("floor").addMesh(&AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("floor"));
+		AssetManager::GetModel("floor").addMesh(AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("floor"));
 
 		AssetManager::CreateModel("floor_wood");
-		AssetManager::GetModel("floor_wood").addMesh(&AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("floor_wood"));
+		AssetManager::GetModel("floor_wood").addMesh(AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("floor_wood"));
 
 		AssetManager::CreateModel("ceiling");
-		AssetManager::GetModel("ceiling").addMesh(&AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("ceiling"));
+		AssetManager::GetModel("ceiling").addMesh(AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("ceiling"));
 	}
 
 	static void ReleaseFloorCeilings()

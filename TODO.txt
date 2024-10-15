@@ -19,12 +19,12 @@
 	- Son pour les ascenceurs
 	- Son pour les réactions de l'environnement (mur qui s'ouvre, lumières qui s'allument)
 
-
-== MOYEN TERME ==
-
-~ Refactor l'Asset Manager pour mettre la mémoire sur la heap et plus la stack (stocker les assets dans des pointeurs)
+~ Refactor l'Asset Manager pour mettre la mémoire sur la heap et plus la stack (stocker les assets dans des pointeurs) - en cours
 	- Utiliser des unique_ptr, et toujours retourner des references avec les get
 	- Vérifier si ça utilise moins de mémoire et diminue les temps de chargement ou non
+
+
+== MOYEN TERME ==
 
 ~ Créer un système de HUD (affichage de sprites et de texte au dessus du jeu)
 	(thread pour rendre le HUD qui tourne moins vite parce que le HUD a besoin d'être actualisé moins régulièrement ?)

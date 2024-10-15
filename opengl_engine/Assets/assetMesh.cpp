@@ -2,12 +2,7 @@
 #include <Utils/defines.h>
 #include <iostream>
 
-Mesh AssetMesh::LoadSingleMesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
-{
-    return Mesh(vertices, indices);
-}
-
-Mesh AssetMesh::LoadSingleMesh(std::string filepath)
+LoadMeshData AssetMesh::LoadSingleMesh(std::string filepath)
 {
     std::string mesh_path = RESOURCES_PATH + filepath;
 
@@ -18,18 +13,18 @@ Mesh AssetMesh::LoadSingleMesh(std::string filepath)
         !scene->mRootNode)
     {
         std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
-        return Mesh();
+        return LoadMeshData{};
     }
     //directory = mesh_path.substr(0, mesh_path.find_last_of(’ / ’));
 
     return processNodeSingle(scene->mRootNode, scene);
 }
 
-MeshCollection AssetMesh::LoadMeshCollection(std::string filepath)
+std::vector<LoadMeshData> AssetMesh::LoadMeshCollection(std::string filepath)
 {
     std::string meshes_path = RESOURCES_PATH + filepath;
 
-    MeshCollection meshes;
+    std::vector<LoadMeshData> meshes_datas;
 
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(meshes_path, aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -38,17 +33,17 @@ MeshCollection AssetMesh::LoadMeshCollection(std::string filepath)
         !scene->mRootNode)
     {
         std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
-        return meshes;
+        return meshes_datas;
     }
     //directory = meshes_path.substr(0, meshes_path.find_last_of(’ / ’));
 
-    processNodeCollection(scene->mRootNode, scene, meshes);
+    processNodeCollection(scene->mRootNode, scene, meshes_datas);
 
-    return meshes;
+    return meshes_datas;
 }
 
 
-Mesh AssetMesh::processNodeSingle(aiNode* node, const aiScene* scene)
+LoadMeshData AssetMesh::processNodeSingle(aiNode* node, const aiScene* scene)
 {
     //  process the node first mesh (if it exists)
     if (node->mNumMeshes > 0)
@@ -57,18 +52,18 @@ Mesh AssetMesh::processNodeSingle(aiNode* node, const aiScene* scene)
         return processMesh(mesh, node, scene);
     }
 
-    return Mesh();
+    return LoadMeshData{};
 
     //  this part may be changed to get the first mesh it encounters
 }
 
-void AssetMesh::processNodeCollection(aiNode* node, const aiScene* scene, MeshCollection& meshCollection)
+void AssetMesh::processNodeCollection(aiNode* node, const aiScene* scene, std::vector<LoadMeshData>& meshCollection)
 {
     //  process all the node’s meshes (if any)
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        meshCollection.collection.push_back(processMesh(mesh, node, scene));
+        meshCollection.push_back(processMesh(mesh, node, scene));
     }
     //  then do the same recursively for each of its children
     for (unsigned int i = 0; i < node->mNumChildren; i++)
@@ -77,7 +72,7 @@ void AssetMesh::processNodeCollection(aiNode* node, const aiScene* scene, MeshCo
     }
 }
 
-Mesh AssetMesh::processMesh(aiMesh* mesh, aiNode* node, const aiScene* scene)
+LoadMeshData AssetMesh::processMesh(aiMesh* mesh, aiNode* node, const aiScene* scene)
 {
     aiMatrix4x4 node_matrix = retrieveParentTransform(node);
     aiMatrix4x4 node_matrix_normal = node_matrix;
@@ -90,6 +85,7 @@ Mesh AssetMesh::processMesh(aiMesh* mesh, aiNode* node, const aiScene* scene)
     int material = mesh->mMaterialIndex;
 
     //  vertices
+    vertices.reserve(mesh->mNumVertices);
     for (int i = 0; i < mesh->mNumVertices; i++)
     {
         Vertex vertex;
@@ -140,7 +136,7 @@ Mesh AssetMesh::processMesh(aiMesh* mesh, aiNode* node, const aiScene* scene)
         }
     }
 
-    return Mesh(vertices, indices, material);
+    return LoadMeshData{ vertices, indices, material };
 }
 
 aiMatrix4x4 AssetMesh::retrieveParentTransform(aiNode* node)

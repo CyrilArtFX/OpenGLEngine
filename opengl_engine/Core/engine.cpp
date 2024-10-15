@@ -132,6 +132,8 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	glEnable(GL_DEPTH_TEST);
 
 
+	std::cout << "\nEngine initialization: " << glfwGetTime() << " seconds.\n";
+
 	std::cout << "\nCy-Engine is ready to run.\n\n\n";
 
 

@@ -64,7 +64,7 @@ namespace WallSetup
 		renderer.AddMaterial(&AssetManager::GetMaterial("wall"));
 
 		AssetManager::CreateModel("wall");
-		AssetManager::GetModel("wall").addMesh(&AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("wall"));
+		AssetManager::GetModel("wall").addMesh(AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("wall"));
 	}
 
 

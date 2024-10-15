@@ -103,10 +103,10 @@ namespace LampsSetup
 			&AssetManager::GetMaterial("flame")} });
 
 		Model& lamp = AssetManager::CreateModel("lamp");
-		lamp.addMeshes(&AssetManager::GetMeshCollection("lamp"), &AssetManager::GetMaterialCollection("lamp"));
+		lamp.addMeshes(AssetManager::GetMeshCollection("lamp"), &AssetManager::GetMaterialCollection("lamp"));
 
 		Model& chandelier = AssetManager::CreateModel("chandelier");
-		chandelier.addMeshes(&AssetManager::GetMeshCollection("chandelier"), &AssetManager::GetMaterialCollection("chandelier"));
+		chandelier.addMeshes(AssetManager::GetMeshCollection("chandelier"), &AssetManager::GetMaterialCollection("chandelier"));
 	}
 
 

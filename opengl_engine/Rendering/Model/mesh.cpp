@@ -37,8 +37,3 @@ void Mesh::draw(bool drawAsLines)
 		glDrawArrays(draw_method, 0, vertexArray.getNBVertices());
 	}
 }
-
-void Mesh::deleteObjects()
-{
-	vertexArray.deleteObjects();
-}

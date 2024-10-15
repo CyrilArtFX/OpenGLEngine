@@ -1,7 +1,7 @@
 #pragma once
 #include "assetMesh.h"
-#include "assetTexture.h"
 #include "assetMaterial.h"
+#include <Rendering/texture.h>
 #include <Rendering/Model/model.h>
 #include <Audio/audioSound.h>
 
@@ -190,9 +190,9 @@ public:
 
 
 private:
-	static std::unordered_map<std::string, Texture> textures;
-	static std::unordered_map<std::string, Mesh> meshesSingle;
-	static std::unordered_map<std::string, MeshCollection> meshesCollection;
+	static std::unordered_map<std::string, std::unique_ptr<Texture>> textures;
+	static std::unordered_map<std::string, std::unique_ptr<Mesh>> meshesSingle;
+	static std::unordered_map<std::string, std::unique_ptr<MeshCollection>> meshesCollection;
 	static std::unordered_map<std::string, Model> models;
 	static std::unordered_map<std::string, Shader> shaders;
 	static std::unordered_map<std::string, Material> materials;

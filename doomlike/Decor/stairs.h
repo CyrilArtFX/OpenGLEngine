@@ -71,7 +71,7 @@ namespace StairsSetup
 		AssetManager::LoadMeshCollection("stairs", "doomlike/stairs/stairs.fbx");
 
 		AssetManager::CreateModel("stairs");
-		AssetManager::GetModel("stairs").addMeshes(&AssetManager::GetMeshCollection("stairs"), &AssetManager::GetMaterial("stairs"));
+		AssetManager::GetModel("stairs").addMeshes(AssetManager::GetMeshCollection("stairs"), &AssetManager::GetMaterial("stairs"));
 	}
 
 

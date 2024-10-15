@@ -50,13 +50,13 @@ void ExpositionGame::loadGameAssets()
 
 	//  models 
 	AssetManager::CreateModel("container");
-	AssetManager::GetModel("container").addMesh(&AssetManager::GetSingleMesh("default_cube"), &AssetManager::GetMaterial("container"));
+	AssetManager::GetModel("container").addMesh(AssetManager::GetSingleMesh("default_cube"), &AssetManager::GetMaterial("container"));
 
 	AssetManager::CreateModel("light_cube");
-	AssetManager::GetModel("light_cube").addMesh(&AssetManager::GetSingleMesh("default_cube"), &AssetManager::GetMaterial("light_source"));
+	AssetManager::GetModel("light_cube").addMesh(AssetManager::GetSingleMesh("default_cube"), &AssetManager::GetMaterial("light_source"));
 
 	AssetManager::LoadMeshCollection("backpack", "backpack/backpack.fbx");
-	AssetManager::CreateModel("backpack").addMeshes(&AssetManager::GetMeshCollection("backpack"), &AssetManager::GetMaterial("backpack"));
+	AssetManager::CreateModel("backpack").addMeshes(AssetManager::GetMeshCollection("backpack"), &AssetManager::GetMaterial("backpack"));
 
 
 	//  audio

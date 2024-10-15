@@ -3,9 +3,9 @@
 #include <iostream>
 
 
-std::unordered_map<std::string, Texture> AssetManager::textures;
-std::unordered_map<std::string, Mesh> AssetManager::meshesSingle;
-std::unordered_map<std::string, MeshCollection> AssetManager::meshesCollection;
+std::unordered_map<std::string, std::unique_ptr<Texture>> AssetManager::textures;
+std::unordered_map<std::string, std::unique_ptr<Mesh>> AssetManager::meshesSingle;
+std::unordered_map<std::string, std::unique_ptr<MeshCollection>> AssetManager::meshesCollection;
 std::unordered_map<std::string, Model> AssetManager::models;
 std::unordered_map<std::string, Shader> AssetManager::shaders;
 std::unordered_map<std::string, Material> AssetManager::materials;
@@ -21,8 +21,8 @@ void AssetManager::LoadTexture(std::string name, const std::string texturePath, 
 		std::cout << "Asset Manager Error: Tried to load a texture with a name that already exists. Name is " << name << ".\n";
 		return;
 	}
-	
-	textures.emplace(name, AssetTexture::LoadTexture(texturePath, flipVertical));
+
+	textures.emplace(name, std::make_unique<Texture>(texturePath, flipVertical));
 }
 
 Texture& AssetManager::GetTexture(std::string name)
@@ -30,10 +30,10 @@ Texture& AssetManager::GetTexture(std::string name)
 	if (textures.find(name) == textures.end())
 	{
 		std::cout << "Asset Manager Error: Tried to get a texture with a name that doesn't exists. Name is " << name << ".\n";
-		return textures["null_texture"];
+		return *textures["null_texture"];
 	}
 
-	return textures[name];
+	return *textures[name];
 }
 
 void AssetManager::DeleteTexture(std::string name)
@@ -56,7 +56,7 @@ void AssetManager::LoadSingleMesh(std::string name, std::vector<Vertex> vertices
 		return;
 	}
 
-	meshesSingle.emplace(name, AssetMesh::LoadSingleMesh(vertices, indices));
+	meshesSingle.emplace(name, std::make_unique<Mesh>(vertices, indices));
 }
 
 void AssetManager::LoadSingleMesh(std::string name, std::string filepath)
@@ -67,7 +67,8 @@ void AssetManager::LoadSingleMesh(std::string name, std::string filepath)
 		return;
 	}
 
-	meshesSingle.emplace(name, AssetMesh::LoadSingleMesh(filepath));
+	LoadMeshData mesh_data = AssetMesh::LoadSingleMesh(filepath);
+	meshesSingle.emplace(name, std::make_unique<Mesh>(mesh_data.vertices, mesh_data.indices, mesh_data.matId));
 }
 
 void AssetManager::LoadMeshCollection(std::string name, std::string filepath)
@@ -78,7 +79,15 @@ void AssetManager::LoadMeshCollection(std::string name, std::string filepath)
 		return;
 	}
 
-	meshesCollection.emplace(name, AssetMesh::LoadMeshCollection(filepath));
+	meshesCollection.emplace(name, std::make_unique<MeshCollection>());
+	MeshCollection& mesh_collection = *meshesCollection[name];
+
+	std::vector<LoadMeshData> meshes_datas = AssetMesh::LoadMeshCollection(filepath);
+	mesh_collection.collection.reserve(meshes_datas.size());
+	for (auto& mesh_data : meshes_datas)
+	{
+		mesh_collection.collection.push_back(std::make_unique<Mesh>(mesh_data.vertices, mesh_data.indices, mesh_data.matId));
+	}
 }
 
 Mesh& AssetManager::GetSingleMesh(std::string name)
@@ -86,10 +95,10 @@ Mesh& AssetManager::GetSingleMesh(std::string name)
 	if (meshesSingle.find(name) == meshesSingle.end())
 	{
 		std::cout << "Asset Manager Error: Tried to get a single mesh with a name that doesn't exists. Name is " << name << ".\n";
-		return meshesSingle["null_mesh"];
+		return *meshesSingle["null_mesh"];
 	}
 
-	return meshesSingle[name];
+	return *meshesSingle[name];
 }
 
 MeshCollection& AssetManager::GetMeshCollection(std::string name)
@@ -97,10 +106,10 @@ MeshCollection& AssetManager::GetMeshCollection(std::string name)
 	if (meshesCollection.find(name) == meshesCollection.end())
 	{
 		std::cout << "Asset Manager Error: Tried to get a mesh collection with a name that doesn't exists. Name is " << name << ".\n";
-		return meshesCollection["null_collection"];
+		return *meshesCollection["null_collection"];
 	}
 
-	return meshesCollection[name];
+	return *meshesCollection[name];
 }
 
 void AssetManager::DeleteSingleMesh(std::string name)
@@ -111,7 +120,6 @@ void AssetManager::DeleteSingleMesh(std::string name)
 		return;
 	}
 
-	meshesSingle[name].deleteObjects();
 	meshesSingle.erase(name);
 }
 
@@ -123,10 +131,6 @@ void AssetManager::DeleteMeshCollection(std::string name)
 		return;
 	}
 
-	for (auto& mesh : meshesCollection[name].collection)
-	{
-		mesh.deleteObjects();
-	}
 	meshesCollection.erase(name);
 }
 
@@ -334,20 +338,7 @@ void AssetManager::DeleteAudioCollisionType(std::string name)
 
 void AssetManager::DeleteObjects()
 {
-	for (auto& collection : meshesCollection) 
-	{
-		for (auto& mesh : collection.second.collection) 
-		{
-			mesh.deleteObjects(); 
-		}
-	}
-
-	for (auto& mesh : meshesSingle) 
-	{
-		mesh.second.deleteObjects();
-	}
-
-	for (auto shader : shaders)
+	for (auto& shader : shaders)
 	{
 		shader.second.deleteProgram();
 	}
@@ -356,8 +347,8 @@ void AssetManager::DeleteObjects()
 void AssetManager::LoadNullAssets()
 {
 	LoadTexture("null_texture", "Default/notexture.png", false);
-	meshesSingle.emplace("null_mesh", Mesh());
-	meshesCollection.emplace("null_collection", MeshCollection{});
+	meshesSingle.emplace("null_mesh", std::make_unique<Mesh>());
+	meshesCollection.emplace("null_collection", std::make_unique<MeshCollection>());
 	models.emplace("null_model", Model());
 	shaders.emplace("null_shader", Shader());
 	materials.emplace("null_material", Material());

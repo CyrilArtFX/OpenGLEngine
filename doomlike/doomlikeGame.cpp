@@ -11,18 +11,30 @@
 #include <Decor/stairs.h>
 #include <Decor/lamps.h>
 
+#include <GLFW/glfw3.h>
+#include <iostream>
+
+
 DoomlikeGame::DoomlikeGame()
 {
 }
 
 void DoomlikeGame::loadGameAssets()
 {
+	std::cout << "Start loading doomlike assets...\n\n";
+	float load_time = glfwGetTime();
+	float full_load_time = load_time;
+
 	Renderer& renderer = Locator::getRenderer();
 
 	DefaultAssets::LoadDefaultAssets();
 
+
 	//  shaders, textures and materials
 	AssetManager::CreateShaderProgram("lit_object", "Lit/object_lit.vert", "Lit/object_lit.frag", Lit);
+
+	std::cout << "Load default Assets time: " << glfwGetTime() - load_time << std::endl;
+	load_time = glfwGetTime();
 
 	AssetManager::LoadTexture("crate_diffuse", "container2.png", false);
 	AssetManager::LoadTexture("crate_specular", "container2_specular.png", false);
@@ -41,6 +53,9 @@ void DoomlikeGame::loadGameAssets()
 	AssetManager::LoadTexture("gun_diffuse", "doomlike/gun/gun_basecolor.png", false);
 	AssetManager::LoadTexture("gun_specular", "doomlike/gun/gun_roughness.png", false);
 	AssetManager::LoadTexture("gun_emissive", "doomlike/gun/gun_emissive.png", false);
+
+	std::cout << "Load textures time: " << glfwGetTime() - load_time << std::endl;
+	load_time = glfwGetTime();
 
 	Material& crate_mat = AssetManager::CreateMaterial("crate", &AssetManager::GetShader("lit_object"));
 	crate_mat.addTexture(&AssetManager::GetTexture("crate_diffuse"), TextureType::Diffuse);
@@ -79,6 +94,9 @@ void DoomlikeGame::loadGameAssets()
 	renderer.AddMaterial(&AssetManager::GetMaterial("bullet"));
 	renderer.AddMaterial(&AssetManager::GetMaterial("gun"));
 
+	std::cout << "Create materials time: " << glfwGetTime() - load_time << std::endl;
+	load_time = glfwGetTime();
+
 
 	//  meshes and models
 	AssetManager::LoadMeshCollection("taxi", "taxi/taxi.fbx");
@@ -87,19 +105,22 @@ void DoomlikeGame::loadGameAssets()
 	AssetManager::LoadMeshCollection("gun", "doomlike/gun/gun.obj");
 
 	AssetManager::CreateModel("crate");
-	AssetManager::GetModel("crate").addMesh(&AssetManager::GetSingleMesh("default_cube"), &AssetManager::GetMaterial("crate"));
+	AssetManager::GetModel("crate").addMesh(AssetManager::GetSingleMesh("default_cube"), &AssetManager::GetMaterial("crate"));
 
 	AssetManager::CreateModel("taxi");
-	AssetManager::GetModel("taxi").addMeshes(&AssetManager::GetMeshCollection("taxi"), &AssetManager::GetMaterial("taxi"));
+	AssetManager::GetModel("taxi").addMeshes(AssetManager::GetMeshCollection("taxi"), &AssetManager::GetMaterial("taxi"));
 
 	AssetManager::CreateModel("enemy");
-	AssetManager::GetModel("enemy").addMeshes(&AssetManager::GetMeshCollection("enemy"), &AssetManager::GetMaterial("enemy"));
+	AssetManager::GetModel("enemy").addMeshes(AssetManager::GetMeshCollection("enemy"), &AssetManager::GetMaterial("enemy"));
 
 	AssetManager::CreateModel("bullet");
-	AssetManager::GetModel("bullet").addMeshes(&AssetManager::GetMeshCollection("bullet"), &AssetManager::GetMaterial("bullet"));
+	AssetManager::GetModel("bullet").addMeshes(AssetManager::GetMeshCollection("bullet"), &AssetManager::GetMaterial("bullet"));
 
 	AssetManager::CreateModel("gun");
-	AssetManager::GetModel("gun").addMeshes(&AssetManager::GetMeshCollection("gun"), &AssetManager::GetMaterial("gun"));
+	AssetManager::GetModel("gun").addMeshes(AssetManager::GetMeshCollection("gun"), &AssetManager::GetMaterial("gun"));
+
+	std::cout << "Load meshes & create models time: " << glfwGetTime() - load_time << std::endl;
+	load_time = glfwGetTime();
 
 
 	//  decor setups
@@ -107,6 +128,9 @@ void DoomlikeGame::loadGameAssets()
 	FloorCeilingSetup::SetupFloorCeilings();
 	StairsSetup::SetupStairs();
 	LampsSetup::SetupLamps();
+
+	std::cout << "Setup decors time: " << glfwGetTime() - load_time << std::endl;
+	load_time = glfwGetTime();
 
 
 	//  sounds
@@ -116,10 +140,15 @@ void DoomlikeGame::loadGameAssets()
 	AudioSound& enemydeath_sound = AssetManager::CreateSound("enemydeath", "doomlike/sounds/enemy_death.mp3", ACTIVATE_3D);
 	enemydeath_sound.setMinMaxDistance(1.0f, 20.0f);
 
+	std::cout << "Load sounds time: " << glfwGetTime() - load_time << std::endl;
+	load_time = glfwGetTime();
+
 
 	//  object channels
 	CollisionChannels::RegisterTestChannel("PlayerEntity", { "solid", "enemy", "trigger_zone" }); //  for player and player bullets
 	CollisionChannels::RegisterTestChannel("Enemy", { "solid", "player", "bullet" });
+
+	std::cout << "\nFinished loading doomlike assets in " << glfwGetTime() - full_load_time << " seconds.\n";
 }
 
 void DoomlikeGame::loadGame()

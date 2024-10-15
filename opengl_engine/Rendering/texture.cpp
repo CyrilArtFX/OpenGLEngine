@@ -3,6 +3,12 @@
 
 Texture::Texture()
 {
+	load("Default/notexture.png", false);
+}
+
+Texture::Texture(const std::string texturePath, const bool flipVertical)
+{
+	load(texturePath, flipVertical);
 }
 
 void Texture::load(const std::string texturePath, bool flipVertical)
@@ -28,7 +34,6 @@ void Texture::load(const std::string texturePath, bool flipVertical)
 
 	if (data)
 	{
-		//  be careful to not load with GL_RGBA if color depth is 24 (even with png)
 		glTexImage2D(GL_TEXTURE_2D, 0, gl_format, width, height, 0, gl_format, GL_UNSIGNED_BYTE, data);
 		//  in some cases, the glGenerateMipmap function can cause crashes (it's related to the size of the image, but I don't know exactly what causes this problem)
 		glGenerateMipmap(GL_TEXTURE_2D);
@@ -47,22 +52,16 @@ void Texture::load(const std::string texturePath, bool flipVertical)
 	}
 
 	stbi_image_free(data);
-
-	loaded = true;
 }
 
 
 void Texture::use()
 {
-	if (!loaded) return;
-
 	glBindTexture(GL_TEXTURE_2D, ID);
 }
 
 void Texture::setWrappingParameters(unsigned int sAxis, unsigned int tAxis)
 {
-	if (!loaded) return;
-
 	use();
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, sAxis);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, tAxis);
@@ -70,8 +69,6 @@ void Texture::setWrappingParameters(unsigned int sAxis, unsigned int tAxis)
 
 void Texture::setFilteringParameters(unsigned int minifying, unsigned int magnifying)
 {
-	if (!loaded) return;
-
 	use();
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minifying);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magnifying);

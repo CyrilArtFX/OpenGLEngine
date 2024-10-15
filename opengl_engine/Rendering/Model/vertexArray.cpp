@@ -66,4 +66,5 @@ VertexArray::VertexArray()
 
 VertexArray::~VertexArray()
 {
+	deleteObjects();
 }
