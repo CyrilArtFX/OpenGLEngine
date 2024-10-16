@@ -139,6 +139,9 @@ void DoomlikeGame::loadGameAssets()
 	AssetManager::CreateSound("shoot", "doomlike/sounds/shoot.mp3", 0);
 	AudioSound& enemydeath_sound = AssetManager::CreateSound("enemydeath", "doomlike/sounds/enemy_death.mp3", ACTIVATE_3D);
 	enemydeath_sound.setMinMaxDistance(1.0f, 20.0f);
+	AssetManager::CreateSound("playerdeath", "doomlike/sounds/player_death.mp3", 0);
+	AudioSound& elevator_sound = AssetManager::CreateSound("elevator", "doomlike/sounds/elevator.mp3", ACTIVATE_3D | ACTIVATE_LOOP);
+	elevator_sound.setMinMaxDistance(1.0f, 10.0f);
 
 	std::cout << "Load sounds time: " << glfwGetTime() - load_time << std::endl;
 	load_time = glfwGetTime();

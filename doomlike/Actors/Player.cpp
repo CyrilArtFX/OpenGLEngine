@@ -130,7 +130,7 @@ void Player::update(float dt)
 		bullets.push_back(std::make_unique<Bullet>(gunObject.getPosition(), bullet_rotation, bullet_direction, shootVelocity, bulletLifeTime));
 
 		//  play shoot sound
-		Locator::getAudio().InstantPlaySound2D(AssetManager::GetSound("shoot"), 0.5f);
+		Locator::getAudio().InstantPlaySound2D(AssetManager::GetSound("shoot"), 0.15f);
 	}
 
 

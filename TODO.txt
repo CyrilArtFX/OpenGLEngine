@@ -10,13 +10,13 @@
 	- Tester tout ça - fait
 
 ~ Rajouter du son dans le doomlike - en cours
-	- Musique de fond (différente pour chaque niveau ?)
+	- Musique de fond (différente pour chaque niveau ?) - flemme
 	- Son de pas - fait
 	- Son de tir - fait
 	- Son de mort des ennemis - fait
-	- Son de mort du joueur
+	- Son de mort du joueur - fait
 	- Son de mouvement des ennemis
-	- Son pour les ascenceurs
+	- Son pour les ascenceurs - fait
 	- Son pour les réactions de l'environnement (mur qui s'ouvre, lumières qui s'allument)
 
 ~ Refactor l'Asset Manager pour mettre la mémoire sur la heap et plus la stack (stocker les assets dans des pointeurs) - en cours

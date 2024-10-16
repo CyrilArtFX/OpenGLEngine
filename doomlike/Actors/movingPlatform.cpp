@@ -1,12 +1,21 @@
 #include "movingPlatform.h"
 #include <ServiceLocator/locator.h>
 #include <ServiceLocator/physics.h>
+#include <Assets/assetManager.h>
 
 void MovingPlatform::load()
 {
 	Physics& physics = Locator::getPhysics();
 
 	rigidbody = &physics.CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box::one, this, false, "solid"), false));
+
+	if (audioSource)
+	{
+		audioSource->stopSound();
+		audioSource->releaseChannel();
+		delete audioSource;
+	}
+	audioSource = new AudioSourceComponent(this, ChannelSpatialization::Channel3D, "elevator");
 
 	setScale(Vector3{ 2.0f, 0.2f, 2.0f });
 }
@@ -24,6 +33,8 @@ void MovingPlatform::setup(Vector3 pointA_, Vector3 pointB_, float timeAtoB_, fl
 	setPosition(pointA);
 	distance = Vector3::Distance(pointA, pointB);
 	rigidbody->setVelocity((pointB - pointA) * (1.0f / timeAtoB));
+
+	audioSource->playSound(AssetManager::GetSound("elevator"), -1);
 }
 
 void MovingPlatform::updateObject(float dt)
@@ -56,6 +67,8 @@ void MovingPlatform::updateObject(float dt)
 				waitTimer = waitTime;
 				waiting = true;
 				rigidbody->setVelocity(Vector3::zero);
+
+				audioSource->setPause(true);
 			}
 		}
 	}
@@ -72,6 +85,8 @@ void MovingPlatform::updateObject(float dt)
 				waitTimer = waitTime;
 				waiting = true;
 				rigidbody->setVelocity(Vector3::zero);
+
+				audioSource->setPause(true);
 			}
 		}
 	}
@@ -81,6 +96,8 @@ void MovingPlatform::pause()
 {
 	paused = true;
 	rigidbody->setVelocity(Vector3::zero);
+
+	audioSource->setPause(true);
 }
 
 void MovingPlatform::resume()
@@ -88,4 +105,6 @@ void MovingPlatform::resume()
 	paused = false;
 	if (waiting) return;
 	rigidbody->setVelocity((reverse ? (pointA - pointB) : (pointB - pointA)) * (1.0f / timeAtoB));
+
+	audioSource->setPause(false);
 }

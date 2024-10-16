@@ -2,6 +2,7 @@
 #include <Objects/object.h>
 #include <Physics/AABB/boxAABBColComp.h>
 #include <Physics/rigidbodyComponent.h>
+#include <Audio/audioSourceComponent.h>
 
 class MovingPlatform : public Object
 {
@@ -16,6 +17,7 @@ public:
 
 private:
 	RigidbodyComponent* rigidbody{ nullptr };
+	AudioSourceComponent* audioSource{ nullptr };
 
 	Vector3 pointA{ Vector3::zero };
 	Vector3 pointB{ Vector3::zero };

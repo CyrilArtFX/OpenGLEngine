@@ -66,11 +66,14 @@ void Enemy::onBodyIntersect(RigidbodyComponent& other)
 
 
 		//  play death sound
-		Locator::getAudio().InstantPlaySound3D(AssetManager::GetSound("enemydeath"), getPosition(), 0.6f);
+		Locator::getAudio().InstantPlaySound3D(AssetManager::GetSound("enemydeath"), getPosition(), 0.15f);
 	}
 	else if (other.getAssociatedCollision().getCollisionChannel() == "player")
 	{
 		std::cout << "Player die from the enemy.\n";
 		static_cast<DoomlikeGame*>(GameplayStatics::GetGame())->restartLevel();
+
+		//  play player death sound
+		Locator::getAudio().InstantPlaySound2D(AssetManager::GetSound("playerdeath"), 0.4f);
 	}
 }
