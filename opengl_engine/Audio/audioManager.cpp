@@ -441,6 +441,23 @@ void AudioManager::SetAudioSourceGroupPos(const std::uint32_t index, const Vecto
 	{
 		std::cout << "Audio Manager Error: Failed to set an audio source group position. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
 	}
+
+	int current_nb_channel_playing;
+	group_pos->getNumChannels(&current_nb_channel_playing);
+	if (current_nb_channel_playing <= 0) return;
+
+	FMOD::Channel* channelPlaying;
+	result = group_pos->getChannel(0, &channelPlaying);
+	if (result != FMOD_OK)
+	{
+		std::cout << "Audio Manager Error: Failed to retrieve the playing channel of an audio source group. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+	}
+
+	result = channelPlaying->set3DAttributes(&pos, &vel);
+	if (result != FMOD_OK)
+	{
+		std::cout << "Audio Manager Error: Failed to set the position of the playing channel of an audio source group. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+	}
 }
 
 Vector3 AudioManager::GetAudioSourceGroupPos(const std::uint32_t index)

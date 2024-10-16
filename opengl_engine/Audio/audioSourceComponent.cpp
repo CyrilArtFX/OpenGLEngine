@@ -43,8 +43,9 @@ AudioSourceComponent::AudioSourceComponent(const AudioSourceComponent& other) : 
 
 
 //  Release
-void AudioSourceComponent::ReleaseChannel()
+void AudioSourceComponent::releaseChannel()
 {
+	associatedObject->onTransformUpdated.unregisterObserver(this);
 	audioManagerRef.ReleaseAudioSourceGroup(channelIndex);
 }
 

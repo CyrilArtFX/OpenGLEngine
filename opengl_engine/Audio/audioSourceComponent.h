@@ -19,7 +19,7 @@ public:
 	/**
 	* Release the audio channel of this audio source component. Useful if you want to kill the object that has this component.
 	*/
-	void ReleaseChannel();
+	void releaseChannel();
 
 	std::uint32_t getChannelIndex() const { return channelIndex; }
 	ChannelSpatialization getChannelSpatialization() const { return sourceSpatialization; }
