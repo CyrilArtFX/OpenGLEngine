@@ -30,7 +30,7 @@ public:
 	// ----------------------------------------------------------
 	//  Load Sound (available from audio interface)
 	// ----------------------------------------------------------
-	AudioSoundPtr LoadSound(std::string soundFile, SoundSettings settings) override;
+	AudioSoundPtr LoadSound(std::string soundFile, const SoundSettings settings) override;
 
 
 	// ----------------------------------------------------------

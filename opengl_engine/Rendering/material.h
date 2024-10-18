@@ -71,7 +71,7 @@ struct MaterialCollection
 	std::vector<Material*> collection{};
 
 	MaterialCollection() {}
-	MaterialCollection(std::vector<Material*> collection_) : collection(collection_) {}
+	MaterialCollection(const std::vector<Material*>& collection_) : collection(collection_) {}
 	MaterialCollection(const MaterialCollection&) = delete;
 	MaterialCollection& operator=(const MaterialCollection&) = delete;
 };

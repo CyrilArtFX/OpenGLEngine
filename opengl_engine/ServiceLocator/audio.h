@@ -39,7 +39,7 @@ public:
 	* @param	settings	(optionnal) Additionnal load settings for the sound.
 	* @return				The newly created Fmod Sound object.
 	*/
-	virtual AudioSoundPtr LoadSound(std::string soundFile, SoundSettings settings = 0) = 0;
+	virtual AudioSoundPtr LoadSound(std::string soundFile, const SoundSettings settings = 0) = 0;
 
 
 

@@ -10,7 +10,7 @@ namespace FMOD //  avoid including "fmod.hpp"
 class AudioSound
 {
 public:
-	AudioSound(FMOD::Sound* fmodSound_, SoundSettings soundSettings);
+	AudioSound(FMOD::Sound* fmodSound_, const SoundSettings soundSettings);
 	~AudioSound();
 
 	AudioSound() = delete;

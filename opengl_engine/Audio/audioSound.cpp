@@ -5,7 +5,7 @@
 #include <FMod/fmod_errors.h>
 #include <iostream>
 
-AudioSound::AudioSound(FMOD::Sound* fmodSound_, SoundSettings soundSettings) : FModSound(fmodSound_), Settings(soundSettings)
+AudioSound::AudioSound(FMOD::Sound* fmodSound_, const SoundSettings soundSettings) : FModSound(fmodSound_), Settings(soundSettings)
 {
 }
 

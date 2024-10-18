@@ -18,18 +18,18 @@ class Shader
 {
 public:
 	Shader();
-	Shader(const std::string vertexName, const std::string fragmentName, ShaderType shaderType);
+	Shader(const std::string& vertexName, const std::string& fragmentName, const ShaderType shaderType);
 	~Shader();
 
 	void use(); //  use (activate) the shader
 	void deleteProgram();
 
 	//  setter uniform fonctions
-	void setBool(const std::string& name, bool value) const;
-	void setInt(const std::string& name, int value) const;
-	void setFloat(const std::string& name, float value) const;
-	void setVec3(const std::string& name, class Vector3 value) const;
-	void setVec3(const std::string& name, float xValue, float yValue, float zValue) const;
+	void setBool(const std::string& name, const bool value) const;
+	void setInt(const std::string& name, const int value) const;
+	void setFloat(const std::string& name, const float value) const;
+	void setVec3(const std::string& name, const class Vector3 value) const;
+	void setVec3(const std::string& name, const float xValue, const float yValue, const float zValue) const;
 	void setMatrix4(const std::string& name, const float* value) const;
 
 	unsigned int getProgram() const { return ID; }
@@ -47,5 +47,5 @@ private:
 
 
 	//  reads and builds the shader program
-	void load(const std::string vertexName, const std::string fragmentName, ShaderType shaderType);
+	void load(const std::string& vertexName, const std::string& fragmentName, const ShaderType shaderType);
 };

@@ -9,7 +9,7 @@ Shader::Shader()
 	//  default constructor will create a unloaded shader that will be unable to do anything
 }
 
-Shader::Shader(const std::string vertexName, const std::string fragmentName, ShaderType shaderType)
+Shader::Shader(const std::string& vertexName, const std::string& fragmentName, const ShaderType shaderType)
 {
 	load(vertexName, fragmentName, shaderType);
 }
@@ -19,15 +19,15 @@ Shader::~Shader()
 	deleteProgram();
 }
 
-void Shader::load(const std::string vertexName, const std::string fragmentName, ShaderType shaderType)
+void Shader::load(const std::string& vertexName, const std::string& fragmentName, const ShaderType shaderType)
 {
 	type = shaderType;
 
 	//  Step 1 : retrieve the shaders source code from filePaths
 	//  ========================================================
 
-	std::string vertex_path = SHADER_PATH + vertexName;
-	std::string fragment_path = SHADER_PATH + fragmentName;
+	const std::string vertex_path = SHADER_PATH + vertexName;
+	const std::string fragment_path = SHADER_PATH + fragmentName;
 
 
 	std::string vertex_code;
@@ -133,35 +133,35 @@ void Shader::deleteProgram()
 }
 
 
-void Shader::setBool(const std::string& name, bool value) const
+void Shader::setBool(const std::string& name, const bool value) const
 {
 	if (!loaded) return;
 
 	glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
 }
 
-void Shader::setInt(const std::string& name, int value) const
+void Shader::setInt(const std::string& name, const int value) const
 {
 	if (!loaded) return;
 
 	glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
 }
 
-void Shader::setFloat(const std::string& name, float value) const
+void Shader::setFloat(const std::string& name, const float value) const
 {
 	if (!loaded) return;
 
 	glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
 }
 
-void Shader::setVec3(const std::string& name, Vector3 value) const
+void Shader::setVec3(const std::string& name, const Vector3 value) const
 {
 	if (!loaded) return;
 
 	setVec3(name, value.x, value.y, value.z);
 }
 
-void Shader::setVec3(const std::string& name, float xValue, float yValue, float zValue) const
+void Shader::setVec3(const std::string& name, const float xValue, const float yValue, const float zValue) const
 {
 	if (!loaded) return;
 

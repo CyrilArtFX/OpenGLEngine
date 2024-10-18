@@ -143,7 +143,7 @@ bool AudioManager::IsAudioSystemValid()
 //            Load Sound part
 // --------------------------------------------------------------
 
-AudioSoundPtr AudioManager::LoadSound(std::string soundFile, SoundSettings settings)
+AudioSoundPtr AudioManager::LoadSound(std::string soundFile, const SoundSettings settings)
 {
 	const std::string sound_path = RESOURCES_PATH + soundFile;
 

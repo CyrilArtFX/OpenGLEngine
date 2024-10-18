@@ -3,6 +3,11 @@
 #include <iostream>
 
 
+
+// --------------------------------------------------------------
+//            Assets lists
+// --------------------------------------------------------------
+
 std::unordered_map<std::string, std::unique_ptr<Texture>> AssetManager::textures;
 std::unordered_map<std::string, std::unique_ptr<Mesh>> AssetManager::meshesSingle;
 std::unordered_map<std::string, std::unique_ptr<MeshCollection>> AssetManager::meshesCollection;
@@ -14,7 +19,12 @@ std::unordered_map<std::string, std::unique_ptr<AudioSound>> AssetManager::sound
 std::unordered_map<std::string, AudioCollisionOcclusion> AssetManager::audioCollisionTypes;
 
 
-void AssetManager::LoadTexture(std::string name, const std::string texturePath, bool flipVertical)
+
+// --------------------------------------------------------------
+//            Textures
+// --------------------------------------------------------------
+
+void AssetManager::LoadTexture(const std::string& name, const std::string& texturePath, const bool flipVertical)
 {
 	if (textures.find(name) != textures.end())
 	{
@@ -25,7 +35,7 @@ void AssetManager::LoadTexture(std::string name, const std::string texturePath, 
 	textures.emplace(name, std::make_unique<Texture>(texturePath, flipVertical));
 }
 
-Texture& AssetManager::GetTexture(std::string name)
+Texture& AssetManager::GetTexture(const std::string& name)
 {
 	if (textures.find(name) == textures.end())
 	{
@@ -36,7 +46,7 @@ Texture& AssetManager::GetTexture(std::string name)
 	return *textures[name];
 }
 
-void AssetManager::DeleteTexture(std::string name)
+void AssetManager::DeleteTexture(const std::string& name)
 {
 	if (textures.find(name) == textures.end())
 	{
@@ -48,7 +58,12 @@ void AssetManager::DeleteTexture(std::string name)
 }
 
 
-void AssetManager::LoadSingleMesh(std::string name, std::vector<Vertex> vertices, std::vector<unsigned int> indices)
+
+// --------------------------------------------------------------
+//            Meshes
+// --------------------------------------------------------------
+
+void AssetManager::LoadSingleMesh(const std::string& name, const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
 {
 	if (meshesSingle.find(name) != meshesSingle.end())
 	{
@@ -59,7 +74,7 @@ void AssetManager::LoadSingleMesh(std::string name, std::vector<Vertex> vertices
 	meshesSingle.emplace(name, std::make_unique<Mesh>(vertices, indices));
 }
 
-void AssetManager::LoadSingleMesh(std::string name, std::string filepath)
+void AssetManager::LoadSingleMesh(const std::string& name, const std::string& filepath)
 {
 	if (meshesSingle.find(name) != meshesSingle.end())
 	{
@@ -71,7 +86,7 @@ void AssetManager::LoadSingleMesh(std::string name, std::string filepath)
 	meshesSingle.emplace(name, std::make_unique<Mesh>(mesh_data.vertices, mesh_data.indices, mesh_data.matId));
 }
 
-void AssetManager::LoadMeshCollection(std::string name, std::string filepath)
+void AssetManager::LoadMeshCollection(const std::string& name, const std::string& filepath)
 {
 	if (meshesCollection.find(name) != meshesCollection.end())
 	{
@@ -90,7 +105,7 @@ void AssetManager::LoadMeshCollection(std::string name, std::string filepath)
 	}
 }
 
-Mesh& AssetManager::GetSingleMesh(std::string name)
+Mesh& AssetManager::GetSingleMesh(const std::string& name)
 {
 	if (meshesSingle.find(name) == meshesSingle.end())
 	{
@@ -101,7 +116,7 @@ Mesh& AssetManager::GetSingleMesh(std::string name)
 	return *meshesSingle[name];
 }
 
-MeshCollection& AssetManager::GetMeshCollection(std::string name)
+MeshCollection& AssetManager::GetMeshCollection(const std::string& name)
 {
 	if (meshesCollection.find(name) == meshesCollection.end())
 	{
@@ -112,7 +127,7 @@ MeshCollection& AssetManager::GetMeshCollection(std::string name)
 	return *meshesCollection[name];
 }
 
-void AssetManager::DeleteSingleMesh(std::string name)
+void AssetManager::DeleteSingleMesh(const std::string& name)
 {
 	if (meshesSingle.find(name) == meshesSingle.end())
 	{
@@ -123,7 +138,7 @@ void AssetManager::DeleteSingleMesh(std::string name)
 	meshesSingle.erase(name);
 }
 
-void AssetManager::DeleteMeshCollection(std::string name)
+void AssetManager::DeleteMeshCollection(const std::string& name)
 {
 	if (meshesCollection.find(name) == meshesCollection.end())
 	{
@@ -135,7 +150,12 @@ void AssetManager::DeleteMeshCollection(std::string name)
 }
 
 
-Model& AssetManager::CreateModel(std::string name)
+
+// --------------------------------------------------------------
+//            Models
+// --------------------------------------------------------------
+
+Model& AssetManager::CreateModel(const std::string& name)
 {
 	if (models.find(name) != models.end())
 	{
@@ -147,7 +167,7 @@ Model& AssetManager::CreateModel(std::string name)
 	return *models[name];
 }
 
-Model& AssetManager::GetModel(std::string name)
+Model& AssetManager::GetModel(const std::string& name)
 {
 	if (models.find(name) == models.end())
 	{
@@ -158,7 +178,7 @@ Model& AssetManager::GetModel(std::string name)
 	return *models[name];
 }
 
-void AssetManager::DeleteModel(std::string name)
+void AssetManager::DeleteModel(const std::string& name)
 {
 	if (models.find(name) == models.end())
 	{
@@ -169,7 +189,13 @@ void AssetManager::DeleteModel(std::string name)
 	models.erase(name);
 }
 
-void AssetManager::CreateShaderProgram(std::string name, const std::string vertexName, const std::string fragmentName, ShaderType shaderType)
+
+
+// --------------------------------------------------------------
+//            Shaders
+// --------------------------------------------------------------
+
+void AssetManager::CreateShaderProgram(const std::string& name, const std::string& vertexName, const std::string& fragmentName, const ShaderType shaderType)
 {
 	if (shaders.find(name) != shaders.end())
 	{
@@ -180,7 +206,7 @@ void AssetManager::CreateShaderProgram(std::string name, const std::string verte
 	shaders.emplace(name, std::make_unique<Shader>(vertexName, fragmentName, shaderType));
 }
 
-Shader& AssetManager::GetShader(std::string name)
+Shader& AssetManager::GetShader(const std::string& name)
 {
 	if (shaders.find(name) == shaders.end())
 	{
@@ -191,7 +217,7 @@ Shader& AssetManager::GetShader(std::string name)
 	return *shaders[name];
 }
 
-void AssetManager::DeleteShader(std::string name)
+void AssetManager::DeleteShader(const std::string& name)
 {
 	if (shaders.find(name) == shaders.end())
 	{
@@ -202,7 +228,13 @@ void AssetManager::DeleteShader(std::string name)
 	shaders.erase(name);
 }
 
-Material& AssetManager::CreateMaterial(std::string name, Shader& shaderUsed)
+
+
+// --------------------------------------------------------------
+//            Materials
+// --------------------------------------------------------------
+
+Material& AssetManager::CreateMaterial(const std::string& name, Shader& shaderUsed)
 {
 	if (materials.find(name) != materials.end())
 	{
@@ -214,7 +246,7 @@ Material& AssetManager::CreateMaterial(std::string name, Shader& shaderUsed)
 	return *materials[name];
 }
 
-MaterialCollection& AssetManager::CreateMaterialCollection(std::string name, std::vector<Material*> materialCollection)
+MaterialCollection& AssetManager::CreateMaterialCollection(const std::string& name, const std::vector<Material*>& materialCollection)
 {
 	if (materialsCollection.find(name) != materialsCollection.end())
 	{
@@ -226,7 +258,7 @@ MaterialCollection& AssetManager::CreateMaterialCollection(std::string name, std
 	return *materialsCollection[name];
 }
 
-Material& AssetManager::GetMaterial(std::string name)
+Material& AssetManager::GetMaterial(const std::string& name)
 {
 	if (materials.find(name) == materials.end())
 	{
@@ -237,7 +269,7 @@ Material& AssetManager::GetMaterial(std::string name)
 	return *materials[name];
 }
 
-MaterialCollection& AssetManager::GetMaterialCollection(std::string name)
+MaterialCollection& AssetManager::GetMaterialCollection(const std::string& name)
 {
 	if (materialsCollection.find(name) == materialsCollection.end())
 	{
@@ -248,7 +280,7 @@ MaterialCollection& AssetManager::GetMaterialCollection(std::string name)
 	return *materialsCollection[name];
 }
 
-void AssetManager::DeleteMaterial(std::string name)
+void AssetManager::DeleteMaterial(const std::string& name)
 {
 	if (materials.find(name) == materials.end())
 	{
@@ -260,7 +292,12 @@ void AssetManager::DeleteMaterial(std::string name)
 }
 
 
-AudioSound& AssetManager::CreateSound(std::string name, std::string filePath, SoundSettings settings)
+
+// --------------------------------------------------------------
+//            Sounds
+// --------------------------------------------------------------
+
+AudioSound& AssetManager::CreateSound(const std::string& name, const std::string& filePath, const SoundSettings settings)
 {
 	if (sounds.find(name) != sounds.end())
 	{
@@ -273,7 +310,7 @@ AudioSound& AssetManager::CreateSound(std::string name, std::string filePath, So
 	return *sounds[name];
 }
 
-AudioSound& AssetManager::GetSound(std::string name)
+AudioSound& AssetManager::GetSound(const std::string& name)
 {
 	if (sounds.find(name) == sounds.end())
 	{
@@ -284,7 +321,7 @@ AudioSound& AssetManager::GetSound(std::string name)
 	return *sounds[name];
 }
 
-void AssetManager::DeleteSound(std::string name)
+void AssetManager::DeleteSound(const std::string& name)
 {
 	if (sounds.find(name) == sounds.end())
 	{
@@ -296,7 +333,12 @@ void AssetManager::DeleteSound(std::string name)
 }
 
 
-AudioCollisionOcclusion& AssetManager::RegisterAudioCollisionType(std::string name, AudioCollisionOcclusion audioCollisionType)
+
+// --------------------------------------------------------------
+//            Audio Collision Type
+// --------------------------------------------------------------
+
+AudioCollisionOcclusion& AssetManager::RegisterAudioCollisionType(const std::string& name, AudioCollisionOcclusion audioCollisionType)
 {
 	if (audioCollisionTypes.find(name) != audioCollisionTypes.end())
 	{
@@ -308,7 +350,7 @@ AudioCollisionOcclusion& AssetManager::RegisterAudioCollisionType(std::string na
 	return audioCollisionTypes[name];
 }
 
-AudioCollisionOcclusion& AssetManager::GetAudioCollisionType(std::string name)
+AudioCollisionOcclusion& AssetManager::GetAudioCollisionType(const std::string& name)
 {
 	if (audioCollisionTypes.find(name) == audioCollisionTypes.end())
 	{
@@ -319,7 +361,7 @@ AudioCollisionOcclusion& AssetManager::GetAudioCollisionType(std::string name)
 	return audioCollisionTypes[name];
 }
 
-void AssetManager::DeleteAudioCollisionType(std::string name)
+void AssetManager::DeleteAudioCollisionType(const std::string& name)
 {
 	if (audioCollisionTypes.find(name) == audioCollisionTypes.end())
 	{
@@ -332,6 +374,10 @@ void AssetManager::DeleteAudioCollisionType(std::string name)
 
 
 
+
+// --------------------------------------------------------------
+//           Null Assets
+// --------------------------------------------------------------
 
 void AssetManager::LoadNullAssets()
 {

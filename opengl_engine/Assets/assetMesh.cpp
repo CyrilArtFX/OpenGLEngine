@@ -2,9 +2,9 @@
 #include <Utils/defines.h>
 #include <iostream>
 
-LoadMeshData AssetMesh::LoadSingleMesh(std::string filepath)
+LoadMeshData AssetMesh::LoadSingleMesh(const std::string& filepath)
 {
-    std::string mesh_path = RESOURCES_PATH + filepath;
+    const std::string mesh_path = RESOURCES_PATH + filepath;
 
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(mesh_path, aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -20,9 +20,9 @@ LoadMeshData AssetMesh::LoadSingleMesh(std::string filepath)
     return processNodeSingle(scene->mRootNode, scene);
 }
 
-std::vector<LoadMeshData> AssetMesh::LoadMeshCollection(std::string filepath)
+std::vector<LoadMeshData> AssetMesh::LoadMeshCollection(const std::string& filepath)
 {
-    std::string meshes_path = RESOURCES_PATH + filepath;
+    const std::string meshes_path = RESOURCES_PATH + filepath;
 
     std::vector<LoadMeshData> meshes_datas;
 

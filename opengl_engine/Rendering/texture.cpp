@@ -6,12 +6,12 @@ Texture::Texture()
 	load("Default/notexture.png", false);
 }
 
-Texture::Texture(const std::string texturePath, const bool flipVertical)
+Texture::Texture(const std::string& texturePath, const bool flipVertical)
 {
 	load(texturePath, flipVertical);
 }
 
-void Texture::load(const std::string texturePath, bool flipVertical)
+void Texture::load(const std::string& texturePath, bool flipVertical)
 {
 	std::string tex_path = RESOURCES_PATH + texturePath;
 

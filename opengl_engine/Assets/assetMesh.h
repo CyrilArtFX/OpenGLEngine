@@ -24,13 +24,13 @@ public:
 	* Load a single mesh from a 3D file using assimp.
 	* WARNING : It will load only the root mesh.
 	*/
-	static LoadMeshData LoadSingleMesh(std::string filepath);
+	static LoadMeshData LoadSingleMesh(const std::string& filepath);
 
 	/**
 	* Load an entire model from a 3D file using assimp.
 	* Will return the meshes in a vector.
 	*/
-	static std::vector<LoadMeshData> LoadMeshCollection(std::string filepath);
+	static std::vector<LoadMeshData> LoadMeshCollection(const std::string& filepath);
 
 private:
 	static LoadMeshData processNodeSingle(aiNode* node, const aiScene* scene);

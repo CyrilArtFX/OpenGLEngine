@@ -11,7 +11,7 @@ public:
 	bool IsAudioSystemValid() override { return false; }
 
 
-	AudioSoundPtr LoadSound(std::string soundFile, SoundSettings settings = 0) override { return { nullptr }; }
+	AudioSoundPtr LoadSound(std::string soundFile, const SoundSettings settings = 0) override { return { nullptr }; }
 
 
 	void SetGlobalVolume(const float volume) override {}

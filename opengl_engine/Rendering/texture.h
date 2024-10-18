@@ -12,7 +12,7 @@ class Texture
 {
 public:
 	Texture();
-	Texture(const std::string texturePath, const bool flipVertical);
+	Texture(const std::string& texturePath, const bool flipVertical);
 	Texture(const Texture&) = delete;
 	Texture& operator=(const Texture&) = delete;
 
@@ -26,7 +26,7 @@ public:
 private:
 	unsigned int ID{ 0 }; //  texture ID
 
-	void load(const std::string texturePath, bool flipVertical);
+	void load(const std::string& texturePath, bool flipVertical);
 	unsigned int getGlFormat(const int nbChannels);
 };
 
