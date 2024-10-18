@@ -84,7 +84,7 @@ void RendererOpenGL::draw()
 			//  loop through all objects to draw all meshes that uses the material
 			for (auto object : objects)
 			{
-				object->draw(material);
+				object->draw(*material);
 			}
 		}
 	}

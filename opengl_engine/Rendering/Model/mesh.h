@@ -28,5 +28,5 @@ struct MeshCollection
 
 	MeshCollection() {}
 	MeshCollection(const MeshCollection&) = delete;
-	MeshCollection operator=(const MeshCollection&) = delete;
+	MeshCollection& operator=(const MeshCollection&) = delete;
 };

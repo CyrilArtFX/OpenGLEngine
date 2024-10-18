@@ -54,7 +54,7 @@ namespace WallSetup
 		AssetManager::LoadTexture("wall_diffuse", "doomlike/tex_stonewall/stonewall_basecolor.jpg", false);
 		AssetManager::LoadTexture("wall_specular", "doomlike/tex_stonewall/stonewall_specular.jpg", false);
 
-		Material& wall_mat = AssetManager::CreateMaterial("wall", &AssetManager::GetShader("lit_object"));
+		Material& wall_mat = AssetManager::CreateMaterial("wall", AssetManager::GetShader("lit_object"));
 		wall_mat.addTexture(&AssetManager::GetTexture("wall_diffuse"), TextureType::Diffuse);
 		wall_mat.addTexture(&AssetManager::GetTexture("wall_specular"), TextureType::Specular);
 		wall_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
@@ -64,7 +64,7 @@ namespace WallSetup
 		renderer.AddMaterial(&AssetManager::GetMaterial("wall"));
 
 		AssetManager::CreateModel("wall");
-		AssetManager::GetModel("wall").addMesh(AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("wall"));
+		AssetManager::GetModel("wall").addMesh(AssetManager::GetSingleMesh("default_plane"), AssetManager::GetMaterial("wall"));
 	}
 
 

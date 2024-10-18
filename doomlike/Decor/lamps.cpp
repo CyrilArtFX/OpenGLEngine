@@ -75,12 +75,12 @@ void Lamp::changeStatus(bool lightStatus)
 
 		if (isChandelier)
 		{
-			getModel(0).changeMaterial(2, &AssetManager::GetMaterial("flame"));
-			getModel(0).changeMaterial(3, &AssetManager::GetMaterial("flame"));
+			getModel(0).changeMaterial(2, AssetManager::GetMaterial("flame"));
+			getModel(0).changeMaterial(3, AssetManager::GetMaterial("flame"));
 		}
 		else
 		{
-			getModel(0).changeMaterial(1, &AssetManager::GetMaterial("flame"));
+			getModel(0).changeMaterial(1, AssetManager::GetMaterial("flame"));
 		}
 	}
 	else
@@ -89,12 +89,12 @@ void Lamp::changeStatus(bool lightStatus)
 		
 		if (isChandelier)
 		{
-			getModel(0).changeMaterial(2, &AssetManager::GetMaterial("chandelier_candle"));
-			getModel(0).changeMaterial(3, &AssetManager::GetMaterial("flame_off"));
+			getModel(0).changeMaterial(2, AssetManager::GetMaterial("chandelier_candle"));
+			getModel(0).changeMaterial(3, AssetManager::GetMaterial("flame_off"));
 		}
 		else
 		{
-			getModel(0).changeMaterial(1, &AssetManager::GetMaterial("flame_off"));
+			getModel(0).changeMaterial(1, AssetManager::GetMaterial("flame_off"));
 		}
 	}
 }

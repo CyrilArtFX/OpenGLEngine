@@ -52,21 +52,21 @@ namespace FloorCeilingSetup
 		AssetManager::LoadTexture("floor_wood_diffuse", "doomlike/tex_woodfloor/woodfloor_basecolor.jpg", false);
 		AssetManager::LoadTexture("floor_wood_specular", "doomlike/tex_woodfloor/woodfloor_specular.jpg", false);
 
-		Material& floor_mat = AssetManager::CreateMaterial("floor", &AssetManager::GetShader("lit_object"));
+		Material& floor_mat = AssetManager::CreateMaterial("floor", AssetManager::GetShader("lit_object"));
 		floor_mat.addTexture(&AssetManager::GetTexture("floor_diffuse"), TextureType::Diffuse);
 		floor_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Specular);
 		floor_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
 		floor_mat.addParameter("material.shininess", 32.0f);
 		floor_mat.addParameter("beta_prevent_tex_scaling", true);
 
-		Material& floor_wood_mat = AssetManager::CreateMaterial("floor_wood", &AssetManager::GetShader("lit_object"));
+		Material& floor_wood_mat = AssetManager::CreateMaterial("floor_wood", AssetManager::GetShader("lit_object"));
 		floor_wood_mat.addTexture(&AssetManager::GetTexture("floor_wood_diffuse"), TextureType::Diffuse);
 		floor_wood_mat.addTexture(&AssetManager::GetTexture("floor_wood_specular"), TextureType::Specular);
 		floor_wood_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
 		floor_wood_mat.addParameter("material.shininess", 32.0f);
 		floor_wood_mat.addParameter("beta_prevent_tex_scaling", true);
 
-		Material& ceiling_mat = AssetManager::CreateMaterial("ceiling", &AssetManager::GetShader("lit_object"));
+		Material& ceiling_mat = AssetManager::CreateMaterial("ceiling", AssetManager::GetShader("lit_object"));
 		ceiling_mat.addTexture(&AssetManager::GetTexture("ceiling_diffuse"), TextureType::Diffuse);
 		ceiling_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Specular);
 		ceiling_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
@@ -78,13 +78,13 @@ namespace FloorCeilingSetup
 		renderer.AddMaterial(&AssetManager::GetMaterial("ceiling"));
 
 		AssetManager::CreateModel("floor");
-		AssetManager::GetModel("floor").addMesh(AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("floor"));
+		AssetManager::GetModel("floor").addMesh(AssetManager::GetSingleMesh("default_plane"), AssetManager::GetMaterial("floor"));
 
 		AssetManager::CreateModel("floor_wood");
-		AssetManager::GetModel("floor_wood").addMesh(AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("floor_wood"));
+		AssetManager::GetModel("floor_wood").addMesh(AssetManager::GetSingleMesh("default_plane"), AssetManager::GetMaterial("floor_wood"));
 
 		AssetManager::CreateModel("ceiling");
-		AssetManager::GetModel("ceiling").addMesh(AssetManager::GetSingleMesh("default_plane"), &AssetManager::GetMaterial("ceiling"));
+		AssetManager::GetModel("ceiling").addMesh(AssetManager::GetSingleMesh("default_plane"), AssetManager::GetMaterial("ceiling"));
 	}
 
 	static void ReleaseFloorCeilings()

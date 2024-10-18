@@ -8,8 +8,8 @@ std::unordered_map<std::string, std::unique_ptr<Mesh>> AssetManager::meshesSingl
 std::unordered_map<std::string, std::unique_ptr<MeshCollection>> AssetManager::meshesCollection;
 std::unordered_map<std::string, Model> AssetManager::models;
 std::unordered_map<std::string, std::unique_ptr<Shader>> AssetManager::shaders;
-std::unordered_map<std::string, Material> AssetManager::materials;
-std::unordered_map<std::string, MaterialCollection> AssetManager::materialsCollection;
+std::unordered_map<std::string, std::unique_ptr<Material>> AssetManager::materials;
+std::unordered_map<std::string, std::unique_ptr<MaterialCollection>> AssetManager::materialsCollection;
 std::unordered_map<std::string, AudioSound> AssetManager::sounds;
 std::unordered_map<std::string, AudioCollisionOcclusion> AssetManager::audioCollisionTypes;
 
@@ -202,28 +202,28 @@ void AssetManager::DeleteShader(std::string name)
 	shaders.erase(name);
 }
 
-Material& AssetManager::CreateMaterial(std::string name, Shader* shaderUsed)
+Material& AssetManager::CreateMaterial(std::string name, Shader& shaderUsed)
 {
 	if (materials.find(name) != materials.end())
 	{
 		std::cout << "Asset Manager Error: Tried to create a material with a name that already exists. Name is " << name << ".\n";
-		return materials["null_material"];
+		return *materials["null_material"];
 	}
 
-	materials.emplace(name, AssetMaterial::LoadMaterial(shaderUsed));
-	return materials[name];
+	materials.emplace(name, std::make_unique<Material>(shaderUsed));
+	return *materials[name];
 }
 
-MaterialCollection& AssetManager::CreateMaterialCollection(std::string name, MaterialCollection materialCollection)
+MaterialCollection& AssetManager::CreateMaterialCollection(std::string name, std::vector<Material*> materialCollection)
 {
 	if (materialsCollection.find(name) != materialsCollection.end())
 	{
 		std::cout << "Asset Manager Error: Tried to create a material collection with a name that already exists. Name is " << name << ".\n";
-		return materialsCollection["null_mat_collection"];
+		return *materialsCollection["null_mat_collection"];
 	}
 
-	materialsCollection.emplace(name, materialCollection);
-	return materialsCollection[name];
+	materialsCollection.emplace(name, std::make_unique<MaterialCollection>(materialCollection));
+	return *materialsCollection[name];
 }
 
 Material& AssetManager::GetMaterial(std::string name)
@@ -231,10 +231,10 @@ Material& AssetManager::GetMaterial(std::string name)
 	if (materials.find(name) == materials.end())
 	{
 		std::cout << "Asset Manager Error: Tried to get a material with a name that doesn't exists. Name is " << name << ".\n";
-		return materials["null_material"];
+		return *materials["null_material"];
 	}
 
-	return materials[name];
+	return *materials[name];
 }
 
 MaterialCollection& AssetManager::GetMaterialCollection(std::string name)
@@ -242,10 +242,10 @@ MaterialCollection& AssetManager::GetMaterialCollection(std::string name)
 	if (materialsCollection.find(name) == materialsCollection.end())
 	{
 		std::cout << "Asset Manager Error: Tried to get a material collection with a name that doesn't exists. Name is " << name << ".\n";
-		return materialsCollection["null_mat_collection"];
+		return *materialsCollection["null_mat_collection"];
 	}
 
-	return materialsCollection[name];
+	return *materialsCollection[name];
 }
 
 void AssetManager::DeleteMaterial(std::string name)
@@ -341,8 +341,8 @@ void AssetManager::LoadNullAssets()
 	meshesCollection.emplace("null_collection", std::make_unique<MeshCollection>());
 	models.emplace("null_model", Model());
 	shaders.emplace("null_shader", std::make_unique<Shader>());
-	materials.emplace("null_material", Material());
-	materialsCollection.emplace("null_mat_collection", MaterialCollection{});
+	materials.emplace("null_material", std::make_unique<Material>(GetShader("null_shader")));
+	materialsCollection.emplace("null_mat_collection", std::make_unique<MaterialCollection>());
 	sounds.emplace("null_sound", AudioSound(nullptr, 0));
 	audioCollisionTypes.emplace("null_audio_collision_type", AudioCollisionOcclusion{ 0.0f, 0.0f });
 }

@@ -5,11 +5,11 @@ Object::Object() : Transform()
 }
 
 
-void Object::draw(Material* materialInUsage)
+void Object::draw(Material& materialInUsage)
 {
-	materialInUsage->getShader().setMatrix4("model", getModelMatrix().getAsFloatPtr());
-	materialInUsage->getShader().setMatrix4("normalMatrix", getNormalMatrix().getAsFloatPtr());
-	materialInUsage->getShader().setVec3("scale", getScale());
+	materialInUsage.getShader().setMatrix4("model", getModelMatrix().getAsFloatPtr());
+	materialInUsage.getShader().setMatrix4("normalMatrix", getNormalMatrix().getAsFloatPtr());
+	materialInUsage.getShader().setVec3("scale", getScale());
 
 	for (auto model : models)
 	{

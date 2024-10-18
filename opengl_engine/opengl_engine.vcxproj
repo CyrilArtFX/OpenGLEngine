@@ -135,7 +135,7 @@
   <ItemGroup>
     <ClCompile Include="Assets\assetManager.cpp" />
     <ClCompile Include="Assets\assetMesh.cpp" />
-    <ClCompile Include="Assets\assetMaterial.cpp" />
+    <ClCompile Include="Assets\assetsIDs.cpp" />
     <ClCompile Include="Assets\defaultAssets.cpp" />
     <ClCompile Include="Audio\audioManager.cpp" />
     <ClCompile Include="Audio\audioSound.cpp" />
@@ -187,7 +187,7 @@
   <ItemGroup>
     <ClInclude Include="Assets\assetManager.h" />
     <ClInclude Include="Assets\assetMesh.h" />
-    <ClInclude Include="Assets\assetMaterial.h" />
+    <ClInclude Include="Assets\assetsIDs.h" />
     <ClInclude Include="Assets\defaultAssets.h" />
     <ClInclude Include="Audio\audioManager.h" />
     <ClInclude Include="Audio\audioSound.h" />

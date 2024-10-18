@@ -10,7 +10,7 @@ class Object : public Transform
 public:
 	Object();
 
-	void draw(Material* materialInUsage);
+	void draw(Material& materialInUsage);
 	void update(float dt);
 
 	void addModel(Model* model);

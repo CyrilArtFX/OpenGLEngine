@@ -21,13 +21,17 @@ enum class TextureType : uint8_t
 class Material
 {
 public:
-	Material();
-	void load(Shader* shaderUsed);
+	Material(Shader& shaderUsed);
+	~Material();
+
+	Material() = delete;
+	Material(const Material&) = delete;
+	Material& operator=(const Material&) = delete;
 
 	void use();
 
-	Shader& getShader() { return *shader; }
-	Shader* getShaderPtr() { return shader; } 
+	Shader& getShader() { return shader; }
+	Shader* getShaderPtr() { return &shader; } 
 
 	void addTexture(Texture* texture, TextureType type);
 
@@ -41,8 +45,14 @@ public:
 	static std::string TypeToString(TextureType textureType);
 
 
+	bool operator==(const Material& other) const;
+	bool operator!=(const Material& other) const;
+
+
 private:
-	Shader* shader;
+	uint32_t uniqueID{ 0 };
+
+	Shader& shader;
 	std::unordered_map<TextureType, std::vector<Texture*>> textures;
 
 	std::unordered_map<std::string, bool> boolParameters;
@@ -58,5 +68,10 @@ private:
 */
 struct MaterialCollection
 {
-	std::vector<Material*> collection;
+	std::vector<Material*> collection{};
+
+	MaterialCollection() {}
+	MaterialCollection(std::vector<Material*> collection_) : collection(collection_) {}
+	MaterialCollection(const MaterialCollection&) = delete;
+	MaterialCollection& operator=(const MaterialCollection&) = delete;
 };

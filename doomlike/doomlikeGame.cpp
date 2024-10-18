@@ -57,31 +57,31 @@ void DoomlikeGame::loadGameAssets()
 	std::cout << "Load textures time: " << glfwGetTime() - load_time << std::endl;
 	load_time = glfwGetTime();
 
-	Material& crate_mat = AssetManager::CreateMaterial("crate", &AssetManager::GetShader("lit_object"));
+	Material& crate_mat = AssetManager::CreateMaterial("crate", AssetManager::GetShader("lit_object"));
 	crate_mat.addTexture(&AssetManager::GetTexture("crate_diffuse"), TextureType::Diffuse);
 	crate_mat.addTexture(&AssetManager::GetTexture("crate_specular"), TextureType::Specular);
 	crate_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
 	crate_mat.addParameter("material.shininess", 32.0f);
 
-	Material& taxi_mat = AssetManager::CreateMaterial("taxi", &AssetManager::GetShader("lit_object"));
+	Material& taxi_mat = AssetManager::CreateMaterial("taxi", AssetManager::GetShader("lit_object"));
 	taxi_mat.addTexture(&AssetManager::GetTexture("taxi_diffuse"), TextureType::Diffuse);
 	taxi_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Specular);
 	taxi_mat.addTexture(&AssetManager::GetTexture("taxi_emissive"), TextureType::Emissive);
 	taxi_mat.addParameter("material.shininess", 32.0f);
 
-	Material& enemy_mat = AssetManager::CreateMaterial("enemy", &AssetManager::GetShader("lit_object"));
+	Material& enemy_mat = AssetManager::CreateMaterial("enemy", AssetManager::GetShader("lit_object"));
 	enemy_mat.addTexture(&AssetManager::GetTexture("enemy_diffuse"), TextureType::Diffuse);
 	enemy_mat.addTexture(&AssetManager::GetTexture("enemy_specular"), TextureType::Specular);
 	enemy_mat.addTexture(&AssetManager::GetTexture("enemy_emissive"), TextureType::Emissive);
 	enemy_mat.addParameter("material.shininess", 32.0f);
 
-	Material& bullet_mat = AssetManager::CreateMaterial("bullet", &AssetManager::GetShader("lit_object"));
+	Material& bullet_mat = AssetManager::CreateMaterial("bullet", AssetManager::GetShader("lit_object"));
 	bullet_mat.addTexture(&AssetManager::GetTexture("bullet_diffuse"), TextureType::Diffuse);
 	bullet_mat.addTexture(&AssetManager::GetTexture("bullet_specular"), TextureType::Specular);
 	bullet_mat.addTexture(&AssetManager::GetTexture("bullet_emissive"), TextureType::Emissive);
 	bullet_mat.addParameter("material.shininess", 32.0f);
 
-	Material& gun_mat = AssetManager::CreateMaterial("gun", &AssetManager::GetShader("lit_object"));
+	Material& gun_mat = AssetManager::CreateMaterial("gun", AssetManager::GetShader("lit_object"));
 	gun_mat.addTexture(&AssetManager::GetTexture("gun_diffuse"), TextureType::Diffuse);
 	gun_mat.addTexture(&AssetManager::GetTexture("gun_specular"), TextureType::Specular);
 	gun_mat.addTexture(&AssetManager::GetTexture("gun_emissive"), TextureType::Emissive);
@@ -105,19 +105,19 @@ void DoomlikeGame::loadGameAssets()
 	AssetManager::LoadMeshCollection("gun", "doomlike/gun/gun.obj");
 
 	AssetManager::CreateModel("crate");
-	AssetManager::GetModel("crate").addMesh(AssetManager::GetSingleMesh("default_cube"), &AssetManager::GetMaterial("crate"));
+	AssetManager::GetModel("crate").addMesh(AssetManager::GetSingleMesh("default_cube"), AssetManager::GetMaterial("crate"));
 
 	AssetManager::CreateModel("taxi");
-	AssetManager::GetModel("taxi").addMeshes(AssetManager::GetMeshCollection("taxi"), &AssetManager::GetMaterial("taxi"));
+	AssetManager::GetModel("taxi").addMeshes(AssetManager::GetMeshCollection("taxi"), AssetManager::GetMaterial("taxi"));
 
 	AssetManager::CreateModel("enemy");
-	AssetManager::GetModel("enemy").addMeshes(AssetManager::GetMeshCollection("enemy"), &AssetManager::GetMaterial("enemy"));
+	AssetManager::GetModel("enemy").addMeshes(AssetManager::GetMeshCollection("enemy"), AssetManager::GetMaterial("enemy"));
 
 	AssetManager::CreateModel("bullet");
-	AssetManager::GetModel("bullet").addMeshes(AssetManager::GetMeshCollection("bullet"), &AssetManager::GetMaterial("bullet"));
+	AssetManager::GetModel("bullet").addMeshes(AssetManager::GetMeshCollection("bullet"), AssetManager::GetMaterial("bullet"));
 
 	AssetManager::CreateModel("gun");
-	AssetManager::GetModel("gun").addMeshes(AssetManager::GetMeshCollection("gun"), &AssetManager::GetMaterial("gun"));
+	AssetManager::GetModel("gun").addMeshes(AssetManager::GetMeshCollection("gun"), AssetManager::GetMaterial("gun"));
 
 	std::cout << "Load meshes & create models time: " << glfwGetTime() - load_time << std::endl;
 	load_time = glfwGetTime();

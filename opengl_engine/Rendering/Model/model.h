@@ -18,27 +18,27 @@ class Model
 public:
 	Model();
 
-	void draw(Material* materialInUsage);
+	void draw(Material& materialInUsage);
 
 	/**
 	* Add a single mesh to a model with a material.
 	*/
-	void addMesh(Mesh& mesh, Material* material);
+	void addMesh(Mesh& mesh, Material& material);
 
 	/**
 	* Add a collection of meshes to a model with a collection of materials.
 	*/
-	void addMeshes(MeshCollection& meshes, MaterialCollection* materials);
+	void addMeshes(MeshCollection& meshes, MaterialCollection& materials);
 
 	/**
 	* Add a collection of meshes to a model with the same material for all.
 	*/
-	void addMeshes(MeshCollection& meshes, Material* material);
+	void addMeshes(MeshCollection& meshes, Material& material);
 
 	/**
 	* Change the material of meshes that uses this material ID. 
 	*/
-	void changeMaterial(int materialId, Material* newMaterial);
+	void changeMaterial(int materialId, Material& newMaterial);
 
 private:
 	std::vector<MeshMaterial> meshMaterials;

@@ -59,7 +59,7 @@ namespace StairsSetup
 
 		AssetManager::LoadTexture("stairs_diffuse", "doomlike/stairs/stairs_basecolor.png", false);
 
-		Material& stairs_mat = AssetManager::CreateMaterial("stairs", &AssetManager::GetShader("lit_object"));
+		Material& stairs_mat = AssetManager::CreateMaterial("stairs", AssetManager::GetShader("lit_object"));
 		stairs_mat.addTexture(&AssetManager::GetTexture("stairs_diffuse"), TextureType::Diffuse);
 		stairs_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Specular);
 		stairs_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
@@ -71,7 +71,7 @@ namespace StairsSetup
 		AssetManager::LoadMeshCollection("stairs", "doomlike/stairs/stairs.fbx");
 
 		AssetManager::CreateModel("stairs");
-		AssetManager::GetModel("stairs").addMeshes(AssetManager::GetMeshCollection("stairs"), &AssetManager::GetMaterial("stairs"));
+		AssetManager::GetModel("stairs").addMeshes(AssetManager::GetMeshCollection("stairs"), AssetManager::GetMaterial("stairs"));
 	}
 
 

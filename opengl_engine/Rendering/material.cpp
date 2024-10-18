@@ -1,19 +1,20 @@
 #include "material.h"
-
+#include <Assets/assetsIDs.h>
 #include <string>
 
-Material::Material()
+
+Material::Material(Shader& shaderUsed) : shader(shaderUsed)
 {
+	uniqueID = AssetsIDs::GenerateMaterialUniqueID();
 }
 
-void Material::load(Shader* shaderUsed)
+Material::~Material()
 {
-	shader = shaderUsed;
 }
 
 void Material::use()
 {
-	if (!shader->isLoaded()) return;
+	if (!shader.isLoaded()) return;
 
 	//  assume the shader is already in use (the rendering process should have done it)
 
@@ -28,7 +29,7 @@ void Material::use()
 			glActiveTexture(GL_TEXTURE0 + tex_activated); //  activate texture unit first
 			std::string str_number = std::to_string(++number);
 
-			shader->setInt("material." + TypeToString(type) + str_number, tex_activated); //  then set the sampler to the correct texture unit
+			shader.setInt("material." + TypeToString(type) + str_number, tex_activated); //  then set the sampler to the correct texture unit
 			texture->use(); //  finally bind the texture
 
 			tex_activated++;
@@ -37,10 +38,10 @@ void Material::use()
 
 	glActiveTexture(GL_TEXTURE0); //  reinitialisate the texture activation
 
-	for (auto parameter : boolParameters) shader->setBool(parameter.first, parameter.second);
-	for (auto parameter : intParameters) shader->setInt(parameter.first, parameter.second);
-	for (auto parameter : floatParameters) shader->setFloat(parameter.first, parameter.second);
-	for (auto parameter : vector3Parameters) shader->setVec3(parameter.first, parameter.second);
+	for (auto parameter : boolParameters) shader.setBool(parameter.first, parameter.second);
+	for (auto parameter : intParameters) shader.setInt(parameter.first, parameter.second);
+	for (auto parameter : floatParameters) shader.setFloat(parameter.first, parameter.second);
+	for (auto parameter : vector3Parameters) shader.setVec3(parameter.first, parameter.second);
 }
 
 
@@ -101,4 +102,14 @@ std::string Material::TypeToString(TextureType textureType)
 		return std::string("");
 
 	}
+}
+
+bool Material::operator==(const Material& other) const
+{
+	return uniqueID == other.uniqueID;
+}
+
+bool Material::operator!=(const Material& other) const
+{
+	return uniqueID != other.uniqueID;
 }
