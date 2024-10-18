@@ -6,11 +6,11 @@
 std::unordered_map<std::string, std::unique_ptr<Texture>> AssetManager::textures;
 std::unordered_map<std::string, std::unique_ptr<Mesh>> AssetManager::meshesSingle;
 std::unordered_map<std::string, std::unique_ptr<MeshCollection>> AssetManager::meshesCollection;
-std::unordered_map<std::string, Model> AssetManager::models;
+std::unordered_map<std::string, std::unique_ptr<Model>> AssetManager::models;
 std::unordered_map<std::string, std::unique_ptr<Shader>> AssetManager::shaders;
 std::unordered_map<std::string, std::unique_ptr<Material>> AssetManager::materials;
 std::unordered_map<std::string, std::unique_ptr<MaterialCollection>> AssetManager::materialsCollection;
-std::unordered_map<std::string, AudioSound> AssetManager::sounds;
+std::unordered_map<std::string, std::unique_ptr<AudioSound>> AssetManager::sounds;
 std::unordered_map<std::string, AudioCollisionOcclusion> AssetManager::audioCollisionTypes;
 
 
@@ -140,11 +140,11 @@ Model& AssetManager::CreateModel(std::string name)
 	if (models.find(name) != models.end())
 	{
 		std::cout << "Asset Manager Error: Tried to create a model with a name that already exists. Name is " << name << ".\n";
-		return models["null_model"];
+		return *models["null_model"];
 	}
 
-	models.emplace(name, Model());
-	return models[name];
+	models.emplace(name, std::make_unique<Model>());
+	return *models[name];
 }
 
 Model& AssetManager::GetModel(std::string name)
@@ -152,10 +152,10 @@ Model& AssetManager::GetModel(std::string name)
 	if (models.find(name) == models.end())
 	{
 		std::cout << "Asset Manager Error: Tried to get a model with a name that doesn't exists. Name is " << name << ".\n";
-		return models["null_model"];
+		return *models["null_model"];
 	}
 
-	return models[name];
+	return *models[name];
 }
 
 void AssetManager::DeleteModel(std::string name)
@@ -265,12 +265,12 @@ AudioSound& AssetManager::CreateSound(std::string name, std::string filePath, So
 	if (sounds.find(name) != sounds.end())
 	{
 		std::cout << "Asset Manager Error: Tried to create a sound with a name that already exists. Name is " << name << ".\n";
-		return sounds["null_sound"];
+		return *sounds["null_sound"];
 	}
 
 	Audio& audio_manager = Locator::getAudio();
-	sounds.emplace(name, audio_manager.LoadSound(filePath, settings));
-	return sounds[name];
+	sounds.emplace(name, std::make_unique<AudioSound>(audio_manager.LoadSound(filePath, settings).sound, settings));
+	return *sounds[name];
 }
 
 AudioSound& AssetManager::GetSound(std::string name)
@@ -278,10 +278,10 @@ AudioSound& AssetManager::GetSound(std::string name)
 	if (sounds.find(name) == sounds.end())
 	{
 		std::cout << "Asset Manager Error: Tried to get a sound with a name that doesn't exists. Name is " << name << ".\n";
-		return sounds["null_sound"];
+		return *sounds["null_sound"];
 	}
 
-	return sounds[name];
+	return *sounds[name];
 }
 
 void AssetManager::DeleteSound(std::string name)
@@ -292,7 +292,6 @@ void AssetManager::DeleteSound(std::string name)
 		return;
 	}
 
-	sounds[name].releaseFMod();
 	sounds.erase(name);
 }
 
@@ -339,10 +338,10 @@ void AssetManager::LoadNullAssets()
 	LoadTexture("null_texture", "Default/notexture.png", false);
 	meshesSingle.emplace("null_mesh", std::make_unique<Mesh>());
 	meshesCollection.emplace("null_collection", std::make_unique<MeshCollection>());
-	models.emplace("null_model", Model());
+	models.emplace("null_model", std::make_unique<Model>());
 	shaders.emplace("null_shader", std::make_unique<Shader>());
 	materials.emplace("null_material", std::make_unique<Material>(GetShader("null_shader")));
 	materialsCollection.emplace("null_mat_collection", std::make_unique<MaterialCollection>());
-	sounds.emplace("null_sound", AudioSound(nullptr, 0));
+	sounds.emplace("null_sound", std::make_unique<AudioSound>(nullptr, 0));
 	audioCollisionTypes.emplace("null_audio_collision_type", AudioCollisionOcclusion{ 0.0f, 0.0f });
 }

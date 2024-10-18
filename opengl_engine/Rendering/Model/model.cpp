@@ -5,6 +5,10 @@ Model::Model()
 {
 }
 
+Model::~Model()
+{
+}
+
 void Model::draw(Material& materialInUsage)
 {
 	//  assume the shader is already in use (the rendering process should have done it)

@@ -60,6 +60,7 @@ void AudioManager::Quit()
 	if (!system) return;
 	
 	system->release();
+	system = nullptr;
 }
 
 
@@ -128,10 +129,21 @@ void AudioManager::ResumeAll()
 
 
 // --------------------------------------------------------------
+//            Is Valid
+// --------------------------------------------------------------
+
+bool AudioManager::IsAudioSystemValid()
+{
+	return system != nullptr;
+}
+
+
+
+// --------------------------------------------------------------
 //            Load Sound part
 // --------------------------------------------------------------
 
-AudioSound AudioManager::LoadSound(std::string soundFile, SoundSettings settings)
+AudioSoundPtr AudioManager::LoadSound(std::string soundFile, SoundSettings settings)
 {
 	const std::string sound_path = RESOURCES_PATH + soundFile;
 
@@ -158,7 +170,7 @@ AudioSound AudioManager::LoadSound(std::string soundFile, SoundSettings settings
 		std::cout << "Audio Manager Error: Failed to load a sound from file. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
 	}
 
-	return AudioSound(sound, settings); //  create the AudioSound object
+	return { sound }; //  wrap fmod sound in a struct to avoid other class to know about fmod
 }
 
 

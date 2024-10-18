@@ -8,7 +8,10 @@
 class NullAudio : public Audio
 {
 public:
-	AudioSound LoadSound(std::string soundFile, SoundSettings settings = 0) override { return AudioSound(nullptr, 0); }
+	bool IsAudioSystemValid() override { return false; }
+
+
+	AudioSoundPtr LoadSound(std::string soundFile, SoundSettings settings = 0) override { return { nullptr }; }
 
 
 	void SetGlobalVolume(const float volume) override {}

@@ -189,11 +189,11 @@ private:
 	static std::unordered_map<std::string, std::unique_ptr<Texture>> textures;
 	static std::unordered_map<std::string, std::unique_ptr<Mesh>> meshesSingle;
 	static std::unordered_map<std::string, std::unique_ptr<MeshCollection>> meshesCollection;
-	static std::unordered_map<std::string, Model> models;
+	static std::unordered_map<std::string, std::unique_ptr<Model>> models;
 	static std::unordered_map<std::string, std::unique_ptr<Shader>> shaders;
 	static std::unordered_map<std::string, std::unique_ptr<Material>> materials;
 	static std::unordered_map<std::string, std::unique_ptr<MaterialCollection>> materialsCollection;
-	static std::unordered_map<std::string, AudioSound> sounds;
+	static std::unordered_map<std::string, std::unique_ptr<AudioSound>> sounds;
 	static std::unordered_map<std::string, AudioCollisionOcclusion> audioCollisionTypes;
 };
 

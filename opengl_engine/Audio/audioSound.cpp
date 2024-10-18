@@ -1,4 +1,6 @@
 #include "audioSound.h"
+#include <ServiceLocator/locator.h>
+#include <ServiceLocator/audio.h>
 #include <FMod/fmod.hpp>
 #include <FMod/fmod_errors.h>
 #include <iostream>
@@ -7,20 +9,9 @@ AudioSound::AudioSound(FMOD::Sound* fmodSound_, SoundSettings soundSettings) : F
 {
 }
 
-AudioSound::AudioSound(const AudioSound& other) : FModSound(other.FModSound), Settings(other.Settings)
-{
-}
-
-AudioSound& AudioSound::operator=(const AudioSound& other)
-{
-	FModSound = other.FModSound;
-	Settings = other.Settings;
-	return *this;
-}
-
 AudioSound::~AudioSound()
 {
-	//FModSound->release(); //  destructor is called when creating the Audio Sound, help me
+	releaseFMod();
 }
 
 
@@ -37,6 +28,11 @@ FMOD::Sound* AudioSound::getFMod() const
 
 void AudioSound::releaseFMod()
 {
+	if (!isValid()) return;
+
+	Audio& audio = Locator::getAudio();
+	if (!audio.IsAudioSystemValid()) return;
+
 	FModSound->release();
 }
 

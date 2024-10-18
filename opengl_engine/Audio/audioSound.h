@@ -10,11 +10,12 @@ namespace FMOD //  avoid including "fmod.hpp"
 class AudioSound
 {
 public:
-	AudioSound() {} //  can't delete default constructor, asset manager map of this type need it
 	AudioSound(FMOD::Sound* fmodSound_, SoundSettings soundSettings);
-	AudioSound(const AudioSound& other);
-	AudioSound& operator=(const AudioSound& other);
 	~AudioSound();
+
+	AudioSound() = delete;
+	AudioSound(const AudioSound& other) = delete;
+	AudioSound& operator=(const AudioSound& other) = delete;
 
 	bool isValid() const;
 	FMOD::Sound* getFMod() const;

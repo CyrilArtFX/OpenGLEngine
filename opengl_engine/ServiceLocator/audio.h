@@ -19,6 +19,17 @@ public:
 
 
 // -----------------------------------------------------------------------------
+//                 Global
+// -----------------------------------------------------------------------------
+	/**
+	* Check if the Audio System is valid.
+	* @return		True if the Audio System is currently valid.
+	*/
+	virtual bool IsAudioSystemValid() = 0;
+
+
+
+// -----------------------------------------------------------------------------
 //                 Load Sound
 // -----------------------------------------------------------------------------
 
@@ -26,9 +37,9 @@ public:
 	* Load a sound in memory from file.
 	* @param	soundFile	The path to the sound file to read.
 	* @param	settings	(optionnal) Additionnal load settings for the sound.
-	* @return				The newly created AudioSound object.
+	* @return				The newly created Fmod Sound object.
 	*/
-	virtual AudioSound LoadSound(std::string soundFile, SoundSettings settings = 0) = 0;
+	virtual AudioSoundPtr LoadSound(std::string soundFile, SoundSettings settings = 0) = 0;
 
 
 

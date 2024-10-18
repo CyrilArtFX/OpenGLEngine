@@ -22,11 +22,15 @@ const int MAX_CHANNELS = 512;
 class AudioManager : public Audio
 {
 public:
+	// ----------------------------------------------------------
+	//  Global (available from audio interface)
+	// ----------------------------------------------------------
+	bool IsAudioSystemValid() override;
 
 	// ----------------------------------------------------------
 	//  Load Sound (available from audio interface)
 	// ----------------------------------------------------------
-	AudioSound LoadSound(std::string soundFile, SoundSettings settings) override;
+	AudioSoundPtr LoadSound(std::string soundFile, SoundSettings settings) override;
 
 
 	// ----------------------------------------------------------

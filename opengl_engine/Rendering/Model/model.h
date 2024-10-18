@@ -17,6 +17,10 @@ class Model
 {
 public:
 	Model();
+	~Model();
+
+	Model(const Model&) = delete;
+	Model& operator=(const Model&) = delete;
 
 	void draw(Material& materialInUsage);
 
