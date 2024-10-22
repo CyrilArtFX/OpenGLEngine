@@ -1,7 +1,11 @@
 == COURT TERME ==
 
 ~ Créer un système de HUD (affichage de sprites et de texte au dessus du jeu)
-	- Se renseigner pour découper les taches
+	- Faire la partie Text Rendering de learnopengl.com
+	- Integrer proprement le rendering de texte dans les outils du moteur
+	- Faire la partie Rendering Sprites de learnopengl.com
+	- Integrer proprement le rendering des sprites dans les outils du moteur
+	- Faire un outil basique de HUD
 
 
 == MOYEN TERME ==
