@@ -8,7 +8,7 @@
 #include <GameplayStatics/gameplayStatics.h>
 
 #include <ft2build.h>
-#include FT_FREETYPE_H
+#include <freetype/freetype.h>
 
 
 Engine::Engine()
@@ -137,20 +137,77 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 
 
 	//  initialize freetype (temporary)
+	FT_Error error;
 	FT_Library ft;
-	if (FT_Init_FreeType(&ft))
+	error = FT_Init_FreeType(&ft);
+	if (error)
 	{
 		std::cout << "Failed ton initialize FreeType library\n";
 		return false;
 	}
 
 	FT_Face face;
-	if (FT_New_Face(ft, "Resources/arial_font/arial.ttf", 0, &face))
+	error = FT_New_Face(ft, "Resources/arial_font/arial.ttf", 0, &face);
+	if (error)
 	{
 		std::cout << "Failed to load font\n";
 	}
 
+	FT_Set_Pixel_Sizes(face, 0, 48);
 
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	for (unsigned char c = 0; c < 128; c++)
+	{
+		//  load character glyph
+		error = FT_Load_Char(face, c, FT_LOAD_RENDER);
+		if (error)
+		{
+			std::cout << "Failed to load character glyph\n";
+			continue;
+		}
+
+		//  generate texture
+		unsigned int texture;
+		glGenTextures(1, &texture);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glTexImage2D(
+			GL_TEXTURE_2D,
+			0,
+			GL_RED,
+			face->glyph->bitmap.width,
+			face->glyph->bitmap.rows,
+			0,
+			GL_RED,
+			GL_UNSIGNED_BYTE,
+			face->glyph->bitmap.buffer
+		);
+
+		//  set texture options
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		//  store character for later use
+		FontCharacters.emplace(c, FontCharacter{ texture, Vector2Int{(int)(face->glyph->bitmap.width), (int)(face->glyph->bitmap.rows)}, Vector2Int{face->glyph->bitmap_left, face->glyph->bitmap_top}, face->glyph->advance.x });
+	}
+
+	FT_Done_Face(face);
+	FT_Done_FreeType(ft);
+
+	AssetManager::CreateShaderProgram("text_render", "Unlit/text_render.vert", "Unlit/text_render.frag", ShaderType::Unlit);
+	glGenVertexArrays(1, &CharVAO);
+	glGenBuffers(1, &CharVBO);
+	glBindVertexArray(CharVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, CharVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
 
 
 
@@ -206,6 +263,10 @@ void Engine::run()
 		//  rendering part
 		// ----------------
 		renderer->draw();
+
+
+		//  TEXT RENDERING TEMPORARY
+		RenderText(AssetManager::GetShader("text_render"), "Hello World!", -window.getWidth() / 2.0f + 20.0f, window.getHeigth() / 2.0f - 60.0f, 1.0f, Color::white);
 
 
 		//  audio part
@@ -385,4 +446,66 @@ void Engine::windowResize(GLFWwindow* glWindow, int width, int height)
 	glViewport(0, 0, width, height); //  resize OpenGL viewport when GLFW is resized
 	window.changeSize(width, height);
 	renderer->setWindowSize(Vector2Int{ window.getWidth(), window.getHeigth() });
+}
+
+
+
+//  TEMPORARY TEXT RENDERING
+void Engine::RenderText(Shader& s, std::string text, float x, float y, float scale, Color color)
+{
+	s.use();
+	s.setVec3("textColor", color.toVector());
+	Matrix4 proj = Matrix4::createOrtho(window.getWidth(), window.getHeigth(), 0.0f, 0.0f);
+	s.setMatrix4("projection", proj.getAsFloatPtr());
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindVertexArray(CharVAO);
+
+	const float begin_x = x;
+
+	//  iterate through all characters
+	std::string::const_iterator c;
+	for (c = text.begin(); c != text.end(); c++)
+	{
+		FontCharacter ch = FontCharacters[*c];
+
+		if (*c == '\n')
+		{
+			y -= ((ch.Size.y)) * 1.3f * scale;
+			x = begin_x;
+		}
+		else
+		{
+			float xpos = x + ch.Bearing.x * scale;
+			float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+			float w = ch.Size.x * scale;
+			float h = ch.Size.y * scale;
+
+			// update VBO for each character
+			float vertices[6][4] = {
+				{ xpos,     ypos + h, 0.0f, 0.0f },
+				{ xpos,     ypos,     0.0f, 1.0f },
+				{ xpos + w, ypos,     1.0f, 1.0f },
+				{ xpos,     ypos + h, 0.0f, 0.0f },
+				{ xpos + w, ypos,     1.0f, 1.0f },
+				{ xpos + w, ypos + h, 1.0f, 0.0f }
+			};
+
+			// render glyph texture over quad
+			glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+
+			// update content of VBO memory
+			glBindBuffer(GL_ARRAY_BUFFER, CharVBO);
+			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+			// render quad
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+
+			// advance cursors for next glyph (advance is 1/64 pixels)
+			x += (ch.Advance >> 6) * scale; // bitshift by 6 (2^6 = 64)
+		}
+	}
+	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }

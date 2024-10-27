@@ -21,5 +21,7 @@
     <None Include="Unlit\flat_emissive.frag" />
     <None Include="Unlit\collision_debug.frag" />
     <None Include="Unlit\collision_debug.vert" />
+    <None Include="Unlit\text_render.frag" />
+    <None Include="Unlit\text_render.vert" />
   </ItemGroup>
 </Project>

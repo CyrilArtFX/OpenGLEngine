@@ -1,7 +1,7 @@
 == COURT TERME ==
 
-~ Créer un système de HUD (affichage de sprites et de texte au dessus du jeu)
-	- Faire la partie Text Rendering de learnopengl.com le plus fidèlement possible
+~ Créer un système de HUD (affichage de sprites et de texte au dessus du jeu) - en cours
+	- Faire la partie Text Rendering de learnopengl.com le plus fidèlement possible - fait
 	- Faire les modifs d'opti de la vidéo du gars (https://www.youtube.com/watch?v=S0PyZKX4lyI)
 	- Integrer proprement le rendering de texte dans les outils du moteur
 	- Faire la partie Rendering Sprites de learnopengl.com

@@ -12,6 +12,9 @@
 #include <Maths/matrix4.h>
 #include <Maths/vector3.h>
 
+#include <map>
+#include <Rendering/Text/textRenderUtils.h>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -69,4 +72,11 @@ private:
 	void disableFreecam();
 	void enableDebugView();
 	void disableDebugView();
+
+
+
+	//  text (temporary)
+	std::map<char, FontCharacter> FontCharacters;
+	unsigned int CharVAO, CharVBO;
+	void RenderText(Shader& s, std::string text, float x, float y, float scale, Color color);
 };

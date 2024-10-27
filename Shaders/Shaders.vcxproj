@@ -133,6 +133,8 @@
     <None Include="Unlit\flat_emissive.vert" />
     <None Include="Lit\object_lit.frag" />
     <None Include="Lit\object_lit.vert" />
+    <None Include="Unlit\text_render.frag" />
+    <None Include="Unlit\text_render.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
