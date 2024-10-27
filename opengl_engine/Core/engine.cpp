@@ -7,6 +7,9 @@
 #include <Physics/physicsManager.h>
 #include <GameplayStatics/gameplayStatics.h>
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 
 Engine::Engine()
 {
@@ -130,6 +133,25 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	//  load debug assets
 	DefaultAssets::LoadDebugAssets();
 	std::cout << " Done.\n";
+
+
+
+	//  initialize freetype (temporary)
+	FT_Library ft;
+	if (FT_Init_FreeType(&ft))
+	{
+		std::cout << "Failed ton initialize FreeType library\n";
+		return false;
+	}
+
+	FT_Face face;
+	if (FT_New_Face(ft, "Resources/arial_font/arial.ttf", 0, &face))
+	{
+		std::cout << "Failed to load font\n";
+	}
+
+
+
 
 
 	//  configure global OpenGL properties
