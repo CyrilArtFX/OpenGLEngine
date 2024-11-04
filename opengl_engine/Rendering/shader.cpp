@@ -1,6 +1,8 @@
 #include "shader.h"
 
+#include <Maths/vector2.h>
 #include <Maths/vector3.h>
+#include <Maths/vector4.h>
 #include <Utils/defines.h>
 
 
@@ -154,9 +156,23 @@ void Shader::setFloat(const std::string& name, const float value) const
 	glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
 }
 
-void Shader::setVec3(const std::string& name, const Vector3 value) const
+void Shader::setVec2(const std::string& name, const Vector2& value) const
+{
+	//if (!loaded) return;
+
+	setVec2(name, value.x, value.y);
+}
+
+void Shader::setVec2(const std::string& name, const float xValue, const float yValue) const
 {
 	if (!loaded) return;
+
+	glUniform2f(glGetUniformLocation(ID, name.c_str()), xValue, yValue);
+}
+
+void Shader::setVec3(const std::string& name, const Vector3& value) const
+{
+	//if (!loaded) return;
 
 	setVec3(name, value.x, value.y, value.z);
 }
@@ -166,6 +182,62 @@ void Shader::setVec3(const std::string& name, const float xValue, const float yV
 	if (!loaded) return;
 
 	glUniform3f(glGetUniformLocation(ID, name.c_str()), xValue, yValue, zValue);
+}
+
+void Shader::setVec4(const std::string& name, const Vector4& value) const
+{
+	//if (!loaded) return;
+
+	setVec4(name, value.x, value.y, value.z, value.w);
+}
+
+void Shader::setVec4(const std::string& name, const float xValue, const float yValue, const float zValue, const float wValue) const
+{
+	if (!loaded) return;
+
+	glUniform4f(glGetUniformLocation(ID, name.c_str()), xValue, yValue, zValue, wValue);
+}
+
+void Shader::setBoolArray(const std::string& name, const bool* firstValue, const int arraySize) const
+{
+	if (!loaded) return;
+
+	glUniform1iv(glGetUniformLocation(ID, name.c_str()), arraySize, (int*)firstValue);
+}
+
+void Shader::setIntArray(const std::string& name, const int* firstValue, const int arraySize) const
+{
+	if (!loaded) return;
+
+	glUniform1iv(glGetUniformLocation(ID, name.c_str()), arraySize, firstValue);
+}
+
+void Shader::setFloatArray(const std::string& name, const float* firstValue, const int arraySize) const
+{
+	if (!loaded) return;
+
+	glUniform1fv(glGetUniformLocation(ID, name.c_str()), arraySize, firstValue);
+}
+
+void Shader::setVec2Array(const std::string& name, const Vector2* firstValue, const int arraySize) const
+{
+	if (!loaded) return;
+
+	glUniform2fv(glGetUniformLocation(ID, name.c_str()), arraySize, firstValue->getAsFloatPtr());
+}
+
+void Shader::setVec3Array(const std::string& name, const Vector3* firstValue, const int arraySize) const
+{
+	if (!loaded) return;
+
+	glUniform3fv(glGetUniformLocation(ID, name.c_str()), arraySize, firstValue->getAsFloatPtr());
+}
+
+void Shader::setVec4Array(const std::string& name, const Vector4* firstValue, const int arraySize) const
+{
+	if (!loaded) return;
+
+	glUniform4fv(glGetUniformLocation(ID, name.c_str()), arraySize, firstValue->getAsFloatPtr());
 }
 
 void Shader::setMatrix4(const std::string& name, const float* value) const

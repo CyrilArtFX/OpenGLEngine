@@ -9,6 +9,7 @@ struct Vector2
 	static const Vector2 zero;
 	static const Vector2 unitX;
 	static const Vector2 unitY;
+	static const Vector2 one;
 
 	Vector2() = default;
 	Vector2(float xP, float yP) : x{ xP }, y{ yP } {}
@@ -21,6 +22,11 @@ struct Vector2
 	void normalize();
 	void clamp(const Vector2& min, const Vector2& max);
 	void clampMagnitude(float magnitude);
+
+	const float* getAsFloatPtr() const
+	{
+		return reinterpret_cast<const float*>(&x);
+	}
 
 
 	static Vector2 normalize(const Vector2& vec)

@@ -77,6 +77,6 @@ private:
 
 	//  text (temporary)
 	std::map<char, FontCharacter> FontCharacters;
-	unsigned int CharVAO, CharVBO;
+	unsigned int CharVAO, CharVBO, CharTextureArray;
 	void RenderText(Shader& s, std::string text, float x, float y, float scale, Color color);
 };

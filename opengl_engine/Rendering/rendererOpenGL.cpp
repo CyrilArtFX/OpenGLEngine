@@ -11,6 +11,7 @@ void RendererOpenGL::draw()
 	//  clear with flat color
 	glClearColor(clearColor.r / 255.0f, clearColor.g / 255.0f, clearColor.b / 255.0f, clearColor.a / 255.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
 
 	
 	if (!currentCam) return;
@@ -101,6 +102,10 @@ void RendererOpenGL::draw()
 
 		Locator::getPhysics().DrawCollisionsDebug(debug_collision_mat);
 	}
+
+	glDisable(GL_DEPTH_TEST);
+
+	//  render text after
 }
 
 

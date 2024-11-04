@@ -9,6 +9,7 @@
 
 #include <ft2build.h>
 #include <freetype/freetype.h>
+#include <Maths/vector4.h>
 
 
 Engine::Engine()
@@ -153,12 +154,24 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 		std::cout << "Failed to load font\n";
 	}
 
-	FT_Set_Pixel_Sizes(face, 0, 48);
+	//  set size to load glyph
+	FT_Set_Pixel_Sizes(face, 256, 256);
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	//  opengl option (would have to be set in the global opengl setup of the engine)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	//  generate an array of texture
+	glGenTextures(1, &CharTextureArray);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D_ARRAY, CharTextureArray);
+
+	//  setup the texture 3D (this is the array of textures), here the 256 are for the size of the textures (see above) and the 128 for the size of the array (here the 128 ascii)
+	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_R8, 256, 256, 128, 0, GL_RED, GL_UNSIGNED_BYTE, 0);
+
+	//  load 128 ASCII
 	for (unsigned char c = 0; c < 128; c++)
 	{
 		//  load character glyph
@@ -169,50 +182,67 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 			continue;
 		}
 
-		//  generate texture
-		unsigned int texture;
-		glGenTextures(1, &texture);
-		glBindTexture(GL_TEXTURE_2D, texture);
-		glTexImage2D(
-			GL_TEXTURE_2D,
+		//  add a texture into the texture 3D (the array of texture)
+		glTexSubImage3D(
+			GL_TEXTURE_2D_ARRAY,
 			0,
-			GL_RED,
-			face->glyph->bitmap.width,
-			face->glyph->bitmap.rows,
-			0,
+			0, 0, //  offset x & y
+			int(c), //  offset z (the index to set the texture in the array)
+			face->glyph->bitmap.width, //  size width
+			face->glyph->bitmap.rows, //  size height
+			1, //  size depth (leave at 1)
 			GL_RED,
 			GL_UNSIGNED_BYTE,
-			face->glyph->bitmap.buffer
+			face->glyph->bitmap.buffer //  datas of the texture
 		);
 
 		//  set texture options
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		//  store character for later use
-		FontCharacters.emplace(c, FontCharacter{ texture, Vector2Int{(int)(face->glyph->bitmap.width), (int)(face->glyph->bitmap.rows)}, Vector2Int{face->glyph->bitmap_left, face->glyph->bitmap_top}, face->glyph->advance.x });
+		FontCharacters.emplace(c,
+			FontCharacter{
+				int(c), //  index of the texture in the texture 3D (array)
+				Vector2Int{(int)(face->glyph->bitmap.width), (int)(face->glyph->bitmap.rows)},
+				Vector2Int{face->glyph->bitmap_left, face->glyph->bitmap_top},
+				face->glyph->advance.x
+			}
+		);
 	}
+
+	glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 
 	FT_Done_Face(face);
 	FT_Done_FreeType(ft);
 
 	AssetManager::CreateShaderProgram("text_render", "Unlit/text_render.vert", "Unlit/text_render.frag", ShaderType::Unlit);
+
+
+	GLfloat vertex_data[] =
+	{
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		1.0f, 1.0f,
+		1.0f, 0.0f,
+	};
+
 	glGenVertexArrays(1, &CharVAO);
 	glGenBuffers(1, &CharVBO);
 	glBindVertexArray(CharVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, CharVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_data), vertex_data, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
 
 
 	//  configure global OpenGL properties
-	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_DEPTH_TEST);
 
 
 	std::cout << "\nEngine initialization: " << glfwGetTime() << " seconds.\n";
@@ -266,7 +296,7 @@ void Engine::run()
 
 
 		//  TEXT RENDERING TEMPORARY
-		RenderText(AssetManager::GetShader("text_render"), "Hello World!", -window.getWidth() / 2.0f + 20.0f, window.getHeigth() / 2.0f - 60.0f, 1.0f, Color::white);
+		RenderText(AssetManager::GetShader("text_render"), "Hello World!\nMarius est raciste.", -window.getWidth() / 2.0f + 20.0f, window.getHeigth() / 2.0f - 60.0f, 0.2f, Color::white);
 
 
 		//  audio part
@@ -455,57 +485,75 @@ void Engine::RenderText(Shader& s, std::string text, float x, float y, float sca
 {
 	s.use();
 	s.setVec3("textColor", color.toVector());
-	Matrix4 proj = Matrix4::createOrtho(window.getWidth(), window.getHeigth(), 0.0f, 0.0f);
+	Matrix4 proj = Matrix4::createSimpleViewProj(window.getWidth(), window.getHeigth());
 	s.setMatrix4("projection", proj.getAsFloatPtr());
 
+	int CharMapIDs[400]{ 0 };
+	Vector4 CharPosScales[400]{ Vector4::zero };
+
 	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D_ARRAY, CharTextureArray);
 	glBindVertexArray(CharVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, CharVBO);
 
 	const float begin_x = x;
 
 	//  iterate through all characters
 	std::string::const_iterator c;
+	int index = 0;
 	for (c = text.begin(); c != text.end(); c++)
 	{
+		if (index >= 400 - 1)
+		{
+			break;
+		}
+
 		FontCharacter ch = FontCharacters[*c];
 
 		if (*c == '\n')
 		{
-			y -= ((ch.Size.y)) * 1.3f * scale;
+			y -= ((ch.Size.y)) * 1.6f * scale;
 			x = begin_x;
+		}
+		else if (*c == ' ')
+		{
+			x += (ch.Advance >> 6) * scale; // bitshift by 6 (2^6 = 64)
 		}
 		else
 		{
-			float xpos = x + ch.Bearing.x * scale;
-			float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
-			float w = ch.Size.x * scale;
-			float h = ch.Size.y * scale;
+			const float x_pos = x + ch.Bearing.x * scale;
+			const float y_pos = y - (256.0f - ch.Bearing.y) * scale;
+			const float x_scale = 256.0f * scale;
+			const float y_scale = 256.0f * scale;
 
-			// update VBO for each character
-			float vertices[6][4] = {
-				{ xpos,     ypos + h, 0.0f, 0.0f },
-				{ xpos,     ypos,     0.0f, 1.0f },
-				{ xpos + w, ypos,     1.0f, 1.0f },
-				{ xpos,     ypos + h, 0.0f, 0.0f },
-				{ xpos + w, ypos,     1.0f, 1.0f },
-				{ xpos + w, ypos + h, 1.0f, 0.0f }
-			};
+			CharPosScales[index] = Vector4{ x_pos, y_pos, x_scale, y_scale };
+			CharMapIDs[index] = ch.TextureID;
 
-			// render glyph texture over quad
-			glBindTexture(GL_TEXTURE_2D, ch.TextureID);
-
-			// update content of VBO memory
-			glBindBuffer(GL_ARRAY_BUFFER, CharVBO);
-			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-			// render quad
-			glDrawArrays(GL_TRIANGLES, 0, 6);
-
-			// advance cursors for next glyph (advance is 1/64 pixels)
 			x += (ch.Advance >> 6) * scale; // bitshift by 6 (2^6 = 64)
+
+			index++;
+			if (index >= 400)
+			{
+				//  draw array of max 400 chars
+				s.setVec4Array("textPosScales", &CharPosScales[0], index);
+				s.setIntArray("letterMap", &CharMapIDs[0], index);
+				glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, index);
+
+				index = 0;
+			}
 		}
 	}
+
+	//  draw array of remaining chars
+	if (index > 0)
+	{
+		s.setVec4Array("textPosScales", &CharPosScales[0], index);
+		s.setIntArray("letterMap", &CharMapIDs[0], index);
+		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, index);
+	}
+
+	//  unbind
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 }
