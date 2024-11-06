@@ -18,9 +18,9 @@ struct Vertex
 class VertexArray
 {
 public:
-	VertexArray(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
+	VertexArray(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
 	VertexArray();
-	VertexArray(const VertexArray& other);
+	VertexArray(const VertexArray& other) = delete;
 	VertexArray& operator=(const VertexArray&) = delete;
 	~VertexArray();
 

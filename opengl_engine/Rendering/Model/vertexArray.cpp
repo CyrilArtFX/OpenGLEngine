@@ -1,6 +1,6 @@
 #include "vertexArray.h"
 
-VertexArray::VertexArray(std::vector<Vertex> vertices, std::vector<unsigned int> indices) : 
+VertexArray::VertexArray(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) : 
 	nbVertices(vertices.size()),
 	nbIndices(indices.size()),
 	useEBO(indices.size() > 0)
@@ -51,14 +51,6 @@ void VertexArray::deleteObjects()
 	glDeleteBuffers(1, &VBO);
 }
 
-
-
-VertexArray::VertexArray(const VertexArray& other) :
-	nbVertices(other.nbVertices), nbIndices(other.nbIndices),
-	useEBO(other.useEBO),
-	VAO(other.VAO), VBO(other.VBO), EBO(other.EBO)
-{
-}
 
 VertexArray::VertexArray()
 {

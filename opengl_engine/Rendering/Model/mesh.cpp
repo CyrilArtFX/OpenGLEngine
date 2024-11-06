@@ -10,11 +10,6 @@ Mesh::Mesh() :
 {
 }
 
-Mesh::Mesh(const Mesh& other) :
-	vertexArray(other.vertexArray), materialIndex(other.materialIndex)
-{
-}
-
 Mesh::~Mesh()
 {
 }

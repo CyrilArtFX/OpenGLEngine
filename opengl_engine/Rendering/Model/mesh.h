@@ -8,7 +8,7 @@ class Mesh
 public:
 	Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices = {}, const int matId = 0);
 	Mesh();
-	Mesh(const Mesh& other);
+	Mesh(const Mesh& other) = delete;
 	Mesh& operator=(const Mesh&) = delete;
 	~Mesh();
 
