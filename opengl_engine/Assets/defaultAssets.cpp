@@ -11,6 +11,11 @@ void DefaultAssets::LoadDefaultAssets()
 	AssetManager::LoadTexture("default_black", "Default/black.png", false);
 
 
+	//  default vertex arrays (quad hud)
+	VertexArray& va_quad_hud = AssetManager::CreateVertexArray("hud_quad");
+	va_quad_hud.LoadVAQuadHUD();
+
+
 	//  default meshes (cube and plane)
 	std::vector<Vertex> cube_vertices
 	{
@@ -72,7 +77,7 @@ void DefaultAssets::LoadDefaultAssets()
 	AssetManager::LoadSingleMesh("default_plane", plane_vertices);
 
 
-	//  default shaders and materials (black and white emissive)
+	//  default shaders and materials (black and white emissive, text render)
 	AssetManager::CreateShaderProgram("flat_emissive", "Unlit/flat_emissive.vert", "Unlit/flat_emissive.frag", ShaderType::Unlit);
 
 	Material& black_emissive_mat = AssetManager::CreateMaterial("default_black_emissive", AssetManager::GetShader("flat_emissive"));
@@ -83,6 +88,15 @@ void DefaultAssets::LoadDefaultAssets()
 	white_emissive_mat.addParameter("emissive", Color::white);
 	renderer.AddMaterial(&white_emissive_mat);
 
+
+	AssetManager::CreateShaderProgram("text_render", "Unlit/text_render.vert", "Unlit/text_render.frag", ShaderType::Unlit);
+
+
+	//  default fonts (arial 128 ascii size 64)
+	AssetManager::LoadFont("arial_64", "arial_font/arial.ttf", 64, CharacterLoading::ASCII_128);
+
+
+	//  default audio collision
 	AssetManager::RegisterAudioCollisionType("default_audio_collision", AudioCollisionOcclusion{ 1.0f, 0.5f });
 }
 

@@ -12,9 +12,6 @@
 #include <Maths/matrix4.h>
 #include <Maths/vector3.h>
 
-#include <map>
-#include <Rendering/Text/textRenderUtils.h>
-
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -76,7 +73,5 @@ private:
 
 
 	//  text (temporary)
-	std::map<char, FontCharacter> FontCharacters;
-	unsigned int CharVAO, CharVBO, CharTextureArray;
 	void RenderText(Shader& s, std::string text, float x, float y, float scale, Color color);
 };

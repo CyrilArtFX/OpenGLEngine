@@ -1,8 +1,9 @@
 #include "mesh.h"
 
 Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const int matId) : 
-	vertexArray(vertices, indices), materialIndex(matId)
+	vertexArray(), materialIndex(matId)
 {
+	vertexArray.LoadVAMesh(vertices, indices);
 }
 
 Mesh::Mesh() :

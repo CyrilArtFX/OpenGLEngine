@@ -1,10 +1,11 @@
 #include "vertexArray.h"
 
-VertexArray::VertexArray(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) : 
-	nbVertices(vertices.size()),
-	nbIndices(indices.size()),
-	useEBO(indices.size() > 0)
+void VertexArray::LoadVAMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
 {
+	nbVertices = vertices.size();
+	nbIndices = indices.size();
+	useEBO = indices.size() > 0;
+
 	if (vertices.size() == 0) return;
 
 	//  setup vertex buffer object and vertex array object
@@ -39,6 +40,36 @@ VertexArray::VertexArray(const std::vector<Vertex>& vertices, const std::vector<
 	glBindVertexArray(0);
 }
 
+void VertexArray::LoadVAQuadHUD()
+{
+	//  create vertices array for quad
+	GLfloat quad_vertices[] =
+	{
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		1.0f, 1.0f,
+		1.0f, 0.0f,
+	};
+
+	//  setup vertex buffer object and vertex array object
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+
+	glBindVertexArray(VAO); //  bind vertex array
+
+	//  bind the vertex buffer
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(quad_vertices), quad_vertices, GL_STATIC_DRAW);
+
+	//  vertex attribute
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(0);
+
+	//  unbind vertex array and vertex buffer
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+}
+
 
 void VertexArray::setActive()
 {
@@ -50,7 +81,6 @@ void VertexArray::deleteObjects()
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 }
-
 
 VertexArray::VertexArray()
 {

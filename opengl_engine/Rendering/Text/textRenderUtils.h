@@ -8,4 +8,11 @@ struct FontCharacter
 	Vector2Int Size;
 	Vector2Int Bearing;
 	int Advance;
+
+	static FontCharacter errorChar;
+};
+
+enum class CharacterLoading : uint8_t
+{
+	ASCII_128 = 0 //  Load the first 128 characters of the ASCII system
 };

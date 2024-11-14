@@ -9,7 +9,7 @@ in VS_OUT{
 out vec4 color;
 
 uniform sampler2DArray text;
-uniform int letterMap[400];
+uniform int letterMap[512];
 uniform vec3 textColor;
 
 void main()

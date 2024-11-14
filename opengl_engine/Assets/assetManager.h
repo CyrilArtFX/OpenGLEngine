@@ -4,6 +4,7 @@
 #include <Rendering/shader.h>
 #include <Rendering/material.h>
 #include <Rendering/Model/model.h>
+#include <Rendering/Text/font.h>
 #include <Audio/audioSound.h>
 
 #include <unordered_map>
@@ -44,6 +45,31 @@ public:
 	* @param	name	The name of the texture you want to delete.
 	*/
 	static void DeleteTexture(const std::string& name);
+
+
+
+// -----------------------------------------------------------------------------
+//                 Vertex Arrays
+// -----------------------------------------------------------------------------
+
+	/**
+	* Create an unloaded vertex array and stores it.
+	* @param	name			The name you want to give to this vertex array in the asset storage.
+	*/
+	static VertexArray& CreateVertexArray(const std::string& name);
+
+	/**
+	* Retrieve a vertex array from the asset storage.
+	* @param	name	The name of the vertex array you want to retrieve.
+	* @return			The vertex array with corresponding name (if it exists).
+	*/
+	static VertexArray& GetVertexArray(const std::string& name);
+
+	/**
+	* Delete a vertex array from the asset storage.
+	* @param	name	The name of the vertex array you want to delete.
+	*/
+	static void DeleteVertexArray(const std::string& name);
 
 
 
@@ -200,6 +226,34 @@ public:
 
 
 // -----------------------------------------------------------------------------
+//                 Fonts
+// -----------------------------------------------------------------------------
+
+	/**
+	* Load a font from file and stores it.
+	* @param	name				The name you want to give to this font in the asset storage.
+	* @param	fontPath			The path to the font file to read.
+	* @param	size				The size to load the font with.
+	* @param	charLoadSetting		How many chars to load with this font.
+	*/
+	static void LoadFont(const std::string& name, const std::string& fontPath, const int size, const CharacterLoading charLoadSetting);
+
+	/**
+	* Retrieve a font from the asset storage.
+	* @param	name	The name of the font you want to retrieve.
+	* @return			The font with corresponding name (if it exists).
+	*/
+	static Font& GetFont(const std::string& name);
+
+	/**
+	* Delete a font from the asset storage.
+	* @param	name	The name of the font you want to delete.
+	*/
+	static void DeleteFont(const std::string& name);
+
+
+
+// -----------------------------------------------------------------------------
 //                 Sounds
 // -----------------------------------------------------------------------------
 
@@ -261,12 +315,14 @@ public:
 
 private:
 	static std::unordered_map<std::string, std::unique_ptr<Texture>> textures;
+	static std::unordered_map<std::string, std::unique_ptr<VertexArray>> vertexArrays;
 	static std::unordered_map<std::string, std::unique_ptr<Mesh>> meshesSingle;
 	static std::unordered_map<std::string, std::unique_ptr<MeshCollection>> meshesCollection;
 	static std::unordered_map<std::string, std::unique_ptr<Model>> models;
 	static std::unordered_map<std::string, std::unique_ptr<Shader>> shaders;
 	static std::unordered_map<std::string, std::unique_ptr<Material>> materials;
 	static std::unordered_map<std::string, std::unique_ptr<MaterialCollection>> materialsCollection;
+	static std::unordered_map<std::string, std::unique_ptr<Font>> fonts;
 	static std::unordered_map<std::string, std::unique_ptr<AudioSound>> sounds;
 	static std::unordered_map<std::string, AudioCollisionOcclusion> audioCollisionTypes;
 };

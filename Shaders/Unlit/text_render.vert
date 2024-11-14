@@ -8,7 +8,7 @@ out VS_OUT{
 } vs_out;
 
 uniform mat4 projection;
-uniform vec4 textPosScales[400]; // vec2 pos (xy) & vec2 scale (zw)
+uniform vec4 textPosScales[512]; // vec2 pos (xy) & vec2 scale (zw)
 
 void main()
 {

@@ -1,5 +1,11 @@
 #include "texture.h"
+
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #include <Utils/defines.h>
+#include <iostream>
+
 
 Texture::Texture()
 {
@@ -40,13 +46,13 @@ void Texture::load(const std::string& texturePath, bool flipVertical)
 	}
 	else
 	{
-		std::cout << "Failed to load texture at path " << tex_path << std::endl;
+		std::cout << "Texture load error: Failed to load texture at path " << tex_path << std::endl;
 
 		stbi_set_flip_vertically_on_load(false);
 		std::string notex_path = RESOURCES_PATH + "Default/notexture.png";
 		data = stbi_load(notex_path.c_str(), &width, &height, &nr_channels, 0);
 
-		if (!data) std::cout << "WARNING !  Default texture notexture not found !\n"; //  I choose to not prevent the crash
+		if (!data) std::cout << "Texture load error: Default texture 'notexture' not found !\n"; //  I choose to not prevent the crash
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}

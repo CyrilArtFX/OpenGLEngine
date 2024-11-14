@@ -9,12 +9,14 @@
 // --------------------------------------------------------------
 
 std::unordered_map<std::string, std::unique_ptr<Texture>> AssetManager::textures;
+std::unordered_map<std::string, std::unique_ptr<VertexArray>> AssetManager::vertexArrays;
 std::unordered_map<std::string, std::unique_ptr<Mesh>> AssetManager::meshesSingle;
 std::unordered_map<std::string, std::unique_ptr<MeshCollection>> AssetManager::meshesCollection;
 std::unordered_map<std::string, std::unique_ptr<Model>> AssetManager::models;
 std::unordered_map<std::string, std::unique_ptr<Shader>> AssetManager::shaders;
 std::unordered_map<std::string, std::unique_ptr<Material>> AssetManager::materials;
 std::unordered_map<std::string, std::unique_ptr<MaterialCollection>> AssetManager::materialsCollection;
+std::unordered_map<std::string, std::unique_ptr<Font>> AssetManager::fonts;
 std::unordered_map<std::string, std::unique_ptr<AudioSound>> AssetManager::sounds;
 std::unordered_map<std::string, AudioCollisionOcclusion> AssetManager::audioCollisionTypes;
 
@@ -55,6 +57,46 @@ void AssetManager::DeleteTexture(const std::string& name)
 	}
 
 	textures.erase(name);
+}
+
+
+
+// --------------------------------------------------------------
+//            Vertex Arrays
+// --------------------------------------------------------------
+
+VertexArray& AssetManager::CreateVertexArray(const std::string& name)
+{
+	if (vertexArrays.find(name) != vertexArrays.end())
+	{
+		std::cout << "Asset Manager Error: Tried to create a vertex array with a name that already exists. Name is " << name << ".\n";
+		return *vertexArrays["null_vertexarray"];
+	}
+
+	vertexArrays.emplace(name, std::make_unique<VertexArray>());
+	return *vertexArrays[name];
+}
+
+VertexArray& AssetManager::GetVertexArray(const std::string& name)
+{
+	if (vertexArrays.find(name) == vertexArrays.end())
+	{
+		std::cout << "Asset Manager Error: Tried to get a vertex array with a name that doesn't exists. Name is " << name << ".\n";
+		return *vertexArrays["null_vertexarray"];
+	}
+
+	return *vertexArrays[name];
+}
+
+void AssetManager::DeleteVertexArray(const std::string& name)
+{
+	if (vertexArrays.find(name) == vertexArrays.end())
+	{
+		std::cout << "Asset Manager Error: Tried to delete a vertex array with a name that doesn't exists. Name is " << name << ".\n";
+		return;
+	}
+
+	vertexArrays.erase(name);
 }
 
 
@@ -294,6 +336,45 @@ void AssetManager::DeleteMaterial(const std::string& name)
 
 
 // --------------------------------------------------------------
+//            Fonts
+// --------------------------------------------------------------
+
+void AssetManager::LoadFont(const std::string& name, const std::string& fontPath, const int size, const CharacterLoading charLoadSetting)
+{
+	if (fonts.find(name) != fonts.end())
+	{
+		std::cout << "Asset Manager Error: Tried to create a font with a name that already exists. Name is " << name << ".\n";
+		return;
+	}
+
+	fonts.emplace(name, std::make_unique<Font>(fontPath, size, charLoadSetting));
+}
+
+Font& AssetManager::GetFont(const std::string& name)
+{
+	if (fonts.find(name) == fonts.end())
+	{
+		std::cout << "Asset Manager Error: Tried to get a font with a name that doesn't exists. Name is " << name << ".\n";
+		return *fonts["null_font"];
+	}
+
+	return *fonts[name];
+}
+
+void AssetManager::DeleteFont(const std::string& name)
+{
+	if (fonts.find(name) == fonts.end())
+	{
+		std::cout << "Asset Manager Error: Tried to delete a font with a name that doesn't exists. Name is " << name << ".\n";
+		return;
+	}
+
+	fonts.erase(name);
+}
+
+
+
+// --------------------------------------------------------------
 //            Sounds
 // --------------------------------------------------------------
 
@@ -382,12 +463,14 @@ void AssetManager::DeleteAudioCollisionType(const std::string& name)
 void AssetManager::LoadNullAssets()
 {
 	LoadTexture("null_texture", "Default/notexture.png", false);
+	vertexArrays.emplace("null_vertexarray", std::make_unique<VertexArray>());
 	meshesSingle.emplace("null_mesh", std::make_unique<Mesh>());
 	meshesCollection.emplace("null_collection", std::make_unique<MeshCollection>());
 	models.emplace("null_model", std::make_unique<Model>());
 	shaders.emplace("null_shader", std::make_unique<Shader>());
 	materials.emplace("null_material", std::make_unique<Material>(GetShader("null_shader")));
 	materialsCollection.emplace("null_mat_collection", std::make_unique<MaterialCollection>());
+	fonts.emplace("null_font", std::make_unique<Font>());
 	sounds.emplace("null_sound", std::make_unique<AudioSound>(nullptr, 0));
 	audioCollisionTypes.emplace("null_audio_collision_type", AudioCollisionOcclusion{ 0.0f, 0.0f });
 }

@@ -18,11 +18,13 @@ struct Vertex
 class VertexArray
 {
 public:
-	VertexArray(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
 	VertexArray();
 	VertexArray(const VertexArray& other) = delete;
 	VertexArray& operator=(const VertexArray&) = delete;
 	~VertexArray();
+
+	void LoadVAMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
+	void LoadVAQuadHUD();
 
 	void setActive();
 	void deleteObjects();

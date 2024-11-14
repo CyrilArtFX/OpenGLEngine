@@ -62,8 +62,8 @@ void ExpositionScene::loadScene()
 	musicSource.playSound(AssetManager::GetSound("music"));
 	musicSource.setVolume(0.2f);
 
-	//Audio& audio = Locator::getAudio();
-	//audio.SetGlobalVolume(0.0f);
+	Audio& audio = Locator::getAudio();
+	audio.SetGlobalVolume(0.0f);
 
 
 	//  physics

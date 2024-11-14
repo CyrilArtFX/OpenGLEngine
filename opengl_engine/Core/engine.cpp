@@ -7,8 +7,6 @@
 #include <Physics/physicsManager.h>
 #include <GameplayStatics/gameplayStatics.h>
 
-#include <ft2build.h>
-#include <freetype/freetype.h>
 #include <Maths/vector4.h>
 
 
@@ -136,113 +134,10 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	std::cout << " Done.\n";
 
 
-
-	//  initialize freetype (temporary)
-	FT_Error error;
-	FT_Library ft;
-	error = FT_Init_FreeType(&ft);
-	if (error)
-	{
-		std::cout << "Failed ton initialize FreeType library\n";
-		return false;
-	}
-
-	FT_Face face;
-	error = FT_New_Face(ft, "Resources/arial_font/arial.ttf", 0, &face);
-	if (error)
-	{
-		std::cout << "Failed to load font\n";
-	}
-
-	//  set size to load glyph
-	FT_Set_Pixel_Sizes(face, 256, 256);
-
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-	//  opengl option (would have to be set in the global opengl setup of the engine)
+	//  configure global OpenGL properties
+	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	//  generate an array of texture
-	glGenTextures(1, &CharTextureArray);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D_ARRAY, CharTextureArray);
-
-	//  setup the texture 3D (this is the array of textures), here the 256 are for the size of the textures (see above) and the 128 for the size of the array (here the 128 ascii)
-	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_R8, 256, 256, 128, 0, GL_RED, GL_UNSIGNED_BYTE, 0);
-
-	//  load 128 ASCII
-	for (unsigned char c = 0; c < 128; c++)
-	{
-		//  load character glyph
-		error = FT_Load_Char(face, c, FT_LOAD_RENDER);
-		if (error)
-		{
-			std::cout << "Failed to load character glyph\n";
-			continue;
-		}
-
-		//  add a texture into the texture 3D (the array of texture)
-		glTexSubImage3D(
-			GL_TEXTURE_2D_ARRAY,
-			0,
-			0, 0, //  offset x & y
-			int(c), //  offset z (the index to set the texture in the array)
-			face->glyph->bitmap.width, //  size width
-			face->glyph->bitmap.rows, //  size height
-			1, //  size depth (leave at 1)
-			GL_RED,
-			GL_UNSIGNED_BYTE,
-			face->glyph->bitmap.buffer //  datas of the texture
-		);
-
-		//  set texture options
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		//  store character for later use
-		FontCharacters.emplace(c,
-			FontCharacter{
-				int(c), //  index of the texture in the texture 3D (array)
-				Vector2Int{(int)(face->glyph->bitmap.width), (int)(face->glyph->bitmap.rows)},
-				Vector2Int{face->glyph->bitmap_left, face->glyph->bitmap_top},
-				face->glyph->advance.x
-			}
-		);
-	}
-
-	glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
-
-	FT_Done_Face(face);
-	FT_Done_FreeType(ft);
-
-	AssetManager::CreateShaderProgram("text_render", "Unlit/text_render.vert", "Unlit/text_render.frag", ShaderType::Unlit);
-
-
-	GLfloat vertex_data[] =
-	{
-		0.0f, 1.0f,
-		0.0f, 0.0f,
-		1.0f, 1.0f,
-		1.0f, 0.0f,
-	};
-
-	glGenVertexArrays(1, &CharVAO);
-	glGenBuffers(1, &CharVBO);
-	glBindVertexArray(CharVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, CharVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_data), vertex_data, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
-
-
-
-	//  configure global OpenGL properties
-	//glEnable(GL_DEPTH_TEST);
 
 
 	std::cout << "\nEngine initialization: " << glfwGetTime() << " seconds.\n";
@@ -296,7 +191,7 @@ void Engine::run()
 
 
 		//  TEXT RENDERING TEMPORARY
-		RenderText(AssetManager::GetShader("text_render"), "Hello World!\nMarius est raciste.", -window.getWidth() / 2.0f + 20.0f, window.getHeigth() / 2.0f - 60.0f, 0.2f, Color::white);
+		RenderText(AssetManager::GetShader("text_render"), "Hello World!", -window.getWidth() / 2.0f + 20.0f, window.getHeigth() / 2.0f - 60.0f, 0.5f, Color::white);
 
 
 		//  audio part
@@ -488,13 +383,14 @@ void Engine::RenderText(Shader& s, std::string text, float x, float y, float sca
 	Matrix4 proj = Matrix4::createSimpleViewProj(window.getWidth(), window.getHeigth());
 	s.setMatrix4("projection", proj.getAsFloatPtr());
 
-	int CharMapIDs[400]{ 0 };
-	Vector4 CharPosScales[400]{ Vector4::zero };
+	int CharMapIDs[512]{ 0 };
+	Vector4 CharPosScales[512]{ Vector4::zero };
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D_ARRAY, CharTextureArray);
-	glBindVertexArray(CharVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, CharVBO);
+	Font& arial_font = AssetManager::GetFont("arial_64");
+	arial_font.use();
+	const int font_size = arial_font.getFontSize();
+
+	AssetManager::GetVertexArray("hud_quad").setActive();
 
 	const float begin_x = x;
 
@@ -503,12 +399,12 @@ void Engine::RenderText(Shader& s, std::string text, float x, float y, float sca
 	int index = 0;
 	for (c = text.begin(); c != text.end(); c++)
 	{
-		if (index >= 400 - 1)
+		if (index >= 512 - 1)
 		{
 			break;
 		}
 
-		FontCharacter ch = FontCharacters[*c];
+		FontCharacter ch = arial_font.getCharacter(*c);
 
 		if (*c == '\n')
 		{
@@ -522,9 +418,9 @@ void Engine::RenderText(Shader& s, std::string text, float x, float y, float sca
 		else
 		{
 			const float x_pos = x + ch.Bearing.x * scale;
-			const float y_pos = y - (256.0f - ch.Bearing.y) * scale;
-			const float x_scale = 256.0f * scale;
-			const float y_scale = 256.0f * scale;
+			const float y_pos = y - (float(font_size) - ch.Bearing.y) * scale;
+			const float x_scale = float(font_size) * scale;
+			const float y_scale = float(font_size) * scale;
 
 			CharPosScales[index] = Vector4{ x_pos, y_pos, x_scale, y_scale };
 			CharMapIDs[index] = ch.TextureID;
@@ -532,9 +428,9 @@ void Engine::RenderText(Shader& s, std::string text, float x, float y, float sca
 			x += (ch.Advance >> 6) * scale; // bitshift by 6 (2^6 = 64)
 
 			index++;
-			if (index >= 400)
+			if (index >= 512)
 			{
-				//  draw array of max 400 chars
+				//  draw array of max 512 chars
 				s.setVec4Array("textPosScales", &CharPosScales[0], index);
 				s.setIntArray("letterMap", &CharMapIDs[0], index);
 				glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, index);
@@ -553,7 +449,6 @@ void Engine::RenderText(Shader& s, std::string text, float x, float y, float sca
 	}
 
 	//  unbind
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 }
