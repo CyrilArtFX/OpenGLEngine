@@ -23,4 +23,7 @@ public:
 
 	void AddObject(Object* object) override {}
 	void RemoveObject(Object* object) override {}
+
+	void AddText(TextRendererComponent* text) override {}
+	void RemoveText(TextRendererComponent* text) override {}
 };

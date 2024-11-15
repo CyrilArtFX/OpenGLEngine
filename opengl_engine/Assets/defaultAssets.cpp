@@ -92,10 +92,6 @@ void DefaultAssets::LoadDefaultAssets()
 	AssetManager::CreateShaderProgram("text_render", "Unlit/text_render.vert", "Unlit/text_render.frag", ShaderType::Unlit);
 
 
-	//  default fonts (arial 128 ascii size 64)
-	AssetManager::LoadFont("arial_64", "arial_font/arial.ttf", 64, CharacterLoading::ASCII_128);
-
-
 	//  default audio collision
 	AssetManager::RegisterAudioCollisionType("default_audio_collision", AudioCollisionOcclusion{ 1.0f, 0.5f });
 }
@@ -157,4 +153,8 @@ void DefaultAssets::LoadDebugAssets()
 
 	Material& collision_debug_mat = AssetManager::CreateMaterial("debug_collisions", AssetManager::GetShader("collision_debug"));
 	collision_debug_mat.addParameter("color", Color::green);
+
+
+	//  default (and debug) font (arial 128 ascii size 64)
+	AssetManager::LoadFont("arial_64", "arial_font/arial.ttf", 64, CharacterLoading::ASCII_128);
 }

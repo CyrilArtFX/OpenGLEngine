@@ -5,6 +5,7 @@ class Color;
 class Material;
 class Light;
 class Object;
+class TextRendererComponent;
 
 
 /**
@@ -79,4 +80,17 @@ public:
 	* @param	object	The object to unregister.
 	*/
 	virtual void RemoveObject(Object* object) = 0;
+
+
+	/**
+	* Register a text to the renderer.
+	* @param	text	The text to register.
+	*/
+	virtual void AddText(TextRendererComponent* text) = 0;
+
+	/**
+	* Unregister a text from the renderer.
+	* @param	text	The text to unregister.
+	*/
+	virtual void RemoveText(TextRendererComponent* text) = 0;
 };

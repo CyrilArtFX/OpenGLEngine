@@ -5,6 +5,7 @@
 #include <Rendering/rendererOpenGL.h>
 #include <Rendering/camera.h>
 #include <Rendering/texture.h>
+#include <Rendering/Text/textRendererComponent.h>
 
 #include <Audio/audioManager.h>
 #include <Audio/audioSound.h>
@@ -53,6 +54,9 @@ private:
 	//  freecam
 	Camera freecam;
 
+	//  debug text
+	TextRendererComponent* fpsText;
+
 	//  time
 	float deltaTime = 0.0f;
 	float lastFrame = 0.0f;
@@ -69,9 +73,4 @@ private:
 	void disableFreecam();
 	void enableDebugView();
 	void disableDebugView();
-
-
-
-	//  text (temporary)
-	void RenderText(Shader& s, std::string text, float x, float y, float scale, Color color);
 };

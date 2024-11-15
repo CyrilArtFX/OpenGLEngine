@@ -3,10 +3,14 @@
 ~ Créer un système de HUD (affichage de sprites et de texte au dessus du jeu) - en cours
 	- Faire la partie Text Rendering de learnopengl.com le plus fidèlement possible - fait
 	- Faire les modifs d'opti de la vidéo du gars (https://www.youtube.com/watch?v=S0PyZKX4lyI) - fait
-	- Integrer proprement le rendering de texte dans les outils du moteur
+	- Integrer proprement le rendering de texte dans les outils du moteur - fait
 	- Faire la partie Rendering Sprites de learnopengl.com
 	- Integrer proprement le rendering des sprites dans les outils du moteur
 	- Faire un outil basique de HUD
+
+~ Intégrer du HUD dans le doomlike
+
+~ Opti les rendus debug de raycast en arrêtant de créer des VAO et VBO à chaque raycast
 
 
 == MOYEN TERME ==
@@ -58,6 +62,10 @@
 == REFLEXIONS / PROBLEMES CONNUS ==
 
 ~ Trouver une solution pour les problèmes de rotations avec la caméra qui fait qu'on ne peut pas lui forcer une rotation sans casser le système de pitch et de yaw intégré.
+
+~ Le look at rotation des ennemis du doomlike bug un petit peu ?
+
+~ Problème avec la physique, si on touche par le bas une collision qui bouge, on est tp au dessus
 
 ~ Réfléchir au fonctionnement du load asset des scenes, est-ce qu'il faudrait faire gaffe à l'utilisation de ram et unload genre les textures qui ne sont plus nécessaires ?
 

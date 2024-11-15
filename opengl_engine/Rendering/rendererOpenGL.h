@@ -5,14 +5,28 @@
 #include <Maths/matrix4.h>
 #include <Maths/vector3.h>
 #include <Maths/vector2Int.h>
+#include <Maths/vector4.h>
 
 #include "camera.h"
 #include <Objects/object.h>
 #include <Objects/Lights/light.h>
-#include "material.h"
+#include <Rendering/material.h>
+#include <Rendering/Text/textRendererComponent.h>
 
 #include <vector>
 #include <unordered_map>
+
+
+//  would be cool if I find a better way to do this but it works for now
+const std::unordered_map<LightType, int> LIGHTS_LIMITS
+{
+	{EDirectionalLight, 1},
+	{EPointLight, 16},
+	{ESpotLight, 8}
+};
+
+const int TEXT_CHARS_LIMIT{ 512 };
+
 
 /**
 * The renderer service provider class.
@@ -35,6 +49,9 @@ public:
 	void AddObject(Object* object) override;
 	void RemoveObject(Object* object) override;
 
+	void AddText(TextRendererComponent* text) override;
+	void RemoveText(TextRendererComponent* text) override;
+
 
 
 
@@ -42,19 +59,14 @@ private:
 	std::unordered_map<LightType, std::vector<Light*>> lights;
 	std::vector<Object*> objects;
 	std::unordered_map<Shader*, std::vector<Material*>> materials;
+	std::vector<TextRendererComponent*> texts;
 
 	Color clearColor{ Color::black };
 
 	Camera* currentCam;
 	Vector2Int windowSize;
 
-	//  would be cool if I find a better way to do this but it works for now
-	const std::unordered_map<LightType, int> lightsLimits
-	{
-		{EDirectionalLight, 1},
-		{EPointLight, 16},
-		{ESpotLight, 8}
-	};
+	
 
 
 

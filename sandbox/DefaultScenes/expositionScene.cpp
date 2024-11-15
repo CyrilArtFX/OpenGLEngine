@@ -82,6 +82,12 @@ void ExpositionScene::loadScene()
 	registerLight(&pointLight1);
 	registerLight(&pointLight2);
 	registerLight(&flashLight);
+
+
+	//  text
+	sandboxText = new TextRendererComponent();
+	sandboxText->setTextDatas("Welcome to the sandbox.\nTake a cookie.", Color::cyan, Vector2{ -620.0f, 330.0f }, 0.3f, AssetManager::GetFont("arial_64"));
+	//  give access to the window size via the gameplay statics class
 }
 
 

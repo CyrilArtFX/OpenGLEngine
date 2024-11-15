@@ -134,6 +134,12 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	std::cout << " Done.\n";
 
 
+	//  intialize debug fps text
+	fpsText = new TextRendererComponent();
+	fpsText->setTextDatas("FPS: 0", Color::white, Vector2{ window.getWidth() / 2.0f - 150.0f, window.getHeigth() / 2.0f - 40.0f }, 0.5f, AssetManager::GetFont("arial_64"));
+	fpsText->setEnable(false);
+
+
 	//  configure global OpenGL properties
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
@@ -188,10 +194,6 @@ void Engine::run()
 		//  rendering part
 		// ----------------
 		renderer->draw();
-
-
-		//  TEXT RENDERING TEMPORARY
-		RenderText(AssetManager::GetShader("text_render"), "Hello World!", -window.getWidth() / 2.0f + 20.0f, window.getHeigth() / 2.0f - 60.0f, 0.5f, Color::white);
 
 
 		//  audio part
@@ -355,6 +357,7 @@ void Engine::enableDebugView()
 	debugViewMode = true;
 	std::cout << "Debug view mode enabled.\n";
 	renderer->drawDebugMode = true;
+	fpsText->setEnable(true);
 }
 
 void Engine::disableDebugView()
@@ -362,6 +365,7 @@ void Engine::disableDebugView()
 	debugViewMode = false;
 	std::cout << "Debug view mode disabled.\n";
 	renderer->drawDebugMode = false;
+	fpsText->setEnable(false);
 }
 
 
@@ -371,84 +375,5 @@ void Engine::windowResize(GLFWwindow* glWindow, int width, int height)
 	glViewport(0, 0, width, height); //  resize OpenGL viewport when GLFW is resized
 	window.changeSize(width, height);
 	renderer->setWindowSize(Vector2Int{ window.getWidth(), window.getHeigth() });
-}
-
-
-
-//  TEMPORARY TEXT RENDERING
-void Engine::RenderText(Shader& s, std::string text, float x, float y, float scale, Color color)
-{
-	s.use();
-	s.setVec3("textColor", color.toVector());
-	Matrix4 proj = Matrix4::createSimpleViewProj(window.getWidth(), window.getHeigth());
-	s.setMatrix4("projection", proj.getAsFloatPtr());
-
-	int CharMapIDs[512]{ 0 };
-	Vector4 CharPosScales[512]{ Vector4::zero };
-
-	Font& arial_font = AssetManager::GetFont("arial_64");
-	arial_font.use();
-	const int font_size = arial_font.getFontSize();
-
-	AssetManager::GetVertexArray("hud_quad").setActive();
-
-	const float begin_x = x;
-
-	//  iterate through all characters
-	std::string::const_iterator c;
-	int index = 0;
-	for (c = text.begin(); c != text.end(); c++)
-	{
-		if (index >= 512 - 1)
-		{
-			break;
-		}
-
-		FontCharacter ch = arial_font.getCharacter(*c);
-
-		if (*c == '\n')
-		{
-			y -= ((ch.Size.y)) * 1.6f * scale;
-			x = begin_x;
-		}
-		else if (*c == ' ')
-		{
-			x += (ch.Advance >> 6) * scale; // bitshift by 6 (2^6 = 64)
-		}
-		else
-		{
-			const float x_pos = x + ch.Bearing.x * scale;
-			const float y_pos = y - (float(font_size) - ch.Bearing.y) * scale;
-			const float x_scale = float(font_size) * scale;
-			const float y_scale = float(font_size) * scale;
-
-			CharPosScales[index] = Vector4{ x_pos, y_pos, x_scale, y_scale };
-			CharMapIDs[index] = ch.TextureID;
-
-			x += (ch.Advance >> 6) * scale; // bitshift by 6 (2^6 = 64)
-
-			index++;
-			if (index >= 512)
-			{
-				//  draw array of max 512 chars
-				s.setVec4Array("textPosScales", &CharPosScales[0], index);
-				s.setIntArray("letterMap", &CharMapIDs[0], index);
-				glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, index);
-
-				index = 0;
-			}
-		}
-	}
-
-	//  draw array of remaining chars
-	if (index > 0)
-	{
-		s.setVec4Array("textPosScales", &CharPosScales[0], index);
-		s.setIntArray("letterMap", &CharMapIDs[0], index);
-		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, index);
-	}
-
-	//  unbind
-	glBindVertexArray(0);
-	glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
+	fpsText->setTextScreenPosition(Vector2{ window.getWidth() / 2.0f - 150.0f, window.getHeigth() / 2.0f - 40.0f });
 }
