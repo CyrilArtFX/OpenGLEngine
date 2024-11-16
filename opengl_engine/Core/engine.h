@@ -56,6 +56,8 @@ private:
 
 	//  debug text
 	TextRendererComponent* fpsText;
+	int frameCounter = 0;
+	float frameTimeCounter = 0.0f;
 
 	//  time
 	float deltaTime = 0.0f;

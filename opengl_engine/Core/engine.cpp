@@ -309,6 +309,20 @@ void Engine::engineUpdate(GLFWwindow* glWindow)
 
 		freecam.freecamMouseScroll(Input::GetScrollOffset());
 	}
+
+
+	if (debugViewMode)
+	{
+		//  update fps counter
+		frameCounter++;
+		frameTimeCounter += deltaTime;
+		if (frameTimeCounter >= 1.0f)
+		{
+			frameTimeCounter -= 1.0f;
+			fpsText->setText("FPS: " + std::to_string(frameCounter));
+			frameCounter = 0;
+		}
+	}
 }
 
 
