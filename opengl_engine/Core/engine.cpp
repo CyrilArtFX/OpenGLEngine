@@ -40,6 +40,8 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 		glfwTerminate();
 		return false;
 	}
+
+	GameplayStatics::SetWindowSize(Vector2Int{ window.getWidth(), window.getHeigth() });
 	std::cout << " Done.\n";
 
 
@@ -375,5 +377,7 @@ void Engine::windowResize(GLFWwindow* glWindow, int width, int height)
 	glViewport(0, 0, width, height); //  resize OpenGL viewport when GLFW is resized
 	window.changeSize(width, height);
 	renderer->setWindowSize(Vector2Int{ window.getWidth(), window.getHeigth() });
+	GameplayStatics::SetWindowSize(Vector2Int{ window.getWidth(), window.getHeigth() });
+
 	fpsText->setTextScreenPosition(Vector2{ window.getWidth() / 2.0f - 150.0f, window.getHeigth() / 2.0f - 40.0f });
 }

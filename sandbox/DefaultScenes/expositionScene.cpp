@@ -1,5 +1,6 @@
 #include "ExpositionScene.h"
 #include <ServiceLocator/locator.h>
+#include <GameplayStatics/gameplayStatics.h>
 
 #include <Inputs/input.h>
 #include <GLFW/glfw3.h>
@@ -86,8 +87,8 @@ void ExpositionScene::loadScene()
 
 	//  text
 	sandboxText = new TextRendererComponent();
-	sandboxText->setTextDatas("Welcome to the sandbox.\nTake a cookie.", Color::cyan, Vector2{ -620.0f, 330.0f }, 0.3f, AssetManager::GetFont("arial_64"));
-	//  give access to the window size via the gameplay statics class
+	Vector2Int window_size = GameplayStatics::GetWindowSize();
+	sandboxText->setTextDatas("Welcome to the sandbox.\nTake a cookie.", Color::cyan, Vector2{ -window_size.x / 2.0f + 20.0f, window_size.y / 2.0f - 30.0f }, 0.3f, AssetManager::GetFont("arial_64"));
 }
 
 

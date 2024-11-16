@@ -3,6 +3,7 @@
 
 Game* GameplayStatics::currentGame = nullptr;
 Scene* GameplayStatics::currentScene = nullptr;
+Vector2Int GameplayStatics::windowSize = Vector2Int::zero;
 
 Game* GameplayStatics::GetGame()
 {
@@ -26,6 +27,11 @@ Scene* GameplayStatics::GetActiveScene()
 	return currentScene;
 }
 
+Vector2Int GameplayStatics::GetWindowSize()
+{
+	return windowSize;
+}
+
 
 void GameplayStatics::SetCurrentGame(Game* game)
 {
@@ -35,4 +41,9 @@ void GameplayStatics::SetCurrentGame(Game* game)
 void GameplayStatics::SetCurrentScene(Scene* scene)
 {
 	currentScene = scene;
+}
+
+void GameplayStatics::SetWindowSize(const Vector2Int& size)
+{
+	windowSize = size;
 }

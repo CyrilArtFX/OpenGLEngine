@@ -1,6 +1,7 @@
 #pragma once
 #include <Core/game.h>
 #include <Core/scene.h>
+#include <Maths/Vector2Int.h>
 
 class Engine;
 
@@ -17,11 +18,17 @@ public:
 	*/
 	static Scene* GetActiveScene();
 
+	/*
+	* Get the size of the Window.
+	*/
+	static Vector2Int GetWindowSize();
+
 
 
 private:
 	static Game* currentGame;
 	static Scene* currentScene;
+	static Vector2Int windowSize;
 
 
 	friend class Engine;
@@ -29,5 +36,6 @@ private:
 
 	static void SetCurrentGame(Game* game);
 	static void SetCurrentScene(Scene* scene);
+	static void SetWindowSize(const Vector2Int& size);
 };
 
