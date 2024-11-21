@@ -77,7 +77,7 @@ void DefaultAssets::LoadDefaultAssets()
 	AssetManager::LoadSingleMesh("default_plane", plane_vertices);
 
 
-	//  default shaders and materials (black and white emissive, text render)
+	//  default shaders and materials (black and white emissive, text & sprite render)
 	AssetManager::CreateShaderProgram("flat_emissive", "Unlit/flat_emissive.vert", "Unlit/flat_emissive.frag", ShaderType::Unlit);
 
 	Material& black_emissive_mat = AssetManager::CreateMaterial("default_black_emissive", AssetManager::GetShader("flat_emissive"));
@@ -90,6 +90,7 @@ void DefaultAssets::LoadDefaultAssets()
 
 
 	AssetManager::CreateShaderProgram("text_render", "Unlit/text_render.vert", "Unlit/text_render.frag", ShaderType::Unlit);
+	AssetManager::CreateShaderProgram("sprite_render", "Unlit/sprite_render.vert", "Unlit/sprite_render.frag", ShaderType::Unlit);
 
 
 	//  default audio collision

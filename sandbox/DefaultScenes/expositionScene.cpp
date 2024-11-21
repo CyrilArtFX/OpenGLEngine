@@ -89,6 +89,11 @@ void ExpositionScene::loadScene()
 	sandboxText = new TextRendererComponent();
 	Vector2Int window_size = GameplayStatics::GetWindowSize();
 	sandboxText->setTextDatas("Welcome to the sandbox.\nTake a cookie.", Color::cyan, Vector2{ -window_size.x / 2.0f + 20.0f, window_size.y / 2.0f - 30.0f }, 0.3f, AssetManager::GetFont("arial_64"));
+
+
+	//  sprite
+	sandboxSprite = new SpriteRendererComponent();
+	sandboxSprite->setSpriteDatas(AssetManager::GetTexture("smileyface_sprite"), Color::white, Vector2{ window_size.x / 2.0f - 120.0f, -window_size.y / 2.0f + 30.0f }, Vector2{100.0f, 100.0f});
 }
 
 

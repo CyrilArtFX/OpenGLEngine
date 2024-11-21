@@ -12,7 +12,7 @@ public:
 	Texture(const Texture&) = delete;
 	Texture& operator=(const Texture&) = delete;
 
-	void use(); //  use (bind) the texture
+	void use() const; //  use (bind) the texture
 
 	void setWrappingParameters(unsigned int sAxis, unsigned int tAxis);
 	void setFilteringParameters(unsigned int minifying, unsigned int magnifying);

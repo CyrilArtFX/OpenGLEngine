@@ -26,4 +26,7 @@ public:
 
 	void AddText(TextRendererComponent* text) override {}
 	void RemoveText(TextRendererComponent* text) override {}
+
+	void AddSprite(SpriteRendererComponent* sprite) override {}
+	void RemoveSprite(SpriteRendererComponent* sprite) override {}
 };

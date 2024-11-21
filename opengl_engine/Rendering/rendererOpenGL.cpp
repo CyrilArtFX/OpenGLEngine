@@ -121,7 +121,7 @@ void RendererOpenGL::draw()
 	text_render_shader.use();
 	text_render_shader.setMatrix4("projection", hud_projection.getAsFloatPtr());
 
-	//  bind the char vertex array
+	//  bind the char (and sprite) vertex array
 	AssetManager::GetVertexArray("hud_quad").setActive();
 
 	for (auto& text : texts)
@@ -207,9 +207,40 @@ void RendererOpenGL::draw()
 		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 	}
 
-	//  unbind char vertex array
+	//  do not unbind char vertex array as it will also serve as sprite vertex array
+
+
+	//  prepare the shader used in sprite rendering
+	Shader& sprite_render_shader = AssetManager::GetShader("sprite_render");
+	sprite_render_shader.use();
+	sprite_render_shader.setMatrix4("projection", hud_projection.getAsFloatPtr());
+
+	for (auto& sprite : sprites)
+	{
+		//  check sprite enabled
+		if (!sprite->isEnabled()) continue;
+
+		//  use sprite texture
+		glActiveTexture(GL_TEXTURE0);
+		sprite->getSprite().use();
+
+		//  set sprite color
+		sprite_render_shader.setVec3("spriteColor", sprite->getSpriteColor().toVector());
+
+		//  set sprite pos and scale
+		Vector2 sprite_pos = sprite->getSpriteScreenPosition();
+		Vector2 sprite_scale = sprite->getSpriteScale();
+		sprite_render_shader.setVec4("spritePosScale", sprite_pos.x, sprite_pos.y, sprite_scale.x, sprite_scale.y);
+
+		//  draw
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+		//  unbind sprite texture
+		glActiveTexture(GL_TEXTURE0);
+	}
+
 	glBindVertexArray(0);
- }
+}
 
 
 
@@ -307,12 +338,30 @@ void RendererOpenGL::RemoveText(TextRendererComponent* text)
 	auto iter = std::find(texts.begin(), texts.end(), text);
 	if (iter == texts.end())
 	{
-		std::cout << "Renderer can't remove an text that doesn't exist.\n";
+		std::cout << "Renderer can't remove a text that doesn't exist.\n";
 		return;
 	}
 
 	std::iter_swap(iter, texts.end() - 1);
 	texts.pop_back();
+}
+
+void RendererOpenGL::AddSprite(SpriteRendererComponent* sprite)
+{
+	sprites.push_back(sprite);
+}
+
+void RendererOpenGL::RemoveSprite(SpriteRendererComponent* sprite)
+{
+	auto iter = std::find(sprites.begin(), sprites.end(), sprite);
+	if (iter == sprites.end())
+	{
+		std::cout << "Renderer can't remove a sprite that doesn't exist.\n";
+		return;
+	}
+
+	std::iter_swap(iter, sprites.end() - 1);
+	sprites.pop_back();
 }
 
 

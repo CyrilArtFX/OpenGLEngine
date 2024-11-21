@@ -7,13 +7,13 @@
 
 
 TextRendererComponent::TextRendererComponent() :
-	Text(""), TextColor(Color::white), TextScreenPosition(Vector2::zero), TextScale(1.0f), TextFont(&AssetManager::GetFont("arial_64"))
+	text(""), textColor(Color::white), textScreenPosition(Vector2::zero), textScale(1.0f), textFont(&AssetManager::GetFont("arial_64"))
 {
 	Locator::getRenderer().AddText(this);
 }
 
 TextRendererComponent::TextRendererComponent(const TextRendererComponent& other) :
-	Text(other.Text), TextColor(other.TextColor), TextScreenPosition(other.TextScreenPosition), TextScale(other.TextScale), TextFont(other.TextFont)
+	text(other.text), textColor(other.textColor), textScreenPosition(other.textScreenPosition), textScale(other.textScale), textFont(other.textFont)
 {
 	Locator::getRenderer().AddText(this);
 }
@@ -27,69 +27,69 @@ TextRendererComponent::~TextRendererComponent()
 
 void TextRendererComponent::setTextDatas(const std::string& newText, const Color& newTextColor, const Vector2& newTextScreenPosition, const float newTextScale, const Font& newTextFont)
 {
-	Text = newText;
-	TextColor = newTextColor;
-	TextScreenPosition = newTextScreenPosition;
-	TextScale = newTextScale;
-	TextFont = &newTextFont;
+	text = newText;
+	textColor = newTextColor;
+	textScreenPosition = newTextScreenPosition;
+	textScale = newTextScale;
+	textFont = &newTextFont;
 }
 
 void TextRendererComponent::setText(const std::string& newText)
 {
-	Text = newText;
+	text = newText;
 }
 
 void TextRendererComponent::setTextColor(const Color& newTextColor)
 {
-	TextColor = newTextColor;
+	textColor = newTextColor;
 }
 
 void TextRendererComponent::setTextScreenPosition(const Vector2& newTextScreenPosition)
 {
-	TextScreenPosition = newTextScreenPosition;
+	textScreenPosition = newTextScreenPosition;
 }
 
 void TextRendererComponent::setTextScale(const float newTextScale)
 {
-	TextScale = newTextScale;
+	textScale = newTextScale;
 }
 
 void TextRendererComponent::setTextFont(const Font& newTextFont)
 {
-	TextFont = &newTextFont;
+	textFont = &newTextFont;
 }
 
 const std::string& TextRendererComponent::getText() const
 {
-	return Text;
+	return text;
 }
 
 const Color& TextRendererComponent::getTextColor() const
 {
-	return TextColor;
+	return textColor;
 }
 
 const Vector2& TextRendererComponent::getTextScreenPosition() const
 {
-	return TextScreenPosition;
+	return textScreenPosition;
 }
 
 const float TextRendererComponent::getTextScale() const
 {
-	return TextScale;
+	return textScale;
 }
 
 const Font& TextRendererComponent::getTextFont() const
 {
-	return *TextFont;
+	return *textFont;
 }
 
 void TextRendererComponent::setEnable(const bool enable)
 {
-	Enabled = enable;
+	enabled = enable;
 }
 
 bool TextRendererComponent::isEnabled() const
 {
-	return Enabled;
+	return enabled;
 }

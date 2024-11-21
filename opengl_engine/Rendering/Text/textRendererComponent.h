@@ -34,11 +34,11 @@ public:
 
 
 private:
-	std::string Text;
-	Color TextColor;
-	Vector2 TextScreenPosition;
-	float TextScale;
-	const Font* TextFont;
+	std::string text;
+	Color textColor;
+	Vector2 textScreenPosition;
+	float textScale;
+	const Font* textFont;
 
-	bool Enabled{ true };
+	bool enabled{ true };
 };

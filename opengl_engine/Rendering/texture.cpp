@@ -61,7 +61,7 @@ void Texture::load(const std::string& texturePath, bool flipVertical)
 }
 
 
-void Texture::use()
+void Texture::use() const
 {
 	glBindTexture(GL_TEXTURE_2D, ID);
 }

@@ -6,6 +6,7 @@ class Material;
 class Light;
 class Object;
 class TextRendererComponent;
+class SpriteRendererComponent;
 
 
 /**
@@ -93,4 +94,17 @@ public:
 	* @param	text	The text to unregister.
 	*/
 	virtual void RemoveText(TextRendererComponent* text) = 0;
+
+
+	/**
+	* Register a sprite to the renderer.
+	* @param	sprite	The sprite to register.
+	*/
+	virtual void AddSprite(SpriteRendererComponent* sprite) = 0;
+
+	/**
+	* Unregister a sprite from the renderer.
+	* @param	sprite	The sprite to unregister.
+	*/
+	virtual void RemoveSprite(SpriteRendererComponent* sprite) = 0;
 };

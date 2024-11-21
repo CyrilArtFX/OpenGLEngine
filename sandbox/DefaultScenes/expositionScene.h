@@ -14,6 +14,7 @@
 #include <Audio/audioSourceComponent.h>
 #include <Physics/AABB/boxAABBColComp.h>
 #include <Rendering/Text/textRendererComponent.h>
+#include <Rendering/Sprite/spriteRendererComponent.h>
 
 
 class ExpositionScene : public Scene
@@ -44,6 +45,7 @@ private:
 
 	AudioSourceComponent musicSource{ &cube3, ChannelSpatialization::Channel3D };
 	TextRendererComponent* sandboxText;
+	SpriteRendererComponent* sandboxSprite;
 
 	DirectionalLight sunLight;
 	PointLight pointLight1;

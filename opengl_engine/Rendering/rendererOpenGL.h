@@ -12,6 +12,7 @@
 #include <Objects/Lights/light.h>
 #include <Rendering/material.h>
 #include <Rendering/Text/textRendererComponent.h>
+#include <Rendering/Sprite/spriteRendererComponent.h>
 
 #include <vector>
 #include <unordered_map>
@@ -52,6 +53,9 @@ public:
 	void AddText(TextRendererComponent* text) override;
 	void RemoveText(TextRendererComponent* text) override;
 
+	void AddSprite(SpriteRendererComponent* sprite) override;
+	void RemoveSprite(SpriteRendererComponent* sprite) override;
+
 
 
 
@@ -60,6 +64,7 @@ private:
 	std::vector<Object*> objects;
 	std::unordered_map<Shader*, std::vector<Material*>> materials;
 	std::vector<TextRendererComponent*> texts;
+	std::vector<SpriteRendererComponent*> sprites;
 
 	Color clearColor{ Color::black };
 
