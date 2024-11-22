@@ -4,9 +4,9 @@
 	- Faire la partie Text Rendering de learnopengl.com le plus fidèlement possible - fait
 	- Faire les modifs d'opti de la vidéo du gars (https://www.youtube.com/watch?v=S0PyZKX4lyI) - fait
 	- Integrer proprement le rendering de texte dans les outils du moteur - fait
-	- Faire un rendering de sprite (nique learnopengl.com sur ce coup là xD) - en cours
-	- Regarder pour la rotation des élements de HUD (voir comment faire dans le shader)
-	- Integrer proprement le rendering des sprites dans les outils du moteur
+	- Faire un rendering de sprite (nique learnopengl.com sur ce coup là xD) - fait
+	- Regarder pour la rotation des élements de HUD (voir comment faire dans le shader) - en cours
+		Va falloir passer par une matrice pas trop le choix je crois, même pour un seul axe
 	- Faire un outil basique de HUD
 
 ~ Intégrer du HUD dans le doomlike
