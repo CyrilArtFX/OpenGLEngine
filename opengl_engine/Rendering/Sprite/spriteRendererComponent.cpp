@@ -4,6 +4,8 @@
 #include <ServiceLocator/locator.h>
 #include <ServiceLocator/renderer.h>
 
+#include <Maths/Vector2Int.h>
+
 
 SpriteRendererComponent::SpriteRendererComponent() :
 	sprite(nullptr), spriteColor(Color::white), spriteScreenPosition(Vector2::zero), spriteScale(Vector2::one)
@@ -77,7 +79,19 @@ void SpriteRendererComponent::setEnable(const bool enable)
 	enabled = enable;
 }
 
-bool SpriteRendererComponent::isEnabled() const
+bool SpriteRendererComponent::getEnabled() const
+{
+	return enabled;
+}
+
+Vector2 SpriteRendererComponent::getSpriteSize() const
+{
+	if (!sprite) return spriteScale;
+	
+	return sprite->getTextureSize() * spriteScale;
+}
+
+bool SpriteRendererComponent::getCanDraw() const
 {
 	return sprite && enabled;
 }

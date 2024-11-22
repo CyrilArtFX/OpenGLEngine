@@ -93,7 +93,7 @@ void ExpositionScene::loadScene()
 
 	//  sprite
 	sandboxSprite = new SpriteRendererComponent();
-	sandboxSprite->setSpriteDatas(AssetManager::GetTexture("smileyface_sprite"), Color::white, Vector2{ window_size.x / 2.0f - 120.0f, -window_size.y / 2.0f + 30.0f }, Vector2{100.0f, 100.0f});
+	sandboxSprite->setSpriteDatas(AssetManager::GetTexture("smileyface_sprite"), Color::white, Vector2{ window_size.x / 2.0f - 150.0f, -window_size.y / 2.0f + 30.0f }, Vector2{0.25f, 0.25f});
 }
 
 

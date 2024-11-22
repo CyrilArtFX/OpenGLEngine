@@ -218,7 +218,7 @@ void RendererOpenGL::draw()
 	for (auto& sprite : sprites)
 	{
 		//  check sprite enabled
-		if (!sprite->isEnabled()) continue;
+		if (!sprite->getCanDraw()) continue;
 
 		//  use sprite texture
 		glActiveTexture(GL_TEXTURE0);
@@ -229,7 +229,7 @@ void RendererOpenGL::draw()
 
 		//  set sprite pos and scale
 		Vector2 sprite_pos = sprite->getSpriteScreenPosition();
-		Vector2 sprite_scale = sprite->getSpriteScale();
+		Vector2 sprite_scale = sprite->getSpriteSize();
 		sprite_render_shader.setVec4("spritePosScale", sprite_pos.x, sprite_pos.y, sprite_scale.x, sprite_scale.y);
 
 		//  draw

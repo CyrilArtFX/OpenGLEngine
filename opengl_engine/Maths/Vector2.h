@@ -13,8 +13,8 @@ struct Vector2
 
 	Vector2() = default;
 	Vector2(float xP, float yP) : x{ xP }, y{ yP } {}
-	Vector2(const class Vector3 vec3);
-	Vector2(const class Vector2Int vec2Int);
+	Vector2(const struct Vector3 vec3);
+	Vector2(const struct Vector2Int vec2Int);
 
 	void set(float xP, float yP);
 	float lengthSq() const;
@@ -57,15 +57,29 @@ struct Vector2
 		return { left.x - right.x, left.y - right.y };
 	}
 
+
+	// Scalar multiplication
 	friend Vector2 operator*(const Vector2& vec, float scalar)
 	{
 		return { vec.x * scalar, vec.y * scalar };
 	}
 
+	// Scalar multiplication
 	friend Vector2 operator*(float scalar, const Vector2& vec)
 	{
 		return { vec.x * scalar, vec.y * scalar };
 	}
+
+
+	// Component-wise multiplication
+	friend Vector2 operator*(const Vector2& left, const Vector2& right)
+	{
+		return { left.x * right.x, left.y * right.y };
+	}
+
+	friend Vector2 operator*(const Vector2& left, const struct Vector2Int& right);
+	friend Vector2 operator*(const struct Vector2Int& left, const Vector2& right);
+
 
 	Vector2& operator+=(const Vector2& right)
 	{

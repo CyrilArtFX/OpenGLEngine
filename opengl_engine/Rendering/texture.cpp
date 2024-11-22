@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <Maths/Vector2Int.h>
 #include <Utils/defines.h>
 #include <iostream>
 
@@ -33,7 +34,7 @@ void Texture::load(const std::string& texturePath, bool flipVertical)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 
-	int width, height, nr_channels;
+	int nr_channels;
 	stbi_set_flip_vertically_on_load(flipVertical);
 	unsigned char* data = stbi_load(tex_path.c_str(), &width, &height, &nr_channels, 0);
 	unsigned int gl_format = getGlFormat(nr_channels);
@@ -96,4 +97,10 @@ unsigned int Texture::getGlFormat(const int nbChannels)
 	default:
 		return GL_RGBA;
 	}
+}
+
+
+Vector2Int Texture::getTextureSize() const
+{
+	return Vector2Int{ width, height };
 }

@@ -19,8 +19,15 @@ public:
 
 	unsigned int getTextureID() const { return ID; }
 
+	int getTextureWidth() const { return width; }
+	int getTextureHeight() const { return height; }
+	struct Vector2Int getTextureSize() const;
+
 private:
 	unsigned int ID{ 0 }; //  texture ID
+
+	int width{ 0 };
+	int height{ 0 };
 
 	void load(const std::string& texturePath, bool flipVertical);
 	unsigned int getGlFormat(const int nbChannels);

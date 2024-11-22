@@ -58,3 +58,14 @@ void Vector2::clampMagnitude(float magnitude)
 	x *= magnitude;
 	y *= magnitude;
 }
+
+
+Vector2 operator*(const Vector2& left, const Vector2Int& right)
+{
+	return Vector2(left.x * (float)(right.x), left.y * (float)(right.y));
+}
+
+Vector2 operator*(const Vector2Int& left, const Vector2& right)
+{
+	return Vector2((float)(left.x) * right.x, (float)(left.y) * right.y);
+}

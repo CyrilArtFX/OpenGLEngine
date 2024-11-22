@@ -26,7 +26,13 @@ public:
 	const Vector2& getSpriteScale() const;
 
 	void setEnable(const bool enable);
-	bool isEnabled() const;
+	bool getEnabled() const;
+
+	/* Get the size of the sprite texture * the scale of this sprite component. */
+    Vector2 getSpriteSize() const;
+
+	/* Return true if enabled is true and if this component has a valid sprite texture. */
+	bool getCanDraw() const;
 	
 
 private:
@@ -37,5 +43,3 @@ private:
 
 	bool enabled{ true };
 };
-
-//  todo for sprite rendering, save size of texture in the texture class and use it for the sprite size (compute with the scale)
