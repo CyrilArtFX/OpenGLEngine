@@ -14,7 +14,7 @@
 #include <Audio/audioSourceComponent.h>
 #include <Physics/AABB/boxAABBColComp.h>
 #include <Rendering/Text/textRendererComponent.h>
-#include <Rendering/Sprite/spriteRendererComponent.h>
+#include <Rendering/Hud/spriteRendererComponent.h>
 
 
 class ExpositionScene : public Scene

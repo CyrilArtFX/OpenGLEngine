@@ -10,6 +10,7 @@ struct Vector2
 	static const Vector2 unitX;
 	static const Vector2 unitY;
 	static const Vector2 one;
+	static const Vector2 halfUnit;
 
 	Vector2() = default;
 	Vector2(float xP, float yP) : x{ xP }, y{ yP } {}

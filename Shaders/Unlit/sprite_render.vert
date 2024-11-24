@@ -5,11 +5,11 @@ layout (location = 0) in vec2 vertex; //  vertex pos
 out vec2 TexCoords;
 
 uniform mat4 projection;
-uniform vec4 spritePosScale; // vec2 pos (xy) & vec2 scale (zw)
+uniform mat4 spriteTransform;
 
 void main()
 {
-	gl_Position = projection * vec4((vertex.xy * spritePosScale.zw) + spritePosScale.xy, 0.0f, 1.0f);
+	gl_Position = vec4(vertex.xy, 0.0f, 1.0f) * spriteTransform * projection;
 	
 	TexCoords.x = vertex.x;
 	TexCoords.y = 1.0f - vertex.y;

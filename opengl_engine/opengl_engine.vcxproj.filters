@@ -177,7 +177,10 @@
     <ClCompile Include="Rendering\Text\textRendererComponent.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Rendering\Sprite\spriteRendererComponent.cpp">
+    <ClCompile Include="Rendering\Hud\spriteRendererComponent.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Rendering\Hud\hudComponent.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -380,7 +383,10 @@
     <ClInclude Include="Rendering\Text\textRendererComponent.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Rendering\Sprite\spriteRendererComponent.h">
+    <ClInclude Include="Rendering\Hud\spriteRendererComponent.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Rendering\Hud\hudComponent.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

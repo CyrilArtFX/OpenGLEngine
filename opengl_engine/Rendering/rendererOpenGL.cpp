@@ -218,19 +218,17 @@ void RendererOpenGL::draw()
 	for (auto& sprite : sprites)
 	{
 		//  check sprite enabled
-		if (!sprite->getCanDraw()) continue;
+		if (!sprite->canDraw()) continue;
 
 		//  use sprite texture
 		glActiveTexture(GL_TEXTURE0);
-		sprite->getSprite().use();
+		sprite->getSpriteTexture().use();
 
 		//  set sprite color
-		sprite_render_shader.setVec3("spriteColor", sprite->getSpriteColor().toVector());
+		sprite_render_shader.setVec3("spriteColor", sprite->getTintColor().toVector());
 
-		//  set sprite pos and scale
-		Vector2 sprite_pos = sprite->getSpriteScreenPosition();
-		Vector2 sprite_scale = sprite->getSpriteSize();
-		sprite_render_shader.setVec4("spritePosScale", sprite_pos.x, sprite_pos.y, sprite_scale.x, sprite_scale.y);
+		//  set sprite transform
+		sprite_render_shader.setMatrix4("spriteTransform", sprite->getHudTransform().getAsFloatPtr());
 
 		//  draw
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

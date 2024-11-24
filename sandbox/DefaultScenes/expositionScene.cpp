@@ -87,13 +87,13 @@ void ExpositionScene::loadScene()
 
 	//  text
 	sandboxText = new TextRendererComponent();
-	Vector2Int window_size = GameplayStatics::GetWindowSize();
+	const Vector2Int window_size = GameplayStatics::GetWindowSize();
 	sandboxText->setTextDatas("Welcome to the sandbox.\nTake a cookie.", Color::cyan, Vector2{ -window_size.x / 2.0f + 20.0f, window_size.y / 2.0f - 30.0f }, 0.3f, AssetManager::GetFont("arial_64"));
 
 
 	//  sprite
 	sandboxSprite = new SpriteRendererComponent();
-	sandboxSprite->setSpriteDatas(AssetManager::GetTexture("smileyface_sprite"), Color::white, Vector2{ window_size.x / 2.0f - 150.0f, -window_size.y / 2.0f + 30.0f }, Vector2{0.25f, 0.25f});
+	sandboxSprite->setSpriteDatas(AssetManager::GetTexture("smileyface_sprite"), Vector2::halfUnit, Vector2{ window_size.x / 2.0f - 80.0f, -window_size.y / 2.0f + 80.0f }, Vector2{ 0.25f, 0.25f }, 0.0f, Color::white);
 }
 
 
@@ -137,4 +137,6 @@ void ExpositionScene::updateScene(float dt)
 
 	time += dt;
 	cube3.setPosition(Vector3{ 3.5f, -1.0f, -3.0f } + Vector3{ 0.0f, Maths::sin(time), Maths::cos(time) });
+
+	sandboxSprite->setRotAngle(Maths::fmod(sandboxSprite->getRotAngle() + dt * 180.0f, 360.0f));
 }

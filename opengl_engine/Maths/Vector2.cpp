@@ -7,6 +7,7 @@ const Vector2 Vector2::zero{ 0.0f, 0.0f };
 const Vector2 Vector2::unitX{ 1.0f, 0.0f };
 const Vector2 Vector2::unitY{ 0.0f, 1.0f };
 const Vector2 Vector2::one{ 1.0f, 1.0f };
+const Vector2 Vector2::halfUnit{ 0.5f, 0.5f };
 
 Vector2::Vector2(const Vector3 vec3)
 {

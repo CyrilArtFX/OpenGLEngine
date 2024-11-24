@@ -12,7 +12,7 @@
 #include <Objects/Lights/light.h>
 #include <Rendering/material.h>
 #include <Rendering/Text/textRendererComponent.h>
-#include <Rendering/Sprite/spriteRendererComponent.h>
+#include <Rendering/Hud/spriteRendererComponent.h>
 
 #include <vector>
 #include <unordered_map>

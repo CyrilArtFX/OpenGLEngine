@@ -23,6 +23,13 @@ Vector3::Vector3(const Vector2 vec2)
 	z = 0.0f;
 }
 
+Vector3::Vector3(const Vector2 vec2, float zP)
+{
+	x = vec2.x;
+	y = vec2.y;
+	z = zP;
+}
+
 Vector3::Vector3(const Color color)
 {
 	Vector3 color_to_vector = color.toVector();

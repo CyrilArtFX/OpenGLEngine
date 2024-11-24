@@ -16,6 +16,7 @@ public:
 		:x(xP), y(yP), z(zP) {}
 
 	Vector3(const struct Vector2 vec2);
+	explicit Vector3(const struct Vector2 vec2, float zP);
 
 	Vector3(const struct Color color);
 

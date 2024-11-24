@@ -7,6 +7,7 @@
 	- Faire un rendering de sprite (nique learnopengl.com sur ce coup là xD) - fait
 	- Regarder pour la rotation des élements de HUD (voir comment faire dans le shader) - en cours
 		Va falloir passer par une matrice pas trop le choix je crois, même pour un seul axe
+		Comment faire pour un texte maintenant xD, va falloir que chaque lettre se compute une matrice ça va être fun xD
 	- Faire un outil basique de HUD
 
 ~ Intégrer du HUD dans le doomlike
@@ -23,7 +24,7 @@
 ~ Corriger le problème sur l'affichage des textures à longue distance (anti aliasing ? anisotropie truc ? (jsp))
 	(peut être regarder si ça vaut pas le coup de faire toute ou presque toute la partie Advanced OpenGL de learnopengl.com)
 
-~ Créer des events publics bindables pour les évènements importantes du moteur (pause, etc.)
+~ Créer des events publics bindables pour les évènements importantes du moteur (pause, screen resize, etc.)
 
 ~ Intégrer l'ECS (la logique de base de l'ECS qui fait que les entités ne sont plus que des objets qui ont la référence de leurs components, mais les components ont une logique interne, donc pas un système aussi poussé que celui de FLECS, plus à la Unity)
 
