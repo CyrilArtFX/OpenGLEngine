@@ -43,6 +43,7 @@ public:
 	void setVec4Array(const std::string& name, const class Vector4* firstValue, const int arraySize) const;
 
 	void setMatrix4(const std::string& name, const float* value) const;
+	void setMatrix4Array(const std::string& name, const float* firstValue, const int arraySize) const;
 
 	unsigned int getProgram() const { return ID; }
 

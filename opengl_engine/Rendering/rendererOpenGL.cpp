@@ -127,27 +127,39 @@ void RendererOpenGL::draw()
 	for (auto& text : texts)
 	{
 		//  check text enabled
-		if (!text->isEnabled()) continue;
+		if (!text->getEnabled()) continue;
 
 		//  set text color
-		text_render_shader.setVec3("textColor", text->getTextColor().toVector());
+		text_render_shader.setVec3("textColor", text->getTintColor().toVector());
+
+		//  check if computing angle is needed or not
+		float text_angle = text->getRotAngle();
+		const bool compute_angle = text_angle != 0.0f;
+		text_angle = Maths::toRadians(text_angle);
 
 		//  prepare arrays of datas that will be sent to the shader
 		int char_map_ids[TEXT_CHARS_LIMIT]{ 0 };
-		Vector4 char_pos_scales[TEXT_CHARS_LIMIT]{ Vector4::zero };
+		Matrix4 char_transforms[TEXT_CHARS_LIMIT]{ Matrix4::identity };
 
 		//  retrieve datas of the text
-		float x = text->getTextScreenPosition().x;
-		float y = text->getTextScreenPosition().y;
+		float x = text->getScreenPos().x;
+		float y = text->getScreenPos().y;
 		const float begin_x = x;
 
 		const std::string& text_text = text->getText();
-		const float text_scale = text->getTextScale();
+		const Vector2 text_scale = text->getScale();
+
+		Vector2 text_pivot = text->getPivot();
+		text_pivot.y = 1.0f - text_pivot.y;
+		const Vector2 text_size = text->getSize();
 
 		//  get font and bind font texture array
 		const Font& text_font = text->getTextFont();
 		text_font.use();
 		const int font_size = text_font.getFontSize();
+
+		//  allow the text pivot to be applied correctly  
+		y -= (float)(font_size) * text_scale.y;
 
 		//  iterate through all characters
 		std::string::const_iterator c;
@@ -163,30 +175,48 @@ void RendererOpenGL::draw()
 
 			if (*c == '\n')
 			{
-				y -= ((ch.Size.y)) * 1.6f * text_scale;
+				y -= ((ch.Size.y)) * 1.6f * text_scale.y;
 				x = begin_x;
 			}
 			else if (*c == ' ')
 			{
-				x += (ch.Advance >> 6) * text_scale; // bitshift by 6 (2^6 = 64) to advance the space character size
+				x += (ch.Advance >> 6) * text_scale.x; // bitshift by 6 (2^6 = 64) to advance the space character size
 			}
 			else
 			{
-				const float x_pos = x + ch.Bearing.x * text_scale;
-				const float y_pos = y - (float(font_size) - ch.Bearing.y) * text_scale;
-				const float x_scale = float(font_size) * text_scale;
-				const float y_scale = float(font_size) * text_scale;
+				const float x_pos = x + ch.Bearing.x * text_scale.x - (text_size.x * text_pivot.x);
+				const float y_pos = y - (float(font_size) - ch.Bearing.y) * text_scale.y + (text_size.y * text_pivot.y);
+				const float x_scale = float(font_size) * text_scale.x;
+				const float y_scale = float(font_size) * text_scale.y;
 
-				char_pos_scales[index] = Vector4{ x_pos, y_pos, x_scale, y_scale };
+				if (compute_angle)
+				{
+					char_transforms[index] =
+						Matrix4::createScale(Vector3{ x_scale, y_scale, 1.0f }) *
+						Matrix4::createTranslation(-text->getScreenPos() + (text_size * text_pivot)) *
+						Matrix4::createTranslation(Vector3{ x_pos, y_pos, 0.0f }) *
+						Matrix4::createTranslation(text_size * -text_pivot) *
+						Matrix4::createRotationZ(text_angle) *
+						Matrix4::createTranslation(text_size * text_pivot) *
+						Matrix4::createTranslation(text->getScreenPos() - (text_size * text_pivot));
+
+					//  need to change the way position is computed to avoid having to do 7 matrix multiplication per character per frame
+				}
+				else
+				{
+					char_transforms[index] =
+						Matrix4::createScale(Vector3{ x_scale, y_scale, 1.0f }) *
+						Matrix4::createTranslation(Vector3{ x_pos, y_pos, 0.0f });
+				}
 				char_map_ids[index] = ch.TextureID;
 
-				x += (ch.Advance >> 6) * text_scale; // bitshift by 6 (2^6 = 64) to advance the character size
+				x += (ch.Advance >> 6) * text_scale.x; // bitshift by 6 (2^6 = 64) to advance the character size
 
 				index++;
 				if (index >= TEXT_CHARS_LIMIT)
 				{
 					//  draw array of max TEXT_CHARS_LIMIT chars
-					text_render_shader.setVec4Array("textPosScales", &char_pos_scales[0], index);
+					text_render_shader.setMatrix4Array("textTransforms", char_transforms[0].getAsFloatPtr(), index);
 					text_render_shader.setIntArray("letterMap", &char_map_ids[0], index);
 					glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, index);
 
@@ -198,7 +228,7 @@ void RendererOpenGL::draw()
 		//  draw array of remaining chars
 		if (index > 0)
 		{
-			text_render_shader.setVec4Array("textPosScales", &char_pos_scales[0], index);
+			text_render_shader.setMatrix4Array("textTransforms", char_transforms[0].getAsFloatPtr(), index);
 			text_render_shader.setIntArray("letterMap", &char_map_ids[0], index);
 			glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 4, index);
 		}

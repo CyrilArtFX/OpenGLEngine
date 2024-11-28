@@ -1,6 +1,5 @@
 #pragma once
-#include <Utils/color.h>
-#include <Maths/Vector2.h>
+#include <Rendering/Hud/hudComponent.h>
 #include <string>
 
 class Font;
@@ -8,7 +7,7 @@ class Font;
 
 /** Text Renderer Component
 */
-class TextRendererComponent
+class TextRendererComponent : public HudComponent
 {
 public:
 	TextRendererComponent();
@@ -16,29 +15,26 @@ public:
 	~TextRendererComponent();
 	TextRendererComponent& operator=(const TextRendererComponent& other) = delete;
 
-	void setTextDatas(const std::string& newText, const Color& newTextColor, const Vector2& newTextScreenPosition, const float newTextScale, const Font& newTextFont);
-	void setText(const std::string& newText);
-	void setTextColor(const Color& newTextColor);
-	void setTextScreenPosition(const Vector2& newTextScreenPosition);
-	void setTextScale(const float newTextScale);
-	void setTextFont(const Font& newTextFont);
+	void setTextDatas(const std::string& text_, const Font& textFont_, const Vector2& pivot_, const Vector2& screenPos_, const Vector2& scale_, const float rotAngle_, const Color& tintColor_);
 
+	void setText(const std::string& text_);
 	const std::string& getText() const;
-	const Color& getTextColor() const;
-	const Vector2& getTextScreenPosition() const;
-	const float getTextScale() const;
+
+	void setTextFont(const Font& textFont_);
 	const Font& getTextFont() const;
 
-	void setEnable(const bool enable);
-	bool isEnabled() const;
+	const Vector2& getRawTextSize() const;
 
+	Vector2 getSize() const override;
+
+protected:
+	bool needToComputeMatrix() const override;
 
 private:
 	std::string text;
-	Color textColor;
-	Vector2 textScreenPosition;
-	float textScale;
 	const Font* textFont;
+	Vector2 textSize;
 
-	bool enabled{ true };
+	void recomputeTextSize();
+	void computeTextLineSize(std::string textLine, int& textWidth, int& textHeight);
 };

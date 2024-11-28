@@ -3,8 +3,8 @@
 
 struct Vector2
 {
-	float x { 0.0f };
-	float y { 0.0f };
+	float x{ 0.0f };
+	float y{ 0.0f };
 
 	static const Vector2 zero;
 	static const Vector2 unitX;
@@ -13,6 +13,7 @@ struct Vector2
 	static const Vector2 halfUnit;
 
 	Vector2() = default;
+	explicit Vector2(float xyP) : x{ xyP }, y{ xyP } {}
 	Vector2(float xP, float yP) : x{ xP }, y{ yP } {}
 	Vector2(const struct Vector3 vec3);
 	Vector2(const struct Vector2Int vec2Int);

@@ -31,6 +31,10 @@ public:
 	virtual Vector2 getSize() const = 0;
 	Matrix4 getHudTransform() const;
 
+protected:
+	/* Does the hud component need to compute the transformation matrix? (For exemple, texts doesn't need to.) This function must be overriden in every class that inherit hud. */
+	virtual bool needToComputeMatrix() const = 0;
+
 private:
 	bool enabled{ true };
 

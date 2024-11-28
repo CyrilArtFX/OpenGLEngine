@@ -88,12 +88,12 @@ void ExpositionScene::loadScene()
 	//  text
 	sandboxText = new TextRendererComponent();
 	const Vector2Int window_size = GameplayStatics::GetWindowSize();
-	sandboxText->setTextDatas("Welcome to the sandbox.\nTake a cookie.", Color::cyan, Vector2{ -window_size.x / 2.0f + 20.0f, window_size.y / 2.0f - 30.0f }, 0.3f, AssetManager::GetFont("arial_64"));
+	sandboxText->setTextDatas("Welcome to the sandbox.\nTake a cookie.", AssetManager::GetFont("arial_64"), Vector2::halfUnit, Vector2{ -window_size.x / 2.0f + 120.0f, window_size.y / 2.0f - 20.0f }, Vector2{ 0.3f }, 0.0f, Color::cyan);
 
 
 	//  sprite
 	sandboxSprite = new SpriteRendererComponent();
-	sandboxSprite->setSpriteDatas(AssetManager::GetTexture("smileyface_sprite"), Vector2::halfUnit, Vector2{ window_size.x / 2.0f - 80.0f, -window_size.y / 2.0f + 80.0f }, Vector2{ 0.25f, 0.25f }, 0.0f, Color::white);
+	sandboxSprite->setSpriteDatas(AssetManager::GetTexture("smileyface_sprite"), Vector2::halfUnit, Vector2{ window_size.x / 2.0f - 80.0f, -window_size.y / 2.0f + 80.0f }, Vector2{ 0.25f }, 0.0f, Color::white);
 }
 
 
@@ -139,4 +139,25 @@ void ExpositionScene::updateScene(float dt)
 	cube3.setPosition(Vector3{ 3.5f, -1.0f, -3.0f } + Vector3{ 0.0f, Maths::sin(time), Maths::cos(time) });
 
 	sandboxSprite->setRotAngle(Maths::fmod(sandboxSprite->getRotAngle() + dt * 180.0f, 360.0f));
+
+	if (Input::IsKeyDown(GLFW_KEY_E))
+	{
+		textAnimationTimer = 0.0f;
+		sandboxText->setScreenPos(Vector2::zero);
+	}
+
+	if (textAnimationTimer >= 0.0f)
+	{
+		textAnimationTimer += dt;
+
+		sandboxText->setRotAngle(textAnimationTimer * 180.0f);
+
+		if (textAnimationTimer > 4.0f)
+		{
+			textAnimationTimer = -1.0f;
+			sandboxText->setRotAngle(0.0f);
+			const Vector2Int window_size = GameplayStatics::GetWindowSize();
+			sandboxText->setScreenPos(Vector2{ -window_size.x / 2.0f + 120.0f, window_size.y / 2.0f - 20.0f });
+		}
+	}
 }

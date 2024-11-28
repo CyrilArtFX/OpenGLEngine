@@ -6,14 +6,12 @@
 #include <ServiceLocator/renderer.h>
 
 
-TextRendererComponent::TextRendererComponent() :
-	text(""), textColor(Color::white), textScreenPosition(Vector2::zero), textScale(1.0f), textFont(&AssetManager::GetFont("arial_64"))
+TextRendererComponent::TextRendererComponent() : HudComponent(), text(""), textFont(&AssetManager::GetFont("arial_64")), textSize(Vector2::zero)
 {
 	Locator::getRenderer().AddText(this);
 }
 
-TextRendererComponent::TextRendererComponent(const TextRendererComponent& other) :
-	text(other.text), textColor(other.textColor), textScreenPosition(other.textScreenPosition), textScale(other.textScale), textFont(other.textFont)
+TextRendererComponent::TextRendererComponent(const TextRendererComponent& other) : HudComponent(other), text(other.text), textFont(other.textFont), textSize(other.textSize)
 {
 	Locator::getRenderer().AddText(this);
 }
@@ -24,39 +22,22 @@ TextRendererComponent::~TextRendererComponent()
 }
 
 
-
-void TextRendererComponent::setTextDatas(const std::string& newText, const Color& newTextColor, const Vector2& newTextScreenPosition, const float newTextScale, const Font& newTextFont)
+void TextRendererComponent::setTextDatas(const std::string& text_, const Font& textFont_, const Vector2& pivot_, const Vector2& screenPos_, const Vector2& scale_, const float rotAngle_, const Color& tintColor_)
 {
-	text = newText;
-	textColor = newTextColor;
-	textScreenPosition = newTextScreenPosition;
-	textScale = newTextScale;
-	textFont = &newTextFont;
+	text = text_;
+	textFont = &textFont_;
+
+	setHudTransform(pivot_, screenPos_, scale_, rotAngle_);
+	setTintColor(tintColor_);
+
+	recomputeTextSize();
 }
 
-void TextRendererComponent::setText(const std::string& newText)
+void TextRendererComponent::setText(const std::string& text_)
 {
-	text = newText;
-}
+	text = text_;
 
-void TextRendererComponent::setTextColor(const Color& newTextColor)
-{
-	textColor = newTextColor;
-}
-
-void TextRendererComponent::setTextScreenPosition(const Vector2& newTextScreenPosition)
-{
-	textScreenPosition = newTextScreenPosition;
-}
-
-void TextRendererComponent::setTextScale(const float newTextScale)
-{
-	textScale = newTextScale;
-}
-
-void TextRendererComponent::setTextFont(const Font& newTextFont)
-{
-	textFont = &newTextFont;
+	recomputeTextSize();
 }
 
 const std::string& TextRendererComponent::getText() const
@@ -64,19 +45,11 @@ const std::string& TextRendererComponent::getText() const
 	return text;
 }
 
-const Color& TextRendererComponent::getTextColor() const
+void TextRendererComponent::setTextFont(const Font& textFont_)
 {
-	return textColor;
-}
+	textFont = &textFont_;
 
-const Vector2& TextRendererComponent::getTextScreenPosition() const
-{
-	return textScreenPosition;
-}
-
-const float TextRendererComponent::getTextScale() const
-{
-	return textScale;
+	recomputeTextSize();
 }
 
 const Font& TextRendererComponent::getTextFont() const
@@ -84,12 +57,69 @@ const Font& TextRendererComponent::getTextFont() const
 	return *textFont;
 }
 
-void TextRendererComponent::setEnable(const bool enable)
+const Vector2& TextRendererComponent::getRawTextSize() const
 {
-	enabled = enable;
+	return textSize;
 }
 
-bool TextRendererComponent::isEnabled() const
+
+Vector2 TextRendererComponent::getSize() const
 {
-	return enabled;
+	return textSize * getScale();
+}
+
+bool TextRendererComponent::needToComputeMatrix() const
+{
+	return false;
+}
+
+
+void TextRendererComponent::recomputeTextSize()
+{
+	int text_width = 0, text_height = 0;
+
+	std::string text_line;
+
+	//  iterate through all characters of the line of text
+	std::string::const_iterator c;
+	for (c = text.begin(); c != text.end(); c++)
+	{
+		if (*c == '\n')
+		{
+			//  if a line return is detected, compute the size of the line and add the line return offset
+			FontCharacter ch = textFont->getCharacter(*c);
+			text_height += ((ch.Size.y)) * 0.6f;
+
+			computeTextLineSize(text_line, text_width, text_height);
+			text_line.clear();
+		}
+		else
+		{
+			text_line.push_back(*c);
+		}
+	}
+
+	//  compute the last line
+	computeTextLineSize(text_line, text_width, text_height);
+
+	textSize = Vector2{ (float)(text_width), (float)(text_height) };
+}
+
+void TextRendererComponent::computeTextLineSize(std::string textLine, int& textWidth, int& textHeight)
+{
+	int line_width = 0, max_line_height = 0;
+
+	//  iterate through all characters of the line of text
+	std::string::const_iterator c;
+	for (c = textLine.begin(); c != textLine.end(); c++)
+	{
+		FontCharacter ch = textFont->getCharacter(*c);
+
+		line_width += (ch.Advance >> 6); // bitshift by 6 (2^6 = 64) to advance the character size
+
+		max_line_height = Maths::max<int>(max_line_height, ch.Size.y);
+	}
+
+	textWidth = Maths::max<int>(textWidth, line_width);
+	textHeight += max_line_height;
 }

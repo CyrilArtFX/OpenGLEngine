@@ -246,3 +246,10 @@ void Shader::setMatrix4(const std::string& name, const float* value) const
 
 	glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_TRUE, value);
 }
+
+void Shader::setMatrix4Array(const std::string& name, const float* firstValue, const int arraySize) const
+{
+	if (!loaded) return;
+
+	glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), arraySize, GL_TRUE, firstValue);
+}

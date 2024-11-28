@@ -8,11 +8,11 @@ out VS_OUT{
 } vs_out;
 
 uniform mat4 projection;
-uniform vec4 textPosScales[512]; // vec2 pos (xy) & vec2 scale (zw)
+uniform mat4 textTransforms[200];
 
 void main()
 {
-	gl_Position = projection * vec4((vertex.xy * textPosScales[gl_InstanceID].zw) + textPosScales[gl_InstanceID].xy, 0.0f, 1.0f);
+	gl_Position = vec4(vertex.xy, 0.0f, 1.0f) * textTransforms[gl_InstanceID] * projection;
 
 	vs_out.index = gl_InstanceID;
 	vs_out.TexCoords.x = vertex.x;

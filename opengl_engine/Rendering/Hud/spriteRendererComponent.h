@@ -22,6 +22,8 @@ public:
 
 	bool canDraw() const;
 	
+protected:
+	bool needToComputeMatrix() const override;
 
 private:
 	const Texture* spriteTexture;

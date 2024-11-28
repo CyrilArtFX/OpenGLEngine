@@ -53,5 +53,7 @@ private:
 	SpotLight flashLight;
 
 	float time{ 0.0f };
+
+	float textAnimationTimer{ -1.0f };
 };
 

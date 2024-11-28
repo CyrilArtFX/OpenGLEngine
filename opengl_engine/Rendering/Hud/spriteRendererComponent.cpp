@@ -50,3 +50,8 @@ bool SpriteRendererComponent::canDraw() const
 {
 	return spriteTexture && getEnabled();
 }
+
+bool SpriteRendererComponent::needToComputeMatrix() const
+{
+	return true;
+}

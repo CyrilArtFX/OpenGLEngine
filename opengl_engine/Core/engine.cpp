@@ -138,8 +138,8 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 
 	//  intialize debug fps text
 	fpsText = new TextRendererComponent();
-	fpsText->setTextDatas("FPS: 0", Color::white, Vector2{ window.getWidth() / 2.0f - 150.0f, window.getHeigth() / 2.0f - 40.0f }, 0.5f, AssetManager::GetFont("arial_64"));
-	fpsText->setEnable(false);
+	fpsText->setTextDatas("FPS: 0", AssetManager::GetFont("arial_64"), Vector2::one, Vector2{window.getWidth() / 2.0f - 20.0f, window.getHeigth() / 2.0f - 20.0f}, Vector2{0.5f}, 0.0f, Color::white);
+	fpsText->setEnabled(false);
 
 
 	//  configure global OpenGL properties
@@ -373,7 +373,7 @@ void Engine::enableDebugView()
 	debugViewMode = true;
 	std::cout << "Debug view mode enabled.\n";
 	renderer->drawDebugMode = true;
-	fpsText->setEnable(true);
+	fpsText->setEnabled(true);
 }
 
 void Engine::disableDebugView()
@@ -381,7 +381,7 @@ void Engine::disableDebugView()
 	debugViewMode = false;
 	std::cout << "Debug view mode disabled.\n";
 	renderer->drawDebugMode = false;
-	fpsText->setEnable(false);
+	fpsText->setEnabled(false);
 }
 
 
@@ -393,5 +393,5 @@ void Engine::windowResize(GLFWwindow* glWindow, int width, int height)
 	renderer->setWindowSize(Vector2Int{ window.getWidth(), window.getHeigth() });
 	GameplayStatics::SetWindowSize(Vector2Int{ window.getWidth(), window.getHeigth() });
 
-	fpsText->setTextScreenPosition(Vector2{ window.getWidth() / 2.0f - 150.0f, window.getHeigth() / 2.0f - 40.0f });
+	fpsText->setScreenPos(Vector2{ window.getWidth() / 2.0f - 20.0f, window.getHeigth() / 2.0f - 20.0f });
 }

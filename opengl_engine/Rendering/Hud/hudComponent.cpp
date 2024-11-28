@@ -108,11 +108,15 @@ Matrix4 HudComponent::getHudTransform() const
 
 void HudComponent::computeMatrix()
 {
+	if (!needToComputeMatrix()) return;
+
 	const Vector2 size = getSize();
+	const Vector2 pivot_inv_y = Vector2{ pivot.x, 1.0f - pivot.y };
+
 	hudTransform =
 		Matrix4::createScale(Vector3{ size, 1.0f }) * //  scale the transform to the size of the hud element
-		Matrix4::createTranslation(size * -pivot) * //  invert translate to rotate from the pivot
+		Matrix4::createTranslation(size * -pivot_inv_y) * //  invert translate to rotate from the pivot
 		Matrix4::createRotationZ(Maths::toRadians(rotAngle)) * //  rotate the hud element
-		Matrix4::createTranslation(size * pivot) * //  translate to rotate from the pivot
-		Matrix4::createTranslation(screenPos - (size * pivot)); //  translate the transform to the position of the hud element
+		Matrix4::createTranslation(size * pivot_inv_y) * //  translate to rotate from the pivot
+		Matrix4::createTranslation(screenPos - (size * pivot_inv_y)); //  translate the transform to the position of the hud element
 }
