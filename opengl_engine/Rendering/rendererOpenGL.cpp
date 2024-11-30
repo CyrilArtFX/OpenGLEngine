@@ -149,7 +149,8 @@ void RendererOpenGL::draw()
 		const std::string& text_text = text->getText();
 		const Vector2 text_scale = text->getScale();
 
-		Vector2 text_pivot = text->getPivot();
+		Vector2 text_pivot = text->getPivot(); //  pivot need a little treatment to be used properly
+		text_pivot.x = -text_pivot.x;
 		text_pivot.y = 1.0f - text_pivot.y;
 		const Vector2 text_size = text->getSize();
 
@@ -184,29 +185,23 @@ void RendererOpenGL::draw()
 			}
 			else
 			{
-				const float x_pos = x + ch.Bearing.x * text_scale.x - (text_size.x * text_pivot.x);
-				const float y_pos = y - (float(font_size) - ch.Bearing.y) * text_scale.y + (text_size.y * text_pivot.y);
-				const float x_scale = float(font_size) * text_scale.x;
-				const float y_scale = float(font_size) * text_scale.y;
+				//  compute pos and scale of the char
+				const Vector2 ch_pos = Vector2{ x + ch.Bearing.x * text_scale.x, y - (float(font_size) - ch.Bearing.y) * text_scale.y };
+				const Vector2 ch_scale = Vector2{ float(font_size) * text_scale.x, float(font_size) * text_scale.y };
 
 				if (compute_angle)
 				{
 					char_transforms[index] =
-						Matrix4::createScale(Vector3{ x_scale, y_scale, 1.0f }) *
-						Matrix4::createTranslation(-text->getScreenPos() + (text_size * text_pivot)) *
-						Matrix4::createTranslation(Vector3{ x_pos, y_pos, 0.0f }) *
-						Matrix4::createTranslation(text_size * -text_pivot) *
+						Matrix4::createScale(Vector3(ch_scale, 1.0f)) *
+						Matrix4::createTranslation(ch_pos - text->getScreenPos() + (text_size * text_pivot)) *
 						Matrix4::createRotationZ(text_angle) *
-						Matrix4::createTranslation(text_size * text_pivot) *
-						Matrix4::createTranslation(text->getScreenPos() - (text_size * text_pivot));
-
-					//  need to change the way position is computed to avoid having to do 7 matrix multiplication per character per frame
+						Matrix4::createTranslation(text->getScreenPos());
 				}
 				else
 				{
 					char_transforms[index] =
-						Matrix4::createScale(Vector3{ x_scale, y_scale, 1.0f }) *
-						Matrix4::createTranslation(Vector3{ x_pos, y_pos, 0.0f });
+						Matrix4::createScale(Vector3(ch_scale, 1.0f)) *
+						Matrix4::createTranslation(ch_pos + (text_size * text_pivot));
 				}
 				char_map_ids[index] = ch.TextureID;
 

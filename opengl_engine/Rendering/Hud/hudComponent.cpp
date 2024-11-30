@@ -31,17 +31,15 @@ bool HudComponent::getEnabled() const
 
 void HudComponent::setHudTransform(const Vector2& pivot_, const Vector2& screenPos_, const Vector2& scale_, const float rotAngle_)
 {
-	pivot = pivot_;
 	screenPos = screenPos_;
 	scale = scale_;
 	rotAngle = rotAngle_;
-
-	computeMatrix();
+	setPivot(pivot_); //  setPivot function will recompute the transform matrix
 }
 
 void HudComponent::setPivot(const Vector2& pivot_)
 {
-	pivot = pivot_;
+	pivot = Vector2{ Maths::clamp<float>(pivot_.x, 0.0f, 1.0f), Maths::clamp<float>(pivot_.y, 0.0f, 1.0f) };
 
 	computeMatrix();
 }
@@ -114,9 +112,8 @@ void HudComponent::computeMatrix()
 	const Vector2 pivot_inv_y = Vector2{ pivot.x, 1.0f - pivot.y };
 
 	hudTransform =
-		Matrix4::createScale(Vector3{ size, 1.0f }) * //  scale the transform to the size of the hud element
-		Matrix4::createTranslation(size * -pivot_inv_y) * //  invert translate to rotate from the pivot
+		Matrix4::createScale(Vector3{ size, 1.0f }) * //  scale to the size of the hud element
+		Matrix4::createTranslation(size * -pivot_inv_y) * //  translate to use the pivot
 		Matrix4::createRotationZ(Maths::toRadians(rotAngle)) * //  rotate the hud element
-		Matrix4::createTranslation(size * pivot_inv_y) * //  translate to rotate from the pivot
-		Matrix4::createTranslation(screenPos - (size * pivot_inv_y)); //  translate the transform to the position of the hud element
+		Matrix4::createTranslation(screenPos); //  translate to the position of the hud element
 }

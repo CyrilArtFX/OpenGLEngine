@@ -5,10 +5,11 @@
 	- Faire les modifs d'opti de la vidéo du gars (https://www.youtube.com/watch?v=S0PyZKX4lyI) - fait
 	- Integrer proprement le rendering de texte dans les outils du moteur - fait
 	- Faire un rendering de sprite (nique learnopengl.com sur ce coup là xD) - fait
-	- Regarder pour la rotation des élements de HUD (voir comment faire dans le shader) - en cours
-		Va falloir passer par une matrice pas trop le choix je crois, même pour un seul axe
-		Comment faire pour un texte maintenant xD, va falloir que chaque lettre se compute une matrice ça va être fun xD
-	- Faire un outil basique de HUD
+	- Regarder pour la rotation des élements de HUD (voir comment faire dans le shader) - fait
+	- Faire un outil basique de HUD - en cours
+		¤ Faire une classe parent pour les deux élements de HUD - fait
+		¤ Faire les ancres sur l'écran
+		¤ Faire l'event on screen resize et bind automatiquement les hud dessus
 
 ~ Intégrer du HUD dans le doomlike
 

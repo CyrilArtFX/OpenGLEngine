@@ -143,7 +143,7 @@ void ExpositionScene::updateScene(float dt)
 	if (Input::IsKeyDown(GLFW_KEY_E))
 	{
 		textAnimationTimer = 0.0f;
-		sandboxText->setScreenPos(Vector2::zero);
+		sandboxText->setScreenPos(Vector2{ 100.0f, 100.0f });
 	}
 
 	if (textAnimationTimer >= 0.0f)
