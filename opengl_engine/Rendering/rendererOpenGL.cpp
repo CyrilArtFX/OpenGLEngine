@@ -167,7 +167,7 @@ void RendererOpenGL::draw()
 		int index = 0;
 		for (c = text_text.begin(); c != text_text.end(); c++)
 		{
-			if (index >= TEXT_CHARS_LIMIT - 1)
+			if (index >= TEXT_CHARS_LIMIT)
 			{
 				break;
 			}
