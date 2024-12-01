@@ -20,15 +20,17 @@
 
 == MOYEN TERME ==
 
-~ Faire une classe debug qui permet de gérer les logs dans la console et sur l'écran (à la manière d'unreal)
+~ Faire les modifs pour pouvoir lancer le moteur en release
+	- Compiler les lib en release mode (et séparer les lib debug des lib release + update le build event qui les copie automatiquement)
+	- Finir de modifier les vcxproj pour que tout marche bien (notamment sur le projet doomlike et le projet template)
+
+~ Faire une classe debug qui permet de gérer les logs dans la console et sur l'écran (à la manière d'unreal) + fichier de log généré
 
 ~ Corriger le problème sur l'affichage des textures à longue distance (anti aliasing ? anisotropie truc ? (jsp))
 	(peut être regarder si ça vaut pas le coup de faire toute ou presque toute la partie Advanced OpenGL de learnopengl.com)
 
-~ Créer des events publics bindables pour les évènements importantes du moteur (pause, screen resize, etc.)
-
 ~ Intégrer l'ECS (la logique de base de l'ECS qui fait que les entités ne sont plus que des objets qui ont la référence de leurs components, mais les components ont une logique interne, donc pas un système aussi poussé que celui de FLECS, plus à la Unity)
-	Custom memory manager
+	- Faire un custom memory manager ?
 
 ~ Faire un éditeur de prefab (besoin d'un système de HUD plus poussé ?)
 
@@ -64,6 +66,8 @@
 ~ Réussir à intégrer les collisions des sons de FMod
 
 ~ Mettre un text renderer component 3D
+
+~ Opti le rendering de texte pour utiliser moins de matrices, générer une matrice transform pour tout le texte et passer les position et scale des char via un vec4 au shader qui se charge de la fin des calculs ?
 
 
 == REFLEXIONS / PROBLEMES CONNUS ==
