@@ -2,6 +2,7 @@
 #include <Core/game.h>
 #include <Core/scene.h>
 #include <Maths/Vector2Int.h>
+#include <Events/event.h>
 
 class Engine;
 
@@ -23,6 +24,9 @@ public:
 	*/
 	static Vector2Int GetWindowSize();
 
+
+	/* Event called when the screen (window) is resized. */
+	static Event<const Vector2Int> OnScrenResize;
 
 
 private:

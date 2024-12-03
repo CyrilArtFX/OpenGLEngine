@@ -3,18 +3,18 @@
 
 HudComponent::HudComponent()
 {
-	// TODO: bind to the onScreenResize event when it will be created
+	GameplayStatics::OnScrenResize.registerObserver(this, Bind_1(&HudComponent::onWindowResizeEvent));
 }
 
 HudComponent::HudComponent(const HudComponent& other) :
 	pivot(other.pivot), pos(other.pos), scale(other.scale), rotAngle(other.rotAngle), screenPos(other.screenPos), hudTransform(other.hudTransform)
 {
-	// TODO: bind to the onScreenResize event when it will be created
+	GameplayStatics::OnScrenResize.registerObserver(this, Bind_1(&HudComponent::onWindowResizeEvent));
 }
 
 HudComponent::~HudComponent()
 {
-	// TODO: unbind from the onScreenResize event when it will be created
+	GameplayStatics::OnScrenResize.unregisterObserver(this);
 }
 
 
@@ -140,4 +140,9 @@ void HudComponent::computeMatrix()
 		Matrix4::createTranslation(size * -pivot_inv_y) * //  translate to use the pivot
 		Matrix4::createRotationZ(Maths::toRadians(rotAngle)) * //  rotate the hud element
 		Matrix4::createTranslation(screenPos); //  translate to the position of the hud element
+}
+
+void HudComponent::onWindowResizeEvent(const Vector2Int windowSize)
+{
+	updatePosWithAnchor();
 }

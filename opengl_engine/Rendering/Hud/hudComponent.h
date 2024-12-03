@@ -53,5 +53,7 @@ private:
 
 	void updatePosWithAnchor();
 	void computeMatrix();
+
+	void onWindowResizeEvent(const Vector2Int windowSize);
 };
 

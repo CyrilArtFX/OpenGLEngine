@@ -6,10 +6,10 @@
 	- Integrer proprement le rendering de texte dans les outils du moteur - fait
 	- Faire un rendering de sprite (nique learnopengl.com sur ce coup là xD) - fait
 	- Regarder pour la rotation des élements de HUD (voir comment faire dans le shader) - fait
-	- Faire un outil basique de HUD - en cours
+	- Faire un outil basique de HUD - fait
 		¤ Faire une classe parent pour les deux élements de HUD - fait
 		¤ Faire les ancres sur l'écran - fait
-		¤ Faire l'event on screen resize et bind automatiquement les hud dessus
+		¤ Faire l'event on screen resize et bind automatiquement les hud dessus - fait
 
 ~ Intégrer du HUD dans le doomlike
 

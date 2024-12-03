@@ -4,6 +4,7 @@
 Game* GameplayStatics::currentGame = nullptr;
 Scene* GameplayStatics::currentScene = nullptr;
 Vector2Int GameplayStatics::windowSize = Vector2Int::zero;
+Event<const Vector2Int> GameplayStatics::OnScrenResize;
 
 Game* GameplayStatics::GetGame()
 {

@@ -390,8 +390,9 @@ void Engine::windowResize(GLFWwindow* glWindow, int width, int height)
 {
 	glViewport(0, 0, width, height); //  resize OpenGL viewport when GLFW is resized
 	window.changeSize(width, height);
-	renderer->setWindowSize(Vector2Int{ window.getWidth(), window.getHeigth() });
-	GameplayStatics::SetWindowSize(Vector2Int{ window.getWidth(), window.getHeigth() });
 
-	// TODO: call event onScreenResize when it will be created
+	Vector2Int window_size(width, height);
+	renderer->setWindowSize(window_size);
+	GameplayStatics::SetWindowSize(window_size);
+	GameplayStatics::OnScrenResize.broadcast(window_size);
 }
