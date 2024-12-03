@@ -21,11 +21,11 @@ SpriteRendererComponent::~SpriteRendererComponent()
 }
 
 
-void SpriteRendererComponent::setSpriteDatas(const Texture& spriteTexture_, const Vector2& pivot_, const Vector2& screenPos_, const Vector2& scale_, const float rotAngle_, const Color& tintColor_)
+void SpriteRendererComponent::setSpriteDatas(const Texture& spriteTexture_, const Vector2& screenAnchor_, const Vector2& pivot_, const Vector2& pos_, const Vector2& scale_, const float rotAngle_, const Color& tintColor_)
 {
 	spriteTexture = &spriteTexture_;
 
-	setHudTransform(pivot_, screenPos_, scale_, rotAngle_);
+	setHudTransform(screenAnchor_, pivot_, pos_, scale_, rotAngle_);
 	setTintColor(tintColor_);
 }
 

@@ -8,7 +8,7 @@
 	- Regarder pour la rotation des élements de HUD (voir comment faire dans le shader) - fait
 	- Faire un outil basique de HUD - en cours
 		¤ Faire une classe parent pour les deux élements de HUD - fait
-		¤ Faire les ancres sur l'écran
+		¤ Faire les ancres sur l'écran - fait
 		¤ Faire l'event on screen resize et bind automatiquement les hud dessus
 
 ~ Intégrer du HUD dans le doomlike

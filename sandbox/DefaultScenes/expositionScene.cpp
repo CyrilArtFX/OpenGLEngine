@@ -1,6 +1,5 @@
 #include "ExpositionScene.h"
 #include <ServiceLocator/locator.h>
-#include <GameplayStatics/gameplayStatics.h>
 
 #include <Inputs/input.h>
 #include <GLFW/glfw3.h>
@@ -87,13 +86,11 @@ void ExpositionScene::loadScene()
 
 	//  text
 	sandboxText = new TextRendererComponent();
-	const Vector2Int window_size = GameplayStatics::GetWindowSize();
-	sandboxText->setTextDatas("Welcome to the sandbox.\nTake a cookie.", AssetManager::GetFont("arial_64"), Vector2::halfUnit, Vector2{ -window_size.x / 2.0f + 120.0f, window_size.y / 2.0f - 20.0f }, Vector2{ 0.3f }, 0.0f, Color::cyan);
-
+	sandboxText->setTextDatas("Welcome to the sandbox.\nTake a cookie.", AssetManager::GetFont("arial_64"), Vector2{ 0.0f, 1.0f }, Vector2::halfUnit, Vector2{ 120.0f, -20.0f }, Vector2{ 0.3f }, 0.0f, Color::cyan);
 
 	//  sprite
 	sandboxSprite = new SpriteRendererComponent();
-	sandboxSprite->setSpriteDatas(AssetManager::GetTexture("smileyface_sprite"), Vector2::halfUnit, Vector2{ window_size.x / 2.0f - 80.0f, -window_size.y / 2.0f + 80.0f }, Vector2{ 0.25f }, 0.0f, Color::white);
+	sandboxSprite->setSpriteDatas(AssetManager::GetTexture("smileyface_sprite"), Vector2{ 1.0f, 0.0f }, Vector2::halfUnit, Vector2{ -80.0f, 80.0f }, Vector2{ 0.25f }, 0.0f, Color::white);
 }
 
 
@@ -143,7 +140,7 @@ void ExpositionScene::updateScene(float dt)
 	if (Input::IsKeyDown(GLFW_KEY_E))
 	{
 		textAnimationTimer = 0.0f;
-		sandboxText->setScreenPos(Vector2{ 100.0f, 100.0f });
+		sandboxText->setPos(Vector2{ 400.0f, -250.0f });
 	}
 
 	if (textAnimationTimer >= 0.0f)
@@ -156,8 +153,7 @@ void ExpositionScene::updateScene(float dt)
 		{
 			textAnimationTimer = -1.0f;
 			sandboxText->setRotAngle(0.0f);
-			const Vector2Int window_size = GameplayStatics::GetWindowSize();
-			sandboxText->setScreenPos(Vector2{ -window_size.x / 2.0f + 120.0f, window_size.y / 2.0f - 20.0f });
+			sandboxText->setPos(Vector2{ 120.0f, -20.0f });
 		}
 	}
 }

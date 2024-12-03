@@ -1,4 +1,5 @@
 #include "hudComponent.h"
+#include <GameplayStatics/gameplayStatics.h>
 
 HudComponent::HudComponent()
 {
@@ -6,7 +7,7 @@ HudComponent::HudComponent()
 }
 
 HudComponent::HudComponent(const HudComponent& other) :
-	pivot(other.pivot), screenPos(other.screenPos), scale(other.scale), rotAngle(other.rotAngle), hudTransform(other.hudTransform)
+	pivot(other.pivot), pos(other.pos), scale(other.scale), rotAngle(other.rotAngle), screenPos(other.screenPos), hudTransform(other.hudTransform)
 {
 	// TODO: bind to the onScreenResize event when it will be created
 }
@@ -29,25 +30,36 @@ bool HudComponent::getEnabled() const
 }
 
 
-void HudComponent::setHudTransform(const Vector2& pivot_, const Vector2& screenPos_, const Vector2& scale_, const float rotAngle_)
+void HudComponent::setHudTransform(const Vector2& screenAnchor_, const Vector2& pivot_, const Vector2& pos_, const Vector2& scale_, const float rotAngle_)
 {
-	screenPos = screenPos_;
+	screenAnchor = screenAnchor_;
+	pos = pos_;
 	scale = scale_;
 	rotAngle = rotAngle_;
-	setPivot(pivot_); //  setPivot function will recompute the transform matrix
+	setPivot(pivot_); //  setPivot function will clamp pivot and recompute the screen pos and the transform matrix
+}
+
+void HudComponent::setScreenAnchor(const Vector2& screenAnchor_)
+{
+	screenAnchor = screenAnchor_;
+
+	updatePosWithAnchor();
+	computeMatrix();
 }
 
 void HudComponent::setPivot(const Vector2& pivot_)
 {
 	pivot = Vector2{ Maths::clamp<float>(pivot_.x, 0.0f, 1.0f), Maths::clamp<float>(pivot_.y, 0.0f, 1.0f) };
 
+	updatePosWithAnchor();
 	computeMatrix();
 }
 
-void HudComponent::setScreenPos(const Vector2& screenPos_)
+void HudComponent::setPos(const Vector2& pos_)
 {
-	screenPos = screenPos_;
+	pos = pos_;
 
+	updatePosWithAnchor();
 	computeMatrix();
 }
 
@@ -76,9 +88,9 @@ Vector2 HudComponent::getPivot() const
 	return pivot;
 }
 
-Vector2 HudComponent::getScreenPos() const
+Vector2 HudComponent::getPos() const
 {
-	return screenPos;
+	return pos;
 }
 
 Vector2 HudComponent::getScale() const
@@ -96,6 +108,11 @@ Color HudComponent::getTintColor() const
 	return tintColor;
 }
 
+Vector2 HudComponent::getScreenPos() const
+{
+	return screenPos;
+}
+
 Matrix4 HudComponent::getHudTransform() const
 {
 	return hudTransform;
@@ -103,6 +120,13 @@ Matrix4 HudComponent::getHudTransform() const
 
 
 
+
+void HudComponent::updatePosWithAnchor()
+{
+	const Vector2Int window_size = GameplayStatics::GetWindowSize();
+
+	screenPos = (window_size * (screenAnchor - Vector2{ 0.5f })) + pos;
+}
 
 void HudComponent::computeMatrix()
 {

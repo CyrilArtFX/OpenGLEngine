@@ -138,7 +138,7 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 
 	//  intialize debug fps text
 	fpsText = new TextRendererComponent();
-	fpsText->setTextDatas("FPS: 0", AssetManager::GetFont("arial_64"), Vector2::one, Vector2{window.getWidth() / 2.0f - 20.0f, window.getHeigth() / 2.0f - 20.0f}, Vector2{0.5f}, 0.0f, Color::white);
+	fpsText->setTextDatas("FPS: 0", AssetManager::GetFont("arial_64"), Vector2::one, Vector2::one, Vector2{ -20.0f, -20.0f }, Vector2{ 0.5f }, 0.0f, Color::white);
 	fpsText->setEnabled(false);
 
 
@@ -393,5 +393,5 @@ void Engine::windowResize(GLFWwindow* glWindow, int width, int height)
 	renderer->setWindowSize(Vector2Int{ window.getWidth(), window.getHeigth() });
 	GameplayStatics::SetWindowSize(Vector2Int{ window.getWidth(), window.getHeigth() });
 
-	fpsText->setScreenPos(Vector2{ window.getWidth() / 2.0f - 20.0f, window.getHeigth() / 2.0f - 20.0f });
+	// TODO: call event onScreenResize when it will be created
 }

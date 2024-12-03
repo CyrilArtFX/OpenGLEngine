@@ -15,7 +15,7 @@ public:
 	~TextRendererComponent();
 	TextRendererComponent& operator=(const TextRendererComponent& other) = delete;
 
-	void setTextDatas(const std::string& text_, const Font& textFont_, const Vector2& pivot_, const Vector2& screenPos_, const Vector2& scale_, const float rotAngle_, const Color& tintColor_);
+	void setTextDatas(const std::string& text_, const Font& textFont_, const Vector2& screenAnchor_, const Vector2& pivot_, const Vector2& pos_, const Vector2& scale_, const float rotAngle_, const Color& tintColor_);
 
 	void setText(const std::string& text_);
 	const std::string& getText() const;

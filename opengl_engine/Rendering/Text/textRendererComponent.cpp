@@ -22,12 +22,12 @@ TextRendererComponent::~TextRendererComponent()
 }
 
 
-void TextRendererComponent::setTextDatas(const std::string& text_, const Font& textFont_, const Vector2& pivot_, const Vector2& screenPos_, const Vector2& scale_, const float rotAngle_, const Color& tintColor_)
+void TextRendererComponent::setTextDatas(const std::string& text_, const Font& textFont_, const Vector2& screenAnchor_, const Vector2& pivot_, const Vector2& pos_, const Vector2& scale_, const float rotAngle_, const Color& tintColor_)
 {
 	text = text_;
 	textFont = &textFont_;
 
-	setHudTransform(pivot_, screenPos_, scale_, rotAngle_);
+	setHudTransform(screenAnchor_, pivot_, pos_, scale_, rotAngle_);
 	setTintColor(tintColor_);
 
 	recomputeTextSize();
