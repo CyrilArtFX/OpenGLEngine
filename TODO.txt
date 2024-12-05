@@ -1,6 +1,7 @@
 == COURT TERME ==
 
-~ Intégrer du HUD dans le doomlike
+~ Intégrer du HUD dans le doomlike - en cours
+	- Mettre un crosshair - fait
 	- Faire la logique du nombre de balles + reload
 	- Mettre le hud pour le nombre de balles
 	- Petite anim du pistolet (juste il tourne sur 360° rien de fou)

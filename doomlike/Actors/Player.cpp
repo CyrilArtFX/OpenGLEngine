@@ -19,7 +19,8 @@
 
 Player::Player() :
 	rigidbody(&Locator::getPhysics().CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box::one, this, true, "player", CollisionType::Solid, false), false))),
-	audioSource(new AudioSourceComponent(this, ChannelSpatialization::Channel3D, "PlayerFeets"))
+	audioSource(new AudioSourceComponent(this, ChannelSpatialization::Channel3D, "PlayerFeets")),
+	crosshairSprite(new SpriteRendererComponent())
 {
 	rigidbody->onRigidbodyDelete.registerObserver(this, Bind_0(&Player::onRigidbodyDeleted));
 	rigidbody->onCollisionRepulsed.registerObserver(this, Bind_1(&Player::onCollision));
@@ -53,6 +54,8 @@ void Player::setup(float height, float speed, float jump, float stepHeight)
 	rigidbody->setUseGravity(true);
 
 	rigidbody->setTestChannels(CollisionChannels::GetRegisteredTestChannel("PlayerEntity"));
+
+	crosshairSprite->setSpriteDatas(AssetManager::GetTexture("hud_crosshair"), Vector2::halfUnit, Vector2::halfUnit, Vector2::zero, Vector2{ 0.5f }, 0.0f, Color::white);
 }
 
 

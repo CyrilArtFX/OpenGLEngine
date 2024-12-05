@@ -8,6 +8,7 @@
 #include <Physics/rigidbodyComponent.h>
 
 #include <Audio/audioSourceComponent.h>
+#include <Rendering/Hud/spriteRendererComponent.h>
 
 #include <GameLogic/playerSpawnPoint.h>
 
@@ -63,5 +64,6 @@ private:
 
 	RigidbodyComponent* rigidbody;
 	AudioSourceComponent* audioSource;
+	SpriteRendererComponent* crosshairSprite;
 };
 

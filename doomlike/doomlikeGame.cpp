@@ -54,6 +54,8 @@ void DoomlikeGame::loadGameAssets()
 	AssetManager::LoadTexture("gun_specular", "doomlike/gun/gun_roughness.png", false);
 	AssetManager::LoadTexture("gun_emissive", "doomlike/gun/gun_emissive.png", false);
 
+	AssetManager::LoadTexture("hud_crosshair", "doomlike/hud/crosshair.png", false);
+
 	std::cout << "Load textures time: " << glfwGetTime() - load_time << std::endl;
 	load_time = glfwGetTime();
 
