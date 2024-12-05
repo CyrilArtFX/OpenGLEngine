@@ -9,6 +9,7 @@
 
 #include <Audio/audioSourceComponent.h>
 #include <Rendering/Hud/spriteRendererComponent.h>
+#include <Rendering/Text/textRendererComponent.h>
 
 #include <GameLogic/playerSpawnPoint.h>
 
@@ -51,10 +52,12 @@ private:
 	float camSpeed{ 8.8f };
 	float camMaxDist{ 0.7f };
 
-	//  fake shots
+	//  bullets
 	std::vector<std::unique_ptr<Bullet>> bullets;
 	float shootVelocity{ 15.0f };
 	float bulletLifeTime{ 3.0f };
+	int ammoCount{ 5 };
+	float reloadTimer{ 0.0f };
 
 	float feetSoundTimer{ 0.0f };
 	bool feetSoundAlternance{ false };
@@ -65,5 +68,11 @@ private:
 	RigidbodyComponent* rigidbody;
 	AudioSourceComponent* audioSource;
 	SpriteRendererComponent* crosshairSprite;
+	TextRendererComponent* ammoText;
+
+
+	void shootBullet();
+	void startReload();
+	void reload(float dt);
 };
 

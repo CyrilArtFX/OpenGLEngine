@@ -1,10 +1,10 @@
 == COURT TERME ==
 
-~ Intégrer du HUD dans le doomlike - en cours
+~ Intégrer du HUD dans le doomlike - fait
 	- Mettre un crosshair - fait
-	- Faire la logique du nombre de balles + reload
-	- Mettre le hud pour le nombre de balles
-	- Petite anim du pistolet (juste il tourne sur 360° rien de fou)
+	- Faire la logique du nombre de balles + reload - fait
+	- Mettre le hud pour le nombre de balles - fait
+	- Petite anim du pistolet (juste il tourne sur 360° rien de fou) - fait
 
 ~ Faire les modifs pour pouvoir lancer le moteur en release
 	- Compiler les lib en release mode (et séparer les lib debug des lib release + update le build event qui les copie automatiquement)

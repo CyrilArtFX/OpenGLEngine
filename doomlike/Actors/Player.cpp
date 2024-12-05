@@ -20,7 +20,7 @@
 Player::Player() :
 	rigidbody(&Locator::getPhysics().CreateRigidbodyComponent(new RigidbodyComponent(new BoxAABBColComp(Box::one, this, true, "player", CollisionType::Solid, false), false))),
 	audioSource(new AudioSourceComponent(this, ChannelSpatialization::Channel3D, "PlayerFeets")),
-	crosshairSprite(new SpriteRendererComponent())
+	crosshairSprite(new SpriteRendererComponent()), ammoText(new TextRendererComponent())
 {
 	rigidbody->onRigidbodyDelete.registerObserver(this, Bind_0(&Player::onRigidbodyDeleted));
 	rigidbody->onCollisionRepulsed.registerObserver(this, Bind_1(&Player::onCollision));
@@ -56,6 +56,8 @@ void Player::setup(float height, float speed, float jump, float stepHeight)
 	rigidbody->setTestChannels(CollisionChannels::GetRegisteredTestChannel("PlayerEntity"));
 
 	crosshairSprite->setSpriteDatas(AssetManager::GetTexture("hud_crosshair"), Vector2::halfUnit, Vector2::halfUnit, Vector2::zero, Vector2{ 0.5f }, 0.0f, Color::white);
+
+	ammoText->setTextDatas("Ammo: 5/5", AssetManager::GetFont("arial_64"), Vector2::zero, Vector2::zero, Vector2{ 50.0f, 50.0f }, Vector2{ 0.6f }, 0.0f, Color::white);
 }
 
 
@@ -114,26 +116,17 @@ void Player::update(float dt)
 	//  shoot
 	if (Input::IsKeyPressed(GLFW_MOUSE_BUTTON_LEFT))
 	{
-		RaycastHitInfos out;
-		bool ray_hit = physics.LineRaycast(camera.getPosition(), camera.getPosition() + camera.getForward() * 1000.0f, CollisionChannels::GetRegisteredTestChannel("PlayerEntity"), out, 0.0f);
+		shootBullet();
+	}
 
-		Quaternion bullet_rotation;
-		Vector3 bullet_direction;
-		if (!ray_hit)
-		{
-			bullet_rotation = Quaternion::concatenate(camera.getRotation(), Quaternion{ camera.getUp(), Maths::toRadians(90.0f) });
-			bullet_direction = camera.getForward();
-		}
-		else
-		{
-			bullet_rotation = Quaternion::createLookAt(gunObject.getPosition(), out.hitLocation, Vector3::unitY);
-			bullet_direction = Vector3::normalize(out.hitLocation - gunObject.getPosition());
-		}
-
-		bullets.push_back(std::make_unique<Bullet>(gunObject.getPosition(), bullet_rotation, bullet_direction, shootVelocity, bulletLifeTime));
-
-		//  play shoot sound
-		Locator::getAudio().InstantPlaySound2D(AssetManager::GetSound("shoot"), 0.15f);
+	//  reload
+	if (Input::IsKeyPressed(GLFW_KEY_R))
+	{
+		startReload();
+	}
+	if (reloadTimer > 0.0f)
+	{
+		reload(dt);
 	}
 
 
@@ -202,6 +195,7 @@ void Player::update(float dt)
 	gunObject.setRotation(camera.getRotation());
 	gunObject.incrementRotation(Quaternion{ gunObject.getUp(), Maths::toRadians(180.0f) }); //  gun is rotated backward by default
 	gunObject.addPositionRotated(Vector3{ 0.1f, -0.1f, -0.2f }); //  gun offset of camera
+	gunObject.incrementRotation(Quaternion{ gunObject.getRight(), Maths::toRadians(reloadTimer * 720.0f) });
 
 
 	//  force the update of the transform of the player -> will broadcast the on transform updated event
@@ -214,6 +208,57 @@ void Player::update(float dt)
 Vector3 Player::getEyePosition() const
 {
 	return camera.getPosition();
+}
+
+void Player::startReload()
+{
+	if (ammoCount >= 5) return;
+	if (reloadTimer > 0.0f) return;
+
+	reloadTimer = 0.5f;
+}
+
+void Player::reload(float dt)
+{
+	reloadTimer -= dt;
+
+	if (reloadTimer <= 0.0f)
+	{
+		reloadTimer = 0.0f;
+		ammoCount = 5;
+		ammoText->setText("Ammo: 5/5");
+	}
+}
+
+void Player::shootBullet()
+{
+	if (ammoCount <= 0) return;
+	if (reloadTimer > 0.0f) return;
+
+	Physics& physics = Locator::getPhysics();
+	RaycastHitInfos out;
+	bool ray_hit = physics.LineRaycast(camera.getPosition(), camera.getPosition() + camera.getForward() * 1000.0f, CollisionChannels::GetRegisteredTestChannel("PlayerEntity"), out, 0.0f);
+
+	Quaternion bullet_rotation;
+	Vector3 bullet_direction;
+	if (!ray_hit)
+	{
+		bullet_rotation = Quaternion::concatenate(camera.getRotation(), Quaternion{ camera.getUp(), Maths::toRadians(90.0f) });
+		bullet_direction = camera.getForward();
+	}
+	else
+	{
+		bullet_rotation = Quaternion::createLookAt(gunObject.getPosition(), out.hitLocation, Vector3::unitY);
+		bullet_direction = Vector3::normalize(out.hitLocation - gunObject.getPosition());
+	}
+
+	bullets.push_back(std::make_unique<Bullet>(gunObject.getPosition(), bullet_rotation, bullet_direction, shootVelocity, bulletLifeTime));
+
+	//  play shoot sound
+	Locator::getAudio().InstantPlaySound2D(AssetManager::GetSound("shoot"), 0.15f);
+
+	ammoCount--;
+	ammoText->setText("Ammo: " + std::to_string(ammoCount) + "/5");
 }
 
 void Player::unload()
