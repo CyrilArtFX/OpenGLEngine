@@ -9,8 +9,8 @@ public:
 	static void LoadDefaultAssets();
 
 	/**
-	* Load assets that are needed for debug mode
+	* Load assets that are needed for the engine to run properly
 	*/
-	static void LoadDebugAssets();
+	static void LoadEngineAssets();
 };
 

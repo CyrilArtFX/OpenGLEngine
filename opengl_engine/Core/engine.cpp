@@ -131,8 +131,8 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	//  initialize assets IDs
 	AssetsIDs::InitializeAssetIDs();
 
-	//  load debug assets
-	DefaultAssets::LoadDebugAssets();
+	//  load engine assets
+	DefaultAssets::LoadEngineAssets();
 	std::cout << " Done.\n";
 
 

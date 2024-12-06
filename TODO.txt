@@ -1,7 +1,5 @@
 == COURT TERME ==
 
-~ Changer légèrement le 'load default assets' pour mettre un 'load engine assets' à la place (vu qu'actuellement y'a bcp de choses qui marchent pas dans le moteur si le load default asset est pas appelé c'est un peu con)
-
 ~ Opti les rendus debug de raycast en arrêtant de créer des VAO et VBO à chaque raycast (mettre ça dans le load engine assets :eyes:)
 
 ~ Faire une classe debug qui permet de gérer les logs dans la console et sur l'écran (à la manière d'unreal) + fichier de log généré
