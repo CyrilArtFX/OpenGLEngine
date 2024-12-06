@@ -1,9 +1,5 @@
 == COURT TERME ==
 
-~ Faire les modifs pour pouvoir lancer le moteur en release
-	- Compiler les lib en release mode (et séparer les lib debug des lib release + update le build event qui les copie automatiquement)
-	- Finir de modifier les vcxproj pour que tout marche bien (notamment sur le projet doomlike et le projet template)
-
 ~ Changer légèrement le 'load default assets' pour mettre un 'load engine assets' à la place (vu qu'actuellement y'a bcp de choses qui marchent pas dans le moteur si le load default asset est pas appelé c'est un peu con)
 
 ~ Opti les rendus debug de raycast en arrêtant de créer des VAO et VBO à chaque raycast (mettre ça dans le load engine assets :eyes:)
