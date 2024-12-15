@@ -25,6 +25,7 @@ public:
 
 	void LoadVAMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
 	void LoadVAQuadHUD();
+	void LoadVALine();
 
 	void setActive();
 	void deleteObjects();

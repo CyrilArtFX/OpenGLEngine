@@ -34,4 +34,3 @@ private:
 	Vector3 rayDirection{ Vector3::unitX };
 	float rayLength{ 0.0f };
 };
-

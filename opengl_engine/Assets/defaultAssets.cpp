@@ -95,6 +95,10 @@ void DefaultAssets::LoadEngineAssets()
 	VertexArray& va_quad_hud = AssetManager::CreateVertexArray("hud_quad");
 	va_quad_hud.LoadVAQuadHUD();
 
+	//  debug line
+	VertexArray& va_debug_line = AssetManager::CreateVertexArray("debug_line");
+	va_debug_line.LoadVALine();
+
 	//  debug cube mesh
 	std::vector<Vertex> cube_vertices
 	{

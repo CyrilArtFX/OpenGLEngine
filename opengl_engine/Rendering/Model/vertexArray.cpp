@@ -48,7 +48,7 @@ void VertexArray::LoadVAQuadHUD()
 		0.0f, 1.0f,
 		0.0f, 0.0f,
 		1.0f, 1.0f,
-		1.0f, 0.0f,
+		1.0f, 0.0f
 	};
 
 	//  setup vertex buffer object and vertex array object
@@ -63,6 +63,34 @@ void VertexArray::LoadVAQuadHUD()
 
 	//  vertex attribute
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(0);
+
+	//  unbind vertex array and vertex buffer
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+}
+
+void VertexArray::LoadVALine()
+{
+	//  create vertices array for line
+	GLfloat line_vertices[] =
+	{
+		0.0f, 0.0f, 0.0f,
+		1.0f, 1.0f, 1.0f
+	};
+
+	//  setup vertex buffer object and vertex array object
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+
+	glBindVertexArray(VAO); //  bind vertex array
+
+	//  bind the vertex buffer
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(line_vertices), line_vertices, GL_STATIC_DRAW);
+
+	//  vertex attribute
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(0);
 
 	//  unbind vertex array and vertex buffer

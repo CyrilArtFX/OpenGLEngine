@@ -1,13 +1,14 @@
 #pragma once
-#include <Objects/transform.h>
-#include <Rendering/material.h>
+#include <Maths/Vector3.h>
 #include <Utils/Color.h>
 
+class VertexArray;
+class Material;
 
 /** Line
 * Creates a custom VAO that is released at the destruction of this object.
 */
-class Line : private Transform
+class Line
 {
 public:
 	Line();
@@ -20,7 +21,9 @@ public:
 	void drawLine(Material& debugMaterial, const Color& drawColor);
 
 private:
-	unsigned int lineVAO{ 0 };
-	unsigned int lineVBO{ 0 };
+	VertexArray& lineVA;
+
+	Vector3 originPos{ Vector3::zero };
+	Vector3 pointOffset{ Vector3::zero };
 };
 

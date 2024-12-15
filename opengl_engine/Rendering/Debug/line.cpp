@@ -1,42 +1,33 @@
 #include "line.h"
-#include <glad/glad.h>
-#include <vector>
+#include <Maths/Matrix4.h>
+#include <Rendering/material.h>
+#include <Rendering/Model/vertexArray.h>
+#include <Assets/assetManager.h>
 
-Line::Line()
+Line::Line() : lineVA(AssetManager::GetVertexArray("debug_line"))
 {
-	glGenVertexArrays(1, &lineVAO);
-	glGenBuffers(1, &lineVBO);
-	glBindVertexArray(0);
 }
 
 Line::~Line()
 {
-	glDeleteVertexArrays(1, &lineVAO);
-	glDeleteBuffers(1, &lineVBO);
 }
 
 void Line::setPoints(Vector3 pointA, Vector3 pointB)
 {
-	std::vector<Vector3> points{ pointA, pointB };
-
-	glBindVertexArray(lineVAO); //  bind the VAO before binding the vertex buffer, and before configuring vertex attributes 
-
-	glBindBuffer(GL_ARRAY_BUFFER, lineVBO);
-	glBufferData(GL_ARRAY_BUFFER, 2 * sizeof(Vector3), &points[0], GL_STATIC_DRAW);
-
-	//  position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	//  unbind vertex array
-	glBindVertexArray(0);
+	originPos = pointA;
+	pointOffset = pointB - pointA;
 }
 
 void Line::drawLine(Material& debugMaterial, const Color& drawColor)
 {
-	debugMaterial.getShader().setMatrix4("model", getModelMatrix().getAsFloatPtr());
-	debugMaterial.getShader().setVec3("color", drawColor);
-	
-	glBindVertexArray(lineVAO);
+	Shader& debug_shader = debugMaterial.getShader();
+	debug_shader.setMatrix4("model", Matrix4::createTranslation(originPos).getAsFloatPtr());
+	debug_shader.setVec3("color", drawColor);
+	debug_shader.setBool("renderLine", true);
+	debug_shader.setVec3("linePointOffset", pointOffset);
+
+	lineVA.setActive();
 	glDrawArrays(GL_LINE_STRIP, 0, 2);
+
+	debug_shader.setBool("renderLine", false);
 }

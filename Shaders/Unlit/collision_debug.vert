@@ -6,7 +6,17 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
+uniform bool renderLine;
+uniform vec3 linePointOffset;
+
 void main()
 {
-	gl_Position = vec4(aPos, 1.0f) * model * view * projection;
+	if(renderLine == true)
+	{
+		gl_Position = vec4(aPos, 1.0f) * model * view * projection;
+	}
+	else
+	{
+		gl_Position = vec4(aPos * linePointOffset, 1.0f) * model * view * projection;
+	}
 }
