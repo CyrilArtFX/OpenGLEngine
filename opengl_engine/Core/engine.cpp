@@ -88,7 +88,7 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	std::cout << "Initializing log...";
 	log = new LogManager();
 	Locator::provideLog(log);
-	// TODO: initialize log (for the log file part)
+	log->initialize();
 	std::cout << " Done.\n";
 
 
@@ -210,6 +210,11 @@ void Engine::run()
 		const Camera& current_cam = renderer->GetCamera();
 		audio->UpdateListener(current_cam.getPosition(), current_cam.getUp(), current_cam.getForward());
 		audio->Update();
+
+		
+		//  log part
+		// ----------
+		log->updateScreenLogs(deltaTime);
 
 
 		//  events and buffer swap part

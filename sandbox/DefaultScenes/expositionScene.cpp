@@ -86,7 +86,7 @@ void ExpositionScene::loadScene()
 
 	//  text
 	sandboxText = new TextRendererComponent();
-	sandboxText->setTextDatas("Welcome to the sandbox.\nTake a cookie.", AssetManager::GetFont("arial_64"), Vector2{ 0.0f, 1.0f }, Vector2::halfUnit, Vector2{ 120.0f, -20.0f }, Vector2{ 0.3f }, 0.0f, Color::cyan);
+	sandboxText->setTextDatas("Welcome to the sandbox.\nTake a cookie.", AssetManager::GetFont("arial_64"), Vector2{ 0.0f, 0.0f }, Vector2::halfUnit, Vector2{ 120.0f, 35.0f }, Vector2{ 0.3f }, 0.0f, Color::cyan);
 
 	//  sprite
 	sandboxSprite = new SpriteRendererComponent();

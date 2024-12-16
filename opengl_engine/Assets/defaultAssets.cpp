@@ -162,4 +162,7 @@ void DefaultAssets::LoadEngineAssets()
 
 	//  default and debug font (arial 128 ascii size 64)
 	AssetManager::LoadFont("arial_64", "arial_font/arial.ttf", 64, CharacterLoading::ASCII_128);
+
+	//  log on screen font (arial 128 ascii size 24)
+	AssetManager::LoadFont("arial_24", "arial_font/arial.ttf", 24, CharacterLoading::ASCII_128);
 }

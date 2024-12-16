@@ -1,6 +1,7 @@
 #pragma once
 #include <stdint.h>
 #include <string>
+#include <Utils/Color.h>
 
 enum class LogCategory : uint8_t
 {
@@ -33,5 +34,23 @@ static std::string LogCategoryToString(LogCategory logCategory)
 
 	default:
 		return "";
+	}
+}
+
+static Color LogCategoryToColor(LogCategory logCategory)
+{
+	switch (logCategory)
+	{
+	case LogCategory::Info:
+		return Color::white;
+
+	case LogCategory::Warning:
+		return Color::yellow;
+
+	case LogCategory::Error:
+		return Color::red;
+
+	default:
+		return Color::white;
 	}
 }

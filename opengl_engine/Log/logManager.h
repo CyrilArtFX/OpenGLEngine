@@ -1,22 +1,32 @@
 #pragma once
 #include <ServiceLocator/log.h>
 #include "logUtils.h"
+#include <Rendering/Text/textRendererComponent.h>
+#include <Maths/Vector2.h>
 #include <unordered_map>
 #include <vector>
 
 struct LogMessageScreen
 {
 	std::uint32_t index;
-	std::string text;
-	Color color;
+	TextRendererComponent* text;
 	float timer;
-	int yOffset;
+	float yOffset;
 
 	bool hasSameIndex(const std::uint32_t otherIndex) const
 	{
 		return index != 0 && index == otherIndex;
 	}
+
+	bool operator==(const LogMessageScreen& other) const
+	{
+		return text == other.text;
+	}
 };
+
+
+const Vector2 SCREEN_LOG_BASE_OFFSET{ 20.0f, -20.0f };
+const float SCREEN_NEW_LOG_OFFSET{ 10.0f };
 
 
 /**
@@ -34,8 +44,14 @@ public:
 	void SetConsoleLogDisplayRule(LogCategory logCategory) override;
 
 
+	//  for the engine class (which is the only class that have access to the full log manager)
+	void initialize();
+	void updateScreenLogs(float dt);
+
+
 private:
 	void printLogToConsole(const std::string& logText, LogCategory logCategory);
+	void displayLogToScreen(const std::string& logText, LogCategory logCategory, const Color& logColor, const float logDuration, const std::uint32_t logIndex);
 	void writeLogToFile(const std::string& logText, LogCategory logCategory);
 
 	std::unordered_map<LogDisplay, LogCategory> logCategoryDisplayRules
