@@ -22,6 +22,8 @@ const int MAX_CHANNELS = 512;
 class AudioManager : public Audio
 {
 public:
+	~AudioManager();
+
 	// ----------------------------------------------------------
 	//  Global (available from audio interface)
 	// ----------------------------------------------------------

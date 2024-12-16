@@ -2,9 +2,12 @@
 #include "physics.h"
 #include "renderer.h"
 #include "audio.h"
-#include "nullPhysics.h"
-#include "nullRenderer.h"
-#include "nullAudio.h"
+#include "log.h"
+
+class NullPhysics;
+class NullRenderer;
+class NullAudio;
+class NullLog;
 
 class Locator
 {
@@ -18,6 +21,9 @@ public:
 	static Audio& getAudio();
 	static Audio& provideAudio(Audio* audioService_);
 
+	static Log& getLog();
+	static Log& provideLog(Log* logService_);
+
 private:
 	static Physics* physicsService;
 	static NullPhysics nullPhysicsService;
@@ -27,6 +33,9 @@ private:
 
 	static Audio* audioService;
 	static NullAudio nullAudioService;
+
+	static Log* logService;
+	static NullLog nullLogService;
 
 	friend class Engine;
 	static void initialize();

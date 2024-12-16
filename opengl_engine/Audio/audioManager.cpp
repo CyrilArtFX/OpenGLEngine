@@ -1,6 +1,13 @@
 #include "audioManager.h"
 #include "Utils/defines.h"
+#include <ServiceLocator/locator.h>
 #include <iostream>
+
+
+AudioManager::~AudioManager()
+{
+	Locator::provideAudio(nullptr);
+}
 
 
 // --------------------------------------------------------------

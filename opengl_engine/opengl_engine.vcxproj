@@ -146,6 +146,7 @@
     <ClCompile Include="Audio\audioSound.cpp" />
     <ClCompile Include="Audio\audioSourceComponent.cpp" />
     <ClCompile Include="GameplayStatics\gameplayStatics.cpp" />
+    <ClCompile Include="Log\logManager.cpp" />
     <ClCompile Include="Maths\Geometry\box.cpp" />
     <ClCompile Include="Maths\Geometry\ray.cpp" />
     <ClCompile Include="Maths\vector4.cpp" />
@@ -207,6 +208,8 @@
     <ClInclude Include="Events\event.h" />
     <ClInclude Include="Events\observer.h" />
     <ClInclude Include="GameplayStatics\gameplayStatics.h" />
+    <ClInclude Include="Log\logManager.h" />
+    <ClInclude Include="Log\logUtils.h" />
     <ClInclude Include="Maths\vector4.h" />
     <ClInclude Include="Physics\AABB\raycastAABB.h" />
     <ClInclude Include="Physics\AABB\raycastAABBSweep.h" />
@@ -257,7 +260,9 @@
     <ClInclude Include="Rendering\Text\textRenderUtils.h" />
     <ClInclude Include="ServiceLocator\audio.h" />
     <ClInclude Include="ServiceLocator\locator.h" />
+    <ClInclude Include="ServiceLocator\log.h" />
     <ClInclude Include="ServiceLocator\nullAudio.h" />
+    <ClInclude Include="ServiceLocator\nullLog.h" />
     <ClInclude Include="ServiceLocator\nullPhysics.h" />
     <ClInclude Include="ServiceLocator\nullRenderer.h" />
     <ClInclude Include="ServiceLocator\physics.h" />

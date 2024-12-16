@@ -21,6 +21,9 @@ DoomlikeGame::DoomlikeGame()
 
 void DoomlikeGame::loadGameAssets()
 {
+	Log& log = Locator::getLog();
+	log.SetConsoleLogDisplayRule(LogCategory::Info);
+
 	std::cout << "Start loading doomlike assets...\n\n";
 	float load_time = glfwGetTime();
 	float full_load_time = load_time;

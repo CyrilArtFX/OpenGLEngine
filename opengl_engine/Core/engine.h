@@ -10,6 +10,8 @@
 #include <Audio/audioManager.h>
 #include <Audio/audioSound.h>
 
+#include <Log/logManager.h>
+
 #include <Maths/matrix4.h>
 #include <Maths/vector3.h>
 
@@ -50,6 +52,9 @@ private:
 
 	//  audio manager
 	AudioManager* audio;
+
+	//  log manager
+	LogManager* log;
 
 	//  freecam
 	Camera freecam;

@@ -82,6 +82,8 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	//  initialize service locator
 	std::cout << "Initializing service locator...";
 	Locator::initialize();
+	log = new LogManager();
+	Locator::provideLog(log);
 	std::cout << " Done.\n";
 
 
@@ -214,6 +216,7 @@ void Engine::run()
 	//  close engine
 	unloadGame();
 	audio->Quit();
+	delete log;
 }
 
 

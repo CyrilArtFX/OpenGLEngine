@@ -1,6 +1,12 @@
 == COURT TERME ==
 
-~ Faire une classe debug qui permet de gérer les logs dans la console et sur l'écran (à la manière d'unreal) + fichier de log généré
+~ Faire une classe debug qui permet de gérer les logs dans la console et sur l'écran (à la manière d'unreal) + fichier de log généré - en cours
+	- Faire la structure du log manager - fait
+	- Print les logs dans la console - fait
+	- Utiliser le log dans l'engine
+	- Utiliser le log dans les jeux
+	- Afficher les logs sur l'écran
+	- Ecrire les logs dans un fichier
 
 
 == MOYEN TERME ==
@@ -26,12 +32,12 @@
 
 ~ Animations 3D : https://ogldev.org/www/tutorial38/tutorial38.html
 
-~ "Finir" la physique avec la répulsion des collisions body/body (imagine pousser une caisse dans un mur oskour)
+~ Mettre un éditeur de level à partir de l'éditeur de prefabs
 
 
 == TRES LONG TERME == (aka ça sera jamais fait)
 
-~ Mettre un éditeur de level à partir de l'éditeur de prefabs
+~ "Finir" la physique avec la répulsion des collisions body/body (imagine pousser une caisse dans un mur oskour)
 
 ~ Mettre un système de physique supportant plus que du AABB
 
