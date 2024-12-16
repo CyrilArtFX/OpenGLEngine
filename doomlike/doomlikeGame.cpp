@@ -12,7 +12,6 @@
 #include <Decor/lamps.h>
 
 #include <GLFW/glfw3.h>
-#include <iostream>
 
 
 DoomlikeGame::DoomlikeGame()
@@ -24,7 +23,7 @@ void DoomlikeGame::loadGameAssets()
 	Log& log = Locator::getLog();
 	log.SetConsoleLogDisplayRule(LogCategory::Info);
 
-	std::cout << "Start loading doomlike assets...\n\n";
+	log.LogMessage_Category("Doomlike: Start loading doomlike assets...", LogCategory::Info);
 	float load_time = glfwGetTime();
 	float full_load_time = load_time;
 
@@ -36,7 +35,7 @@ void DoomlikeGame::loadGameAssets()
 	//  shaders, textures and materials
 	AssetManager::CreateShaderProgram("lit_object", "Lit/object_lit.vert", "Lit/object_lit.frag", ShaderType::Lit);
 
-	std::cout << "Load default Assets time: " << glfwGetTime() - load_time << std::endl;
+	log.LogMessage_Category("Doomlike: Load default assets time: " + std::to_string(glfwGetTime() - load_time), LogCategory::Info);
 	load_time = glfwGetTime();
 
 	AssetManager::LoadTexture("crate_diffuse", "container2.png", false);
@@ -59,7 +58,7 @@ void DoomlikeGame::loadGameAssets()
 
 	AssetManager::LoadTexture("hud_crosshair", "doomlike/hud/crosshair.png", false);
 
-	std::cout << "Load textures time: " << glfwGetTime() - load_time << std::endl;
+	log.LogMessage_Category("Doomlike: Load textures time: " + std::to_string(glfwGetTime() - load_time), LogCategory::Info);
 	load_time = glfwGetTime();
 
 	Material& crate_mat = AssetManager::CreateMaterial("crate", AssetManager::GetShader("lit_object"));
@@ -99,7 +98,7 @@ void DoomlikeGame::loadGameAssets()
 	renderer.AddMaterial(&AssetManager::GetMaterial("bullet"));
 	renderer.AddMaterial(&AssetManager::GetMaterial("gun"));
 
-	std::cout << "Create materials time: " << glfwGetTime() - load_time << std::endl;
+	log.LogMessage_Category("Doomlike: Load materials time: " + std::to_string(glfwGetTime() - load_time), LogCategory::Info);
 	load_time = glfwGetTime();
 
 
@@ -124,7 +123,7 @@ void DoomlikeGame::loadGameAssets()
 	AssetManager::CreateModel("gun");
 	AssetManager::GetModel("gun").addMeshes(AssetManager::GetMeshCollection("gun"), AssetManager::GetMaterial("gun"));
 
-	std::cout << "Load meshes & create models time: " << glfwGetTime() - load_time << std::endl;
+	log.LogMessage_Category("Doomlike: Load meshes & create models time: " + std::to_string(glfwGetTime() - load_time), LogCategory::Info);
 	load_time = glfwGetTime();
 
 
@@ -134,7 +133,7 @@ void DoomlikeGame::loadGameAssets()
 	StairsSetup::SetupStairs();
 	LampsSetup::SetupLamps();
 
-	std::cout << "Setup decors time: " << glfwGetTime() - load_time << std::endl;
+	log.LogMessage_Category("Doomlike: Setup decors time: " + std::to_string(glfwGetTime() - load_time), LogCategory::Info);
 	load_time = glfwGetTime();
 
 
@@ -148,7 +147,7 @@ void DoomlikeGame::loadGameAssets()
 	AudioSound& elevator_sound = AssetManager::CreateSound("elevator", "doomlike/sounds/elevator.mp3", ACTIVATE_3D | ACTIVATE_LOOP);
 	elevator_sound.setMinMaxDistance(1.0f, 10.0f);
 
-	std::cout << "Load sounds time: " << glfwGetTime() - load_time << std::endl;
+	log.LogMessage_Category("Doomlike: Load sounds time: " + std::to_string(glfwGetTime() - load_time), LogCategory::Info);
 	load_time = glfwGetTime();
 
 
@@ -156,7 +155,8 @@ void DoomlikeGame::loadGameAssets()
 	CollisionChannels::RegisterTestChannel("PlayerEntity", { "solid", "enemy", "trigger_zone" }); //  for player and player bullets
 	CollisionChannels::RegisterTestChannel("Enemy", { "solid", "player", "bullet" });
 
-	std::cout << "\nFinished loading doomlike assets in " << glfwGetTime() - full_load_time << " seconds.\n";
+
+	log.LogMessage_Category("Doomlike: Finished loading doomlike assets in " + std::to_string(glfwGetTime() - full_load_time) + " seconds.", LogCategory::Info);
 }
 
 void DoomlikeGame::loadGame()
@@ -208,7 +208,7 @@ void DoomlikeGame::changeLevel(int levelIndex)
 {
 	if (levelIndex < 0 || levelIndex > 3)
 	{
-		std::cout << "DOOMLIKE ERROR: Tried to change the level with index to a level that doesn't exist.\n";
+		Locator::getLog().LogMessage_Category("Doomlike: Tried to change the level with an index to a level that doesn't exist.", LogCategory::Warning);
 		return;
 	}
 

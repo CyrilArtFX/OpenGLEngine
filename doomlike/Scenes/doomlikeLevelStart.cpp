@@ -9,7 +9,6 @@
 #include <Utils/Color.h>
 
 #include <Physics/AABB/boxAABBColComp.h>
-#include <iostream>
 
 
 using Wall::WallObj;
@@ -102,13 +101,13 @@ void DoomlikeLevelStart::unloadScene()
 
 void DoomlikeLevelStart::onEnemiesDead()
 {
-	std::cout << "All enemies of the level are dead!\n";
+	Locator::getLog().LogMessageToScreen("Doomlike Intro Level: All enemies of the level are dead!", Color::white, 5.0f);
 	endLevelWall->setPosition(Vector3{ -17.5f, 3.5f, 19.75f });
 }
 
 void DoomlikeLevelStart::onPlayerEnterEndLevelZone()
 {
-	std::cout << "Player exit intro level.\n";
+	Locator::getLog().LogMessageToScreen("Doomlike Intro Level: Player exit intro level.", Color::white, 5.0f);
 	static_cast<DoomlikeGame*>(GameplayStatics::GetGame())->changeLevel(3);
 	endLevelZone.onPlayerEnter.unregisterObserver(this);
 }

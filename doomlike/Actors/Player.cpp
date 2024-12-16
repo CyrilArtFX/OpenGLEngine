@@ -14,7 +14,6 @@
 
 #include <GLFW/glfw3.h>
 #include <algorithm>
-#include <iostream>
 
 
 Player::Player() :
@@ -184,7 +183,7 @@ void Player::update(float dt)
 
 	if (getPosition().y < -50.0f)
 	{
-		std::cout << "Player die by falling.\n";
+		Locator::getLog().LogMessageToScreen("Doomlike: Player die by falling.", Color::white, 5.0f);
 		static_cast<DoomlikeGame*>(GameplayStatics::GetGame())->restartLevel();
 	}
 
@@ -283,6 +282,10 @@ void Player::respawn(PlayerSpawnPoint& spawnPoint)
 	camPos = spawnPoint.spawnPosition + Vector3{ 0.0f, camHeight, 0.0f };
 	camera.setPosition(camPos);
 	//camera.setRotByQuaternion(spawnPoint.spawnRotation);
+
+	reloadTimer = 0.0f;
+	ammoCount = 5;
+	ammoText->setText("Ammo: 5/5");
 }
 
 void Player::onRigidbodyDeleted()

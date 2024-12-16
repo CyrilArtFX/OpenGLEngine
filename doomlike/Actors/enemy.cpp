@@ -9,8 +9,6 @@
 #include <doomlikeGame.h>
 #include <GameplayStatics/gameplayStatics.h>
 
-#include <iostream>
-
 
 void Enemy::load()
 {
@@ -59,7 +57,7 @@ void Enemy::onBodyIntersect(RigidbodyComponent& other)
 {
 	if (other.getAssociatedCollision().getCollisionChannel() == "bullet")
 	{
-		std::cout << "Enemy die from a bullet.\n";
+		Locator::getLog().LogMessageToScreen("Doomlike: Enemy die from a bullet.", Color::white, 5.0f);
 		dead = true;
 		//  not safe to delete rigidbody here cause it's during the update physics step
 		//  might need a way to automate this with a pending system
@@ -70,7 +68,7 @@ void Enemy::onBodyIntersect(RigidbodyComponent& other)
 	}
 	else if (other.getAssociatedCollision().getCollisionChannel() == "player")
 	{
-		std::cout << "Player die from the enemy.\n";
+		Locator::getLog().LogMessageToScreen("Doomlike: Player die from the enemy.", Color::white, 5.0f);
 		static_cast<DoomlikeGame*>(GameplayStatics::GetGame())->restartLevel();
 
 		//  play player death sound
