@@ -13,10 +13,10 @@ void main()
 {
 	if(renderLine == true)
 	{
-		gl_Position = vec4(aPos, 1.0f) * model * view * projection;
+		gl_Position = vec4(aPos * linePointOffset, 1.0f) * model * view * projection;
 	}
 	else
 	{
-		gl_Position = vec4(aPos * linePointOffset, 1.0f) * model * view * projection;
+		gl_Position = vec4(aPos, 1.0f) * model * view * projection;
 	}
 }

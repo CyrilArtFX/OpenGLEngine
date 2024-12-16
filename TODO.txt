@@ -1,7 +1,5 @@
 == COURT TERME ==
 
-~ Opti les rendus debug de raycast en arrêtant de créer des VAO et VBO à chaque raycast (mettre ça dans le load engine assets :eyes:) - en cours
-
 ~ Faire une classe debug qui permet de gérer les logs dans la console et sur l'écran (à la manière d'unreal) + fichier de log généré
 
 
