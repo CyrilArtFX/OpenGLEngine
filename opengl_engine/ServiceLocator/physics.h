@@ -98,6 +98,13 @@ public:
 	virtual float GetGravityValue() = 0;
 
 
+	/**
+	* Set if the physics can log infos.
+	* @param	enable		Enable state of info logging.
+	*/
+	virtual void SetEnableInfoLogs(bool enable) = 0;
+
+
 private:
 	friend class Engine;
 	virtual void InitialisePhysics() = 0;

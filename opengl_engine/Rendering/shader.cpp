@@ -1,9 +1,14 @@
 #include "shader.h"
+#include <glad/glad.h>
+#include <fstream>
+#include <sstream>
 
 #include <Maths/vector2.h>
 #include <Maths/vector3.h>
 #include <Maths/vector4.h>
 #include <Utils/defines.h>
+
+#include <ServiceLocator/locator.h>
 
 
 Shader::Shader()
@@ -62,7 +67,7 @@ void Shader::load(const std::string& vertexName, const std::string& fragmentName
 	}
 	catch (std::ifstream::failure e)
 	{
-		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+		Locator::getLog().LogMessage_Category("Shader: Failed to read shader files.", LogCategory::Error);
 	}
 
 	const char* v_shader_code = vertex_code.c_str();
@@ -85,7 +90,7 @@ void Shader::load(const std::string& vertexName, const std::string& fragmentName
 	if (!success)
 	{
 		glGetShaderInfoLog(vertex, 512, NULL, info_log);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << info_log << std::endl;
+		Locator::getLog().LogMessage_Category("Shader: Failed to compile vertex shader.", LogCategory::Error);
 	} //  check if vertex shader has correctly compiled
 
 	//  fragment shader
@@ -97,7 +102,7 @@ void Shader::load(const std::string& vertexName, const std::string& fragmentName
 	if (!success)
 	{
 		glGetShaderInfoLog(fragment, 512, NULL, info_log);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << info_log << std::endl;
+		Locator::getLog().LogMessage_Category("Shader: Failed to compile fragment shader.", LogCategory::Error);
 	} //  check if fragment shader has correctly compiled
 
 	//  shader program
@@ -110,7 +115,7 @@ void Shader::load(const std::string& vertexName, const std::string& fragmentName
 	if (!success)
 	{
 		glGetProgramInfoLog(ID, 512, NULL, info_log);
-		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << info_log << std::endl;
+		Locator::getLog().LogMessage_Category("Shader: Failed to link shader program.", LogCategory::Error);
 	} //  check if shader program correctly linked shaders
 
 	//  delete shaders once they're link into the program

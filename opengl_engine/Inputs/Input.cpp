@@ -1,5 +1,4 @@
 #include "Input.h"
-#include <iostream>
 
 std::unordered_map<int, KeyState> Input::keys;
 std::unordered_map<uint8_t, std::vector<int>> Input::pendingKeys;

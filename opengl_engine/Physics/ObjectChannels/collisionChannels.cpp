@@ -1,5 +1,5 @@
 #include "collisionChannels.h"
-#include <iostream>
+#include <ServiceLocator/locator.h>
 
 std::unordered_map<std::string, std::vector<std::string>> CollisionChannels::registeredTestsChannels;
 
@@ -7,7 +7,7 @@ void CollisionChannels::RegisterTestChannel(std::string name, std::vector<std::s
 {
 	if (registeredTestsChannels.find(name) != registeredTestsChannels.end())
 	{
-		std::cout << "Collision Channels error. Tried to register a test channel with a name that already exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Collision Channels: Tried to register a test channel with a name that already exists. Name is " + name + ".", LogCategory::Error);
 		return;
 	}
 
@@ -18,7 +18,7 @@ std::vector<std::string> CollisionChannels::GetRegisteredTestChannel(std::string
 {
 	if (registeredTestsChannels.find(name) == registeredTestsChannels.end())
 	{
-		std::cout << "Collision Channels error. Tried to get a registered test channel with a name that doesn't exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Collision Channels: Tried to get a registered test channel with a name that doesn't exists. Name is " + name + ".", LogCategory::Error);
 		return { "" };
 	}
 

@@ -112,5 +112,6 @@ private:
 	//  Helping Functions (private)
 	// ----------------------------------------------------------
 	ChannelSpatialization GetGroupSpatialization(FMOD::ChannelGroup* group);
+	std::string ErrorFModString(FMOD_RESULT fmodError);
 };
 

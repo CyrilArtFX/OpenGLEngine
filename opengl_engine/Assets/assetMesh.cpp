@@ -1,6 +1,6 @@
 #include "assetMesh.h"
 #include <Utils/defines.h>
-#include <iostream>
+#include <ServiceLocator/locator.h>
 
 LoadMeshData AssetMesh::LoadSingleMesh(const std::string& filepath)
 {
@@ -12,7 +12,7 @@ LoadMeshData AssetMesh::LoadSingleMesh(const std::string& filepath)
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE ||
         !scene->mRootNode)
     {
-        std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
+        Locator::getLog().LogMessage_Category("Assimp_Import: " + std::string(importer.GetErrorString()), LogCategory::Error);
         return LoadMeshData{};
     }
     //directory = mesh_path.substr(0, mesh_path.find_last_of(’ / ’));
@@ -32,7 +32,7 @@ std::vector<LoadMeshData> AssetMesh::LoadMeshCollection(const std::string& filep
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE ||
         !scene->mRootNode)
     {
-        std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
+        Locator::getLog().LogMessage_Category("Assimp_Import: " + std::string(importer.GetErrorString()), LogCategory::Error);
         return meshes_datas;
     }
     //directory = meshes_path.substr(0, meshes_path.find_last_of(’ / ’));

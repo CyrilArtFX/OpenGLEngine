@@ -4,8 +4,8 @@
 #include <freetype/freetype.h>
 #include <glad/glad.h>
 
+#include <ServiceLocator/locator.h>
 #include <Utils/defines.h>
-#include <iostream>
 
 
 Font::Font() : FontSize(0)
@@ -22,7 +22,7 @@ Font::Font(const std::string& fontPath, const int size, const CharacterLoading c
 	error = FT_Init_FreeType(&ft);
 	if (error)
 	{
-		std::cout << "Font load error: Failed to initialize FreeType library!\n";
+		Locator::getLog().LogMessage_Category("Font: Failed to initialize FreeType library.", LogCategory::Error);
 		return;
 	}
 
@@ -30,7 +30,7 @@ Font::Font(const std::string& fontPath, const int size, const CharacterLoading c
 	error = FT_New_Face(ft, font_path.c_str(), 0, &face);
 	if (error)
 	{
-		std::cout << "Font load error: Failed to load font at path " << font_path << "\n";
+		Locator::getLog().LogMessage_Category("Font: Failed to load font at path " + font_path + ".", LogCategory::Error);
 		return;
 	}
 
@@ -68,7 +68,7 @@ Font::Font(const std::string& fontPath, const int size, const CharacterLoading c
 		error = FT_Load_Char(face, c, FT_LOAD_RENDER);
 		if (error)
 		{
-			std::cout << "Font load error: Failed to load character glyph\n";
+			Locator::getLog().LogMessage_Category("Font: Failed to load character glyph at char '" + std::string(1, c) + "'.", LogCategory::Error);
 			continue;
 		}
 
@@ -127,7 +127,7 @@ const FontCharacter& Font::getCharacter(const char& c) const
 {
 	if (c >= FontCharacters.size())
 	{
-		std::cout << "Font error: Tried to get a character outside of the char range loaded on this font.\n";
+		Locator::getLog().LogMessage_Category("Font: Tried to get a character outside of the char range loaded on this font.", LogCategory::Warning);
 		return FontCharacter::errorChar;
 	}
 

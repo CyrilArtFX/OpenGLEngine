@@ -1,5 +1,5 @@
 #include "gameplayStatics.h"
-#include <iostream>
+#include <ServiceLocator/locator.h>
 
 Game* GameplayStatics::currentGame = nullptr;
 Scene* GameplayStatics::currentScene = nullptr;
@@ -10,7 +10,7 @@ Game* GameplayStatics::GetGame()
 {
 	if (!currentGame)
 	{
-		std::cout << "GameplayStatics Error: No game is referenced.\n";
+		Locator::getLog().LogMessage_Category("Gameplay Statics: There is no currently referenced Game.", LogCategory::Error);
 		return nullptr;
 	}
 
@@ -21,7 +21,7 @@ Scene* GameplayStatics::GetActiveScene()
 {
 	if (!currentScene)
 	{
-		std::cout << "GameplayStatics Error: There is no active scene.\n";
+		Locator::getLog().LogMessage_Category("Gameplay Statics: There is no active Scene.", LogCategory::Error);
 		return nullptr;
 	}
 

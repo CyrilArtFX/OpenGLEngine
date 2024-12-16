@@ -3,7 +3,6 @@
 #include <Objects/object.h>
 #include <Objects/Lights/light.h>
 #include <algorithm>
-#include <iostream>
 
 void Scene::load() 
 { 
@@ -73,7 +72,7 @@ void Scene::unregisterObject(Object* object)
 	auto iter = std::find(sceneregisteredObjects.begin(), sceneregisteredObjects.end(), object);
 	if (iter == sceneregisteredObjects.end())
 	{
-		std::cout << "Tried to unregister a scene object that was not registered.\n";
+		Locator::getLog().LogMessage_Category("Scene: Tried to unregister a scene object that was not registered.", LogCategory::Error);
 		return;
 	}
 
@@ -87,7 +86,7 @@ void Scene::unregisterLight(Light* light)
 	auto iter = std::find(sceneregisteredLights.begin(), sceneregisteredLights.end(), light);
 	if (iter == sceneregisteredLights.end())
 	{
-		std::cout << "Tried to unregister a scene light that was not registered.\n";
+		Locator::getLog().LogMessage_Category("Scene: Tried to unregister a scene light that was not registered.", LogCategory::Error);
 		return;
 	}
 

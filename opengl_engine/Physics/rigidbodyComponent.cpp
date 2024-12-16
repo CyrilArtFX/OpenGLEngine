@@ -1,7 +1,6 @@
 #include "rigidbodyComponent.h"
 #include <ServiceLocator/locator.h>
 #include "ObjectChannels/collisionChannels.h"
-#include <iostream>
 
 RigidbodyComponent::RigidbodyComponent(CollisionComponent* collisionToAssociate, bool activatePhysics) :
 	PhysicEntity(collisionToAssociate->loadedPersistent), physicsActivated(activatePhysics), useGravity(activatePhysics)

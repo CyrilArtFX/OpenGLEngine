@@ -1,5 +1,5 @@
 #include "color.h"
-#include <iostream>
+#include <ServiceLocator/locator.h>
 
 const Color Color::black{ 0, 0, 0, 255 };
 const Color Color::white{ 255, 255, 255, 255 };
@@ -34,7 +34,7 @@ Color Color::HSV(float h, float s, float v)
 {
     if (h > 360 || h < 0 || s > 100 || s < 0 || v > 100 || v < 0)
     {
-        std::cout << "HSV Error : values are out of range";
+        Locator::getLog().LogMessage_Category("Color: HSV values out of range.", LogCategory::Warning);
         return Color::black;
     }
 

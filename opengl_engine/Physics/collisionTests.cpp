@@ -4,8 +4,6 @@
 #include <Physics/AABB/boxAABBColComp.h>
 #include <Maths/Geometry/box.h>
 
-#include <iostream>
-
 
 
 bool CollisionTests::RigidbodyCollideAndSlideAABB(const RigidbodyComponent& rigidbody, const bool gravityPass, Vector3& computedMovement, std::vector<CollisionHit>& colResponses, std::vector<const CollisionComponent*>& triggers)

@@ -21,6 +21,8 @@ public:
 
 	float GetGravityValue() override { return 0.0f; }
 
+	void SetEnableInfoLogs(bool enable) override {}
+
 
 private:
 	void InitialisePhysics() override {}

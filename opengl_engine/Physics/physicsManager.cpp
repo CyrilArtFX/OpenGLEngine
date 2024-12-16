@@ -4,10 +4,8 @@
 #include "AABB/raycastAABB.h"
 #include "AABB/raycastAABBSweep.h"
 #include "collisionTests.h"
-
 #include "ObjectChannels/collisionChannels.h"
-
-#include <iostream>
+#include <ServiceLocator/locator.h>
 #include <algorithm>
 
 
@@ -18,7 +16,7 @@
 
 CollisionComponent& PhysicsManager::CreateCollisionComponent(CollisionComponent* colComp)
 {
-	//std::cout << "PHYSICS_INFO: Create a collision.\n";
+	if(enableInfoLogs) Locator::getLog().LogMessage_Category("Physics: Create a collision.", LogCategory::Info);
 	collisionsComponents.push_back(colComp);
 
 	CollisionComponent& col = *(collisionsComponents.back());
@@ -31,7 +29,7 @@ void PhysicsManager::RemoveCollision(CollisionComponent* colComp)
 	auto iter = std::find(collisionsComponents.begin(), collisionsComponents.end(), colComp);
 	if (iter == collisionsComponents.end())
 	{
-		std::cout << "PHYSICS_WARNING: Couldn't find a collision to remove.\n";
+		Locator::getLog().LogMessage_Category("Physics: Failed to remove a collision.", LogCategory::Error);
 		return;
 	}
 
@@ -40,12 +38,12 @@ void PhysicsManager::RemoveCollision(CollisionComponent* colComp)
 	col.registered = false;
 	collisionsComponents.pop_back();
 
-	//std::cout << "PHYSICS_INFO: Successfully removed a collision.\n";
+	if (enableInfoLogs) Locator::getLog().LogMessage_Category("Physics: Successfully removed a collision.", LogCategory::Info);
 }
 
 RigidbodyComponent& PhysicsManager::CreateRigidbodyComponent(RigidbodyComponent* rigidbodyComp)
 {
-	//std::cout << "PHYSICS_INFO: Create a rigidbody.\n";
+	if (enableInfoLogs) Locator::getLog().LogMessage_Category("Physics: Create a rigidbody.", LogCategory::Info);
 	rigidbodiesComponents.push_back(rigidbodyComp);
 
 	RigidbodyComponent& rigidbody = *(rigidbodiesComponents.back());
@@ -58,7 +56,7 @@ void PhysicsManager::RemoveRigidbody(RigidbodyComponent* rigidbodyComp)
 	auto iter = std::find(rigidbodiesComponents.begin(), rigidbodiesComponents.end(), rigidbodyComp);
 	if (iter == rigidbodiesComponents.end())
 	{
-		std::cout << "PHYSICS_WARNING: Couldn't find a rigidbody to remove.\n";
+		Locator::getLog().LogMessage_Category("Physics: Failed to remove a rigidbody", LogCategory::Error);
 		return;
 	}
 
@@ -67,7 +65,7 @@ void PhysicsManager::RemoveRigidbody(RigidbodyComponent* rigidbodyComp)
 	rigidbody.registered = false;
 	rigidbodiesComponents.pop_back();
 
-	//std::cout << "PHYSICS_INFO: Successfully removed a rigidbody.\n";
+	if (enableInfoLogs) Locator::getLog().LogMessage_Category("Physics: Successfully removed a rigidbody.", LogCategory::Info);
 }
 
 
@@ -87,7 +85,7 @@ bool PhysicsManager::LineRaycast(const Vector3& start, const Vector3& end, const
 
 	if (drawDebugTime != 0.0f)
 	{
-		//std::cout << "PHYSICS_INFO: Create a raycast line.\n";
+		if (enableInfoLogs) Locator::getLog().LogMessage_Category("Physics: Create a raycast line.", LogCategory::Info);
 
 		raycasts.emplace_back(new RaycastLine(start, end, drawDebugTime, !createOnScene));
 
@@ -159,7 +157,7 @@ bool PhysicsManager::AABBRaycast(const Vector3& location, const Box& aabbBox, co
 
 	if (drawDebugTime != 0.0f)
 	{
-		//std::cout << "PHYSICS_INFO: Create a raycast AABB.\n";
+		if (enableInfoLogs) Locator::getLog().LogMessage_Category("Physics: Create a raycast AABB.", LogCategory::Info);
 
 		raycasts.emplace_back(new RaycastAABB(location, aabbBox, drawDebugTime, !createOnScene));
 
@@ -242,7 +240,7 @@ bool PhysicsManager::AABBSweepRaycast(const Vector3& start, const Vector3& end, 
 
 	if (drawDebugTime != 0.0f)
 	{
-		//std::cout << "PHYSICS_INFO: Create a raycast AABB sweep.\n";
+		if (enableInfoLogs) Locator::getLog().LogMessage_Category("Physics: Create a raycast AABB sweep.", LogCategory::Info);
 
 		raycasts.emplace_back(new RaycastAABBSweep(start, end, aabbBox, drawDebugTime, !createOnScene));
 
@@ -452,7 +450,7 @@ void PhysicsManager::ClearAllCollisions(bool engineClosing)
 {
 	if (engineClosing) 
 	{
-		//std::cout << "PHYSICS_INFO: Clearing all collisions, rigidbodies and raycasts.\n";
+		if (enableInfoLogs) Locator::getLog().LogMessage_Category("Physics: Clearing all collisions, rigidbodies and raycasts.", LogCategory::Info);
 
 		for (auto col : collisionsComponents)
 		{
@@ -476,8 +474,8 @@ void PhysicsManager::ClearAllCollisions(bool engineClosing)
 
 		return;
 	}
-	
-	//std::cout << "PHYSICS_INFO: Clearing active scene collisions, rigidbodies and raycasts.\n";
+
+	if (enableInfoLogs) Locator::getLog().LogMessage_Category("Physics: Clearing active scene collisions, rigidbodies and raycasts.", LogCategory::Info);
 
 	std::vector<CollisionComponent*> game_collisions;
 	for (auto col : collisionsComponents)
@@ -527,4 +525,9 @@ void PhysicsManager::ClearAllCollisions(bool engineClosing)
 float PhysicsManager::GetGravityValue()
 {
 	return gravity;
+}
+
+void PhysicsManager::SetEnableInfoLogs(bool enable)
+{
+	enableInfoLogs = enable;
 }

@@ -1,4 +1,5 @@
 #include "material.h"
+#include <glad/glad.h>
 #include <Assets/assetsIDs.h>
 #include <string>
 

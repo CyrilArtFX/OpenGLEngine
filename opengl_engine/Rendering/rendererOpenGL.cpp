@@ -1,8 +1,6 @@
 #include "rendererOpenGL.h"
 #include <Assets/assetManager.h>
 #include <ServiceLocator/locator.h>
-
-#include <iostream>
 #include <algorithm>
 
 
@@ -299,7 +297,7 @@ void RendererOpenGL::RemoveMaterial(Material* material)
 	auto iter = std::find(materials[material->getShaderPtr()].begin(), materials[material->getShaderPtr()].end(), material);
 	if (iter == materials[material->getShaderPtr()].end())
 	{
-		std::cout << "Renderer can't remove a material that doesn't exist.\n";
+		Locator::getLog().LogMessage_Category("Renderer: Tried to remove a material that doesn't exist.", LogCategory::Error);
 		return;
 	}
 
@@ -314,7 +312,7 @@ void RendererOpenGL::AddLight(Light* light)
 
 	if (lights[light->getLightType()].size() > LIGHTS_LIMITS.at(light->getLightType()))
 	{
-		std::cout << "Renderer Warning : A light has been added but will not be used as the lit shader array has a too small size.\n";
+		Locator::getLog().LogMessage_Category("Renderer: A light has been added but will not be used as it overflow the lit shader array.", LogCategory::Warning);
 	}
 }
 
@@ -323,7 +321,7 @@ void RendererOpenGL::RemoveLight(Light* light)
 	auto iter = std::find(lights[light->getLightType()].begin(), lights[light->getLightType()].end(), light);
 	if (iter == lights[light->getLightType()].end())
 	{
-		std::cout << "Renderer can't remove a light that doesn't exist.\n";
+		Locator::getLog().LogMessage_Category("Renderer: Tried to remove a light that doesn't exist.", LogCategory::Error);
 		return;
 	}
 
@@ -342,7 +340,7 @@ void RendererOpenGL::RemoveObject(Object* object)
 	auto iter = std::find(objects.begin(), objects.end(), object);
 	if (iter == objects.end())
 	{
-		std::cout << "Renderer can't remove an object that doesn't exist.\n";
+		Locator::getLog().LogMessage_Category("Renderer: Tried to remove an object that doesn't exist.", LogCategory::Error);
 		return;
 	}
 
@@ -361,7 +359,7 @@ void RendererOpenGL::RemoveText(TextRendererComponent* text)
 	auto iter = std::find(texts.begin(), texts.end(), text);
 	if (iter == texts.end())
 	{
-		std::cout << "Renderer can't remove a text that doesn't exist.\n";
+		Locator::getLog().LogMessage_Category("Renderer: Tried to remove a text that doesn't exist.", LogCategory::Error);
 		return;
 	}
 
@@ -379,7 +377,7 @@ void RendererOpenGL::RemoveSprite(SpriteRendererComponent* sprite)
 	auto iter = std::find(sprites.begin(), sprites.end(), sprite);
 	if (iter == sprites.end())
 	{
-		std::cout << "Renderer can't remove a sprite that doesn't exist.\n";
+		Locator::getLog().LogMessage_Category("Renderer: Tried to remove a sprite that doesn't exist.", LogCategory::Error);
 		return;
 	}
 

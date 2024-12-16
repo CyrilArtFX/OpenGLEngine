@@ -82,8 +82,14 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	//  initialize service locator
 	std::cout << "Initializing service locator...";
 	Locator::initialize();
+	std::cout << " Done.\n";
+
+
+	//  create log manager
+	std::cout << "Initializing log...";
 	log = new LogManager();
 	Locator::provideLog(log);
+	// TODO: initialize log (for the log file part)
 	std::cout << " Done.\n";
 
 
@@ -333,7 +339,7 @@ void Engine::pauseGame()
 {
 	gamePaused = true;
 	audio->PauseAll();
-	std::cout << "Game paused.\n";
+	log->LogMessage_Category("Game paused", LogCategory::Info);
 }
 
 void Engine::unpauseGame()
@@ -341,7 +347,7 @@ void Engine::unpauseGame()
 	gamePaused = false;
 	audio->ResumeAll();
 	if (freecamMode) disableFreecam();
-	std::cout << "Game unpaused.\n";
+	log->LogMessage_Category("Game unpaused", LogCategory::Info);
 }
 
 void Engine::advanceOneFrame()
@@ -349,7 +355,7 @@ void Engine::advanceOneFrame()
 	if (!gamePaused) pauseGame();
 	else
 	{
-		std::cout << "Advance one frame.\n";
+		log->LogMessage_Category("Debug: Advance one frame", LogCategory::Info);
 		oneFrame = true;
 	}
 }
@@ -358,7 +364,7 @@ void Engine::enableFreecam()
 {
 	freecamMode = true;
 	if (!gamePaused) pauseGame();
-	std::cout << "Freecam mode enabled.\n";
+	log->LogMessage_Category("Debug: Freecam mode enabled", LogCategory::Info);
 	freecam.copyCameraTransform(game->getActiveCamera());
 	renderer->SetCamera(&freecam);
 	freecam.setSpeed(4.0f);
@@ -367,14 +373,14 @@ void Engine::enableFreecam()
 void Engine::disableFreecam()
 {
 	freecamMode = false;
-	std::cout << "Freecam mode disabled.\n";
+	log->LogMessage_Category("Debug: Freecam mode disabled", LogCategory::Info);
 	renderer->SetCamera(&game->getActiveCamera());
 }
 
 void Engine::enableDebugView()
 {
 	debugViewMode = true;
-	std::cout << "Debug view mode enabled.\n";
+	log->LogMessage_Category("Debug: Debug mode view enabled", LogCategory::Info);
 	renderer->drawDebugMode = true;
 	fpsText->setEnabled(true);
 }
@@ -382,7 +388,7 @@ void Engine::enableDebugView()
 void Engine::disableDebugView()
 {
 	debugViewMode = false;
-	std::cout << "Debug view mode disabled.\n";
+	log->LogMessage_Category("Debug: Debug mode view disabled", LogCategory::Info);
 	renderer->drawDebugMode = false;
 	fpsText->setEnabled(false);
 }

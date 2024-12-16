@@ -3,7 +3,7 @@
 ~ Faire une classe debug qui permet de gérer les logs dans la console et sur l'écran (à la manière d'unreal) + fichier de log généré - en cours
 	- Faire la structure du log manager - fait
 	- Print les logs dans la console - fait
-	- Utiliser le log dans l'engine
+	- Utiliser le log dans l'engine - fait
 	- Utiliser le log dans les jeux
 	- Afficher les logs sur l'écran
 	- Ecrire les logs dans un fichier

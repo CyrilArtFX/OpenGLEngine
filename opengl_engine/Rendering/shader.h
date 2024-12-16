@@ -1,11 +1,6 @@
 #pragma once
 
-#include <glad/glad.h>
-
 #include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
 
 enum class ShaderType : uint8_t
 {

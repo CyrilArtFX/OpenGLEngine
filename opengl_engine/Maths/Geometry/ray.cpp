@@ -1,5 +1,5 @@
 #include "ray.h"
-#include <iostream>
+#include <ServiceLocator/locator.h>
 
 
 Ray::Ray()
@@ -11,14 +11,14 @@ Ray::Ray(const Vector3& origin, const Vector3& direction, float length) :
 {
 	if (rayDirection == Vector3::zero)
 	{
-		std::cout << "RAY_ERROR: Tried to set direction with Vector3::zero values.\n";
+		Locator::getLog().LogMessage_Category("Ray: Tried to set direction with a zero Vector3.", LogCategory::Warning);
 		rayDirection = Vector3::unitX;
 	}
 	rayDirection.normalize();
 
 	if (rayLength < 0.0f)
 	{
-		std::cout << "RAY_ERROR: Tried to set a negative length value.\n";
+		Locator::getLog().LogMessage_Category("Ray: Tried to set a negative length value.", LogCategory::Warning);
 		rayLength = 0.0f;
 	}
 }
@@ -28,7 +28,7 @@ void Ray::setupWithStartEnd(const Vector3& startPos, const Vector3& endPos)
 {
 	if (startPos == endPos)
 	{
-		std::cout << "RAY_ERROR: Tried to set identical start and end positions.\n";
+		Locator::getLog().LogMessage_Category("Ray: Tried to set identical start and end positions.", LogCategory::Warning);
 		rayOrigin = Vector3::zero;
 		rayLength = 0.0f;
 		rayDirection = Vector3::unitX;
@@ -56,7 +56,7 @@ void Ray::setDirection(const Vector3& direction)
 	rayDirection = direction;
 	if (rayDirection == Vector3::zero)
 	{
-		std::cout << "RAY_ERROR: Tried to set direction with Vector3 Zero values.\n";
+		Locator::getLog().LogMessage_Category("Ray: Tried to set direction with a zero Vector3.", LogCategory::Warning);
 		rayDirection = Vector3::unitX;
 	}
 	rayDirection.normalize();
@@ -67,7 +67,7 @@ void Ray::setLength(float length)
 	rayLength = length;
 	if (rayLength < 0.0f)
 	{
-		std::cout << "RAY_ERROR: Tried to set a negative length value.\n";
+		Locator::getLog().LogMessage_Category("Ray: Tried to set a negative length value.", LogCategory::Warning);
 		rayLength = 0.0f;
 	}
 }

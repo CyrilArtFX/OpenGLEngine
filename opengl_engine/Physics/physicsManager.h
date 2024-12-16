@@ -29,11 +29,15 @@ public:
 
 	float GetGravityValue() override;
 
+	void SetEnableInfoLogs(bool enable) override;
+
 
 private:
 	void InitialisePhysics() override;
 	void UpdatePhysics(float dt) override;
 	void DrawCollisionsDebug(Material& debugMaterial) override;
+
+	bool enableInfoLogs{ false };
 
 	std::vector<CollisionComponent*> collisionsComponents;
 	std::vector<RigidbodyComponent*> rigidbodiesComponents;

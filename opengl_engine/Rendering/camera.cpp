@@ -1,5 +1,4 @@
 #include "camera.h"
-#include <iostream>
 
 Camera::Camera() : Transform(), 
 	yaw(YAW), pitch(PITCH), fov(FOV), camSpeed(SPEED), sensitivity(SENSITIVITY),

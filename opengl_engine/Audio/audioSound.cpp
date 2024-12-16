@@ -3,7 +3,6 @@
 #include <ServiceLocator/audio.h>
 #include <FMod/fmod.hpp>
 #include <FMod/fmod_errors.h>
-#include <iostream>
 
 AudioSound::AudioSound(FMOD::Sound* fmodSound_, const SoundSettings soundSettings) : FModSound(fmodSound_), Settings(soundSettings)
 {
@@ -45,13 +44,13 @@ void AudioSound::setMinMaxDistance(float min, float max) const
 {
 	if (!isValid())
 	{
-		std::cout << "Audio Sound Error: Tried to set a min and max distance on an invalid sound.\n";
+		Locator::getLog().LogMessage_Category("Audio Sound: Tried to set a min and max distances on an invalid sound.", LogCategory::Error);
 		return;
 	}
 
 	if (!hasSetting(ACTIVATE_3D))
 	{
-		std::cout << "Audio Sound Error: Tried to set a min and max distance on a 2D sound.\n";
+		Locator::getLog().LogMessage_Category("Audio Sound: Tried to set a min and max distances on a 2D sound.", LogCategory::Error);
 		return;
 	}
 
@@ -59,6 +58,6 @@ void AudioSound::setMinMaxDistance(float min, float max) const
 	result = FModSound->set3DMinMaxDistance(min, max);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Sound Error: Failed to set min and max distance. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Sound: Failed to set min and max distances. | Associated FMod Error: " + std::string(FMOD_ErrorString(result)), LogCategory::Error);
 	}
 }

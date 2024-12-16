@@ -1,6 +1,5 @@
 #pragma once
-#include <stb_image.h>
-
+#include <stb_image.h> //  stb_image must be included in a .h file unfortunately
 #include <string>
 
 

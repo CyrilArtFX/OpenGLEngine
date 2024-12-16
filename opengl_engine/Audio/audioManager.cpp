@@ -23,7 +23,8 @@ bool AudioManager::Initialize(const float maxWorldSize)
 	result = FMOD::Debug_Initialize(FMOD_DEBUG_LEVEL_ERROR, FMOD_DEBUG_MODE_TTY);
 	if (result != FMOD_OK)
 	{
-		std::cout << "\nAudio Manager Init Error: Failed to initialize FMOD debug: " << FMOD_ErrorString(result) << "\n";
+		std::cout << std::endl;
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to initialize FMod debug." + ErrorFModString(result), LogCategory::Error);
 		return false;
 	}
 
@@ -31,7 +32,8 @@ bool AudioManager::Initialize(const float maxWorldSize)
 	result = FMOD::System_Create(&system);
 	if (result != FMOD_OK)
 	{
-		std::cout << "\nAudio Manager Init Error: Failed to create FMOD core system: " << FMOD_ErrorString(result) << "\n";
+		std::cout << std::endl;
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to create FMOD core system." + ErrorFModString(result), LogCategory::Error);
 		return false;
 	}
 
@@ -39,7 +41,8 @@ bool AudioManager::Initialize(const float maxWorldSize)
 	result = system->init(MAX_CHANNELS, FMOD_INIT_3D_RIGHTHANDED, 0);
 	if (result != FMOD_OK)
 	{
-		std::cout << "\nAudio Manager Init Error: Failed to initialize FMOD core system: " << FMOD_ErrorString(result) << "\n";
+		std::cout << std::endl;
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to initialize FMOD core system." + ErrorFModString(result), LogCategory::Error);
 		return false;
 	}
 
@@ -47,7 +50,8 @@ bool AudioManager::Initialize(const float maxWorldSize)
 	result = system->set3DSettings(1.0f, 1.0f, 1.0f);
 	if (result != FMOD_OK)
 	{
-		std::cout << "\nAudio Manager Init Error: Failed to setup FMOD 3D settings: " << FMOD_ErrorString(result) << "\n";
+		std::cout << std::endl;
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to setup FMOD 3D settings." + ErrorFModString(result), LogCategory::Error);
 		return false;
 	}
 
@@ -55,7 +59,8 @@ bool AudioManager::Initialize(const float maxWorldSize)
 	result = system->setGeometrySettings(maxWorldSize);
 	if (result != FMOD_OK)
 	{
-		std::cout << "\nAudio Manager Init Error: Failed to setup FMOD Geometry settings: " << FMOD_ErrorString(result) << "\n";
+		std::cout << std::endl;
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to setup FMOD Geometry settings." + ErrorFModString(result), LogCategory::Error);
 		return false;
 	}
 
@@ -93,7 +98,7 @@ void AudioManager::UpdateListener(const Vector3 listenerPos, const Vector3 liste
 
 	if (result != FMOD_OK)
 	{
-		std::cout << "FMOD Update Listener Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to update FMod Listener." + ErrorFModString(result), LogCategory::Error);
 	}
 }
 
@@ -114,7 +119,7 @@ void AudioManager::PauseAll()
 	result = master->setPaused(true);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to pause all sounds. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to pause all sounds." + ErrorFModString(result), LogCategory::Error);
 	}
 }
 
@@ -129,7 +134,7 @@ void AudioManager::ResumeAll()
 	result = master->setPaused(false);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to resume all sounds. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to resume all sounds." + ErrorFModString(result), LogCategory::Error);
 	}
 }
 
@@ -174,7 +179,7 @@ AudioSoundPtr AudioManager::LoadSound(std::string soundFile, const SoundSettings
 	result = system->createSound(sound_path.c_str(), spatialization_mode | load_mode | loop_mode | FMOD_3D_LINEARSQUAREROLLOFF, 0, &sound);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to load a sound from file. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to load a sound from file." + ErrorFModString(result), LogCategory::Error);
 	}
 
 	return { sound }; //  wrap fmod sound in a struct to avoid other class to know about fmod
@@ -197,7 +202,7 @@ void AudioManager::SetGlobalVolume(const float volume)
 	result = master->setVolume(volume);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to set global volume. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to set global volume." + ErrorFModString(result), LogCategory::Error);
 	}
 }
 
@@ -213,7 +218,7 @@ float AudioManager::GetGlobalVolume()
 	result = master->getVolume(&volume);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to get global volume. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to get global volume." + ErrorFModString(result), LogCategory::Error);
 		return 0.0f;
 	}
 
@@ -239,7 +244,7 @@ std::uint32_t AudioManager::CreateAudioSourceGroup(ChannelSpatialization spatial
 
 	if (result != FMOD_OK) //  check if the ChannelGroup was correctly created
 	{
-		std::cout << "Audio Manager Error: Failed to create a new audio source group. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to create a new audio source group." + ErrorFModString(result), LogCategory::Error);
 		return audioSourcesGroupsID - 1;
 	}
 
@@ -258,7 +263,7 @@ void AudioManager::ReleaseAudioSourceGroup(const std::uint32_t index)
 	FMOD::ChannelGroup* group_release = audioSourcesGroups[index];
 	if (group_release == nullptr)
 	{
-		std::cout << "Audio Manager Error: Tried to release an audio source group with a non-registered index.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to release an audio source group with a non-registered index.", LogCategory::Error);
 		return;
 	}
 
@@ -267,7 +272,7 @@ void AudioManager::ReleaseAudioSourceGroup(const std::uint32_t index)
 	result = group_release->release();
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to release an audio source group. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to release an audio source group." + ErrorFModString(result), LogCategory::Error);
 		return;
 	}
 
@@ -282,20 +287,20 @@ void AudioManager::PlaySoundOnAudioSource(const std::uint32_t index, const Audio
 
 	if (!sound.isValid()) //  check if the AudioSound object has a valid FMOD sound
 	{
-		std::cout << "Audio Manager Error: Tried to play a sound on an audio source group with an unitialized sound.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to play a sound on an audio source group with an unitialized sound.", LogCategory::Error);
 		return;
 	}
 
 	FMOD::ChannelGroup* group_sound = audioSourcesGroups[index]; //  get the ChannelGroup of given index and check if it is valid
 	if (group_sound == nullptr)
 	{
-		std::cout << "Audio Manager Error: Tried to play a sound on an audio source group with a non-registered index.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to play a sound on an audio source group with a non-registered index.", LogCategory::Error);
 		return;
 	}
 
 	if (sound.hasSetting(ACTIVATE_3D) != (GetGroupSpatialization(group_sound) == ChannelSpatialization::Channel3D)) //  check if the sound and audio source has the same spatialization
 	{
-		std::cout << "Audio Manager Warning: Tried to play a sound on an audio source that hasn't the same spatialization.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to play a sound on an audio source that hasn't the same spatialization.", LogCategory::Warning);
 		return;
 	}
 
@@ -308,21 +313,21 @@ void AudioManager::PlaySoundOnAudioSource(const std::uint32_t index, const Audio
 	result = system->playSound(sound.getFMod(), group_sound, false, &channel);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to play a sound on an audio source group. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to play a sound on an audio source group." + ErrorFModString(result), LogCategory::Error);
 		return;
 	}
 
 	//  loop the sound (if the sound can be looped)
 	if (loop != 0 && !sound.hasSetting(ACTIVATE_LOOP))
 	{
-		std::cout << "Audio Manager Warning: Tried to play a sound on an audio source group with loop on an sound that hasn't loop activated.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to play a sound on an audio source group with loop on an sound that hasn't loop activated.", LogCategory::Warning);
 	}
 	else
 	{
 		result = channel->setLoopCount(loop);
 		if (result != FMOD_OK)
 		{
-			std::cout << "Audio Manager Error: Failed to set loop count on an sound played on an audio source group. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+			Locator::getLog().LogMessage_Category("Audio Manager: Failed to set loop count on an sound played on an audio source group." + ErrorFModString(result), LogCategory::Error);
 			//  don't return if setting loop failed, the sound has already started playing so we need to setup the position of the channel
 		}
 	}
@@ -342,7 +347,7 @@ void AudioManager::StopAudioSource(const std::uint32_t index)
 	FMOD::ChannelGroup* group_stop = audioSourcesGroups[index];
 	if (group_stop == nullptr)
 	{
-		std::cout << "Audio Manager Error: Tried to stop an audio source group with a non-registered index.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to stop an audio source group with a non-registered index.", LogCategory::Error);
 		return;
 	}
 
@@ -350,7 +355,7 @@ void AudioManager::StopAudioSource(const std::uint32_t index)
 	result = group_stop->stop();
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to stôp an audio source group. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to stop an audio source group." + ErrorFModString(result), LogCategory::Error);
 	}
 }
 
@@ -361,7 +366,7 @@ void AudioManager::PauseAudioSource(const std::uint32_t index, const bool pause)
 	FMOD::ChannelGroup* group_pause = audioSourcesGroups[index];
 	if (group_pause == nullptr)
 	{
-		std::cout << "Audio Manager Error: Tried to pause an audio source group with a non-registered index.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to pause an audio source group with a non-registered index.", LogCategory::Error);
 		return;
 	}
 
@@ -369,7 +374,7 @@ void AudioManager::PauseAudioSource(const std::uint32_t index, const bool pause)
 	result = group_pause->setPaused(pause);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to pause an audio source group. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to pause an audio source group." + ErrorFModString(result), LogCategory::Error);
 	}
 }
 
@@ -378,7 +383,7 @@ bool AudioManager::GetAudioSourcePaused(const std::uint32_t index)
 	FMOD::ChannelGroup* group_pause = audioSourcesGroups[index];
 	if (group_pause == nullptr)
 	{
-		std::cout << "Audio Manager Error: Tried to get an audio source group paused with a non-registered index.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to get an audio source group paused with a non-registered index.", LogCategory::Error);
 		return false;
 	}
 
@@ -387,7 +392,7 @@ bool AudioManager::GetAudioSourcePaused(const std::uint32_t index)
 	result = group_pause->getPaused(&paused);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to get an audio source group paused. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to get an audio source group paused." + ErrorFModString(result), LogCategory::Error);
 		return false;
 	}
 
@@ -401,7 +406,7 @@ void AudioManager::SetAudioSourceGroupVolume(const std::uint32_t index, const fl
 	FMOD::ChannelGroup* group_volume = audioSourcesGroups[index];
 	if (group_volume == nullptr)
 	{
-		std::cout << "Audio Manager Error: Tried to set an audio source group volume with a non-registered index.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to set an audio source group volume with a non-registered index.", LogCategory::Error);
 		return;
 	}
 
@@ -409,7 +414,7 @@ void AudioManager::SetAudioSourceGroupVolume(const std::uint32_t index, const fl
 	result = group_volume->setVolume(volume);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to set an audio source group volume. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to set an audio source group volume." + ErrorFModString(result), LogCategory::Error);
 	}
 }
 
@@ -418,7 +423,7 @@ float AudioManager::GetAudioSourceGroupVolume(const std::uint32_t index)
 	FMOD::ChannelGroup* group_volume = audioSourcesGroups[index];
 	if (group_volume == nullptr)
 	{
-		std::cout << "Audio Manager Error: Tried to get an audio source group volume with a non-registered index.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to get an audio source group volume with a non-registered index.", LogCategory::Error);
 		return 0.0f;
 	}
 
@@ -427,7 +432,7 @@ float AudioManager::GetAudioSourceGroupVolume(const std::uint32_t index)
 	result = group_volume->getVolume(&volume);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to get an audio source group volume. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to get an audio source group volume." + ErrorFModString(result), LogCategory::Error);
 		return 0.0f;
 	}
 
@@ -441,13 +446,13 @@ void AudioManager::SetAudioSourceGroupPos(const std::uint32_t index, const Vecto
 	FMOD::ChannelGroup* group_pos = audioSourcesGroups[index];
 	if (group_pos == nullptr)
 	{
-		std::cout << "Audio Manager Error: Tried to set an audio source group position with a non-registered index.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to set an audio source group position with a non-registered index.", LogCategory::Error);
 		return;
 	}
 
 	if (GetGroupSpatialization(group_pos) != ChannelSpatialization::Channel3D)
 	{
-		std::cout << "Audio Manager Warning: Tried to set an audio source group position on a 2D audio source.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to set an audio source group position on a 2D audio source.", LogCategory::Warning);
 		return;
 	}
 
@@ -458,7 +463,7 @@ void AudioManager::SetAudioSourceGroupPos(const std::uint32_t index, const Vecto
 	result = group_pos->set3DAttributes(&pos, &vel);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to set an audio source group position. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to set an audio source group position." + ErrorFModString(result), LogCategory::Error);
 	}
 
 	int current_nb_channel_playing;
@@ -469,13 +474,13 @@ void AudioManager::SetAudioSourceGroupPos(const std::uint32_t index, const Vecto
 	result = group_pos->getChannel(0, &channelPlaying);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to retrieve the playing channel of an audio source group. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to retrieve the playing channel of an audio source group." + ErrorFModString(result), LogCategory::Error);
 	}
 
 	result = channelPlaying->set3DAttributes(&pos, &vel);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to set the position of the playing channel of an audio source group. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to set the position of the playing channel of an audio source group." + ErrorFModString(result), LogCategory::Error);
 	}
 }
 
@@ -484,13 +489,13 @@ Vector3 AudioManager::GetAudioSourceGroupPos(const std::uint32_t index)
 	FMOD::ChannelGroup* group_pos = audioSourcesGroups[index];
 	if (group_pos == nullptr)
 	{
-		std::cout << "Audio Manager Error: Tried to get an audio source group position with a non-registered index.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to get an audio source group position with a non-registered index.", LogCategory::Error);
 		return Vector3::zero;
 	}
 
 	if (GetGroupSpatialization(group_pos) != ChannelSpatialization::Channel3D)
 	{
-		std::cout << "Audio Manager Warning: Tried to get an audio source group position on a 2D audio source.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to get an audio source group position on a 2D audio source.", LogCategory::Warning);
 		return Vector3::zero;
 	}
 
@@ -501,7 +506,7 @@ Vector3 AudioManager::GetAudioSourceGroupPos(const std::uint32_t index)
 	result = group_pos->get3DAttributes(&pos, &vel);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to get an audio source group position. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to get an audio source group position." + ErrorFModString(result), LogCategory::Error);
 		return Vector3::zero;
 	}
 
@@ -520,13 +525,13 @@ void AudioManager::InstantPlaySound2D(const AudioSound& sound, const float volum
 
 	if (!sound.isValid()) //  check if the AudioSound has a valid FMOD sound
 	{
-		std::cout << "Audio Manager Error: Tried to instantly play a 2D sound with an unitialized sound.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to instantly play a 2D sound with an unitialized sound.", LogCategory::Error);
 		return;
 	}
 
 	if (sound.hasSetting(ACTIVATE_3D)) //  check if the sound is in 2D
 	{
-		std::cout << "Audio Manager Warning: Tried to instantly play a 2D sound with a 3D sound.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to instantly play a 2D sound with a 3D sound.", LogCategory::Warning);
 		return;
 	}
 
@@ -536,21 +541,21 @@ void AudioManager::InstantPlaySound2D(const AudioSound& sound, const float volum
 	result = system->playSound(sound.getFMod(), 0, false, &channel);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to instantly play a 2D sound. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to instantly play a 2D sound." + ErrorFModString(result), LogCategory::Error);
 		return;
 	}
 
 	//  loop the sound (if the sound can be looped)
 	if (loop != 0 && !sound.hasSetting(ACTIVATE_LOOP))
 	{
-		std::cout << "Audio Manager Warning: Tried to instantly play a 2D sound with loop on an sound that hasn't loop activated.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to instantly play a 2D sound with loop on an sound that hasn't loop activated.", LogCategory::Warning);
 	}
 	else
 	{
 		result = channel->setLoopCount(loop);
 		if (result != FMOD_OK)
 		{
-			std::cout << "Audio Manager Error: Failed to set loop count on an instantly played 2D sound. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+			Locator::getLog().LogMessage_Category("Audio Manager: Failed to set loop count on an instantly played 2D sound." + ErrorFModString(result), LogCategory::Error);
 			//  don't return if setting loop failed, the sound has already started playing so we need to setup the volume of the channel
 		}
 	}
@@ -559,7 +564,7 @@ void AudioManager::InstantPlaySound2D(const AudioSound& sound, const float volum
 	result = channel->setVolume(volume);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to set volume on an instantly played 2D sound. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to set volume on an instantly played 2D sound." + ErrorFModString(result), LogCategory::Error);
 	}
 }
 
@@ -569,13 +574,13 @@ void AudioManager::InstantPlaySound3D(const AudioSound& sound, const Vector3 pla
 
 	if (!sound.isValid()) //  check if the AudioSound has a valid FMOD sound
 	{
-		std::cout << "Audio Manager Error: Tried to instantly play a 3D sound with an unitialized sound.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to instantly play a 3D sound with an unitialized sound.", LogCategory::Error);
 		return;
 	}
 
 	if (!sound.hasSetting(ACTIVATE_3D)) //  check if the sound is in 3D
 	{
-		std::cout << "Audio Manager Warning: Tried to instantly play a 3D sound with a 2D sound.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to instantly play a 3D sound with a 2D sound.", LogCategory::Warning);
 		return;
 	}
 
@@ -585,21 +590,21 @@ void AudioManager::InstantPlaySound3D(const AudioSound& sound, const Vector3 pla
 	result = system->playSound(sound.getFMod(), 0, false, &channel);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to instantly play a 3D sound. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to instantly play a 3D sound." + ErrorFModString(result), LogCategory::Error);
 		return;
 	}
 
 	//  loop the sound (if the sound can be looped)
 	if (loop != 0 && !sound.hasSetting(ACTIVATE_LOOP))
 	{
-		std::cout << "Audio Manager Warning: Tried to instantly play a 3D sound with loop on an sound that hasn't loop activated.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to instantly play a 3D sound with loop on an sound that hasn't loop activated.", LogCategory::Warning);
 	}
 	else
 	{
 		result = channel->setLoopCount(loop);
 		if (result != FMOD_OK)
 		{
-			std::cout << "Audio Manager Error: Failed to set loop count on an instantly played 3D sound. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+			Locator::getLog().LogMessage_Category("Audio Manager: Failed to set loop count on an instantly played 3D sound." + ErrorFModString(result), LogCategory::Error);
 			//  don't return if setting loop failed, the sound has already started playing so we need to setup the position and volume of the channel
 		}
 	}
@@ -608,7 +613,7 @@ void AudioManager::InstantPlaySound3D(const AudioSound& sound, const Vector3 pla
 	result = channel->setVolume(volume);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to set volume on an instantly played 3D sound. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to set volume on an instantly played 3D sound." + ErrorFModString(result), LogCategory::Error);
 		//  don't return if setting volume failed, the sound has already started playing so we need to setup the position of the channel
 	}
 
@@ -618,7 +623,7 @@ void AudioManager::InstantPlaySound3D(const AudioSound& sound, const Vector3 pla
 	result = channel->set3DAttributes(&sound_pos, &sound_vel);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to set position on an instantly played 3D sound. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to set position on an instantly played 3D sound." + ErrorFModString(result), LogCategory::Error);
 	}
 }
 
@@ -642,7 +647,7 @@ std::uint32_t AudioManager::CreateCollision(const int maxPolygons, const int max
 
 	if (result != FMOD_OK) //  check if the Geometry was correctly created
 	{
-		std::cout << "Audio Manager Error: Failed to create a new collision. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to create a new collision." + ErrorFModString(result), LogCategory::Error);
 		return collisionsID - 1;
 	}
 
@@ -657,7 +662,7 @@ void AudioManager::ReleaseCollision(const std::uint32_t index)
 	FMOD::Geometry* collision_release = collisions[index];
 	if (collision_release == nullptr)
 	{
-		std::cout << "Audio Manager Error: Tried to release a collision with a non-registered index.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to release a collision with a non-registered index.", LogCategory::Error);
 		return;
 	}
 
@@ -666,7 +671,7 @@ void AudioManager::ReleaseCollision(const std::uint32_t index)
 	result = collision_release->release();
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to release a collision. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to release a collision." + ErrorFModString(result), LogCategory::Error);
 		return;
 	}
 
@@ -681,7 +686,7 @@ void AudioManager::AddPolygonToCollision(const std::uint32_t index, const AudioC
 	FMOD::Geometry* collision_polygon = collisions[index];
 	if (collision_polygon == nullptr)
 	{
-		std::cout << "Audio Manager Error: Tried to add a polygon to a collision with a non-registered index.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to add a polygon to a collision with a non-registered index.", LogCategory::Error);
 		return;
 	}
 
@@ -698,7 +703,7 @@ void AudioManager::AddPolygonToCollision(const std::uint32_t index, const AudioC
 	result = collision_polygon->addPolygon(audioCollisionType.directOcclusion, audioCollisionType.reverbOcclusion, doubleSided, vertices.size(), &vertices_fmod[0], 0);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to add a polygon to a collision. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to add a polygon to a collision." + ErrorFModString(result), LogCategory::Error);
 		return;
 	}
 }
@@ -711,7 +716,7 @@ void AudioManager::SetCollisionTransform(const std::uint32_t index, const Transf
 	FMOD::Geometry* collision_transform = collisions[index];
 	if (collision_transform == nullptr)
 	{
-		std::cout << "Audio Manager Error: Tried to set the transform of a collision with a non-registered index.\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to set the transform of a collision with a non-registered index.", LogCategory::Error);
 		return;
 	}
 
@@ -723,7 +728,7 @@ void AudioManager::SetCollisionTransform(const std::uint32_t index, const Transf
 	result = collision_transform->setPosition(&position);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to set a collision position. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to set a collision position." + ErrorFModString(result), LogCategory::Error);
 		return;
 	}
 
@@ -731,7 +736,7 @@ void AudioManager::SetCollisionTransform(const std::uint32_t index, const Transf
 	result = collision_transform->setScale(&scale);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to set a collision scale. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to set a collision scale." + ErrorFModString(result), LogCategory::Error);
 		return;
 	}
 }
@@ -750,7 +755,7 @@ ChannelSpatialization AudioManager::GetGroupSpatialization(FMOD::ChannelGroup* g
 	result = group->getMode(&mode);
 	if (result != FMOD_OK)
 	{
-		std::cout << "Audio Manager Error: Failed to get the mode of a channel group. | Associated FMOD Error: " << FMOD_ErrorString(result) << "\n";
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to get the mode of a channel group." + ErrorFModString(result), LogCategory::Error);
 		return ChannelSpatialization::Channel2D;
 	}
 
@@ -763,4 +768,9 @@ ChannelSpatialization AudioManager::GetGroupSpatialization(FMOD::ChannelGroup* g
 	{
 		return ChannelSpatialization::Channel3D;
 	}
+}
+
+std::string AudioManager::ErrorFModString(FMOD_RESULT fmodError)
+{
+	return " | Associated FMod Error: " + std::string(FMOD_ErrorString(fmodError));
 }

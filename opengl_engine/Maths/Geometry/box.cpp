@@ -1,5 +1,5 @@
 #include "box.h"
-#include <iostream>
+#include <ServiceLocator/locator.h>
 
 
 //  default boxes values
@@ -17,7 +17,7 @@ Box::Box(const Vector3& centerPoint, const Vector3& halfExtentsValues) :
 {
 	if (halfExtents < Vector3::zero)
 	{
-		std::cout << "BOX_ERROR: Tried to set negative half extents values.\n";
+		Locator::getLog().LogMessage_Category("Box: Tried to set negative half extents values.", LogCategory::Warning);
 		halfExtents = Vector3::zero;
 	}
 }
@@ -26,7 +26,7 @@ void Box::setupWithMinAndMaxPoints(const Vector3& minPoint, const Vector3& maxPo
 {
 	if (!(minPoint <= maxPoint))
 	{
-		std::cout << "BOX_ERROR: Tried to setup with min and max points, but all min point values are not <= to max point values.\n";
+		Locator::getLog().LogMessage_Category("Box: Tried to setup with min and max points, but all min point values are not <= to max point values.", LogCategory::Warning);
 		return;
 	}
 
@@ -43,7 +43,7 @@ void Box::setHalfExtents(const Vector3& halfExtentsValues)
 {
 	if (halfExtentsValues < Vector3::zero)
 	{
-		std::cout << "BOX_ERROR: Tried to set negative half extents values.\n";
+		Locator::getLog().LogMessage_Category("Box: Tried to set negative half extents values.", LogCategory::Warning);
 	}
 
 	halfExtents = halfExtentsValues;

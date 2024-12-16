@@ -1,6 +1,5 @@
 #include "assetManager.h"
 #include "ServiceLocator/locator.h"
-#include <iostream>
 
 
 
@@ -30,7 +29,7 @@ void AssetManager::LoadTexture(const std::string& name, const std::string& textu
 {
 	if (textures.find(name) != textures.end())
 	{
-		std::cout << "Asset Manager Error: Tried to load a texture with a name that already exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to load a texture with a name that already exists. Name is " + name + ".", LogCategory::Error);
 		return;
 	}
 
@@ -41,7 +40,7 @@ Texture& AssetManager::GetTexture(const std::string& name)
 {
 	if (textures.find(name) == textures.end())
 	{
-		std::cout << "Asset Manager Error: Tried to get a texture with a name that doesn't exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to get a texture with a name that doesn't exists. Name is " + name + ".", LogCategory::Error);
 		return *textures["null_texture"];
 	}
 
@@ -52,7 +51,7 @@ void AssetManager::DeleteTexture(const std::string& name)
 {
 	if (textures.find(name) == textures.end())
 	{
-		std::cout << "Asset Manager Error: Tried to delete a texture with a name that doesn't exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to delete a texture with a name that doesn't exists. Name is " + name + ".", LogCategory::Error);
 		return;
 	}
 
@@ -69,7 +68,7 @@ VertexArray& AssetManager::CreateVertexArray(const std::string& name)
 {
 	if (vertexArrays.find(name) != vertexArrays.end())
 	{
-		std::cout << "Asset Manager Error: Tried to create a vertex array with a name that already exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to create a vertex array with a name that already exists. Name is " + name + ".", LogCategory::Error);
 		return *vertexArrays["null_vertexarray"];
 	}
 
@@ -81,7 +80,7 @@ VertexArray& AssetManager::GetVertexArray(const std::string& name)
 {
 	if (vertexArrays.find(name) == vertexArrays.end())
 	{
-		std::cout << "Asset Manager Error: Tried to get a vertex array with a name that doesn't exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to get a vertex array with a name that doesn't exists. Name is " + name + ".", LogCategory::Error);
 		return *vertexArrays["null_vertexarray"];
 	}
 
@@ -92,7 +91,7 @@ void AssetManager::DeleteVertexArray(const std::string& name)
 {
 	if (vertexArrays.find(name) == vertexArrays.end())
 	{
-		std::cout << "Asset Manager Error: Tried to delete a vertex array with a name that doesn't exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to delete a vertex array with a name that doesn't exists. Name is " + name + ".", LogCategory::Error);
 		return;
 	}
 
@@ -109,7 +108,7 @@ void AssetManager::LoadSingleMesh(const std::string& name, const std::vector<Ver
 {
 	if (meshesSingle.find(name) != meshesSingle.end())
 	{
-		std::cout << "Asset Manager Error: Tried to load a single mesh with a name that already exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to load a single mesh with a name that already exists. Name is " + name + ".", LogCategory::Error);
 		return;
 	}
 
@@ -120,7 +119,7 @@ void AssetManager::LoadSingleMesh(const std::string& name, const std::string& fi
 {
 	if (meshesSingle.find(name) != meshesSingle.end())
 	{
-		std::cout << "Asset Manager Error: Tried to load a single mesh with a name that already exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to load a single mesh with a name that already exists. Name is " + name + ".", LogCategory::Error);
 		return;
 	}
 
@@ -132,7 +131,7 @@ void AssetManager::LoadMeshCollection(const std::string& name, const std::string
 {
 	if (meshesCollection.find(name) != meshesCollection.end())
 	{
-		std::cout << "Asset Manager Error: Tried to load a mesh collection with a name that already exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to load a mesh collection with a name that already exists. Name is " + name + ".", LogCategory::Error);
 		return;
 	}
 
@@ -151,7 +150,7 @@ Mesh& AssetManager::GetSingleMesh(const std::string& name)
 {
 	if (meshesSingle.find(name) == meshesSingle.end())
 	{
-		std::cout << "Asset Manager Error: Tried to get a single mesh with a name that doesn't exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to get a single mesh with a name that doesn't exists. Name is " + name + ".", LogCategory::Error);
 		return *meshesSingle["null_mesh"];
 	}
 
@@ -162,7 +161,7 @@ MeshCollection& AssetManager::GetMeshCollection(const std::string& name)
 {
 	if (meshesCollection.find(name) == meshesCollection.end())
 	{
-		std::cout << "Asset Manager Error: Tried to get a mesh collection with a name that doesn't exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to get a mesh collection with a name that doesn't exists. Name is " + name + ".", LogCategory::Error);
 		return *meshesCollection["null_collection"];
 	}
 
@@ -173,7 +172,7 @@ void AssetManager::DeleteSingleMesh(const std::string& name)
 {
 	if (meshesSingle.find(name) == meshesSingle.end())
 	{
-		std::cout << "Asset Manager Error: Tried to delete a single mesh with a name that doesn't exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to delete a single mesh with a name that doesn't exists. Name is " + name + ".", LogCategory::Error);
 		return;
 	}
 
@@ -184,7 +183,7 @@ void AssetManager::DeleteMeshCollection(const std::string& name)
 {
 	if (meshesCollection.find(name) == meshesCollection.end())
 	{
-		std::cout << "Asset Manager Error: Tried to delete a mesh collection with a name that doesn't exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to delete a mesh collection with a name that doesn't exists. Name is " + name + ".", LogCategory::Error);
 		return;
 	}
 
@@ -201,7 +200,7 @@ Model& AssetManager::CreateModel(const std::string& name)
 {
 	if (models.find(name) != models.end())
 	{
-		std::cout << "Asset Manager Error: Tried to create a model with a name that already exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to create a model with a name that already exists. Name is " + name + ".", LogCategory::Error);
 		return *models["null_model"];
 	}
 
@@ -213,7 +212,7 @@ Model& AssetManager::GetModel(const std::string& name)
 {
 	if (models.find(name) == models.end())
 	{
-		std::cout << "Asset Manager Error: Tried to get a model with a name that doesn't exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to get a model with a name that doesn't exists. Name is " + name + ".", LogCategory::Error);
 		return *models["null_model"];
 	}
 
@@ -224,7 +223,7 @@ void AssetManager::DeleteModel(const std::string& name)
 {
 	if (models.find(name) == models.end())
 	{
-		std::cout << "Asset Manager Error: Tried to delete a model with a name that doesn't exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to delete a model with a name that doesn't exists. Name is " + name + ".", LogCategory::Error);
 		return;
 	}
 
@@ -241,7 +240,7 @@ void AssetManager::CreateShaderProgram(const std::string& name, const std::strin
 {
 	if (shaders.find(name) != shaders.end())
 	{
-		std::cout << "Asset Manager Error: Tried to create a shader with a name that already exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to create a shader with a name that already exists. Name is " + name + ".", LogCategory::Error);
 		return;
 	}
 
@@ -252,7 +251,7 @@ Shader& AssetManager::GetShader(const std::string& name)
 {
 	if (shaders.find(name) == shaders.end())
 	{
-		std::cout << "Asset Manager Error: Tried to get a shader with a name that doesn't exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to get a shader with a name that doesn't exists. Name is " + name + ".", LogCategory::Error);
 		return *shaders["null_shader"];
 	}
 
@@ -263,7 +262,7 @@ void AssetManager::DeleteShader(const std::string& name)
 {
 	if (shaders.find(name) == shaders.end())
 	{
-		std::cout << "Asset Manager Error: Tried to delete a shader with a name that doesn't exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to delete a shader with a name that doesn't exists. Name is " + name + ".", LogCategory::Error);
 		return;
 	}
 
@@ -280,7 +279,7 @@ Material& AssetManager::CreateMaterial(const std::string& name, Shader& shaderUs
 {
 	if (materials.find(name) != materials.end())
 	{
-		std::cout << "Asset Manager Error: Tried to create a material with a name that already exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to create a material with a name that already exists. Name is " + name + ".", LogCategory::Error);
 		return *materials["null_material"];
 	}
 
@@ -292,7 +291,7 @@ MaterialCollection& AssetManager::CreateMaterialCollection(const std::string& na
 {
 	if (materialsCollection.find(name) != materialsCollection.end())
 	{
-		std::cout << "Asset Manager Error: Tried to create a material collection with a name that already exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to create a material collection with a name that already exists. Name is " + name + ".", LogCategory::Error);
 		return *materialsCollection["null_mat_collection"];
 	}
 
@@ -304,7 +303,7 @@ Material& AssetManager::GetMaterial(const std::string& name)
 {
 	if (materials.find(name) == materials.end())
 	{
-		std::cout << "Asset Manager Error: Tried to get a material with a name that doesn't exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to get a material with a name that doesn't exists. Name is " + name + ".", LogCategory::Error);
 		return *materials["null_material"];
 	}
 
@@ -315,7 +314,7 @@ MaterialCollection& AssetManager::GetMaterialCollection(const std::string& name)
 {
 	if (materialsCollection.find(name) == materialsCollection.end())
 	{
-		std::cout << "Asset Manager Error: Tried to get a material collection with a name that doesn't exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to get a material collection with a name that doesn't exists. Name is " + name + ".", LogCategory::Error);
 		return *materialsCollection["null_mat_collection"];
 	}
 
@@ -326,7 +325,7 @@ void AssetManager::DeleteMaterial(const std::string& name)
 {
 	if (materials.find(name) == materials.end())
 	{
-		std::cout << "Asset Manager Error: Tried to delete a material with a name that doesn't exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to delete a material with a name that doesn't exists. Name is " + name + ".", LogCategory::Error);
 		return;
 	}
 
@@ -343,7 +342,7 @@ void AssetManager::LoadFont(const std::string& name, const std::string& fontPath
 {
 	if (fonts.find(name) != fonts.end())
 	{
-		std::cout << "Asset Manager Error: Tried to create a font with a name that already exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to create a font with a name that already exists. Name is " + name + ".", LogCategory::Error);
 		return;
 	}
 
@@ -354,7 +353,7 @@ Font& AssetManager::GetFont(const std::string& name)
 {
 	if (fonts.find(name) == fonts.end())
 	{
-		std::cout << "Asset Manager Error: Tried to get a font with a name that doesn't exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to get a font with a name that doesn't exists. Name is " + name + ".", LogCategory::Error);
 		return *fonts["null_font"];
 	}
 
@@ -365,7 +364,7 @@ void AssetManager::DeleteFont(const std::string& name)
 {
 	if (fonts.find(name) == fonts.end())
 	{
-		std::cout << "Asset Manager Error: Tried to delete a font with a name that doesn't exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to delete a font with a name that doesn't exists. Name is " + name + ".", LogCategory::Error);
 		return;
 	}
 
@@ -382,7 +381,7 @@ AudioSound& AssetManager::CreateSound(const std::string& name, const std::string
 {
 	if (sounds.find(name) != sounds.end())
 	{
-		std::cout << "Asset Manager Error: Tried to create a sound with a name that already exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to create a sound with a name that already exists. Name is " + name + ".", LogCategory::Error);
 		return *sounds["null_sound"];
 	}
 
@@ -395,7 +394,7 @@ AudioSound& AssetManager::GetSound(const std::string& name)
 {
 	if (sounds.find(name) == sounds.end())
 	{
-		std::cout << "Asset Manager Error: Tried to get a sound with a name that doesn't exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to get a sound with a name that doesn't exists. Name is " + name + ".", LogCategory::Error);
 		return *sounds["null_sound"];
 	}
 
@@ -406,7 +405,7 @@ void AssetManager::DeleteSound(const std::string& name)
 {
 	if (sounds.find(name) == sounds.end())
 	{
-		std::cout << "Asset Manager Error: Tried to delete a sound with a name that doesn't exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to delete a sound with a name that doesn't exists. Name is " + name + ".", LogCategory::Error);
 		return;
 	}
 
@@ -423,7 +422,7 @@ AudioCollisionOcclusion& AssetManager::RegisterAudioCollisionType(const std::str
 {
 	if (audioCollisionTypes.find(name) != audioCollisionTypes.end())
 	{
-		std::cout << "Asset Manager Error: Tried to create an audioCollisionType with a name that already exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to create an audioCollisionType with a name that already exists. Name is " + name + ".", LogCategory::Error);
 		return audioCollisionTypes["null_audio_collision_type"];
 	}
 
@@ -435,7 +434,7 @@ AudioCollisionOcclusion& AssetManager::GetAudioCollisionType(const std::string& 
 {
 	if (audioCollisionTypes.find(name) == audioCollisionTypes.end())
 	{
-		std::cout << "Asset Manager Error: Tried to get an audioCollisionType with a name that doesn't exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to get an audioCollisionType with a name that doesn't exists. Name is " + name + ".", LogCategory::Error);
 		return audioCollisionTypes["null_audio_collision_type"];
 	}
 
@@ -446,7 +445,7 @@ void AssetManager::DeleteAudioCollisionType(const std::string& name)
 {
 	if (audioCollisionTypes.find(name) == audioCollisionTypes.end())
 	{
-		std::cout << "Asset Manager Error: Tried to delete an audioCollisionType with a name that doesn't exists. Name is " << name << ".\n";
+		Locator::getLog().LogMessage_Category("Asset Manager: Tried to delete an audioCollisionType with a name that doesn't exists. Name is " + name + ".", LogCategory::Error);
 		return;
 	}
 

@@ -9,6 +9,7 @@
 #include <Utils/Color.h>
 
 #include <Physics/AABB/boxAABBColComp.h>
+#include <iostream>
 
 
 using Wall::WallObj;
