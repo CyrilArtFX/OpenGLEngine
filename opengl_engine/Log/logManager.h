@@ -1,6 +1,7 @@
 #pragma once
 #include <ServiceLocator/log.h>
 #include "logUtils.h"
+#include "logFile.h"
 #include <Rendering/Text/textRendererComponent.h>
 #include <Maths/Vector2.h>
 #include <unordered_map>
@@ -62,4 +63,6 @@ private:
 	};
 
 	std::vector<LogMessageScreen> logMessagesOnScreen;
+
+	LogFile logFileWriter;
 };

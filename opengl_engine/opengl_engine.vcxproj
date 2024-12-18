@@ -146,6 +146,7 @@
     <ClCompile Include="Audio\audioSound.cpp" />
     <ClCompile Include="Audio\audioSourceComponent.cpp" />
     <ClCompile Include="GameplayStatics\gameplayStatics.cpp" />
+    <ClCompile Include="Log\logFile.cpp" />
     <ClCompile Include="Log\logManager.cpp" />
     <ClCompile Include="Maths\Geometry\box.cpp" />
     <ClCompile Include="Maths\Geometry\ray.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="Events\event.h" />
     <ClInclude Include="Events\observer.h" />
     <ClInclude Include="GameplayStatics\gameplayStatics.h" />
+    <ClInclude Include="Log\logFile.h" />
     <ClInclude Include="Log\logManager.h" />
     <ClInclude Include="Log\logUtils.h" />
     <ClInclude Include="Maths\vector4.h" />

@@ -6,7 +6,7 @@
 
 LogManager::~LogManager()
 {
-	//LogMessage_Category("Log Manager destroyed.", LogCategory::Info);
+	logFileWriter.writeMessagesToFile();
 
 	logMessagesOnScreen.clear();
 
@@ -41,7 +41,7 @@ void LogManager::SetConsoleLogDisplayRule(LogCategory logCategory)
 
 void LogManager::initialize()
 {
-	// TODO: initialize log to file
+	//  nothing to initialize for now, but we never know
 }
 
 void LogManager::updateScreenLogs(float dt)
@@ -130,5 +130,5 @@ void LogManager::writeLogToFile(const std::string& logText, LogCategory logCateg
 {
 	if (logCategory < logCategoryDisplayRules[LogDisplay::LogFile]) return;
 
-	// TODO: write log to file
+	logFileWriter.addMessage(LogCategoryToString(logCategory) + logText);
 }

@@ -6,7 +6,8 @@
 	- Utiliser le log dans l'engine - fait
 	- Utiliser le log dans les jeux - fait
 	- Afficher les logs sur l'écran - fait
-	- Ecrire les logs dans un fichier
+	- Ecrire les logs dans un fichier - fait
+	- Se renseigner sur comment faire pour que le log dans le fichier se fasse même si le moteur crash en cours d'execution ?
 
 
 == MOYEN TERME ==
