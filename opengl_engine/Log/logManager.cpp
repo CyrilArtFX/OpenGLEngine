@@ -6,8 +6,7 @@
 
 LogManager::~LogManager()
 {
-	logFileWriter.writeMessagesToFile();
-
+	logFileWriter.exit();
 	logMessagesOnScreen.clear();
 
 	Locator::provideLog(nullptr);
@@ -41,7 +40,7 @@ void LogManager::SetConsoleLogDisplayRule(LogCategory logCategory)
 
 void LogManager::initialize()
 {
-	//  nothing to initialize for now, but we never know
+	logFileWriter.init();
 }
 
 void LogManager::updateScreenLogs(float dt)
