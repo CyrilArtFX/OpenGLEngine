@@ -1,39 +1,36 @@
 == COURT TERME ==
 
-~ Faire une classe debug qui permet de gérer les logs dans la console et sur l'écran (à la manière d'unreal) + fichier de log généré - fait
-	- Faire la structure du log manager - fait
-	- Print les logs dans la console - fait
-	- Utiliser le log dans l'engine - fait
-	- Utiliser le log dans les jeux - fait
-	- Afficher les logs sur l'écran - fait
-	- Ecrire les logs dans un fichier - fait
-	- Ecrire dans le fichier à chaque log pour les avoir même en cas de crash - fait
+~ Corriger le problème sur l'affichage des textures à longue distance (anisatropie)
+	https://www.youtube.com/watch?v=psD5Eoabbng
+
+~ Essayer de créer un custom memory manager (en vue de l'ECS)
+
+~ Intégrer l'ECS (la logique de base de l'ECS qui fait que les entités ne sont plus que des objets qui ont la référence de leurs components, mais les components ont une logique interne, donc pas un système aussi poussé que celui de FLECS, plus à la Unity)
 
 
 == MOYEN TERME ==
 
-~ Corriger le problème sur l'affichage des textures à longue distance (anti aliasing ? anisotropie truc ? (jsp))
-	(peut être regarder si ça vaut pas le coup de faire toute ou presque toute la partie Advanced OpenGL de learnopengl.com)
-
-~ Intégrer l'ECS (la logique de base de l'ECS qui fait que les entités ne sont plus que des objets qui ont la référence de leurs components, mais les components ont une logique interne, donc pas un système aussi poussé que celui de FLECS, plus à la Unity)
-	- Faire un custom memory manager ?
-
-~ Faire un éditeur de prefab (besoin d'un système de HUD plus poussé ?)
+~ Faire un éditeur de prefab (utiliser ImGUI pour l'interface pour pas perdre trop de temps)
 
 ~ Mettre de meilleurs visuels pour le doomlike en utilisant l'éditeur de prefab
 
 
-== LONG TERME ==
-
-~ Améliorer le système de lumière (tutos learnopengl.com)
-
-~ Faire le système des ombres (tutos learnopengl.com)
+== LONG TERME == (voir lequel de ces trois là est le plus important pour trouver un taff)
 
 ~ Mettre des particules (avec ces vidéos ? https://www.youtube.com/watch?v=4YhQJPD7ylQ)
 
 ~ Animations 3D : https://ogldev.org/www/tutorial38/tutorial38.html
 
 ~ Mettre un éditeur de level à partir de l'éditeur de prefabs
+
+
+== PROGRAMMATION GRAPHIQUE == (aka j'ai envie mais pas le focus principal (au moins jusqu'à ce que j'ai trouvé un taff))
+
+~ Partie "Advanced OpenGL" de learnopengl.com
+
+~ Partie "Advanced Lighting" de learnopengl.com
+
+~ Partie "PBR Lighting" de learnopengl.com
 
 
 == TRES LONG TERME == (aka ça sera jamais fait)
@@ -54,6 +51,8 @@
 ~ Mettre un text renderer component 3D
 
 ~ Opti le rendering de texte pour utiliser moins de matrices, générer une matrice transform pour tout le texte et passer les position et scale des char via un vec4 au shader qui se charge de la fin des calculs ?
+
+~ Etudier la question de la physique en fixed timestep (https://gafferongames.com/post/fix_your_timestep)
 
 
 == REFLEXIONS / PROBLEMES CONNUS ==
