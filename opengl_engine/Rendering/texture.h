@@ -1,6 +1,10 @@
 #pragma once
-#include <stb_image.h> //  stb_image must be included in a .h file unfortunately
 #include <string>
+
+
+//  define anisotropic filtering since it's not defined in glad
+#define GL_TEXTURE_MAX_ANISOTROPY_EXT 0x84FE
+#define GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT 0x84FF
 
 
 class Texture

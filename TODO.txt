@@ -1,8 +1,5 @@
 == COURT TERME ==
 
-~ Corriger le problème sur l'affichage des textures à longue distance (anisatropie)
-	https://www.youtube.com/watch?v=psD5Eoabbng
-
 ~ Essayer de créer un custom memory manager (en vue de l'ECS)
 
 ~ Intégrer l'ECS (la logique de base de l'ECS qui fait que les entités ne sont plus que des objets qui ont la référence de leurs components, mais les components ont une logique interne, donc pas un système aussi poussé que celui de FLECS, plus à la Unity)
