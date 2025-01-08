@@ -1,13 +1,28 @@
 == COURT TERME ==
 
-~ Essayer de créer un custom memory manager (en vue de l'ECS)
+~ Régler les warnings et rework les classes de maths pour qu'elles soient plus propres
 
 ~ Intégrer l'ECS (la logique de base de l'ECS qui fait que les entités ne sont plus que des objets qui ont la référence de leurs components, mais les components ont une logique interne, donc pas un système aussi poussé que celui de FLECS, plus à la Unity)
+	- Faire la structure de base de la classe Entity
+	- Modifier Game & Scene pour qu'ils puissent accueuillir des Entity
+	- Faire la structure de base des components
+	- Placer le rendering de mesh dans un component
+	- Placer les lumières dans des components
+	- Faire marcher cette base là (désactiver collision, audio & hud) avec le projet sandbox
+	- Intégrer le hud (sprite & texte) proprement dans la logique de component
+	- Intégrer l'audio proprement dans la logique de component
+	- Intégrer la physique proprement dans la logique de component
+	- Faire marcher tout ça bien toujours avec le projet sandbox
+	- Permettre la création de component "behavior" custom
+	- Modifier le code du doomlike pour utiliser ces components
+	- Faire marcher le doomlike avec toute la nouvelle logique
 
 
 == MOYEN TERME ==
 
-~ Faire un éditeur de prefab (utiliser ImGUI pour l'interface pour pas perdre trop de temps)
+~ Faire un éditeur d'assets (utiliser ImGUI pour l'interface)
+
+~ Etendre l'éditeur d'assets pour faire un éditeur de préfab
 
 ~ Mettre de meilleurs visuels pour le doomlike en utilisant l'éditeur de prefab
 
@@ -42,6 +57,8 @@
 == AUTRES ==
 
 ~ Finir les sons dans le doomlike (mouvement ennemis, mur qui bouge, lumière qui s'allume)
+
+~ Débloquer la limite de FPS
 
 ~ Réussir à intégrer les collisions des sons de FMod
 
