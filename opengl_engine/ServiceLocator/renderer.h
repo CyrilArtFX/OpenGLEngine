@@ -1,7 +1,7 @@
 #pragma once
 
 class Camera;
-class Color;
+struct Color;
 class Material;
 class Light;
 class Object;

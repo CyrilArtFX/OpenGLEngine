@@ -4,9 +4,8 @@
 #include "quaternion.h"
 #include <string>
 
-class Matrix4
+struct Matrix4
 {
-public:
 	float mat[4][4];
 
 	Matrix4()

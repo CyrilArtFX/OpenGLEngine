@@ -15,9 +15,9 @@ struct Vector2Int
 
 	Vector2Int() = default;
 	Vector2Int(int xP, int yP) : x{ xP }, y{ yP } {}
-	Vector2Int(const class Vector2 vec2, FloatToIntType floatToIntType);
+	Vector2Int(const struct Vector2 vec2, FloatToIntType floatToIntType);
 
-	void set(float xP, float yP);
+	void set(int xP, int yP);
 	float lengthSq() const;
 	float length() const;
 	

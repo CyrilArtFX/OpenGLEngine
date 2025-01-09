@@ -24,8 +24,8 @@ void DoomlikeGame::loadGameAssets()
 	log.SetConsoleLogDisplayRule(LogCategory::Info);
 
 	log.LogMessage_Category("Doomlike: Start loading doomlike assets...", LogCategory::Info);
-	float load_time = glfwGetTime();
-	float full_load_time = load_time;
+	double load_time = glfwGetTime();
+	double full_load_time = load_time;
 
 	Renderer& renderer = Locator::getRenderer();
 

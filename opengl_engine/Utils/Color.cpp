@@ -41,7 +41,7 @@ Color Color::HSV(float h, float s, float v)
     s /= 100;
     v /= 100;
     float c = s * v;
-    float x = c * (1 - abs(fmod(h / 60.0, 2) - 1));
+    float x = c * static_cast<float>((1.0 - abs(fmod(h / 60.0, 2.0) - 1.0)));
     float m = v - c;
     float r, g, b;
     if (h >= 0 && h < 60)
@@ -68,8 +68,8 @@ Color Color::HSV(float h, float s, float v)
     {
         r = c, g = 0, b = x;
     }
-    int R = (r + m) * 255;
-    int G = (g + m) * 255;
-    int B = (b + m) * 255;
+    int R = static_cast<int>(r + m) * 255;
+    int G = static_cast<int>(g + m) * 255;
+    int B = static_cast<int>(b + m) * 255;
     return Color{ R, G, B, 255 };
 }

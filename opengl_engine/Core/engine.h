@@ -47,25 +47,25 @@ private:
 	Window window;
 
 	//  renderer
-	RendererOpenGL* renderer;
+	RendererOpenGL* renderer{ nullptr };
 
 	//  audio manager
-	AudioManager* audio;
+	AudioManager* audio{ nullptr };
 
 	//  log manager
-	LogManager* log;
+	LogManager* log{ nullptr };
 
 	//  freecam
 	Camera freecam;
 
 	//  debug text
-	TextRendererComponent* fpsText;
+	TextRendererComponent* fpsText{ nullptr };
 	int frameCounter = 0;
 	float frameTimeCounter = 0.0f;
 
 	//  time
 	float deltaTime = 0.0f;
-	float lastFrame = 0.0f;
+	double lastFrame = 0.0f;
 
 	//  pause, freecam and debug view
 	bool gamePaused{ false };

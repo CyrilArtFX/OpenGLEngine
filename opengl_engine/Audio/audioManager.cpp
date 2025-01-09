@@ -700,7 +700,7 @@ void AudioManager::AddPolygonToCollision(const std::uint32_t index, const AudioC
 
 	//  add the polygon
 	FMOD_RESULT result;
-	result = collision_polygon->addPolygon(audioCollisionType.directOcclusion, audioCollisionType.reverbOcclusion, doubleSided, vertices.size(), &vertices_fmod[0], 0);
+	result = collision_polygon->addPolygon(audioCollisionType.directOcclusion, audioCollisionType.reverbOcclusion, doubleSided, static_cast<int>(vertices.size()), &vertices_fmod[0], 0);
 	if (result != FMOD_OK)
 	{
 		Locator::getLog().LogMessage_Category("Audio Manager: Failed to add a polygon to a collision." + ErrorFModString(result), LogCategory::Error);
@@ -768,6 +768,8 @@ ChannelSpatialization AudioManager::GetGroupSpatialization(FMOD::ChannelGroup* g
 	{
 		return ChannelSpatialization::Channel3D;
 	}
+
+	return ChannelSpatialization::Channel2D;
 }
 
 std::string AudioManager::ErrorFModString(FMOD_RESULT fmodError)

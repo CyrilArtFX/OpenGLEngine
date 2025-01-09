@@ -2,8 +2,8 @@
 
 void VertexArray::LoadVAMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
 {
-	nbVertices = vertices.size();
-	nbIndices = indices.size();
+	nbVertices = static_cast<unsigned int>(vertices.size());
+	nbIndices = static_cast<unsigned int>(indices.size());
 	useEBO = indices.size() > 0;
 
 	if (vertices.size() == 0) return;
@@ -15,13 +15,13 @@ void VertexArray::LoadVAMesh(const std::vector<Vertex>& vertices, const std::vec
 	glBindVertexArray(VAO); //  bind the VAO before binding the vertex buffer, and before configuring vertex attributes 
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, nbVertices * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
 
 	if (useEBO) //  setup EBO if specified
 	{
 		glGenBuffers(1, &EBO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, nbIndices * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 	}
 
 	//  position attribute

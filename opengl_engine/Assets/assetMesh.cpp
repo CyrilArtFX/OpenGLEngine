@@ -86,7 +86,7 @@ LoadMeshData AssetMesh::processMesh(aiMesh* mesh, aiNode* node, const aiScene* s
 
     //  vertices
     vertices.reserve(mesh->mNumVertices);
-    for (int i = 0; i < mesh->mNumVertices; i++)
+    for (unsigned int i = 0; i < mesh->mNumVertices; i++)
     {
         Vertex vertex;
 
@@ -127,7 +127,7 @@ LoadMeshData AssetMesh::processMesh(aiMesh* mesh, aiNode* node, const aiScene* s
     }
 
     //  indices
-    for (int i = 0; i < mesh->mNumFaces; i++)
+    for (unsigned int i = 0; i < mesh->mNumFaces; i++)
     {
         aiFace face = mesh->mFaces[i];
         for (unsigned int j = 0; j < face.mNumIndices; j++)

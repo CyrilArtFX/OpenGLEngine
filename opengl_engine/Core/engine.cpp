@@ -171,8 +171,8 @@ void Engine::run()
 	{
 		//  time logic part
 		// -----------------
-		float current_frame = glfwGetTime();
-		deltaTime = current_frame - lastFrame;
+		double current_frame = glfwGetTime();
+		deltaTime = static_cast<float>(current_frame - lastFrame);
 		lastFrame = current_frame;
 
 

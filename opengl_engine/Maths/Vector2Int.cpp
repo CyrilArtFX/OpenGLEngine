@@ -27,7 +27,7 @@ Vector2Int::Vector2Int(const Vector2 vec2, FloatToIntType floatToIntType)
 	}
 }
 
-void Vector2Int::set(float xP, float yP)
+void Vector2Int::set(int xP, int yP)
 {
 	x = xP;
 	y = yP;
@@ -35,7 +35,7 @@ void Vector2Int::set(float xP, float yP)
 
 float Vector2Int::lengthSq() const
 {
-	return x * x + y * y;
+	return static_cast<float>(x * x + y * y);
 }
 
 float Vector2Int::length() const

@@ -1,8 +1,7 @@
 #pragma once
 #include "vector3.h"
-class Quaternion
+struct Quaternion
 {
-public:
 	float x;
 	float y;
 	float z;

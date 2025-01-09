@@ -19,7 +19,7 @@ void RendererOpenGL::draw()
 
 
 	Matrix4 view = currentCam->getViewMatrix();
-	Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(currentCam->getFov()), windowSize.x, windowSize.y, 0.1f, 100.0f);
+	Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(currentCam->getFov()), static_cast<float>(windowSize.x), static_cast<float>(windowSize.y), 0.1f, 100.0f);
 
 	//  loop through all shaders
 	for (auto& materials_by_shaders : materials)
@@ -112,7 +112,7 @@ void RendererOpenGL::draw()
 
 	glDisable(GL_DEPTH_TEST);
 
-	Matrix4 hud_projection = Matrix4::createSimpleViewProj(windowSize.x, windowSize.y);
+	Matrix4 hud_projection = Matrix4::createSimpleViewProj(static_cast<float>(windowSize.x), static_cast<float>(windowSize.y));
 
 	//  prepare the shader used in text rendering
 	Shader& text_render_shader = AssetManager::GetShader("text_render");

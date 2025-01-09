@@ -88,7 +88,7 @@ void TextRendererComponent::recomputeTextSize()
 		{
 			//  if a line return is detected, compute the size of the line and add the line return offset
 			FontCharacter ch = textFont->getCharacter(*c);
-			text_height += ((ch.Size.y)) * 0.6f;
+			text_height += static_cast<int>(static_cast<float>(ch.Size.y) * 0.6f);
 
 			computeTextLineSize(text_line, text_width, text_height);
 			text_line.clear();

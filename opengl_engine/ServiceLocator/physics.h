@@ -3,7 +3,7 @@
 
 class CollisionComponent;
 class RigidbodyComponent;
-class Vector3;
+struct Vector3;
 class Box;
 class Material;
 

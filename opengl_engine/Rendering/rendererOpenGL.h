@@ -68,7 +68,7 @@ private:
 
 	Color clearColor{ Color::black };
 
-	Camera* currentCam;
+	Camera* currentCam{ nullptr };
 	Vector2Int windowSize;
 
 	

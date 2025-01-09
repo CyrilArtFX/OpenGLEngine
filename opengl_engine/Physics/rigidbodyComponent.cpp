@@ -148,7 +148,7 @@ bool RigidbodyComponent::checkStepMechanic(const CollisionComponent& collidedCom
 	if (stepHeight <= 0.0f)
 		return false; //  continue only if this rigidbody use step mechanic
 
-	if (!Maths::abs(Vector3::dot(Vector3::unitY, hitNormal)) < 0.5f)
+	if (!(Maths::abs(Vector3::dot(Vector3::unitY, hitNormal)) < 0.5f))
 		return false; //  continue only if collided with a wall
 
 	Box body_box = associatedCollision->getEncapsulatingBox();

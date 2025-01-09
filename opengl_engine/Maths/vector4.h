@@ -5,10 +5,8 @@
 /**
 * Vector4 type is mainly useful for passing datas to shaders.
 */
-class Vector4
+struct Vector4
 {
-	
-public:
 	float x;
 	float y;
 	float z;
