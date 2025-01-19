@@ -1,21 +1,34 @@
 #pragma once
+#include <Objects/transform.h>
 #include "component.h"
 #include <ServiceLocator/locator.h>
 #include <vector>
 
-class Entity
+class Entity : public Transform
 {
 public:
+	Entity();
+	~Entity();
+
+	Entity(const Entity&) = delete;
+	Entity& operator=(const Entity&) = delete;
+
+	/**
+	* Destroy an entity and all of its components.
+	*/
+	void destroyEntity();
+
 	/**
 	* Create a component attached to this entity.
-	* @param	args	The parameters of the constructor of the component.
-	* @return			The created component.
+	* @return	The created component.
 	*/
-	template<class T, typename... Args>
+	template<class T>
 	std::enable_if_t<std::is_base_of<Component, T>::value, T*>
-		addComponentByClass(Args&&... args)
+		addComponentByClass()
 	{
-		//  not sure if I do it like this or if I force every components to have no parameters in their constructor
+		components.emplace_back(new Component(this));
+
+		return components.back();
 	}
 
 
@@ -71,6 +84,17 @@ public:
 		return components;
 	}
 
+	/**
+	* Remove a component of this entity.
+	* @param	component	The component to remove.
+	*/
+	void removeComponent(Component* component);
+
 private:
 	std::vector<Component*> components;
+
+	bool entityDestoyed{ false };
+
+
+	void clearComponents();
 };
