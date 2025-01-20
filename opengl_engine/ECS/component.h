@@ -5,13 +5,13 @@ class Entity;
 class Component
 {
 public:
-	Component() = delete;
+	Component();
+	~Component();
+
 	Component(const Component&) = delete;
 	Component& operator=(const Component&) = delete;
 
-	Component(Entity* owner_);
-	~Component();
-
+	/** Get the Entity that owns this component. */
 	Entity* getOwner() const;
 
 	/** Called after the component has been created. */
@@ -24,8 +24,10 @@ protected:
 	virtual void unregisterComponent() = 0;
 
 private:
-	Entity* owner;
+	Entity* owner{ nullptr };
 
-	bool componentRegistered;
+	bool componentRegistered{ false };
+
+	void setOwner(Entity* owner_);
 };
 

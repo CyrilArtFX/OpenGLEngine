@@ -21,7 +21,8 @@ void Entity::removeComponent(Component* component)
 	auto iter = std::find(components.begin(), components.end(), component);
 	if (iter != components.end())
 	{
-		delete &iter;
+		(*iter)->unregisterComponent();
+		delete *iter;
 		components.erase(iter);
 	}
 }
@@ -30,6 +31,7 @@ void Entity::clearComponents()
 {
 	for (auto& component : components)
 	{
+		component->unregisterComponent();
 		delete component;
 	}
 	components.clear();

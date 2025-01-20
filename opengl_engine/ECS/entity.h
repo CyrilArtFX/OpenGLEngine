@@ -26,9 +26,11 @@ public:
 	std::enable_if_t<std::is_base_of<Component, T>::value, T*>
 		addComponentByClass()
 	{
-		components.emplace_back(new Component(this));
+		components.emplace_back(new T());
+		components.back()->setOwner(this);
+		components.back()->registerComponent();
 
-		return components.back();
+		return static_cast<T*>(components.back());
 	}
 
 
