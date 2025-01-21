@@ -2,7 +2,7 @@
 
 ~ Intégrer l'ECS (la logique de base de l'ECS qui fait que les entités ne sont plus que des objets qui ont la référence de leurs components, mais les components ont une logique interne, donc pas un système aussi poussé que celui de FLECS, plus à la Unity)
 	- Faire la structure de base des classes Entity & Component - fait
-	- Modifier Game & Scene pour qu'ils puissent accueuillir des Entity
+	- Modifier Game & Scene pour qu'ils puissent accueuillir des Entity - en cours
 	- Placer le rendering de mesh dans un component
 	- Placer les lumières dans des components
 	- Faire marcher cette base là (désactiver collision, audio & hud) avec le projet sandbox

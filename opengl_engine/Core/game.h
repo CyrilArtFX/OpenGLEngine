@@ -1,9 +1,10 @@
 #pragma once
+#include <ECS/entityContainer.h>
 #include "scene.h"
 
 class Camera;
 
-class Game
+class Game : EntityContainer
 {
 public:
 	virtual ~Game() {}

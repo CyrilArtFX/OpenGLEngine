@@ -1,12 +1,14 @@
 #pragma once
+#include <ECS/entityContainer.h>
 #include <Rendering/camera.h>
 
 #include <vector>
 
 class Object;
 class Light;
+class Entity;
 
-class Scene
+class Scene : EntityContainer
 {
 public:
 	virtual ~Scene() {} 
