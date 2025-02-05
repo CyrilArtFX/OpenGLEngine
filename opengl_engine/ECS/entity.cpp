@@ -1,7 +1,8 @@
 #include "entity.h"
+#include "entityContainer.h"
 #include <algorithm>
 
-Entity::Entity() : Transform()
+Entity::Entity(EntityContainer& containerRef_) : Transform(), containerRef(containerRef_)
 {
 }
 
@@ -12,8 +13,8 @@ Entity::~Entity()
 
 void Entity::destroyEntity()
 {
-	//  at the end of the frame, the scene this entity is on will delete this entity
-	entityDestoyed = true;
+	//  at the end of the frame, the container this entity is on will delete this entity
+	containerRef.addPendingEntity(this);
 }
 
 void Entity::removeComponent(Component* component)

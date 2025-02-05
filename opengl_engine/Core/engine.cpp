@@ -188,13 +188,13 @@ void Engine::run()
 
 		if (!gamePaused || (gamePaused && oneFrame))
 		{
+			if (game) game->update(deltaTime);
+
+			// TODO: Update custom components here
+
 			Locator::getPhysics().UpdatePhysics(deltaTime);
 
-			if (game)
-			{
-				game->updateGame(deltaTime);
-				game->updateScene(deltaTime);
-			}
+			if (game) game->lateUpdate();
 
 			oneFrame = false;
 		}

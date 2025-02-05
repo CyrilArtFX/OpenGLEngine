@@ -22,6 +22,8 @@ void ExpositionScene::loadScene()
 	currentCam = &camera;
 	renderer.SetCamera(&camera);
 
+	test_entity_1 = createEntity();
+
 
 	//  objects
 	cube1.addModel(&AssetManager::GetModel("container"));
@@ -34,15 +36,6 @@ void ExpositionScene::loadScene()
 	lightCube2.addModel(&AssetManager::GetModel("light_cube"));
 
 	soundWall.addModel(&AssetManager::GetModel("container"));
-
-
-	registerObject(&cube1);
-	registerObject(&cube2);
-	registerObject(&cube3);
-	registerObject(&backpack);
-	registerObject(&lightCube1);
-	registerObject(&lightCube2);
-	registerObject(&soundWall);
 
 	cube1.setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
 	cube1.setRotation(Quaternion{ Vector3::unitY, Maths::toRadians(45.0f) });
@@ -77,11 +70,6 @@ void ExpositionScene::loadScene()
 	pointLight1.load(Color::white, Vector3{ 1.0f, 2.0f, 1.0f });
 	pointLight2.load(Color::white, Vector3{ 1.5f, 1.0f, -0.5f });
 	flashLight.load(Color::white, Vector3::zero, Vector3::unitX);
-
-	registerLight(&sunLight);
-	registerLight(&pointLight1);
-	registerLight(&pointLight2);
-	registerLight(&flashLight);
 
 
 	//  text
@@ -137,7 +125,7 @@ void ExpositionScene::updateScene(float dt)
 
 	sandboxSprite->setRotAngle(Maths::fmod(sandboxSprite->getRotAngle() + dt * 180.0f, 360.0f));
 
-	if (Input::IsKeyDown(GLFW_KEY_E))
+	if (Input::IsKeyPressed(GLFW_KEY_E))
 	{
 		textAnimationTimer = 0.0f;
 		sandboxText->setPos(Vector2{ 400.0f, -250.0f });
@@ -155,5 +143,11 @@ void ExpositionScene::updateScene(float dt)
 			sandboxText->setRotAngle(0.0f);
 			sandboxText->setPos(Vector2{ 120.0f, -20.0f });
 		}
+	}
+
+	if (Input::IsKeyPressed(GLFW_KEY_F) && test_entity_1)
+	{
+		test_entity_1->destroyEntity();
+		test_entity_1 = nullptr;
 	}
 }

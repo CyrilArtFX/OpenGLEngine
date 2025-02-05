@@ -17,4 +17,6 @@ protected:
 
 private:
 	ExpositionScene expositionScene;
+
+	Entity* test_game_entity{ nullptr };
 };

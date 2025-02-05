@@ -69,6 +69,8 @@ void ExpositionGame::loadGameAssets()
 
 void ExpositionGame::loadGame()
 {
+	test_game_entity = createEntity();
+
 	loadScene(&expositionScene);
 }
 

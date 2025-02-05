@@ -4,17 +4,21 @@
 #include <ServiceLocator/locator.h>
 #include <vector>
 
+class EntityContainer;
+
 class Entity : public Transform
 {
 public:
-	Entity();
+	Entity(EntityContainer& containerRef_);
 	~Entity();
 
+	Entity() = delete;
 	Entity(const Entity&) = delete;
 	Entity& operator=(const Entity&) = delete;
 
 	/**
 	* Destroy an entity and all of its components.
+	* Will take effect at the end of the frame (to avoid issues with the physics and audio updates).
 	*/
 	void destroyEntity();
 
@@ -95,8 +99,7 @@ public:
 private:
 	std::vector<Component*> components;
 
-	bool entityDestoyed{ false };
-
+	EntityContainer& containerRef;
 
 	void clearComponents();
 };
