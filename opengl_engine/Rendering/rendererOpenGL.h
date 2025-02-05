@@ -8,8 +8,8 @@
 #include <Maths/vector4.h>
 
 #include "camera.h"
-#include <Objects/Lights/light.h>
 #include <Rendering/material.h>
+#include <Rendering/Lights/lightComponent.h>
 #include <Rendering/modelRendererComponent.h>
 #include <Rendering/Text/textRendererComponent.h>
 #include <Rendering/Hud/spriteRendererComponent.h>
@@ -44,8 +44,8 @@ public:
 	void AddMaterial(Material* material) override;
 	void RemoveMaterial(Material* material) override;
 
-	void AddLight(Light* light) override;
-	void RemoveLight(Light* light) override;
+	void AddLight(LightComponent* light) override;
+	void RemoveLight(LightComponent* light) override;
 
 	void AddModelRenderer(ModelRendererComponent* modelRenderer) override;
 	void RemoveModelRenderer(ModelRendererComponent* modelRenderer) override;
@@ -60,7 +60,7 @@ public:
 
 
 private:
-	std::unordered_map<LightType, std::vector<Light*>> lights;
+	std::unordered_map<LightType, std::vector<LightComponent*>> lights;
 	std::unordered_map<Shader*, std::vector<Material*>> materials;
 	std::vector<ModelRendererComponent*> modelRenderers;
 	std::vector<TextRendererComponent*> texts;

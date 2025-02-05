@@ -18,8 +18,8 @@ public:
 	void AddMaterial(Material* material) override {}
 	void RemoveMaterial(Material* material) override {}
 
-	void AddLight(Light* light) override {}
-	void RemoveLight(Light* light) override {}
+	void AddLight(LightComponent* light) override {}
+	void RemoveLight(LightComponent* light) override {}
 
 	void AddModelRenderer(ModelRendererComponent* modelRenderer) override {}
 	void RemoveModelRenderer(ModelRendererComponent* modelRenderer) override {}

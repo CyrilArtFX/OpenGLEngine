@@ -36,6 +36,7 @@ private:
 	Camera camera;
 
 	Entity* test_entity_1{ nullptr };
+	Entity* test_entity_2{ nullptr };
 
 	Object cube1;
 	Object cube2;

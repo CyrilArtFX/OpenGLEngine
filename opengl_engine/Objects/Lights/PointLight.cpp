@@ -17,7 +17,7 @@ void PointLight::load(Color lightColor_, Vector3 position_, float ambientStrengt
 	ambientStrength = ambientStrength_;
 	diffuseStrength = diffuseStrength_;
 
-	lightType = LightType::EPointLight;
+	lightType = OldLightType::OldPointLight;
 	loaded = true;
 }
 

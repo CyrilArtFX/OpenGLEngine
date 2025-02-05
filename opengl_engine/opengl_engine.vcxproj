@@ -187,6 +187,11 @@
     <ClCompile Include="Rendering\Debug\line.cpp" />
     <ClCompile Include="Rendering\Debug\point.cpp" />
     <ClCompile Include="Rendering\Hud\hudComponent.cpp" />
+    <ClCompile Include="Rendering\Lights\directionalLightComponent.cpp" />
+    <ClCompile Include="Rendering\Lights\lightComponent.cpp" />
+    <ClCompile Include="Rendering\Lights\pointLightComponent.cpp" />
+    <ClCompile Include="Rendering\Lights\positionBasedLight.cpp" />
+    <ClCompile Include="Rendering\Lights\spotLightComponent.cpp" />
     <ClCompile Include="Rendering\material.cpp" />
     <ClCompile Include="Rendering\modelRendererComponent.cpp" />
     <ClCompile Include="Rendering\Model\mesh.cpp" />
@@ -257,6 +262,11 @@
     <ClInclude Include="Rendering\camera.h" />
     <ClInclude Include="Rendering\Debug\point.h" />
     <ClInclude Include="Rendering\Hud\hudComponent.h" />
+    <ClInclude Include="Rendering\Lights\directionalLightComponent.h" />
+    <ClInclude Include="Rendering\Lights\lightComponent.h" />
+    <ClInclude Include="Rendering\Lights\pointLightComponent.h" />
+    <ClInclude Include="Rendering\Lights\positionBasedLight.h" />
+    <ClInclude Include="Rendering\Lights\spotLightComponent.h" />
     <ClInclude Include="Rendering\material.h" />
     <ClInclude Include="Rendering\modelRendererComponent.h" />
     <ClInclude Include="Rendering\Model\mesh.h" />

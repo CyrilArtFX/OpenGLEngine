@@ -22,7 +22,7 @@ void SpotLight::load(Color lightColor_, Vector3 position_, Vector3 direction_,
 	ambientStrength = ambientStrength_;
 	diffuseStrength = diffuseStrength_;
 
-	lightType = LightType::ESpotLight;
+	lightType = OldLightType::OldSpotLight;
 	loaded = true;
 }
 

@@ -2,6 +2,9 @@
 #include <ECS/component.h>
 #include <Rendering/Model/model.h>
 
+/** Model Renderer Component
+* A component that will render a Model.
+*/
 class ModelRendererComponent : public Component
 {
 public:

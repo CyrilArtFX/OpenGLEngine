@@ -3,12 +3,12 @@
 #include <Utils/color.h>
 
 
-enum LightType : uint8_t
+enum OldLightType : uint8_t
 {
-	EUndefinedLight = 0,
-	EDirectionalLight = 1,
-	EPointLight = 2,
-	ESpotLight = 3
+	OldUndefinedLight = 0,
+	OldDirectionalLight = 1,
+	OldPointLight = 2,
+	OldSpotLight = 3
 };
 
 
@@ -31,7 +31,7 @@ public:
 	inline float getDiffuseStrength() { return diffuseStrength; }
 
 
-	inline LightType getLightType() { return lightType; }
+	inline OldLightType getLightType() { return lightType; }
 		 
 	inline bool isLoaded() { return loaded; }
 
@@ -47,5 +47,5 @@ protected:
 	float ambientStrength{ 0.01f };
 	float diffuseStrength{ 0.7f };
 
-	LightType lightType{ EUndefinedLight };
+	OldLightType lightType{ OldUndefinedLight };
 };

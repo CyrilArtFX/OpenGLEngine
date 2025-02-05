@@ -46,9 +46,9 @@ void RendererOpenGL::draw()
 				int light_type_used = 0;
 				for (auto light : light_t.second)
 				{
-					if (!light->isLoaded()) continue;
+					if (!light->isInitialized()) continue;
 
-					light->use(*shader, light_type_used);
+					light->useLight(*shader, light_type_used);
 
 					light_type_used++;
 					if (light_type_used >= LIGHTS_LIMITS.at(light_type))
@@ -306,7 +306,7 @@ void RendererOpenGL::RemoveMaterial(Material* material)
 }
 
 
-void RendererOpenGL::AddLight(Light* light)
+void RendererOpenGL::AddLight(LightComponent* light)
 {
 	lights[light->getLightType()].push_back(light);
 
@@ -316,7 +316,7 @@ void RendererOpenGL::AddLight(Light* light)
 	}
 }
 
-void RendererOpenGL::RemoveLight(Light* light)
+void RendererOpenGL::RemoveLight(LightComponent* light)
 {
 	auto iter = std::find(lights[light->getLightType()].begin(), lights[light->getLightType()].end(), light);
 	if (iter == lights[light->getLightType()].end())

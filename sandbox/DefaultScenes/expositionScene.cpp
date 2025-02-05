@@ -1,6 +1,8 @@
 #include "ExpositionScene.h"
 #include <ServiceLocator/locator.h>
 #include <Rendering/modelRendererComponent.h>
+#include <Rendering/Lights/directionalLightComponent.h>
+#include <Rendering/Lights/pointLightComponent.h>
 
 #include <Inputs/input.h>
 #include <GLFW/glfw3.h>
@@ -28,6 +30,11 @@ void ExpositionScene::loadScene()
 	test_entity_1->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("container"));
 	test_entity_1->setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
 	test_entity_1->setRotation(Quaternion{ Vector3::unitY, Maths::toRadians(45.0f) });
+
+	createEntity()->addComponentByClass<DirectionalLightComponent>()->initialize(Color::white, Vector3{ -0.4f, -0.5f, 1.0f });
+
+	test_entity_2 = createEntity();
+	test_entity_2->addComponentByClass<PointLightComponent>()->initialize(Color::white, Vector3{ 1.0f, 2.0f, 1.0f });
 
 
 	//  objects
@@ -148,9 +155,15 @@ void ExpositionScene::updateScene(float dt)
 		}
 	}
 
-	if (Input::IsKeyPressed(GLFW_KEY_F) && test_entity_1)
+	if (Input::IsKeyPressed(GLFW_KEY_KP_1) && test_entity_1)
 	{
 		test_entity_1->destroyEntity();
 		test_entity_1 = nullptr;
+	}
+
+	if (Input::IsKeyPressed(GLFW_KEY_KP_2) && test_entity_2)
+	{
+		test_entity_2->destroyEntity();
+		test_entity_2 = nullptr;
 	}
 }

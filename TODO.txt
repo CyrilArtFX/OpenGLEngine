@@ -4,7 +4,7 @@
 	- Faire la structure de base des classes Entity & Component - fait
 	- Modifier Game & Scene pour qu'ils puissent accueuillir des Entity - fait
 	- Placer le rendering de mesh dans un component - fait
-	- Placer les lumières dans des components
+	- Placer les lumières dans des components - en cours
 	- Faire marcher cette base là (désactiver collision, audio & hud) avec le projet sandbox
 	- Rework la camera et faire marcher ça en component (?)
 	- Intégrer le hud (sprite & texte) proprement dans la logique de component
@@ -14,6 +14,7 @@
 	- Permettre la création de component "behavior" custom
 	- Modifier le code du doomlike pour utiliser ces components
 	- Faire marcher le doomlike avec toute la nouvelle logique
+	- Clean le moteur des classes obsolètes (Object, Light, etc.)
 
 
 == MOYEN TERME ==
@@ -53,6 +54,8 @@
 
 
 == AUTRES ==
+
+~ Rework le système de light 'activée' (juste skip la light dans la boucle de rendering si elle est pas active)
 
 ~ Finir les sons dans le doomlike (mouvement ennemis, mur qui bouge, lumière qui s'allume)
 

@@ -3,8 +3,7 @@
 class Camera;
 struct Color;
 class Material;
-class Light;
-class Object;
+class LightComponent;
 class ModelRendererComponent;
 class TextRendererComponent;
 class SpriteRendererComponent;
@@ -59,16 +58,16 @@ public:
 
 
 	/**
-	* Register a light to the renderer.
-	* @param	light	The light to register.
+	* Register a light component to the renderer.
+	* @param	light	The light component to register.
 	*/
-	virtual void AddLight(Light* light) = 0;
+	virtual void AddLight(LightComponent* light) = 0;
 
 	/**
-	* Unregister a light from the renderer.
-	* @param	light	The light to unregister.
+	* Unregister a light component from the renderer.
+	* @param	light	The light component to unregister.
 	*/
-	virtual void RemoveLight(Light* light) = 0;
+	virtual void RemoveLight(LightComponent* light) = 0;
 
 
 	/**
