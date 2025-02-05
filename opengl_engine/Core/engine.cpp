@@ -194,8 +194,6 @@ void Engine::run()
 
 			Locator::getPhysics().UpdatePhysics(deltaTime);
 
-			if (game) game->lateUpdate();
-
 			oneFrame = false;
 		}
 
@@ -215,6 +213,9 @@ void Engine::run()
 		//  log part
 		// ----------
 		log->updateScreenLogs(deltaTime);
+
+
+		if (game) game->lateUpdate();
 
 
 		//  events and buffer swap part

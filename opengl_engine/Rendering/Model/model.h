@@ -22,6 +22,10 @@ public:
 	Model(const Model&) = delete;
 	Model& operator=(const Model&) = delete;
 
+	/**
+	* Draw the model.
+	* This function is called by the rendering sequence, do not call it manually.
+	*/
 	void draw(Material& materialInUsage);
 
 	/**
@@ -43,6 +47,11 @@ public:
 	* Change the material of meshes that uses this material ID. 
 	*/
 	void changeMaterial(int materialId, Material& newMaterial);
+
+	/**
+	* Return true if the model uses this material for at least one of its meshes.
+	*/
+	bool useMaterial(Material& material);
 
 private:
 	std::vector<MeshMaterial> meshMaterials;

@@ -1,5 +1,6 @@
 #include "ExpositionScene.h"
 #include <ServiceLocator/locator.h>
+#include <Rendering/modelRendererComponent.h>
 
 #include <Inputs/input.h>
 #include <GLFW/glfw3.h>
@@ -22,7 +23,11 @@ void ExpositionScene::loadScene()
 	currentCam = &camera;
 	renderer.SetCamera(&camera);
 
+
 	test_entity_1 = createEntity();
+	test_entity_1->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("container"));
+	test_entity_1->setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
+	test_entity_1->setRotation(Quaternion{ Vector3::unitY, Maths::toRadians(45.0f) });
 
 
 	//  objects
@@ -128,7 +133,6 @@ void ExpositionScene::updateScene(float dt)
 	if (Input::IsKeyPressed(GLFW_KEY_E))
 	{
 		textAnimationTimer = 0.0f;
-		sandboxText->setPos(Vector2{ 400.0f, -250.0f });
 	}
 
 	if (textAnimationTimer >= 0.0f)
@@ -141,7 +145,6 @@ void ExpositionScene::updateScene(float dt)
 		{
 			textAnimationTimer = -1.0f;
 			sandboxText->setRotAngle(0.0f);
-			sandboxText->setPos(Vector2{ 120.0f, -20.0f });
 		}
 	}
 

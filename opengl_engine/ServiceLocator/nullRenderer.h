@@ -21,8 +21,8 @@ public:
 	void AddLight(Light* light) override {}
 	void RemoveLight(Light* light) override {}
 
-	void AddObject(Object* object) override {}
-	void RemoveObject(Object* object) override {}
+	void AddModelRenderer(ModelRendererComponent* modelRenderer) override {}
+	void RemoveModelRenderer(ModelRendererComponent* modelRenderer) override {}
 
 	void AddText(TextRendererComponent* text) override {}
 	void RemoveText(TextRendererComponent* text) override {}

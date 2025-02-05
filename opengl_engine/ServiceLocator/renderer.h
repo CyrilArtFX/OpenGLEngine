@@ -5,6 +5,7 @@ struct Color;
 class Material;
 class Light;
 class Object;
+class ModelRendererComponent;
 class TextRendererComponent;
 class SpriteRendererComponent;
 
@@ -71,16 +72,16 @@ public:
 
 
 	/**
-	* Register an object to the renderer.
-	* @param	object	The object to register.
+	* Register a model renderer component to the renderer.
+	* @param	modelRenderer	The model renderer component to register.
 	*/
-	virtual void AddObject(Object* object) = 0;
+	virtual void AddModelRenderer(ModelRendererComponent* modelRenderer) = 0;
 
 	/**
-	* Unregister an object from the renderer.
-	* @param	object	The object to unregister.
+	* Unregister a model renderer component from the renderer.
+	* @param	modelRenderer	The model renderer component to unregister.
 	*/
-	virtual void RemoveObject(Object* object) = 0;
+	virtual void RemoveModelRenderer(ModelRendererComponent* modelRenderer) = 0;
 
 
 	/**

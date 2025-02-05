@@ -84,10 +84,10 @@ void RendererOpenGL::draw()
 
 			material->use();
 
-			//  loop through all objects to draw all meshes that uses the material
-			for (auto& object : objects)
+			//  loop through all model renderer components to draw all meshes that uses the material
+			for (auto& model_renderer : modelRenderers)
 			{
-				object->draw(*material);
+				if (model_renderer->useMaterial(*material)) model_renderer->draw(*material);
 			}
 		}
 	}
@@ -330,22 +330,22 @@ void RendererOpenGL::RemoveLight(Light* light)
 }
 
 
-void RendererOpenGL::AddObject(Object* object)
+void RendererOpenGL::AddModelRenderer(ModelRendererComponent* modelRenderer)
 {
-	objects.push_back(object);
+	modelRenderers.push_back(modelRenderer);
 }
 
-void RendererOpenGL::RemoveObject(Object* object)
+void RendererOpenGL::RemoveModelRenderer(ModelRendererComponent* modelRenderer)
 {
-	auto iter = std::find(objects.begin(), objects.end(), object);
-	if (iter == objects.end())
+	auto iter = std::find(modelRenderers.begin(), modelRenderers.end(), modelRenderer);
+	if (iter == modelRenderers.end())
 	{
-		Locator::getLog().LogMessage_Category("Renderer: Tried to remove an object that doesn't exist.", LogCategory::Error);
+		Locator::getLog().LogMessage_Category("Renderer: Tried to remove a model renderer that doesn't exist.", LogCategory::Error);
 		return;
 	}
 
-	std::iter_swap(iter, objects.end() - 1);
-	objects.pop_back();
+	std::iter_swap(iter, modelRenderers.end() - 1);
+	modelRenderers.pop_back();
 }
 
 

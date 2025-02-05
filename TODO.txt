@@ -3,9 +3,10 @@
 ~ Intégrer l'ECS (la logique de base de l'ECS qui fait que les entités ne sont plus que des objets qui ont la référence de leurs components, mais les components ont une logique interne, donc pas un système aussi poussé que celui de FLECS, plus à la Unity)
 	- Faire la structure de base des classes Entity & Component - fait
 	- Modifier Game & Scene pour qu'ils puissent accueuillir des Entity - fait
-	- Placer le rendering de mesh dans un component
+	- Placer le rendering de mesh dans un component - fait
 	- Placer les lumières dans des components
 	- Faire marcher cette base là (désactiver collision, audio & hud) avec le projet sandbox
+	- Rework la camera et faire marcher ça en component (?)
 	- Intégrer le hud (sprite & texte) proprement dans la logique de component
 	- Intégrer l'audio proprement dans la logique de component
 	- Intégrer la physique proprement dans la logique de component
@@ -68,7 +69,7 @@
 
 == REFLEXIONS / PROBLEMES CONNUS ==
 
-~ Trouver une solution pour les problèmes de rotations avec la caméra qui fait qu'on ne peut pas lui forcer une rotation sans casser le système de pitch et de yaw intégré.
+~ Trouver une solution pour les problèmes de rotations avec la caméra qui fait qu'on ne peut pas lui forcer une rotation sans casser le système de pitch et de yaw intégré - à voir avec le rework de la caméra pour l'ECS
 
 ~ Le look at rotation des ennemis du doomlike bug un petit peu ?
 

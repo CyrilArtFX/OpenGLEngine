@@ -61,3 +61,13 @@ void Model::changeMaterial(int materialId, Material& newMaterial)
 		}
 	}
 }
+
+bool Model::useMaterial(Material& material)
+{
+	for (auto& mesh_material : meshMaterials)
+	{
+		if (*mesh_material.material == material) return true;
+	}
+
+	return false;
+}

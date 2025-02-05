@@ -188,6 +188,7 @@
     <ClCompile Include="Rendering\Debug\point.cpp" />
     <ClCompile Include="Rendering\Hud\hudComponent.cpp" />
     <ClCompile Include="Rendering\material.cpp" />
+    <ClCompile Include="Rendering\modelRendererComponent.cpp" />
     <ClCompile Include="Rendering\Model\mesh.cpp" />
     <ClCompile Include="Rendering\Model\model.cpp" />
     <ClCompile Include="Rendering\rendererOpenGL.cpp" />
@@ -257,6 +258,7 @@
     <ClInclude Include="Rendering\Debug\point.h" />
     <ClInclude Include="Rendering\Hud\hudComponent.h" />
     <ClInclude Include="Rendering\material.h" />
+    <ClInclude Include="Rendering\modelRendererComponent.h" />
     <ClInclude Include="Rendering\Model\mesh.h" />
     <ClInclude Include="Rendering\Model\model.h" />
     <ClInclude Include="Rendering\rendererOpenGL.h" />
