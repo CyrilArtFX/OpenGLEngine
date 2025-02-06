@@ -14,14 +14,14 @@ public:
 	/** Get the Entity that owns this component. */
 	Entity* getOwner() const;
 
-	/** Called after the component has been created. */
-	virtual void init() {};
-
 protected:
 	friend class Entity;
 
 	virtual void registerComponent() = 0;
 	virtual void unregisterComponent() = 0;
+
+	/** Called after the component has been created, but before it is registered. */
+	virtual void init() {};
 
 private:
 	Entity* owner{ nullptr };

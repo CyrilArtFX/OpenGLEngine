@@ -7,14 +7,14 @@ LightType LightComponent::getLightType()
 	return lightType;
 }
 
-bool LightComponent::isInitialized()
-{
-	return initialized;
-}
-
 void LightComponent::setActive(bool activeValue)
 {
 	active = activeValue;
+}
+
+bool LightComponent::isActive()
+{
+	return active;
 }
 
 

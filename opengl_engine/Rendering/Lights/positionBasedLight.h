@@ -18,6 +18,8 @@ public:
 	Vector3 getPosition() const;
 
 
+	void setFalloff(float newConstant, float newLinear, float newQuadratic);
+
 	void setOffset(Vector3 newOffset);
 	void setConstant(float newConstant);
 	void setLinear(float newLinear);
@@ -36,8 +38,8 @@ protected:
 	Vector3 offset{ Vector3::zero };
 	Vector3 position{ Vector3::zero };
 
-	float constant{ 0.0f };
-	float linear{ 0.0f };
-	float quadratic{ 0.0f };
+	float constant{ 1.0f };
+	float linear{ 0.09f };
+	float quadratic{ 0.032f };
 };
 

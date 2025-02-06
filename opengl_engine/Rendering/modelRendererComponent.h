@@ -39,6 +39,6 @@ protected:
 	virtual void registerComponent() override;
 	virtual void unregisterComponent() override;
 
-	Model* model;
+	Model* model{ nullptr };
 };
 

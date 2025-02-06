@@ -31,10 +31,13 @@ void ExpositionScene::loadScene()
 	test_entity_1->setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
 	test_entity_1->setRotation(Quaternion{ Vector3::unitY, Maths::toRadians(45.0f) });
 
-	createEntity()->addComponentByClass<DirectionalLightComponent>()->initialize(Color::white, Vector3{ -0.4f, -0.5f, 1.0f });
+	DirectionalLightComponent* dir_light = createEntity()->addComponentByClass<DirectionalLightComponent>();
+	dir_light->setDirection(Vector3{ -0.4f, -0.5f, 1.0f });
 
 	test_entity_2 = createEntity();
-	test_entity_2->addComponentByClass<PointLightComponent>()->initialize(Color::white, Vector3{ 1.0f, 2.0f, 1.0f });
+	test_entity_2->addComponentByClass<PointLightComponent>();
+	test_entity_2->getComponentByClass<PointLightComponent>()->setColor(Color::cyan);
+	test_entity_2->setPosition(Vector3{ 1.0f, 0.0f, 1.0f });
 
 
 	//  objects
@@ -165,5 +168,11 @@ void ExpositionScene::updateScene(float dt)
 	{
 		test_entity_2->destroyEntity();
 		test_entity_2 = nullptr;
+	}
+
+	if (Input::IsKeyPressed(GLFW_KEY_KP_0) && test_entity_2)
+	{
+		PointLightComponent* point_light = test_entity_2->getComponentByClass<PointLightComponent>();
+		point_light->setActive(!point_light->isActive());
 	}
 }

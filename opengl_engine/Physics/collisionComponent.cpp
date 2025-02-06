@@ -68,7 +68,7 @@ const Matrix4 CollisionComponent::getModelMatrix() const
 {
 	if (!associatedObject) return Matrix4::identity;
 
-	return associatedObject->getModelMatrixConst();
+	return associatedObject->getModelMatrix();
 }
 
 void CollisionComponent::resetIntersected()

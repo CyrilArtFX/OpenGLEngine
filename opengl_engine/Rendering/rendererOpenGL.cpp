@@ -46,7 +46,7 @@ void RendererOpenGL::draw()
 				int light_type_used = 0;
 				for (auto light : light_t.second)
 				{
-					if (!light->isInitialized()) continue;
+					if (!light->isActive()) continue;
 
 					light->useLight(*shader, light_type_used);
 

@@ -9,7 +9,8 @@ Transform::Transform()
 void Transform::setPosition(Vector3 newPos)
 {
 	position = newPos;
-	matrixDirty = true;
+	
+	computeMatrix();
 }
 
 void Transform::setPosition(float newPosX, float newPosY, float newPosZ)
@@ -38,7 +39,8 @@ void Transform::setScale(Vector3 newScale, bool scaleInWorld)
 	{
 		scale = newScale;
 	}
-	matrixDirty = true;
+	
+	computeMatrix();
 }
 
 void Transform::setScale(float newScaleX, float newScaleY, float newScaleZ, bool scaleInWorld)
@@ -54,19 +56,22 @@ void Transform::setScale(float newUniformScale, bool scaleInWorld)
 void Transform::setRotation(Quaternion newRotation)
 {
 	rotation = newRotation;
-	matrixDirty = true;
+	
+	computeMatrix();
 }
 
 void Transform::incrementRotation(Quaternion increment)
 {
 	rotation = Quaternion::concatenate(rotation, increment);
-	matrixDirty = true;
+	
+	computeMatrix();
 }
 
 void Transform::rotateTowards(Vector3 posTowards)
 {
 	rotation = Quaternion::createLookAt(getPosition(), posTowards, Vector3::unitY);
-	matrixDirty = true;
+	
+	computeMatrix();
 }
 
 
@@ -77,19 +82,16 @@ void Transform::pasteTransform(Transform& transform)
 	scale = transform.getScale();
 	modelMatrix = transform.getModelMatrix();
 	normalMatrix = transform.getNormalMatrix();
-	matrixDirty = false;
 }
 
 
-const Matrix4 Transform::getModelMatrix()
+const Matrix4 Transform::getModelMatrix() const
 { 
-	if (matrixDirty) computeMatrix();
 	return modelMatrix;
 }
 
-const Matrix4 Transform::getNormalMatrix()
+const Matrix4 Transform::getNormalMatrix() const
 {
-	if (matrixDirty) computeMatrix(); 
 	return normalMatrix;
 }
 
@@ -120,6 +122,5 @@ void Transform::computeMatrix()
 	normalMatrix.invert();
 	normalMatrix.transpose();
 
-	matrixDirty = false;
 	onTransformUpdated.broadcast();
 }

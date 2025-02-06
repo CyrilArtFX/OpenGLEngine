@@ -14,6 +14,13 @@ Vector3 PositionBasedLight::getPosition() const
 }
 
 
+void PositionBasedLight::setFalloff(float newConstant, float newLinear, float newQuadratic)
+{
+	constant = newConstant;
+	linear = newLinear;
+	quadratic = newQuadratic;
+}
+
 void PositionBasedLight::setOffset(Vector3 newOffset)
 {
 	offset = newOffset;
@@ -68,9 +75,6 @@ void PositionBasedLight::onEntityMoved()
 
 void PositionBasedLight::recomputePosition()
 {
-	// TODO: check which one is the correct computation (if none of them is the good computation, good luck)
-
-	Matrix4 light_pos_matrix = getOwner()->getModelMatrix() * Matrix4::createTranslation(offset);
-	//Matrix4 light_pos_matrix = Matrix4::createTranslation(offset) * getOwner()->getModelMatrix();
+	Matrix4 light_pos_matrix = Matrix4::createTranslation(offset) * getOwner()->getModelMatrix();
 	position = light_pos_matrix.getTranslation();
 }

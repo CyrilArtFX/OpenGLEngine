@@ -32,11 +32,11 @@ public:
 	/** Get the type of this light. */
 	LightType getLightType();
 
-	/** Know if this light is initialized. */
-	bool isInitialized();
-
 	/** Set the active value of this light to turn it on or off. */
 	void setActive(bool activeValue);
+
+	/** Know if the light is active or not. */
+	bool isActive();
 
 
 	void setColor(Color newColor);
@@ -56,7 +56,6 @@ protected:
 
 	LightType lightType{ EUndefinedLight };
 
-	bool initialized{ false }; //  child light components set it to true once initialized
 	bool active{ true };
 
 	Color lightColor{ Color::white };

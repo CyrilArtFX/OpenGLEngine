@@ -1,6 +1,6 @@
 #pragma once
 #include <Objects/transform.h>
-#include "component.h"
+#include <ECS/component.h>
 #include <ServiceLocator/locator.h>
 #include <vector>
 
@@ -32,6 +32,7 @@ public:
 	{
 		components.emplace_back(new T());
 		components.back()->setOwner(this);
+		components.back()->init();
 		components.back()->registerComponent();
 
 		return static_cast<T*>(components.back());
