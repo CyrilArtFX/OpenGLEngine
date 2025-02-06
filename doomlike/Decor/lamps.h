@@ -85,13 +85,6 @@ namespace LampsSetup
 		Material& flame_off = AssetManager::CreateMaterial("flame_off", AssetManager::GetShader("flat_emissive"));
 		flame_off.addParameter("emissive", Color{ 20, 14 ,3, 255 });
 
-		renderer.AddMaterial(&AssetManager::GetMaterial("lamp"));
-		renderer.AddMaterial(&AssetManager::GetMaterial("chandelier_candle"));
-		renderer.AddMaterial(&AssetManager::GetMaterial("chandelier_base"));
-		renderer.AddMaterial(&AssetManager::GetMaterial("chandelier_leather"));
-		renderer.AddMaterial(&AssetManager::GetMaterial("flame"));
-		renderer.AddMaterial(&AssetManager::GetMaterial("flame_off"));
-
 		AssetManager::LoadMeshCollection("lamp", "doomlike/lamp/lamp.fbx");
 		AssetManager::LoadMeshCollection("chandelier", "doomlike/chandelier/chandelier.fbx");
 
@@ -114,11 +107,11 @@ namespace LampsSetup
 	{
 		Renderer& renderer = Locator::getRenderer();
 
-		renderer.RemoveMaterial(&AssetManager::GetMaterial("lamp"));
-		renderer.RemoveMaterial(&AssetManager::GetMaterial("chandelier_candle"));
-		renderer.RemoveMaterial(&AssetManager::GetMaterial("chandelier_base"));
-		renderer.RemoveMaterial(&AssetManager::GetMaterial("chandelier_leather"));
-		renderer.RemoveMaterial(&AssetManager::GetMaterial("flame"));
-		renderer.RemoveMaterial(&AssetManager::GetMaterial("flame_off"));
+		AssetManager::DeleteMaterial("lamp");
+		AssetManager::DeleteMaterial("chandelier_candle");
+		AssetManager::DeleteMaterial("chandelier_base");
+		AssetManager::DeleteMaterial("chandelier_leather");
+		AssetManager::DeleteMaterial("flame");
+		AssetManager::DeleteMaterial("flame_off");
 	}
 };

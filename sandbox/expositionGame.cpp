@@ -48,11 +48,6 @@ void ExpositionGame::loadGameAssets()
 	Material& light_source_mat_cyan = AssetManager::CreateMaterial("light_source_cyan", AssetManager::GetShader("flat_emissive"));
 	light_source_mat_cyan.addParameter("emissive", Color::cyan.toVector());
 
-	renderer.AddMaterial(&AssetManager::GetMaterial("container"));
-	renderer.AddMaterial(&AssetManager::GetMaterial("light_source_white"));
-	renderer.AddMaterial(&AssetManager::GetMaterial("light_source_cyan"));
-	renderer.AddMaterial(&AssetManager::GetMaterial("backpack"));
-
 
 	//  models 
 	AssetManager::CreateModel("container").addMesh(AssetManager::GetSingleMesh("default_cube"), AssetManager::GetMaterial("container"));
@@ -82,8 +77,8 @@ void ExpositionGame::unloadGame()
 {
 	Renderer& renderer = Locator::getRenderer();
 
-	renderer.RemoveMaterial(&AssetManager::GetMaterial("container"));
-	renderer.RemoveMaterial(&AssetManager::GetMaterial("light_source_white"));
-	renderer.RemoveMaterial(&AssetManager::GetMaterial("light_source_cyan"));
-	renderer.RemoveMaterial(&AssetManager::GetMaterial("backpack"));
+	AssetManager::DeleteMaterial("container");
+	AssetManager::DeleteMaterial("light_source_white");
+	AssetManager::DeleteMaterial("light_source_cyan");
+	AssetManager::DeleteMaterial("backpack");
 }

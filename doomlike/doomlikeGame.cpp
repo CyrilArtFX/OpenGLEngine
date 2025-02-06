@@ -91,13 +91,6 @@ void DoomlikeGame::loadGameAssets()
 	gun_mat.addTexture(&AssetManager::GetTexture("gun_emissive"), TextureType::Emissive);
 	gun_mat.addParameter("material.shininess", 32.0f);
 
-	renderer.AddMaterial(&AssetManager::GetMaterial("crate"));
-	renderer.AddMaterial(&AssetManager::GetMaterial("taxi"));
-	renderer.AddMaterial(&AssetManager::GetMaterial("gun"));
-	renderer.AddMaterial(&AssetManager::GetMaterial("enemy"));
-	renderer.AddMaterial(&AssetManager::GetMaterial("bullet"));
-	renderer.AddMaterial(&AssetManager::GetMaterial("gun"));
-
 	log.LogMessage_Category("Doomlike: Load materials time: " + std::to_string(glfwGetTime() - load_time), LogCategory::Info);
 	load_time = glfwGetTime();
 
@@ -248,16 +241,16 @@ Camera& DoomlikeGame::getActiveCamera()
 
 void DoomlikeGame::unloadGame()
 {
-	Renderer& renderer = Locator::getRenderer();
-
 	player.unload();
 
-	renderer.RemoveMaterial(&AssetManager::GetMaterial("crate"));
-	renderer.RemoveMaterial(&AssetManager::GetMaterial("taxi"));
-	renderer.RemoveMaterial(&AssetManager::GetMaterial("gun"));
-	renderer.RemoveMaterial(&AssetManager::GetMaterial("enemy"));
-	renderer.RemoveMaterial(&AssetManager::GetMaterial("bullet"));
-	renderer.RemoveMaterial(&AssetManager::GetMaterial("gun"));
+	Renderer& renderer = Locator::getRenderer();
+
+	AssetManager::DeleteMaterial("crate");
+	AssetManager::DeleteMaterial("taxi");
+	AssetManager::DeleteMaterial("gun");
+	AssetManager::DeleteMaterial("enemy");
+	AssetManager::DeleteMaterial("bullet");
+	AssetManager::DeleteMaterial("gun");
 
 	WallSetup::ReleaseWalls();
 	FloorCeilingSetup::ReleaseFloorCeilings();

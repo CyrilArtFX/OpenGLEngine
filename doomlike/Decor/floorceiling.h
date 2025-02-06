@@ -73,10 +73,6 @@ namespace FloorCeilingSetup
 		ceiling_mat.addParameter("material.shininess", 32.0f);
 		ceiling_mat.addParameter("beta_prevent_tex_scaling", true);
 
-		renderer.AddMaterial(&AssetManager::GetMaterial("floor"));
-		renderer.AddMaterial(&AssetManager::GetMaterial("floor_wood"));
-		renderer.AddMaterial(&AssetManager::GetMaterial("ceiling"));
-
 		AssetManager::CreateModel("floor");
 		AssetManager::GetModel("floor").addMesh(AssetManager::GetSingleMesh("default_plane"), AssetManager::GetMaterial("floor"));
 
@@ -91,8 +87,8 @@ namespace FloorCeilingSetup
 	{
 		Renderer& renderer = Locator::getRenderer();
 
-		renderer.RemoveMaterial(&AssetManager::GetMaterial("floor"));
-		renderer.RemoveMaterial(&AssetManager::GetMaterial("floor_wood"));
-		renderer.RemoveMaterial(&AssetManager::GetMaterial("ceiling"));
+		AssetManager::DeleteMaterial("floor");
+		AssetManager::DeleteMaterial("floor_wood");
+		AssetManager::DeleteMaterial("ceiling");
 	}
 };

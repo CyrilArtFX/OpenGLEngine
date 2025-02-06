@@ -55,8 +55,6 @@
 
 == AUTRES ==
 
-~ Utiliser le Service Locator pour add les materials au Renderer (et les remove) automatiquement à la création et suppression dans l'Asset Manager
-
 ~ Compute la direction des Spot Light en fonction de la rotation de l'Entity (avoir une rotation offset ? avoir un vecteur de direction offset ?)
 
 ~ Finir les sons dans le doomlike (mouvement ennemis, mur qui bouge, lumière qui s'allume)

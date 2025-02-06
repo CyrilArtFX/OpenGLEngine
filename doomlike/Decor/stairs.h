@@ -66,8 +66,6 @@ namespace StairsSetup
 		stairs_mat.addParameter("material.shininess", 32.0f);
 		//stairs_mat.addParameter("beta_prevent_tex_scaling", false);
 
-		renderer.AddMaterial(&AssetManager::GetMaterial("stairs"));
-
 		AssetManager::LoadMeshCollection("stairs", "doomlike/stairs/stairs.fbx");
 
 		AssetManager::CreateModel("stairs");
@@ -79,6 +77,6 @@ namespace StairsSetup
 	{
 		Renderer& renderer = Locator::getRenderer();
 
-		renderer.RemoveMaterial(&AssetManager::GetMaterial("stairs"));
+		AssetManager::DeleteMaterial("stairs");
 	}
 };

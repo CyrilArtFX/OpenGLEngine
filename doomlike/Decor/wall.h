@@ -61,8 +61,6 @@ namespace WallSetup
 		wall_mat.addParameter("material.shininess", 32.0f);
 		wall_mat.addParameter("beta_prevent_tex_scaling", true);
 
-		renderer.AddMaterial(&AssetManager::GetMaterial("wall"));
-
 		AssetManager::CreateModel("wall");
 		AssetManager::GetModel("wall").addMesh(AssetManager::GetSingleMesh("default_plane"), AssetManager::GetMaterial("wall"));
 	}
@@ -72,6 +70,6 @@ namespace WallSetup
 	{
 		Renderer& renderer = Locator::getRenderer();
 
-		renderer.RemoveMaterial(&AssetManager::GetMaterial("wall"));
+		AssetManager::DeleteMaterial("wall");
 	}
 };
