@@ -1,18 +1,10 @@
 #pragma once
 #include <Core/scene.h>
 
-#include <Assets/assetManager.h>
-#include <Objects/object.h>
-
 #include <Maths/vector3.h>
 #include <Utils/color.h>
 
-#include <Objects/Lights/directionalLight.h>
-#include <Objects/Lights/pointLight.h>
-#include <Objects/Lights/spotLight.h>
-
 #include <Audio/audioSourceComponent.h>
-#include <Physics/AABB/boxAABBColComp.h>
 #include <Rendering/Text/textRendererComponent.h>
 #include <Rendering/Hud/spriteRendererComponent.h>
 
@@ -30,30 +22,14 @@ protected:
 	void unloadScene() override;
 
 private:
-	//  scene objects
-	//-----------------
-
 	Camera camera;
 
-	Entity* test_entity_1{ nullptr };
-	Entity* test_entity_2{ nullptr };
+	Entity* movingCube{ nullptr };
+	Entity* flashlight{ nullptr };
 
-	Object cube1;
-	Object cube2;
-	Object cube3;
-	Object backpack;
-	Object lightCube1;
-	Object lightCube2;
-	Object soundWall;
-
-	AudioSourceComponent musicSource{ &cube3, ChannelSpatialization::Channel3D };
+	//AudioSourceComponent musicSource{ &cube3, ChannelSpatialization::Channel3D };
 	TextRendererComponent* sandboxText;
 	SpriteRendererComponent* sandboxSprite;
-
-	DirectionalLight sunLight;
-	PointLight pointLight1;
-	PointLight pointLight2;
-	SpotLight flashLight;
 
 	float time{ 0.0f };
 

@@ -5,7 +5,7 @@
 	- Modifier Game & Scene pour qu'ils puissent accueuillir des Entity - fait
 	- Placer le rendering de mesh dans un component - fait
 	- Placer les lumières dans des components - fait
-	- Faire marcher cette base là (désactiver collision, audio & hud) avec le projet sandbox
+	- Faire marcher cette base là (désactiver collision, audio & hud) avec le projet sandbox - fait
 	- Rework la camera et faire marcher ça en component (?)
 	- Intégrer le hud (sprite & texte) proprement dans la logique de component
 	- Intégrer l'audio proprement dans la logique de component
@@ -55,7 +55,9 @@
 
 == AUTRES ==
 
-~ Rework le système de light 'activée' (juste skip la light dans la boucle de rendering si elle est pas active)
+~ Utiliser le Service Locator pour add les materials au Renderer (et les remove) automatiquement à la création et suppression dans l'Asset Manager
+
+~ Compute la direction des Spot Light en fonction de la rotation de l'Entity (avoir une rotation offset ? avoir un vecteur de direction offset ?)
 
 ~ Finir les sons dans le doomlike (mouvement ennemis, mur qui bouge, lumière qui s'allume)
 

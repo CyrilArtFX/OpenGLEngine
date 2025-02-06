@@ -42,20 +42,23 @@ void ExpositionGame::loadGameAssets()
 	backpack_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
 	backpack_mat.addParameter("material.shininess", 32.0f);
 
-	Material& light_source_mat = AssetManager::CreateMaterial("light_source", AssetManager::GetShader("flat_emissive"));
-	light_source_mat.addParameter("emissive", 1.0f, 1.0f, 1.0f);
+	Material& light_source_mat_white = AssetManager::CreateMaterial("light_source_white", AssetManager::GetShader("flat_emissive"));
+	light_source_mat_white.addParameter("emissive", Color::white.toVector());
+
+	Material& light_source_mat_cyan = AssetManager::CreateMaterial("light_source_cyan", AssetManager::GetShader("flat_emissive"));
+	light_source_mat_cyan.addParameter("emissive", Color::cyan.toVector());
 
 	renderer.AddMaterial(&AssetManager::GetMaterial("container"));
-	renderer.AddMaterial(&AssetManager::GetMaterial("light_source"));
+	renderer.AddMaterial(&AssetManager::GetMaterial("light_source_white"));
+	renderer.AddMaterial(&AssetManager::GetMaterial("light_source_cyan"));
 	renderer.AddMaterial(&AssetManager::GetMaterial("backpack"));
 
 
 	//  models 
-	AssetManager::CreateModel("container");
-	AssetManager::GetModel("container").addMesh(AssetManager::GetSingleMesh("default_cube"), AssetManager::GetMaterial("container"));
+	AssetManager::CreateModel("container").addMesh(AssetManager::GetSingleMesh("default_cube"), AssetManager::GetMaterial("container"));
 
-	AssetManager::CreateModel("light_cube");
-	AssetManager::GetModel("light_cube").addMesh(AssetManager::GetSingleMesh("default_cube"), AssetManager::GetMaterial("light_source"));
+	AssetManager::CreateModel("light_cube_white").addMesh(AssetManager::GetSingleMesh("default_cube"), AssetManager::GetMaterial("light_source_white"));
+	AssetManager::CreateModel("light_cube_cyan").addMesh(AssetManager::GetSingleMesh("default_cube"), AssetManager::GetMaterial("light_source_cyan"));
 
 	AssetManager::LoadMeshCollection("backpack", "backpack/backpack.fbx");
 	AssetManager::CreateModel("backpack").addMeshes(AssetManager::GetMeshCollection("backpack"), AssetManager::GetMaterial("backpack"));
@@ -80,6 +83,7 @@ void ExpositionGame::unloadGame()
 	Renderer& renderer = Locator::getRenderer();
 
 	renderer.RemoveMaterial(&AssetManager::GetMaterial("container"));
-	renderer.RemoveMaterial(&AssetManager::GetMaterial("light_source"));
+	renderer.RemoveMaterial(&AssetManager::GetMaterial("light_source_white"));
+	renderer.RemoveMaterial(&AssetManager::GetMaterial("light_source_cyan"));
 	renderer.RemoveMaterial(&AssetManager::GetMaterial("backpack"));
 }
