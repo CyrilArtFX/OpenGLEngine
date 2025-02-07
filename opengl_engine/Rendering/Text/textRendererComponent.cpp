@@ -6,22 +6,6 @@
 #include <ServiceLocator/renderer.h>
 
 
-TextRendererComponent::TextRendererComponent() : HudComponent(), text(""), textFont(&AssetManager::GetFont("arial_64")), textSize(Vector2::zero)
-{
-	Locator::getRenderer().AddText(this);
-}
-
-TextRendererComponent::TextRendererComponent(const TextRendererComponent& other) : HudComponent(other), text(other.text), textFont(other.textFont), textSize(other.textSize)
-{
-	Locator::getRenderer().AddText(this);
-}
-
-TextRendererComponent::~TextRendererComponent()
-{
-	Locator::getRenderer().RemoveText(this);
-}
-
-
 void TextRendererComponent::setTextDatas(const std::string& text_, const Font& textFont_, const Vector2& screenAnchor_, const Vector2& pivot_, const Vector2& pos_, const Vector2& scale_, const float rotAngle_, const Color& tintColor_)
 {
 	text = text_;
@@ -66,6 +50,25 @@ const Vector2& TextRendererComponent::getRawTextSize() const
 Vector2 TextRendererComponent::getSize() const
 {
 	return textSize * getScale();
+}
+
+void TextRendererComponent::registerComponent()
+{
+	Locator::getRenderer().AddText(this);
+
+	bindScreenResize();
+}
+
+void TextRendererComponent::unregisterComponent()
+{
+	Locator::getRenderer().RemoveText(this);
+
+	unbindScreenResize();
+}
+
+void TextRendererComponent::init()
+{
+	textFont = &AssetManager::GetFont("arial_64");
 }
 
 bool TextRendererComponent::needToComputeMatrix() const

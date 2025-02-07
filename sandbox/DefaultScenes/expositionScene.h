@@ -30,8 +30,8 @@ private:
 	Entity* flashlight{ nullptr };
 
 	//AudioSourceComponent musicSource{ &cube3, ChannelSpatialization::Channel3D };
-	TextRendererComponent* sandboxText;
-	SpriteRendererComponent* sandboxSprite;
+	TextRendererComponent* sandboxText{ nullptr };
+	SpriteRendererComponent* sandboxSprite{ nullptr };
 
 	float playerCamSpeed{ 4.0f };
 	float playerCamSensitivity{ 0.1f };

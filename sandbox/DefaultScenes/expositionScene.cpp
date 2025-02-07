@@ -77,11 +77,11 @@ void ExpositionScene::loadScene()
 
 
 	//  text
-	sandboxText = new TextRendererComponent();
+	sandboxText = createEntity()->addComponentByClass<TextRendererComponent>();
 	sandboxText->setTextDatas("Welcome to the sandbox.\nTake a cookie.", AssetManager::GetFont("arial_64"), Vector2{ 0.0f, 0.0f }, Vector2::halfUnit, Vector2{ 120.0f, 35.0f }, Vector2{ 0.3f }, 0.0f, Color::cyan);
 
 	//  sprite
-	sandboxSprite = new SpriteRendererComponent();
+	sandboxSprite = createEntity()->addComponentByClass<SpriteRendererComponent>();
 	sandboxSprite->setSpriteDatas(AssetManager::GetTexture("smileyface_sprite"), Vector2{ 1.0f, 0.0f }, Vector2::halfUnit, Vector2{ -80.0f, 80.0f }, Vector2{ 0.25f }, 0.0f, Color::white);
 }
 

@@ -4,15 +4,12 @@
 class Texture;
 
 /** Sprite Renderer Component
+* Component for rendering a 2D sprite on the screen.
+* This component doesn't use the transform of the Entity.
 */
 class SpriteRendererComponent : public HudComponent
 {
 public:
-	SpriteRendererComponent();
-	SpriteRendererComponent(const SpriteRendererComponent& other);
-	~SpriteRendererComponent();
-	SpriteRendererComponent& operator=(const SpriteRendererComponent& other) = delete;
-
 	void setSpriteDatas(const Texture& spriteTexture_, const Vector2& screenAnchor_, const Vector2& pivot_, const Vector2& pos_, const Vector2& scale_, const float rotAngle_, const Color& tintColor_);
 
 	void setSpriteTexture(const Texture& spriteTexture_);
@@ -23,8 +20,11 @@ public:
 	bool canDraw() const;
 	
 protected:
+	virtual void registerComponent() override;
+	virtual void unregisterComponent() override;
+
 	bool needToComputeMatrix() const override;
 
 private:
-	const Texture* spriteTexture;
+	const Texture* spriteTexture{ nullptr };
 };

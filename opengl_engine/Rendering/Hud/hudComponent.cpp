@@ -1,23 +1,6 @@
 #include "hudComponent.h"
 #include <GameplayStatics/gameplayStatics.h>
 
-HudComponent::HudComponent()
-{
-	GameplayStatics::OnScrenResize.registerObserver(this, Bind_1(&HudComponent::onWindowResizeEvent));
-}
-
-HudComponent::HudComponent(const HudComponent& other) :
-	pivot(other.pivot), pos(other.pos), scale(other.scale), rotAngle(other.rotAngle), screenPos(other.screenPos), hudTransform(other.hudTransform)
-{
-	GameplayStatics::OnScrenResize.registerObserver(this, Bind_1(&HudComponent::onWindowResizeEvent));
-}
-
-HudComponent::~HudComponent()
-{
-	GameplayStatics::OnScrenResize.unregisterObserver(this);
-}
-
-
 
 void HudComponent::setEnabled(const bool enabled_)
 {
@@ -116,6 +99,16 @@ Vector2 HudComponent::getScreenPos() const
 Matrix4 HudComponent::getHudTransform() const
 {
 	return hudTransform;
+}
+
+void HudComponent::bindScreenResize()
+{
+	GameplayStatics::OnScrenResize.registerObserver(this, Bind_1(&HudComponent::onWindowResizeEvent));
+}
+
+void HudComponent::unbindScreenResize()
+{
+	GameplayStatics::OnScrenResize.unregisterObserver(this);
 }
 
 

@@ -1,17 +1,19 @@
 #pragma once
+#include <ECS/component.h>
+#include <Events/observer.h>
+
 #include <Utils/color.h>
 #include <Maths/Vector2.h>
 #include <Maths/Matrix4.h>
-#include <Events/observer.h>
 
-class HudComponent : public Observer
+
+/** Hud Component
+* Base class for specific hud components.
+* Abstract Component - do not add it to an Entity.
+*/
+class HudComponent : public Component, public Observer
 {
 public:
-	HudComponent();
-	HudComponent(const HudComponent& other);
-	~HudComponent();
-	HudComponent& operator=(const HudComponent& other) = delete;
-
 	void setEnabled(const bool enabled_);
 	bool getEnabled() const;
 
@@ -37,6 +39,9 @@ public:
 protected:
 	/* Does the hud component need to compute the transformation matrix? (For exemple, texts doesn't need to.) This function must be overriden in every class that inherit hud. */
 	virtual bool needToComputeMatrix() const = 0;
+
+	void bindScreenResize();
+	void unbindScreenResize();
 
 private:
 	bool enabled{ true };

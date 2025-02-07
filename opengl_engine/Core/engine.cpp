@@ -142,7 +142,7 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 
 
 	//  intialize debug fps text
-	fpsText = new TextRendererComponent();
+	fpsText = createEntity()->addComponentByClass<TextRendererComponent>();
 	fpsText->setTextDatas("FPS: 0", AssetManager::GetFont("arial_64"), Vector2::one, Vector2::one, Vector2{ -20.0f, -20.0f }, Vector2{ 0.5f }, 0.0f, Color::white);
 	fpsText->setEnabled(false);
 
@@ -411,6 +411,8 @@ void Engine::windowResize(GLFWwindow* glWindow, int width, int height)
 {
 	glViewport(0, 0, width, height); //  resize OpenGL viewport when GLFW is resized
 	window.changeSize(width, height);
+
+	log->LogMessage_Category("Window: Size updated to [Width: " + std::to_string(width) + " | Height: " + std::to_string(height) + "]", LogCategory::Info);
 
 	Vector2Int window_size(width, height);
 	renderer->setWindowSize(window_size);

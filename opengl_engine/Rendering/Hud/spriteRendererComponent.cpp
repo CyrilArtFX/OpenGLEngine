@@ -5,22 +5,6 @@
 #include <ServiceLocator/renderer.h>
 
 
-SpriteRendererComponent::SpriteRendererComponent() : HudComponent(), spriteTexture(nullptr)
-{
-	Locator::getRenderer().AddSprite(this);
-}
-
-SpriteRendererComponent::SpriteRendererComponent(const SpriteRendererComponent& other) : HudComponent(other), spriteTexture(other.spriteTexture)
-{
-	Locator::getRenderer().AddSprite(this);
-}
-
-SpriteRendererComponent::~SpriteRendererComponent()
-{
-	Locator::getRenderer().RemoveSprite(this);
-}
-
-
 void SpriteRendererComponent::setSpriteDatas(const Texture& spriteTexture_, const Vector2& screenAnchor_, const Vector2& pivot_, const Vector2& pos_, const Vector2& scale_, const float rotAngle_, const Color& tintColor_)
 {
 	spriteTexture = &spriteTexture_;
@@ -49,6 +33,20 @@ Vector2 SpriteRendererComponent::getSize() const
 bool SpriteRendererComponent::canDraw() const
 {
 	return spriteTexture && getEnabled();
+}
+
+void SpriteRendererComponent::registerComponent()
+{
+	Locator::getRenderer().AddSprite(this);
+
+	bindScreenResize();
+}
+
+void SpriteRendererComponent::unregisterComponent()
+{
+	Locator::getRenderer().RemoveSprite(this);
+
+	unbindScreenResize();
 }
 
 bool SpriteRendererComponent::needToComputeMatrix() const
