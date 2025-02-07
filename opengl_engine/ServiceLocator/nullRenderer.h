@@ -1,6 +1,6 @@
 #pragma once
 #include <ServiceLocator/renderer.h>
-#include <Rendering/camera.h>
+#include <Rendering/cameraComponent.h>
 #include <Utils/Color.h>
 
 /**
@@ -9,8 +9,8 @@
 class NullRenderer : public Renderer
 {
 public:
-	void SetCamera(Camera* camera) override {}
-	const Camera& GetCamera() const override { return *new Camera(); } //  pretty sure this is very sus but theorically this function is never called so... alright I guess ?
+	void SetCamera(CameraComponent* camera) override {}
+	const CameraComponent* GetCamera() const override { return new CameraComponent(); } //  pretty sure this is very sus but theorically this function is never called so... alright I guess ?
 
 	void SetClearColor(Color clearColor) override {}
 	const Color GetClearColor() const override { return Color::black; }

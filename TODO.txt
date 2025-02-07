@@ -6,7 +6,7 @@
 	- Placer le rendering de mesh dans un component - fait
 	- Placer les lumières dans des components - fait
 	- Faire marcher cette base là (désactiver collision, audio & hud) avec le projet sandbox - fait
-	- Rework la camera et faire marcher ça en component (?)
+	- Rework la camera et faire marcher ça en component - fait
 	- Intégrer le hud (sprite & texte) proprement dans la logique de component
 	- Intégrer l'audio proprement dans la logique de component
 	- Intégrer la physique proprement dans la logique de component
@@ -14,7 +14,8 @@
 	- Permettre la création de component "behavior" custom
 	- Modifier le code du doomlike pour utiliser ces components
 	- Faire marcher le doomlike avec toute la nouvelle logique
-	- Clean le moteur des classes obsolètes (Object, Light, etc.)
+	- Clean le moteur des classes obsolètes (Object, Lights, Camera, etc.) 
+		(+ sans doute bouger la classe Transform et virer le dossier Objects)
 
 
 == MOYEN TERME ==
@@ -72,7 +73,7 @@
 
 == REFLEXIONS / PROBLEMES CONNUS ==
 
-~ Trouver une solution pour les problèmes de rotations avec la caméra qui fait qu'on ne peut pas lui forcer une rotation sans casser le système de pitch et de yaw intégré - à voir avec le rework de la caméra pour l'ECS
+~ Trouver une solution pour les problèmes de rotations avec la caméra qui fait qu'on ne peut pas lui forcer une rotation sans casser le système de pitch et de yaw intégré - le nouveau camera component devrait régler le pb, à voir quand le doomlike sera fonctionnel à nouveau
 
 ~ Le look at rotation des ennemis du doomlike bug un petit peu ?
 

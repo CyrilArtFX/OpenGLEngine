@@ -12,14 +12,15 @@ void RendererOpenGL::draw()
 	glEnable(GL_DEPTH_TEST);
 
 	
-	if (!currentCam) return;
+	CameraComponent* current_camera = selectCurrentCam();
+	if (!current_camera) return;
 
 	//  RENDERING 3D
 	// ===================
 
 
-	Matrix4 view = currentCam->getViewMatrix();
-	Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(currentCam->getFov()), static_cast<float>(windowSize.x), static_cast<float>(windowSize.y), 0.1f, 100.0f);
+	Matrix4 view = current_camera->getViewMatrix();
+	Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(current_camera->getFov()), static_cast<float>(windowSize.x), static_cast<float>(windowSize.y), 0.1f, 100.0f);
 
 	//  loop through all shaders
 	for (auto& materials_by_shaders : materials)
@@ -68,7 +69,7 @@ void RendererOpenGL::draw()
 				}
 			}
 
-			shader->setVec3("viewPos", currentCam->getPosition());
+			shader->setVec3("viewPos", current_camera->getCamPosition());
 
 			break;
 
@@ -265,14 +266,23 @@ void RendererOpenGL::draw()
 
 
 
-void RendererOpenGL::SetCamera(Camera* camera)
+void RendererOpenGL::SetCamera(CameraComponent* camera)
 {
-	currentCam = camera;
+	activeCamera->setActiveValue(false);
+
+	if (camera == nullptr)
+	{
+		activeCamera = defaultCamera;
+		return;
+	}
+
+	activeCamera = camera;
+	activeCamera->setActiveValue(true);
 }
 
-const Camera& RendererOpenGL::GetCamera() const
+const CameraComponent* RendererOpenGL::GetCamera() const
 {
-	return *currentCam;
+	return activeCamera;
 }
 
 
@@ -385,12 +395,29 @@ void RendererOpenGL::RemoveSprite(SpriteRendererComponent* sprite)
 	sprites.pop_back();
 }
 
+CameraComponent* RendererOpenGL::selectCurrentCam()
+{
+	return debugActivated ? debugCamera : activeCamera;
+}
 
 
-void RendererOpenGL::initializeRenderer(Color clearColor_, Vector2Int windowSize_)
+
+void RendererOpenGL::initializeRenderer(Color clearColor_, Vector2Int windowSize_, CameraComponent* defaultCamera_)
 {
 	clearColor = clearColor_;
 	windowSize = windowSize_;
+	defaultCamera = defaultCamera_;
+	activeCamera = defaultCamera;
+}
+
+void RendererOpenGL::setDebugCamera(CameraComponent* debugCamera_)
+{
+	debugCamera = debugCamera_;
+}
+
+void RendererOpenGL::setDebugActivated(bool debugActivated_)
+{
+	debugActivated = debugActivated_;
 }
 
 void RendererOpenGL::setWindowSize(Vector2Int windowSize_)

@@ -1,10 +1,12 @@
 #pragma once
 
+#include <glad/glad.h>
+
 #include "game.h"
 #include "window.h"
 #include <Rendering/rendererOpenGL.h>
-#include <Rendering/camera.h>
-#include <Rendering/texture.h>
+#include <ECS/entityContainer.h>
+#include <Rendering/cameraComponent.h>
 #include <Rendering/Text/textRendererComponent.h>
 
 #include <Audio/audioManager.h>
@@ -15,12 +17,9 @@
 #include <Maths/matrix4.h>
 #include <Maths/vector3.h>
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 #include <string>
 
-class Engine
+class Engine : private EntityContainer
 {
 public:
 	Engine();
@@ -55,8 +54,11 @@ private:
 	//  log manager
 	LogManager* log{ nullptr };
 
-	//  freecam
-	Camera freecam;
+	//  cameras
+	Entity* debugCamEntity{ nullptr };
+	CameraComponent* debugCamera{ nullptr };
+	float debugCameraSpeed{ 4.0f };
+	float debugCameraMouseSensitivity{ 0.1f };
 
 	//  debug text
 	TextRendererComponent* fpsText{ nullptr };

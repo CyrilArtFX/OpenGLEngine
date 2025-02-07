@@ -183,6 +183,7 @@
     <ClCompile Include="Physics\raycastLine.cpp" />
     <ClCompile Include="Physics\rigidbodyComponent.cpp" />
     <ClCompile Include="Rendering\camera.cpp" />
+    <ClCompile Include="Rendering\cameraComponent.cpp" />
     <ClCompile Include="Rendering\Debug\cube.cpp" />
     <ClCompile Include="Rendering\Debug\line.cpp" />
     <ClCompile Include="Rendering\Debug\point.cpp" />
@@ -234,6 +235,7 @@
     <ClInclude Include="Physics\physicEntity.h" />
     <ClInclude Include="Physics\raycastLine.h" />
     <ClInclude Include="Physics\rigidbodyComponent.h" />
+    <ClInclude Include="Rendering\cameraComponent.h" />
     <ClInclude Include="Rendering\Debug\cube.h" />
     <ClInclude Include="Rendering\Debug\line.h" />
     <ClInclude Include="Maths\Geometry\box.h" />

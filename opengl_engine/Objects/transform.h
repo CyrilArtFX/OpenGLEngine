@@ -14,6 +14,7 @@ public:
 
 	void setPosition(Vector3 newPos);
 	void setPosition(float newPosX, float newPosY, float newPosZ);
+	void addPosition(Vector3 posAdd);
 	//  add position to this transform that follows its rotation. Ideal for offsets
 	void addPositionRotated(Vector3 posRotate);
 
@@ -26,7 +27,7 @@ public:
 	void rotateTowards(Vector3 posTowards);
 
 
-	void pasteTransform(Transform& transform);
+	void pasteTransform(const Transform& transform);
 
 
 	const Vector3 getPosition() const { return position; }

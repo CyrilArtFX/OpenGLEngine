@@ -14,6 +14,8 @@ void ExpositionGame::updateGame(float dt)
 
 void ExpositionGame::loadGameAssets()
 {
+	Locator::getLog().SetConsoleLogDisplayRule(LogCategory::Info);
+
 	Renderer& renderer = Locator::getRenderer();
 
 	DefaultAssets::LoadDefaultAssets();

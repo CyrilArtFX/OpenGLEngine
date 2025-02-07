@@ -26,14 +26,6 @@ void Game::update(float dt)
 	if (activeScene) activeScene->update(dt);
 }
 
-Camera& Game::getActiveCamera()
-{
-	if (activeScene) return activeScene->getCamera();
-
-	Locator::getLog().LogMessage_Category("Game: Tried to get the active camera but there is no active scene.", LogCategory::Error);
-	return gamedefaultsNocam;
-}
-
 bool Game::hasActiveScene()
 {
 	if (activeScene) return true;
@@ -57,7 +49,6 @@ void Game::loadScene(Scene* scene)
 void Game::unloadActiveScene(bool loadNewScene)
 {
 	if (activeScene) activeScene->unload(!loadNewScene);
-	if (!loadNewScene) Locator::getRenderer().SetCamera(&gamedefaultsNocam);
 
 	if (!loadNewScene) GameplayStatics::SetCurrentScene(nullptr);
 }

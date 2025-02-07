@@ -7,7 +7,7 @@
 #include <Maths/vector2Int.h>
 #include <Maths/vector4.h>
 
-#include "camera.h"
+#include <Rendering/cameraComponent.h>
 #include <Rendering/material.h>
 #include <Rendering/Lights/lightComponent.h>
 #include <Rendering/modelRendererComponent.h>
@@ -35,8 +35,8 @@ const int TEXT_CHARS_LIMIT{ 200 };
 class RendererOpenGL : public Renderer
 {
 public:
-	void SetCamera(Camera* camera) override;
-	const Camera& GetCamera() const override;
+	void SetCamera(CameraComponent* camera) override;
+	const CameraComponent* GetCamera() const override;
 
 	void SetClearColor(Color clearColor_) override;
 	const Color GetClearColor() const override;
@@ -60,6 +60,8 @@ public:
 
 
 private:
+	CameraComponent* selectCurrentCam();
+
 	std::unordered_map<LightType, std::vector<LightComponent*>> lights;
 	std::unordered_map<Shader*, std::vector<Material*>> materials;
 	std::vector<ModelRendererComponent*> modelRenderers;
@@ -68,8 +70,13 @@ private:
 
 	Color clearColor{ Color::black };
 
-	Camera* currentCam{ nullptr };
+	CameraComponent* activeCamera{ nullptr };
+	CameraComponent* defaultCamera{ nullptr };
+	CameraComponent* debugCamera{ nullptr };
+
 	Vector2Int windowSize;
+
+	bool debugActivated;
 
 	
 
@@ -78,7 +85,10 @@ private:
 
 //  exclusive to engine which is the only class to access the full renderer
 public:
-	void initializeRenderer(Color clearColor_, Vector2Int windowSize_);
+	void initializeRenderer(Color clearColor_, Vector2Int windowSize_, CameraComponent* defaultCamera_);
+
+	void setDebugCamera(CameraComponent* debugCamera_);
+	void setDebugActivated(bool debugActivated_);
 
 	void draw();
 

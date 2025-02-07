@@ -1,6 +1,5 @@
 #pragma once
 #include <ECS/entityContainer.h>
-#include <Rendering/camera.h>
 
 class Scene;
 
@@ -13,8 +12,6 @@ public:
 	void unload();
 	void update(float dt);
 
-	/** Get the camera of the active scene. */
-	virtual Camera& getActiveCamera();
 	bool hasActiveScene();
 
 	void lateUpdate();
@@ -42,7 +39,4 @@ protected:
 	void unloadActiveScene(bool loadNewScene);
 
 	Scene* activeScene{ nullptr };
-
-private:
-	Camera gamedefaultsNocam; //  camera to return if there is no active scene
 };

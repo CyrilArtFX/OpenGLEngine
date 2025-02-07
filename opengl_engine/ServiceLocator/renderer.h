@@ -1,6 +1,6 @@
 #pragma once
 
-class Camera;
+class CameraComponent;
 struct Color;
 class Material;
 class LightComponent;
@@ -22,13 +22,13 @@ public:
 	* Set the new camera that will be used.
 	* @param	camera		The new camera to use.
 	*/
-	virtual void SetCamera(Camera* camera) = 0;
+	virtual void SetCamera(CameraComponent* camera) = 0;
 
 	/**
 	* Retrieve the currently used camera.
 	* @return			The currently used camera.
 	*/
-	virtual const Camera& GetCamera() const = 0;
+	virtual const CameraComponent* GetCamera() const = 0;
 
 
 	/**

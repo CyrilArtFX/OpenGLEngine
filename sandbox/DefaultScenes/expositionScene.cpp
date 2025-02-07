@@ -8,7 +8,6 @@
 #include <Rendering/Lights/spotLightComponent.h>
 
 #include <Inputs/input.h>
-#include <GLFW/glfw3.h>
 
 
 ExpositionScene::ExpositionScene()
@@ -23,10 +22,12 @@ void ExpositionScene::loadScene()
 	renderer.SetClearColor(Color{ 50, 75, 75, 255 });
 
 
-	//  camera
-	camera.setPosition(Vector3{ 0.0f, 0.0f, -3.0f });
-	currentCam = &camera;
-	renderer.SetCamera(&camera);
+	//  player
+	player = createEntity();
+	camera = player->addComponentByClass<CameraComponent>();
+	camera->setAsActiveCamera();
+	player->setPosition(Vector3{ 0.0f, 0.0f, -3.0f });
+	camera->setYaw(-90.0f);
 
 
 	//  entities
@@ -94,32 +95,32 @@ void ExpositionScene::updateScene(float dt)
 {
 	//  move camera
 	if (Input::IsKeyDown(GLFW_KEY_W))
-		camera.freecamKeyboard(Forward, dt);
+		player->addPosition(camera->getCamForward() * playerCamSpeed * dt);
 
 	if (Input::IsKeyDown(GLFW_KEY_S))
-		camera.freecamKeyboard(Backward, dt);
+		player->addPosition(-camera->getCamForward() * playerCamSpeed * dt);
 
 	if (Input::IsKeyDown(GLFW_KEY_A))
-		camera.freecamKeyboard(Left, dt);
+		player->addPosition(camera->getCamRight() * playerCamSpeed * dt);
 
 	if (Input::IsKeyDown(GLFW_KEY_D))
-		camera.freecamKeyboard(Right, dt);
+		player->addPosition(-camera->getCamRight() * playerCamSpeed * dt);
 
 	if (Input::IsKeyDown(GLFW_KEY_SPACE))
-		camera.freecamKeyboard(Up, dt);
+		player->addPosition(Vector3::unitY * playerCamSpeed * dt);
 
-	if (Input::IsKeyDown(GLFW_KEY_LEFT_SHIFT))
-		camera.freecamKeyboard(Down, dt);
+	if (Input::IsKeyDown(GLFW_KEY_C))
+		player->addPosition(Vector3::negUnitY * playerCamSpeed * dt);
 
-	Vector2 mouse_delta = Input::GetMouseDelta();
-	camera.freecamMouseMovement(mouse_delta.x, mouse_delta.y);
+	Vector2 mouse_delta = Input::GetMouseDelta() * playerCamSensitivity;
+	//player->incrementRotation(Quaternion{ Vector3::unitY, -mouse_delta.x * 0.01f }); //  it works, keeping it here for later
+	camera->addYaw(-mouse_delta.x);
+	camera->setPitch(Maths::clamp(camera->getPitch() + mouse_delta.y, -89.0f, 89.0f));
 
-	camera.freecamMouseScroll(Input::GetScrollOffset());
 
 
-
-	flashlight->setPosition(camera.getPosition());
-	flashlight->getComponentByClass<SpotLightComponent>()->setDirection(camera.getForward());
+	flashlight->setPosition(camera->getCamPosition());
+	flashlight->getComponentByClass<SpotLightComponent>()->setDirection(camera->getCamForward());
 
 	//movingCube->incrementRotation(Quaternion{ Vector3::unitX, Maths::toRadians(90.0f) * dt });
 

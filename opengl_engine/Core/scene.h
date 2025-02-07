@@ -1,6 +1,5 @@
 #pragma once
 #include <ECS/entityContainer.h>
-#include <Rendering/camera.h>
 
 class Scene : public EntityContainer
 {
@@ -10,9 +9,6 @@ public:
 	void load();
 	void unload(bool exitGame);
 	void update(float dt);
-	
-	/** Get the camera of the scene. User is responsible of providing a valid camera to the scene (subject to change). */
-	Camera& getCamera();
 
 	void lateUpdate();
 
@@ -22,8 +18,6 @@ protected:
 	virtual void loadScene() = 0;
 	virtual void unloadScene() = 0;
 	virtual void updateScene(float dt) = 0;
-
-	Camera* currentCam{ nullptr };
 
 private:
 	bool firstFrame{ true };

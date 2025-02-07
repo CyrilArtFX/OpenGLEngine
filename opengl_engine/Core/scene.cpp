@@ -29,11 +29,6 @@ void Scene::update(float dt)
 	updateScene(dt);
 }
 
-Camera& Scene::getCamera() 
-{ 
-	return *currentCam; 
-}
-
 void Scene::lateUpdate()
 {
 	updateEntities();

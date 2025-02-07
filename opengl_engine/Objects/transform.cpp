@@ -18,6 +18,11 @@ void Transform::setPosition(float newPosX, float newPosY, float newPosZ)
 	setPosition(Vector3{ newPosX, newPosY, newPosZ });
 }
 
+void Transform::addPosition(Vector3 posAdd)
+{
+	setPosition(position + posAdd);
+}
+
 void Transform::addPositionRotated(Vector3 posRotate)
 {
 	Vector3 pos = getPosition();
@@ -75,7 +80,7 @@ void Transform::rotateTowards(Vector3 posTowards)
 }
 
 
-void Transform::pasteTransform(Transform& transform)
+void Transform::pasteTransform(const Transform& transform)
 {
 	position = transform.getPosition();
 	rotation = transform.getRotation();

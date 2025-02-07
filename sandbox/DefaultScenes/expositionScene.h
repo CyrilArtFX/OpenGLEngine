@@ -4,6 +4,7 @@
 #include <Maths/vector3.h>
 #include <Utils/color.h>
 
+#include <Rendering/cameraComponent.h>
 #include <Audio/audioSourceComponent.h>
 #include <Rendering/Text/textRendererComponent.h>
 #include <Rendering/Hud/spriteRendererComponent.h>
@@ -22,7 +23,8 @@ protected:
 	void unloadScene() override;
 
 private:
-	Camera camera;
+	Entity* player{ nullptr };
+	CameraComponent* camera{ nullptr };
 
 	Entity* movingCube{ nullptr };
 	Entity* flashlight{ nullptr };
@@ -30,6 +32,9 @@ private:
 	//AudioSourceComponent musicSource{ &cube3, ChannelSpatialization::Channel3D };
 	TextRendererComponent* sandboxText;
 	SpriteRendererComponent* sandboxSprite;
+
+	float playerCamSpeed{ 4.0f };
+	float playerCamSensitivity{ 0.1f };
 
 	float time{ 0.0f };
 
