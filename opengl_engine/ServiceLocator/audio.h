@@ -68,10 +68,9 @@ public:
 	/**
 	* Create a ChannelGroup for an Audio Source component.
 	* @param	spatialization	Is the channel made for 2D or 3D.
-	* @param	name			(optionnal) The name to give to the ChannelGroup.
 	* @return					The index of the created ChannelGroup.
 	*/
-	virtual std::uint32_t CreateAudioSourceGroup(ChannelSpatialization spatialization, const std::string name = "") = 0;
+	virtual std::uint32_t CreateAudioSourceGroup(const ChannelSpatialization spatialization) = 0;
 
 	/**
 	* Release a ChannelGroup for an Audio Source component destruction.
@@ -108,6 +107,21 @@ public:
 	* @return				The pause value of the Audio Source component.
 	*/
 	virtual bool GetAudioSourcePaused(const std::uint32_t index) = 0;
+
+
+	/**
+	* Set the spatialization of an Audio Source component.
+	* @param	index				The index of the ChannelGroup of the Audio Source component.
+	* @param	spatialization		The spatialization value to set.
+	*/
+	virtual void SetAudioSourceSpatialization(const std::uint32_t index, const ChannelSpatialization spatialization) = 0;
+
+	/**
+	* Get the spatialization value of an Audio Source component.
+	* @param	index		The index of the ChannelGroup of the Audio Source component.
+	* @return				The spatialization value of the Audio Source component.
+	*/
+	virtual ChannelSpatialization GetAudioSourceSpatialization(const std::uint32_t index) = 0;
 	
 
 	/**

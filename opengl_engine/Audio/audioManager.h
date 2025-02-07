@@ -45,7 +45,7 @@ public:
 	// ----------------------------------------------------------
 	//  Audio Source (available from audio interface)
 	// ----------------------------------------------------------
-	std::uint32_t CreateAudioSourceGroup(ChannelSpatialization spatialization, const std::string name) override;
+	std::uint32_t CreateAudioSourceGroup(const ChannelSpatialization spatialization) override;
 	void ReleaseAudioSourceGroup(const std::uint32_t index) override;
 
 	void PlaySoundOnAudioSource(const std::uint32_t index, const AudioSound& sound, const int loop) override;
@@ -53,6 +53,9 @@ public:
 
 	void PauseAudioSource(const std::uint32_t index, const bool pause) override;
 	bool GetAudioSourcePaused(const std::uint32_t index) override;
+
+	void SetAudioSourceSpatialization(const std::uint32_t index, const ChannelSpatialization spatialization) override;
+	ChannelSpatialization GetAudioSourceSpatialization(const std::uint32_t index) override;
 
 	void SetAudioSourceGroupVolume(const std::uint32_t index, const float volume) override;
 	float GetAudioSourceGroupVolume(const std::uint32_t index) override;

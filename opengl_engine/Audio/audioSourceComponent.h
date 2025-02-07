@@ -1,31 +1,19 @@
 #pragma once
-#include <Objects/object.h>
-#include <Audio/audioUtils.h>
+#include <ECS/component.h>
 #include <Events/observer.h>
+#include <Audio/audioUtils.h>
+#include <Maths/Vector3.h>
 
 class AudioSound;
 
 
 /** Audio Source Component
+* Component for a persistant Audio Source that can play sounds.
+* Default spatialization of the Audio Source is 3D.
 */
-class AudioSourceComponent : public Observer
+class AudioSourceComponent : public Component, public Observer
 {
 public:
-	AudioSourceComponent();
-	AudioSourceComponent(Object* objectToAssociate, ChannelSpatialization spatialization, std::string name = "");
-	AudioSourceComponent(const AudioSourceComponent& other);
-	AudioSourceComponent& operator=(const AudioSourceComponent& other) = delete;
-
-	/**
-	* Release the audio channel of this audio source component. Useful if you want to kill the object that has this component.
-	*/
-	void releaseChannel();
-
-	std::uint32_t getChannelIndex() const { return channelIndex; }
-	ChannelSpatialization getChannelSpatialization() const { return sourceSpatialization; }
-	Object* getAssociatedObject() const { return associatedObject; }
-
-
 	/**
 	* Play a sound on this Audio Source component.
 	* @param	sound		The sound to play. It must've been loaded with the same spatialization than this component.
@@ -53,6 +41,19 @@ public:
 
 
 	/**
+	* Set the spatialization value.
+	* @param	spatialization		The spatialization value to set.
+	*/
+	void setSpatialization(const ChannelSpatialization spatialization);
+
+	/**
+	* Get the spatialization value.
+	* @return		The spatialization value.
+	*/
+	ChannelSpatialization getSpatialization() const;
+
+
+	/**
 	* Set the volume.
 	* @param	volume		The volume value to set. Between 0 and 1.
 	*/
@@ -66,27 +67,34 @@ public:
 
 
 	/**
-	* Set the offset position from associated object. It must've been created with the 3D spatialization.
+	* Set the offset position from owner Entity. It must've been created with the 3D spatialization.
 	* @param	poition		The offset value to set.
 	*/
 	void setOffset(const Vector3 offset);
 
 	/**
-	* Get the offset position from associated object. It must've been created with the 3D spatialization.
+	* Get the offset position from owner Entity. It must've been created with the 3D spatialization.
 	* @return		The offset value.
 	*/
 	Vector3 getOffset() const;
 
 
+	std::uint32_t getChannelIndex() const { return channelIndex; }
+
+
 private:
-	void onAssociatedObjectMoved();
+	virtual void registerComponent() override;
+	virtual void unregisterComponent() override;
 
-	std::uint32_t channelIndex;
-	ChannelSpatialization sourceSpatialization;
+	void init() override;
 
-	Object* associatedObject;
-	Vector3 objectOffset{ Vector3::zero };
+	void onEntityMoved();
 
-	class Audio& audioManagerRef;
+	std::uint32_t channelIndex{ std::numeric_limits<std::uint32_t>::max() };
+	ChannelSpatialization sourceSpatialization{ ChannelSpatialization::Channel3D };
+
+	Vector3 posOffset{ Vector3::zero };
+
+	class Audio* audioManagerRef{ nullptr };
 };
 

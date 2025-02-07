@@ -3,7 +3,6 @@
 #include <Assets/assetManager.h>
 
 #include <Rendering/modelRendererComponent.h>
-#include <Rendering/Lights/directionalLightComponent.h>
 #include <Rendering/Lights/pointLightComponent.h>
 #include <Rendering/Lights/spotLightComponent.h>
 
@@ -63,8 +62,9 @@ void ExpositionScene::loadScene()
 
 
 	//  audio
-	//musicSource.playSound(AssetManager::GetSound("music"));
-	//musicSource.setVolume(0.2f);
+	musicAudioSource = movingCube->addComponentByClass<AudioSourceComponent>();
+	musicAudioSource->playSound(AssetManager::GetSound("music"));
+	musicAudioSource->setVolume(0.2f);
 
 	Audio& audio = Locator::getAudio();
 	audio.SetGlobalVolume(0.0f);
@@ -76,12 +76,13 @@ void ExpositionScene::loadScene()
 	//sound_wall.setupAudioCollision(AssetManager::GetAudioCollisionType("default_audio_collision"));
 
 
-	//  text
-	sandboxText = createEntity()->addComponentByClass<TextRendererComponent>();
+	//  hud (text & sprite)
+	Entity* hud_entity = createEntity();
+	sandboxText = hud_entity->addComponentByClass<TextRendererComponent>();
 	sandboxText->setTextDatas("Welcome to the sandbox.\nTake a cookie.", AssetManager::GetFont("arial_64"), Vector2{ 0.0f, 0.0f }, Vector2::halfUnit, Vector2{ 120.0f, 35.0f }, Vector2{ 0.3f }, 0.0f, Color::cyan);
 
 	//  sprite
-	sandboxSprite = createEntity()->addComponentByClass<SpriteRendererComponent>();
+	sandboxSprite = hud_entity->addComponentByClass<SpriteRendererComponent>();
 	sandboxSprite->setSpriteDatas(AssetManager::GetTexture("smileyface_sprite"), Vector2{ 1.0f, 0.0f }, Vector2::halfUnit, Vector2{ -80.0f, 80.0f }, Vector2{ 0.25f }, 0.0f, Color::white);
 }
 

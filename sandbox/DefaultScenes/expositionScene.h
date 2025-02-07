@@ -1,13 +1,13 @@
 #pragma once
 #include <Core/scene.h>
 
-#include <Maths/vector3.h>
-#include <Utils/color.h>
-
 #include <Rendering/cameraComponent.h>
 #include <Audio/audioSourceComponent.h>
 #include <Rendering/Text/textRendererComponent.h>
 #include <Rendering/Hud/spriteRendererComponent.h>
+
+#include <Maths/vector3.h>
+#include <Utils/color.h>
 
 
 class ExpositionScene : public Scene
@@ -29,7 +29,7 @@ private:
 	Entity* movingCube{ nullptr };
 	Entity* flashlight{ nullptr };
 
-	//AudioSourceComponent musicSource{ &cube3, ChannelSpatialization::Channel3D };
+	AudioSourceComponent* musicAudioSource{ nullptr };
 	TextRendererComponent* sandboxText{ nullptr };
 	SpriteRendererComponent* sandboxSprite{ nullptr };
 

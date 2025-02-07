@@ -8,7 +8,7 @@
 	- Faire marcher cette base là (désactiver collision, audio & hud) avec le projet sandbox - fait
 	- Rework la camera et faire marcher ça en component - fait
 	- Intégrer le hud (sprite & texte) proprement dans la logique de component - fait
-	- Intégrer l'audio proprement dans la logique de component
+	- Intégrer l'audio proprement dans la logique de component - fait
 	- Intégrer la physique proprement dans la logique de component
 	- Faire marcher tout ça bien toujours avec le projet sandbox
 	- Permettre la création de component "behavior" custom

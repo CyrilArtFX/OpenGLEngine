@@ -18,7 +18,7 @@ public:
 	float GetGlobalVolume() override { return 0.0f; }
 
 
-	std::uint32_t CreateAudioSourceGroup(ChannelSpatialization spatialization, const std::string name = "") override { return 0; }
+	std::uint32_t CreateAudioSourceGroup(ChannelSpatialization spatialization) override { return 0; }
 	void ReleaseAudioSourceGroup(const std::uint32_t index) override {}
 
 	void PlaySoundOnAudioSource(const std::uint32_t index, const AudioSound& sound, const int loop = 0) override {}
@@ -26,6 +26,9 @@ public:
 
 	void PauseAudioSource(const std::uint32_t index, const bool pause) override {}
 	bool GetAudioSourcePaused(const std::uint32_t index) override { return false; }
+
+	void SetAudioSourceSpatialization(const std::uint32_t index, const ChannelSpatialization spatialization) override {}
+	ChannelSpatialization GetAudioSourceSpatialization(const std::uint32_t index) override { return ChannelSpatialization::Channel3D; }
 
 	void SetAudioSourceGroupVolume(const std::uint32_t index, const float volume) override {}
 	float GetAudioSourceGroupVolume(const std::uint32_t index) override { return 0.0f; }

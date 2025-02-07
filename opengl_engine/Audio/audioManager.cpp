@@ -232,14 +232,14 @@ float AudioManager::GetGlobalVolume()
 // --------------------------------------------------------------
 
 //  Create and Release
-std::uint32_t AudioManager::CreateAudioSourceGroup(ChannelSpatialization spatialization, const std::string name)
+std::uint32_t AudioManager::CreateAudioSourceGroup(const ChannelSpatialization spatialization)
 {
 	if (!system) return 0;
 
 	FMOD_RESULT result;
 
 	audioSourcesGroups.emplace(audioSourcesGroupsID, nullptr); //  reserve the memory in the map
-	result = system->createChannelGroup(name.c_str(), &audioSourcesGroups[audioSourcesGroupsID]); //  actually create the ChannelGroup object
+	result = system->createChannelGroup("", &audioSourcesGroups[audioSourcesGroupsID]); //  actually create the ChannelGroup object
 	audioSourcesGroupsID++; //  increment the total channel group count (even if it failed)
 
 	if (result != FMOD_OK) //  check if the ChannelGroup was correctly created
@@ -397,6 +397,50 @@ bool AudioManager::GetAudioSourcePaused(const std::uint32_t index)
 	}
 
 	return paused;
+}
+
+
+//  Spatialization (set and get)
+void AudioManager::SetAudioSourceSpatialization(const std::uint32_t index, const ChannelSpatialization spatialization)
+{
+	FMOD::ChannelGroup* group_spatialization = audioSourcesGroups[index];
+	if (group_spatialization == nullptr)
+	{
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to set an audio source group spatialization with a non-registered index.", LogCategory::Error);
+		return;
+	}
+
+	FMOD_RESULT result;
+	switch (spatialization)
+	{
+	case ChannelSpatialization::Channel2D:
+		result = group_spatialization->setMode(FMOD_2D);
+		break;
+
+	case ChannelSpatialization::Channel3D:
+		result = group_spatialization->setMode(FMOD_3D);
+		break;
+
+	default:
+		result = FMOD_OK;
+		break;
+	}
+	if (result != FMOD_OK)
+	{
+		Locator::getLog().LogMessage_Category("Audio Manager: Failed to set an audio source group spatialization." + ErrorFModString(result), LogCategory::Error);
+	}
+}
+
+ChannelSpatialization AudioManager::GetAudioSourceSpatialization(const std::uint32_t index)
+{
+	FMOD::ChannelGroup* group_spatialization = audioSourcesGroups[index];
+	if (group_spatialization == nullptr)
+	{
+		Locator::getLog().LogMessage_Category("Audio Manager: Tried to get an audio source group spatialization with a non-registered index.", LogCategory::Error);
+		return ChannelSpatialization::Channel3D;
+	}
+
+	return GetGroupSpatialization(group_spatialization);
 }
 
 
@@ -769,7 +813,7 @@ ChannelSpatialization AudioManager::GetGroupSpatialization(FMOD::ChannelGroup* g
 		return ChannelSpatialization::Channel3D;
 	}
 
-	return ChannelSpatialization::Channel2D;
+	return ChannelSpatialization::Channel3D;
 }
 
 std::string AudioManager::ErrorFModString(FMOD_RESULT fmodError)
