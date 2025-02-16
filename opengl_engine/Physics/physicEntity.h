@@ -12,5 +12,5 @@ public:
 	PhysicEntity() = delete;
 
 	//  is this physic entity loaded on the scene (deleted on scene change) or on the game (deleted only on engine closing)
-	bool loadedPersistent;
+	bool loadedPersistent{ false };
 };

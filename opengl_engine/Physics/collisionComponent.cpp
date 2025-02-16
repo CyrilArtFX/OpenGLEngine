@@ -71,6 +71,16 @@ const Matrix4 CollisionComponent::getModelMatrix() const
 	return associatedObject->getModelMatrix();
 }
 
+Vector3 CollisionComponent::getCenterDownPos() const
+{
+	return Vector3::zero;
+}
+
+Box CollisionComponent::getEncapsulatingBox() const
+{
+	return Box::zero;
+}
+
 void CollisionComponent::resetIntersected()
 {
 	intersectedLastFrame = false;
@@ -87,9 +97,24 @@ void CollisionComponent::addPosition(const Vector3& posToAdd)
 	associatedObject->setPosition(associatedObject->getPosition() + posToAdd);
 }
 
-void CollisionComponent::setCollisionChannel(std::string newCollisionChannel)
+void CollisionComponent::setCollisionChannel(const std::string& newCollisionChannel)
 {
 	collisionChannel = newCollisionChannel;
+}
+
+CollisionShape CollisionComponent::getCollisionShape() const
+{
+	return collisionShape;
+}
+
+CollisionType CollisionComponent::getCollisionType() const
+{
+	return collisionType;
+}
+
+std::string CollisionComponent::getCollisionChannel() const
+{
+	return collisionChannel;
 }
 
 bool CollisionComponent::usedByRigidbody() const
