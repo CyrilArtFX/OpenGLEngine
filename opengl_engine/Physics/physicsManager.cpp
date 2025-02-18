@@ -13,33 +13,28 @@
 // ===============================================
 //  ---- Collisions & Rigidbodies management ----
 // ===============================================
-
-CollisionComponent& PhysicsManager::CreateCollisionComponent(CollisionComponent* colComp)
+void PhysicsManager::RegisterCollision(CollisionComponent* colComp)
 {
-	if(enableInfoLogs) Locator::getLog().LogMessage_Category("Physics: Create a collision.", LogCategory::Info);
 	collisionsComponents.push_back(colComp);
 
-	CollisionComponent& col = *(collisionsComponents.back());
-	col.registered = true;
-	return col;
+	if(enableInfoLogs) Locator::getLog().LogMessage_Category("Physics: Registered a collision component.", LogCategory::Info);
 }
 
-void PhysicsManager::RemoveCollision(CollisionComponent* colComp)
+void PhysicsManager::UnregisterCollision(CollisionComponent* colComp)
 {
 	auto iter = std::find(collisionsComponents.begin(), collisionsComponents.end(), colComp);
 	if (iter == collisionsComponents.end())
 	{
-		Locator::getLog().LogMessage_Category("Physics: Failed to remove a collision.", LogCategory::Error);
+		Locator::getLog().LogMessage_Category("Physics: Failed to unregister a collision.", LogCategory::Error);
 		return;
 	}
 
 	std::iter_swap(iter, collisionsComponents.end() - 1);
-	CollisionComponent& col = *(collisionsComponents.back());
-	col.registered = false;
 	collisionsComponents.pop_back();
 
-	if (enableInfoLogs) Locator::getLog().LogMessage_Category("Physics: Successfully removed a collision.", LogCategory::Info);
+	if (enableInfoLogs) Locator::getLog().LogMessage_Category("Physics: Successfully unregistered a collision.", LogCategory::Info);
 }
+
 
 RigidbodyComponent& PhysicsManager::CreateRigidbodyComponent(RigidbodyComponent* rigidbodyComp)
 {
@@ -318,7 +313,7 @@ void PhysicsManager::UpdatePhysics(float dt)
 	//  reset the 'intersected last frame' parameter
 	for (auto& col : collisionsComponents)
 	{
-		col->resetIntersected();
+		col->setDebugIntersected(false);
 	}
 	for (auto& rigidbody : rigidbodiesComponents)
 	{
@@ -357,15 +352,15 @@ void PhysicsManager::UpdatePhysics(float dt)
 			bool hit = CollisionTests::RigidbodyCollideAndSlideAABB(rigidbody, false, body_movement, col_responses, triggers_detected);
 			if (hit)
 			{
-				rigidbody.getAssociatedCollision().forceIntersected();
+				rigidbody.getAssociatedCollision().setDebugIntersected(true);
 				for (int k = 0; k < col_responses.size(); k++)
 				{
 					CollisionResponse col_datas = { col_responses[k].impactPoint, col_responses[k].impactNormal };
 
 					col_responses[k].collisionComponent.onCollisionIntersect.broadcast(rigidbody, col_datas);
-					col_responses[k].collisionComponent.forceIntersected();
+					col_responses[k].collisionComponent.setDebugIntersected(true);
 
-					if (col_responses[k].collisionComponent.usedByRigidbody())
+					if (col_responses[k].collisionComponent.ownedByRigidbody())
 					{
 						rigidbody.getAssociatedCollisionNonConst().onCollisionIntersect.broadcast(*(col_responses[k].collisionComponent.getOwningRigidbody()), col_datas);
 					}
@@ -382,15 +377,15 @@ void PhysicsManager::UpdatePhysics(float dt)
 			hit = CollisionTests::RigidbodyCollideAndSlideAABB(rigidbody, true, gravity_movement, col_responses, triggers_detected);
 			if (hit)
 			{
-				rigidbody.getAssociatedCollision().forceIntersected();
+				rigidbody.getAssociatedCollision().setDebugIntersected(true);
 				for (int k = 0; k < col_responses.size(); k++)
 				{
 					CollisionResponse col_datas = { col_responses[k].impactPoint, col_responses[k].impactNormal };
 
 					col_responses[k].collisionComponent.onCollisionIntersect.broadcast(rigidbody, col_datas);
-					col_responses[k].collisionComponent.forceIntersected();
+					col_responses[k].collisionComponent.setDebugIntersected(true);
 
-					if (col_responses[k].collisionComponent.usedByRigidbody())
+					if (col_responses[k].collisionComponent.ownedByRigidbody())
 					{
 						rigidbody.getAssociatedCollisionNonConst().onCollisionIntersect.broadcast(*(col_responses[k].collisionComponent.getOwningRigidbody()), col_datas);
 					}
@@ -407,7 +402,7 @@ void PhysicsManager::UpdatePhysics(float dt)
 				for (auto trigger_detected : triggers_detected)
 				{
 					trigger_detected->onTriggerEnter.broadcast(rigidbody);
-					trigger_detected->forceIntersected();
+					trigger_detected->setDebugIntersected(true);
 				}
 			}
 		}
@@ -430,7 +425,7 @@ void PhysicsManager::DrawCollisionsDebug(Material& debugMaterial)
 
 	for (auto& rigidbody : rigidbodiesComponents)
 	{
-		rigidbody->getAssociatedCollision().drawDebug(debugMaterial);
+		rigidbody->getAssociatedCollisionNonConst().drawDebug(debugMaterial);
 	}
 
 	for (auto& raycast : raycasts)
@@ -441,86 +436,6 @@ void PhysicsManager::DrawCollisionsDebug(Material& debugMaterial)
 
 
 
-
-// ===============================================
-//  ------------- Clear Physics -----------------
-// ===============================================
-
-void PhysicsManager::ClearAllCollisions(bool engineClosing)
-{
-	if (engineClosing) 
-	{
-		if (enableInfoLogs) Locator::getLog().LogMessage_Category("Physics: Clearing all collisions, rigidbodies and raycasts.", LogCategory::Info);
-
-		for (auto col : collisionsComponents)
-		{
-			col->registered = false;
-			delete col;
-		}
-		collisionsComponents.clear();
-
-		for (auto rigidbody : rigidbodiesComponents)
-		{
-			rigidbody->registered = false;
-			delete rigidbody;
-		}
-		rigidbodiesComponents.clear();
-
-		for (auto raycast : raycasts)
-		{
-			delete raycast;
-		}
-		raycasts.clear();
-
-		return;
-	}
-
-	if (enableInfoLogs) Locator::getLog().LogMessage_Category("Physics: Clearing active scene collisions, rigidbodies and raycasts.", LogCategory::Info);
-
-	std::vector<CollisionComponent*> game_collisions;
-	for (auto col : collisionsComponents)
-	{
-		if (col->loadedPersistent)
-		{
-			game_collisions.push_back(col);
-			continue;
-		}
-
-		col->registered = false;
-		delete col;
-	}
-	collisionsComponents.clear();
-	collisionsComponents = game_collisions;
-
-	std::vector<RigidbodyComponent*> game_rigidbodies;
-	for (auto rigidbody : rigidbodiesComponents)
-	{
-		if (rigidbody->loadedPersistent)
-		{
-			game_rigidbodies.push_back(rigidbody);
-			continue;
-		}
-
-		rigidbody->registered = false;
-		delete rigidbody;
-	}
-	rigidbodiesComponents.clear();
-	rigidbodiesComponents = game_rigidbodies;
-
-	std::vector<Raycast*> game_raycasts;
-	for (auto raycast : raycasts)
-	{
-		if (raycast->loadedPersistent)
-		{
-			game_raycasts.push_back(raycast);
-			continue;
-		}
-
-		delete raycast;
-	}
-	raycasts.clear();
-	raycasts = game_raycasts;
-}
 
 float PhysicsManager::GetGravityValue()
 {

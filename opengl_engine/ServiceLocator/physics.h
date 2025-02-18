@@ -19,15 +19,14 @@ public:
 	/**
 	* Register a Collision Component in the physics engine.
 	* @param	colComp		Collision Component to register.
-	* @return				A reference to the registered Collision Component.
 	*/
-	virtual CollisionComponent& CreateCollisionComponent(CollisionComponent* colComp) = 0;
+	virtual void RegisterCollision(CollisionComponent* colComp) = 0;
 
 	/**
 	* Unregister a Collision Component from the physics engine.
 	* @param	colComp		Collision Component to unregister.
 	*/
-	virtual void RemoveCollision(CollisionComponent* colComp) = 0;
+	virtual void UnregisterCollision(CollisionComponent* colComp) = 0;
 
 
 	/**
@@ -81,14 +80,6 @@ public:
 	* @return						True if at least one collision intersect the sweeped aabb box raycast.
 	*/
 	virtual bool AABBSweepRaycast(const Vector3& start, const Vector3& end, const Box& aabbBox, const std::vector<std::string> testChannels = {}, RaycastHitInfos& outHitInfos = RaycastHitInfos::defaultInfos, float drawDebugTime = 5.0f, bool createOnScene = true, bool forCollisionTest = false) = 0;
-
-
-	/**
-	* Remove collisions, rigidbodies and raycasts stored on the scene.
-	* Useful when exiting a scene or exiting the game.
-	* @param	clearGame	Also remove collisions, rigidbodies and raycasts stored on the game.
-	*/
-	virtual void ClearAllCollisions(bool clearGame) = 0;
 
 
 	/**

@@ -1,30 +1,20 @@
 #include "collisionComponent.h"
-#include <ServiceLocator/locator.h>
-#include "rigidbodyComponent.h"
 #include "ObjectChannels/collisionChannels.h"
+#include "rigidbodyComponent.h"
+
+#include <ECS/entity.h>
+
 #include <Rendering/material.h>
+#include <Rendering/Model/mesh.h>
 #include <Utils/color.h>
 
-CollisionComponent::~CollisionComponent()
-{
-	if (registered)
-	{
-		Locator::getPhysics().RemoveCollision(this);
-	}
+#include <ServiceLocator/locator.h>
 
-	if (isAudioCollision)
-	{
-		Locator::getAudio().ReleaseCollision(audioCollisionIndex);
-	}
 
-	onCollisionDelete.broadcast();
-}
 
-void CollisionComponent::setAssociatedObject(Object* newObject)
-{
-	associatedObject = newObject;
-}
-
+// ----------------------------------------------------------
+//  Raycast Tests
+// ----------------------------------------------------------
 bool CollisionComponent::resolvePoint(const Vector3& point) const
 {
 	bool intersect = resolvePointIntersection(point);
@@ -58,43 +48,10 @@ bool CollisionComponent::resolveAABBSweepRaycast(const Ray& raycast, const Box& 
 	return intersect;
 }
 
-void CollisionComponent::drawDebug(Material& debugMaterial) const
-{
-	debugMaterial.getShader().setVec3("color", intersectedLastFrame ? Color::red : Color::green);
-	drawDebugMesh(debugMaterial);
-}
 
-const Matrix4 CollisionComponent::getModelMatrix() const
+void CollisionComponent::setCollisionType(CollisionType newCollisionType)
 {
-	if (!associatedObject) return Matrix4::identity;
-
-	return associatedObject->getModelMatrix();
-}
-
-Vector3 CollisionComponent::getCenterDownPos() const
-{
-	return Vector3::zero;
-}
-
-Box CollisionComponent::getEncapsulatingBox() const
-{
-	return Box::zero;
-}
-
-void CollisionComponent::resetIntersected()
-{
-	intersectedLastFrame = false;
-}
-
-void CollisionComponent::forceIntersected() const
-{
-	intersectedLastFrame = true;
-}
-
-void CollisionComponent::addPosition(const Vector3& posToAdd)
-{
-	if (!associatedObject) return;
-	associatedObject->setPosition(associatedObject->getPosition() + posToAdd);
+	collisionType = newCollisionType;
 }
 
 void CollisionComponent::setCollisionChannel(const std::string& newCollisionChannel)
@@ -102,6 +59,24 @@ void CollisionComponent::setCollisionChannel(const std::string& newCollisionChan
 	collisionChannel = newCollisionChannel;
 }
 
+bool CollisionComponent::channelTest(const std::vector<std::string> testChannels) const
+{
+	for (auto test_channel : testChannels)
+	{
+		if (test_channel == "") continue;
+
+		if (test_channel == CollisionChannels::DefaultEverything()) return true;
+
+		if (test_channel == collisionChannel) return true;
+	}
+
+	return false;
+}
+
+
+// ----------------------------------------------------------
+//  Collision getters
+// ----------------------------------------------------------
 CollisionShape CollisionComponent::getCollisionShape() const
 {
 	return collisionShape;
@@ -117,38 +92,78 @@ std::string CollisionComponent::getCollisionChannel() const
 	return collisionChannel;
 }
 
-bool CollisionComponent::usedByRigidbody() const
+const Matrix4 CollisionComponent::getModelMatrix() const
 {
-	return owningBody != nullptr;
+	return getOwner()->getModelMatrix(); //  this function is made to be overriden
+}
+
+Vector3 CollisionComponent::getCenterDownPos() const
+{
+	return Vector3::zero; //  this function is made to be overriden
+}
+
+Box CollisionComponent::getEncapsulatingBox() const
+{
+	return Box::zero; //  this function is made to be overriden
+}
+
+
+// ----------------------------------------------------------
+//  Rigidbody
+// ----------------------------------------------------------
+void CollisionComponent::setOwningRigidbody(RigidbodyComponent* rigidbodyOwner)
+{
+	owningRigidbody = rigidbodyOwner;
 }
 
 RigidbodyComponent* CollisionComponent::getOwningRigidbody() const
 {
-	return owningBody;
+	return owningRigidbody;
 }
 
-CollisionComponent::CollisionComponent(CollisionShape collisionShape_, CollisionType collisionType_, Object* associatedObject_, Mesh* debugMesh_, bool loadPersistent_, std::string collisionChannel_) :
-	PhysicEntity(loadPersistent_),
-	collisionShape(collisionShape_), collisionType(collisionType_), associatedObject(associatedObject_), debugMesh(debugMesh_), collisionChannel(collisionChannel_),
-	owningBody(nullptr)
+bool CollisionComponent::ownedByRigidbody() const
 {
+	return owningRigidbody != nullptr;
 }
 
-bool CollisionComponent::channelTest(const std::vector<std::string> testChannels) const
+
+// ----------------------------------------------------------
+//  Debug Drawing
+// ----------------------------------------------------------
+void CollisionComponent::drawDebug(Material& debugMaterial)
 {
-	for (auto test_channel : testChannels)
+	debugMaterial.getShader().setVec3("color", debugIntersectedLastFrame ? Color::red : Color::green);
+	drawDebugMesh(debugMaterial);
+}
+
+void CollisionComponent::setDebugIntersected(bool debugIntersected) const
+{
+	debugIntersectedLastFrame = debugIntersected;
+}
+
+bool CollisionComponent::getDebugIntersected() const
+{
+	return debugIntersectedLastFrame;
+}
+
+
+
+// ----------------------------------------------------------
+//  Component registering functions
+// ----------------------------------------------------------
+void CollisionComponent::registerComponent()
+{
+	Locator::getPhysics().RegisterCollision(this);
+}
+
+void CollisionComponent::unregisterComponent()
+{
+	Locator::getPhysics().UnregisterCollision(this);
+
+	if (isAudioCollision)
 	{
-		if (test_channel == "") continue;
-
-		if(test_channel == CollisionChannels::DefaultEverything()) return true;
-
-		if (test_channel == collisionChannel) return true;
+		Locator::getAudio().ReleaseCollision(audioCollisionIndex);
 	}
 
-	return false;
-}
-
-void CollisionComponent::setRigidbody(RigidbodyComponent* rigidbody)
-{
-	owningBody = rigidbody;
+	onCollisionDelete.broadcast();
 }

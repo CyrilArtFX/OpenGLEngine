@@ -1,9 +1,10 @@
 #pragma once
 #include <ECS/component.h>
-#include "raycast.h"
+#include <Physics/raycast.h>
 
 #include <Maths/Geometry/box.h>
 #include <Maths/Geometry/ray.h>
+#include <Maths/Matrix4.h>
 
 #include <Events/event.h>
 #include <Audio/audioUtils.h>
@@ -117,7 +118,7 @@ public:
 public:
 	/**
 	* Set this collision owned by a rigidbody.
-	* If this function is called with nullptr as a paremeter, it will set this collision as NOT used by a rigidbody (default state).
+	* If this function is called with nullptr as a paremeter, it will set this collision as not used by a rigidbody (default state).
 	* @param	rigidbodyOwner		The rigidbody that will own this collision.
 	*/
 	void setOwningRigidbody(RigidbodyComponent* rigidbodyOwner);
@@ -136,7 +137,7 @@ public:
 
 
 // ----------------------------------------------------------
-//  Debug drawing
+//  Debug Drawing
 // ----------------------------------------------------------
 public:
 	void drawDebug(Material& debugMaterial);
@@ -165,6 +166,14 @@ public:
 	mutable Event<RigidbodyComponent&, const struct CollisionResponse&> onCollisionIntersect;
 	mutable Event<RigidbodyComponent&> onTriggerEnter;
 
+
+
+// ----------------------------------------------------------
+//  Component registering functions
+// ----------------------------------------------------------
+protected:
+	virtual void registerComponent() override;
+	virtual void unregisterComponent() override;
 
 
 // ----------------------------------------------------------

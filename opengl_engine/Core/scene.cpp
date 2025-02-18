@@ -10,9 +10,6 @@ void Scene::load()
 
 void Scene::unload(bool exitGame)
 {
-	// TODO: remove this when a proper integrations of collisions as components is done
-	Locator::getPhysics().ClearAllCollisions(exitGame);
-
 	unloadScene();
 
 	clearEntities();
