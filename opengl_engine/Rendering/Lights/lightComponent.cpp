@@ -52,7 +52,7 @@ float LightComponent::getDiffuseStrength()
 
 void LightComponent::registerComponent()
 {
-	//  we can't register the light component to the renderer here, cause we need to wait for the user to initialize the light
+	Locator::getRenderer().AddLight(this);
 }
 
 void LightComponent::unregisterComponent()

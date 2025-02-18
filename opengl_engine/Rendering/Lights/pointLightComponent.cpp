@@ -22,8 +22,6 @@ void PointLightComponent::init()
 	lightType = LightType::EPointLight;
 
 	initializePosition();
-
-	Locator::getRenderer().AddLight(this);
 }
 
 void PointLightComponent::setUseDiffColorToSpecColor(bool value)

@@ -26,8 +26,6 @@ void SpotLightComponent::init()
 	lightType = LightType::ESpotLight;
 
 	initializePosition();
-
-	Locator::getRenderer().AddLight(this);
 }
 
 void SpotLightComponent::setUseDiffColorToSpecColor(bool value)

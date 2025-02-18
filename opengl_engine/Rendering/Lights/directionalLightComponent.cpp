@@ -14,8 +14,6 @@ void DirectionalLightComponent::useLight(Shader& litShader, int lightIndex)
 void DirectionalLightComponent::init()
 {
 	lightType = LightType::EDirectionalLight;
-
-	Locator::getRenderer().AddLight(this);
 }
 
 void DirectionalLightComponent::setDirection(Vector3 newDirection)
