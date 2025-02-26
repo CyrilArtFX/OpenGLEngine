@@ -16,6 +16,8 @@ public:
 
 protected:
 	friend class Entity;
+	friend class ComponentList;
+	friend class ComponentManager;
 
 	virtual void registerComponent() = 0;
 	virtual void unregisterComponent() = 0;
@@ -25,8 +27,6 @@ protected:
 
 private:
 	Entity* owner{ nullptr };
-
-	bool componentRegistered{ false };
 
 	void setOwner(Entity* owner_);
 };
