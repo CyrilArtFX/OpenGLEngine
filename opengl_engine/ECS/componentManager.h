@@ -1,5 +1,7 @@
 #pragma once
 #include "component.h"
+#include "entity.h"
+#include <ServiceLocator/locator.h>
 
 #include <vector>
 #include <unordered_map>
@@ -21,7 +23,7 @@ public:
 
 
 	/** Create a component and store it continuously with the other components of this class in the memory. */
-	virtual std::shared_ptr<Component> createComponent() = 0;
+	virtual std::shared_ptr<Component> createComponent(Entity* owner) = 0;
 
 	/** Remove a component from the list of this class of components. */
 	virtual void deleteComponent(const std::shared_ptr<Component>& component) = 0;
@@ -37,6 +39,14 @@ public:
 	const std::vector<std::shared_ptr<Component>>& getAllComponents() const { return componentsShared; }
 
 protected:
+	/** Initializing a component require to be a friend class of Component, and ComponentListByClass isn't so we do it in the parent class. */
+	void initializeComponent(const std::shared_ptr<Component>& component, Entity* componentOwner)
+	{
+		component->setOwner(componentOwner);
+		component->init();
+		component->registerComponent();
+	}
+
 	std::vector<std::shared_ptr<Component>> componentsShared;
 	size_t numComponentsPerSublist;
 };
@@ -65,7 +75,7 @@ public:
 	}
 
 	/** Create a component and store it continuously with the other components of this class in the memory. */
-	std::shared_ptr<Component> createComponent() override
+	std::shared_ptr<Component> createComponent(Entity* owner) override
 	{
 		//  step 1: get a sublist with a free slot available
 		//  ------------------------------------------------
@@ -103,7 +113,7 @@ public:
 			if (sublist_creating_in.memoryAllocated[slots_iter]) continue;
 
 			sublist_creating_in.memoryAllocated[slots_iter] = true;
-			new (&sublist_creating_in.components[slots_iter]) T();
+			new (&sublist_creating_in.components[slots_iter]) T(); //  here we effectively create the component
 			sublist_creating_in.freeSlots--;
 			created_component_slot = slots_iter;
 			break;
@@ -111,16 +121,48 @@ public:
 
 		if (created_component_slot == -1)
 		{
-			// TODO: assert error
+			Locator::getLog().LogMessage_Category("Component Manager: Failed to find a free memory slot to create a component");
+			return std::make_shared<Component>();
 		}
 
-		// TODO: finish the component creation: call the register component function, give it to the shared list and bind the memory clear on the shared ptr destructor
+
+		//  step 3: shared_ptr from created component
+		//  -----------------------------------------
+		ComponentSubList* sublist_ptr = componentSubLists[sublist_index].get(); //  give a raw ptr of the sublist to the destructor lambda
+
+		const std::shared_ptr<T> shared_component_as_t = std::shared_ptr<T>(&sublist_creating_in.components[created_component_slot],
+			[this, created_component_slot, sublist_ptr](T* component) //  define a custom destructor for the shared_ptr with a lambda
+			{
+				//  note: the shared_ptr destructor will be called when its last shared reference will disappear
+				//  we use this to free the memory of the component only when we're sure that nobody uses it anymore
+
+				component->~T(); //  call the destructor of the deleted component
+				
+				if (componentSubLists.empty()) return; //  security to avoid errors when the game is closing for exemple
+
+				//  we don't actually free the memory since it would mean erasing the entire sublist, but we authorize a new component to replace this one in the sublist
+				sublist_ptr->memoryAllocated[created_component_slot] = false;
+				sublist_ptr->freeSlots++;
+
+				// TODO: delete the component sublist if this was the last component in the sublist
+				// TODO: delete the component list if this was the last sublist in the list
+			});
+
+		const std::shared_ptr<Component> shared_component = std::dynamic_pointer_cast<Component>(shared_component_as_t);
+		componentsShared.push_back(shared_component);
+
+
+		//  step 4: initialize the created component
+		//  ----------------------------------------
+		initializeComponent(shared_component, owner);
+
+		return shared_component;
 	}
 
 	/** Remove a component from the list of this class of components. */
 	void deleteComponent(const std::shared_ptr<Component>& component) override
 	{
-		// TODO: create the function
+		// TODO: create the function (don't forget to call the unregister component function)
 	}
 
 	/** Update all components of the list of this class of components. */
@@ -146,7 +188,7 @@ public:
 
 	/** Create a component and return a shared pointer to it. */
 	template<typename T>
-	static std::shared_ptr<T> CreateComponent()
+	static std::shared_ptr<T> CreateComponent(Entity* owner)
 	{
 		const size_t component_class_id = typeid(T).hash_code(); //  get the "unique id" of the given component class
 		if (componentLists.find(component_class_id) == componentLists.end())
@@ -156,7 +198,7 @@ public:
 		}
 
 		//  create the component in the corresponding component list
-		return std::static_pointer_cast<T>(componentLists[component_class_id]->createComponent());
+		return std::static_pointer_cast<T>(componentLists[component_class_id]->createComponent(owner));
 	}
 
 	/** Delete a component. */
