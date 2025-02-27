@@ -1,11 +1,12 @@
 #pragma once
 #include "component.h"
-#include "entity.h"
 #include <ServiceLocator/locator.h>
 
 #include <vector>
 #include <unordered_map>
 #include <memory>
+
+class Entity;
 
 
 /**
@@ -40,18 +41,21 @@ public:
 
 protected:
 	/** Initializing a component require to be a friend class of Component, and ComponentListByClass isn't so we do it in the parent class. */
-	void initializeComponent(const std::shared_ptr<Component>& component, Entity* componentOwner)
-	{
-		component->setOwner(componentOwner);
-		component->init();
-		component->registerComponent();
-	}
+	void initializeComponent(const std::shared_ptr<Component>& component, Entity* componentOwner);
+	
+	/** Unregistering a component require to be a friend class of Component, and ComponentListByClass isn't so we do it in the parent class. */
+	void unregisterComponent(const std::shared_ptr<Component>& component);
 
 	std::vector<std::shared_ptr<Component>> componentsShared;
 	size_t numComponentsPerSublist;
 };
 
 
+
+/**
+* Component List by Class
+* Specialized component list class that manage every components of its defined class.
+*/
 template<class T>
 class ComponentListByClass : ComponentList
 {
@@ -162,7 +166,21 @@ public:
 	/** Remove a component from the list of this class of components. */
 	void deleteComponent(const std::shared_ptr<Component>& component) override
 	{
-		// TODO: create the function (don't forget to call the unregister component function)
+		const size_t num_shared_comps = componentsShared.size();
+		for (size_t iter_shared_comps = 0; iter_shared_comps < num_shared_comps; iter_shared_comps++)
+		{
+			if (componentsShared[iter_shared_comps] == component)
+			{
+				unregisterComponent(component);
+				componentsShared.erase(componentsShared.begin() + iter_shared_comps);
+				break;
+
+				//  note: we don't free the memory of the component in this function cause we don't want
+				//  to create errors if other objects still have a reference to this component.
+				//  the memory will be freed when the last shared reference of the shared pointer will disappear
+				//  we defined a custom destructor for the shared pointer when creating it (see the createComponent function)
+			}
+		}
 	}
 
 	/** Update all components of the list of this class of components. */
@@ -176,6 +194,11 @@ public:
 };
 
 
+
+/**
+* Component Manager
+* Static class that manage specialized component lists and is the interface to create, update and delete components.
+*/
 class ComponentManager
 {
 public:
@@ -184,6 +207,7 @@ public:
 	static void AddComponentList(size_t classId)
 	{
 		componentLists[classId] = std::make_unique<ComponentListByClass<T>>(100);
+		// TODO: create a way to get the desired sublist size depending of the component class
 	}
 
 	/** Create a component and return a shared pointer to it. */
@@ -217,6 +241,7 @@ public:
 	/** Update all active components. */
 	static void UpdateComponents()
 	{
+		// TODO: create a way to fully disable the update of some component class and don't call their list
 		for (auto& component_list_pair : componentLists)
 		{
 			component_list_pair.second->updateComponents();
