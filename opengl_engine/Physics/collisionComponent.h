@@ -4,16 +4,20 @@
 
 #include <Maths/Geometry/box.h>
 #include <Maths/Geometry/ray.h>
+#include <Maths/Vector3.h>
 #include <Maths/Matrix4.h>
 
 #include <Events/event.h>
 #include <Audio/audioUtils.h>
 
+#include <memory>
 #include <vector>
+
 
 class RigidbodyComponent;
 class Material;
 class Mesh;
+
 
 
 enum class CollisionShape : uint8_t
@@ -35,7 +39,7 @@ enum class CollisionType : uint8_t
 * Base class for every collision components.
 * Abstract Component - do not add it to an Entity.
 */
-class CollisionComponent : public Component
+class CollisionComponent : public Component, public std::enable_shared_from_this<CollisionComponent>
 {
 // ----------------------------------------------------------
 //  Raycast Tests

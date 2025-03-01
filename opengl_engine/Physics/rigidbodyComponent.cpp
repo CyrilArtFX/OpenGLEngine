@@ -2,28 +2,10 @@
 #include <ServiceLocator/locator.h>
 #include "ObjectChannels/collisionChannels.h"
 
-RigidbodyComponent::RigidbodyComponent(CollisionComponent* collisionToAssociate, bool activatePhysics) :
-	PhysicEntity(collisionToAssociate->loadedPersistent), physicsActivated(activatePhysics), useGravity(activatePhysics)
-{
-	associateCollision(collisionToAssociate);
-
-	onCollisionRepulsed.registerObserver(this, Bind_1(&RigidbodyComponent::onCollision));
-}
-
-RigidbodyComponent::~RigidbodyComponent()
-{
-	if (registered)
-	{
-		Locator::getPhysics().RemoveRigidbody(this);
-	}
-
-	onRigidbodyDelete.broadcast();
-
-	delete associatedCollision;
-}
-
 void RigidbodyComponent::associateCollision(CollisionComponent* collisionToAssociate)
 {
+	associatedCollision->setOwningRigidbody(0);
+
 	if (associatedCollision)
 	{
 		associatedCollision->onCollisionIntersect.unregisterObserver(this);
