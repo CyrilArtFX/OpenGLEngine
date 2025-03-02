@@ -1,25 +1,81 @@
 #include "rigidbodyComponent.h"
-#include <ServiceLocator/locator.h>
 #include "ObjectChannels/collisionChannels.h"
 
-void RigidbodyComponent::associateCollision(CollisionComponent* collisionToAssociate)
-{
-	associatedCollision->setOwningRigidbody(0);
+#include <ServiceLocator/locator.h>
 
-	if (associatedCollision)
+
+
+// ----------------------------------------------------------
+//  Associated Collision
+// ----------------------------------------------------------
+void RigidbodyComponent::associateCollision(std::weak_ptr<CollisionComponent> collisionToAssociate)
+{
+	//  remove the owning rigidbody of a potential previous managed collision
+	if (isAssociatedCollisionValid())
 	{
 		associatedCollision->onCollisionIntersect.unregisterObserver(this);
+		associatedCollision->setOwningRigidbody(nullptr);
 	}
 
-	associatedCollision = collisionToAssociate;
+	associatedCollision = collisionToAssociate.lock();
 	if (associatedCollision)
 	{
-		//  do initialization things with the newly associated collision
-		associatedCollision->setRigidbody(this);
-
+		//  initialize the collision as a managed collision
+		associatedCollision->setOwningRigidbody(this);
 		associatedCollision->onCollisionIntersect.registerObserver(this, Bind_2(&RigidbodyComponent::onCollisionIntersected));
 	}
 }
+
+bool RigidbodyComponent::isAssociatedCollisionValid() const
+{
+	return associatedCollision.operator bool();
+}
+
+const CollisionComponent& RigidbodyComponent::getAssociatedCollision() const
+{
+	return *associatedCollision;
+}
+
+CollisionComponent& RigidbodyComponent::getAssociatedCollisionNonConst()
+{
+	return *associatedCollision;
+}
+
+
+// ----------------------------------------------------------
+//  Rigidbody Parameters
+// ----------------------------------------------------------
+void RigidbodyComponent::setPhysicsActivated(bool value)
+{
+	physicsActivated = value;
+}
+
+void RigidbodyComponent::setUseGravity(bool value)
+{
+	useGravity = value;
+}
+
+void RigidbodyComponent::setStepHeight(float value)
+{
+	stepHeight = value;
+}
+
+bool RigidbodyComponent::isPhysicsActivated() const
+{
+	return isAssociatedCollisionValid() && physicsActivated;
+}
+
+bool RigidbodyComponent::getUseGravity() const
+{
+	return useGravity;
+}
+
+float RigidbodyComponent::getStepHeight() const
+{
+	return stepHeight;
+}
+
+
 
 
 void RigidbodyComponent::updatePhysicsPreCollision(float dt)
@@ -96,20 +152,6 @@ void RigidbodyComponent::updatePhysicsPostCollision(float dt)
 	gravityMovement = Vector3::zero;
 }
 
-void RigidbodyComponent::setPhysicsActivated(bool value)
-{
-	physicsActivated = value;
-}
-
-void RigidbodyComponent::setUseGravity(bool value)
-{
-	useGravity = value;
-}
-
-void RigidbodyComponent::setStepHeight(float value)
-{
-	stepHeight = value;
-}
 
 void RigidbodyComponent::applyComputedMovement(const Vector3& computedMovement)
 {

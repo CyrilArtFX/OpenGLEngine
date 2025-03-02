@@ -34,17 +34,6 @@ struct CollisionResponse
 */
 class RigidbodyComponent : public Component, public Observer, public std::enable_shared_from_this<RigidbodyComponent>
 {
-	//  categories de fonction:
-	//  - associated collision
-	//  - update physics and apply movements (physics manager only?)
-	//  - parameters (set and get)
-	//  - velocity (with velocity one frame)
-	//  - gravity velocity
-	//  - test channels
-	//  - others (is on ground & step mechanic)
-
-
-
 // ----------------------------------------------------------
 //  Associated Collision
 // ----------------------------------------------------------
@@ -167,7 +156,7 @@ public:
 
 
 // ----------------------------------------------------------
-//  Other Rigidbody Functions
+//  Other Rigidbody functions
 // ----------------------------------------------------------
 public:
 	/**
@@ -188,63 +177,95 @@ public:
 	bool isOnGround() const;
 
 
+//  Observer functions
+private:
+	void onCollisionIntersected(RigidbodyComponent& other, const CollisionResponse& collisionResponse);
+	void onCollision(const CollisionResponse& collisionResponse);
+
+
 // ----------------------------------------------------------
 //  Rigibody Test Channels
 // ----------------------------------------------------------
 public:
-
+	/** Set the collision channels that this Rigidbody will test when updating physics. */
 	void setTestChannels(std::vector<std::string> newTestChannels);
+
+	/** Add a collision channel that this Rigidbody will test when updating physics. */
 	void addTestChannel(std::string newTestChannel);
+
+	/** Get the collision channels that this Rigidbody test when updating physics. */
 	std::vector<std::string> getTestChannels() const;
 
 
-
-
-
-	void updatePhysicsPreCollision(float dt);
-	void updatePhysicsPostCollision(float dt);
-	void applyComputedMovement(const Vector3& computedMovement);
-	void applyComputedGravityMovement(const Vector3& computedGravityMovement);
-
-
-
-
-
-
-
-
-	//  for physics manager
-	bool registered{ false };
-
+// ----------------------------------------------------------
+//  Events
+// ----------------------------------------------------------
+public:
 	Event<> onRigidbodyDelete;
 	Event<const CollisionResponse&> onCollisionRepulsed;
 
 
 
+// ----------------------------------------------------------
+//  Component registering functions
+// ----------------------------------------------------------
+protected:
+	virtual void registerComponent() override;
+	virtual void unregisterComponent() override;
+
+
+// ----------------------------------------------------------
+//  Rigidbody properties
+// ----------------------------------------------------------
 private:
-	CollisionComponent* associatedCollision{ nullptr };
+	std::shared_ptr<CollisionComponent> associatedCollision{ nullptr };
 
 	bool physicsActivated{ false };
-
+	bool useGravity{ false };
 	float stepHeight{ 0.0f };
 
 	Vector3 velocity{ Vector3::zero };
-	Vector3 gravityVelocity{ Vector3::zero };
 	Vector3 velocityOneFrame{ Vector3::zero };
 	Vector3 movement{ Vector3::zero };
+
+	Vector3 gravityVelocity{ Vector3::zero };
 	Vector3 gravityMovement{ Vector3::zero };
-	bool useGravity{ false };
 
 	bool onGround{ false };
 	bool groundedLastFrame{ false };
-
-
 	bool firstFrame{ true };
 
 	std::vector<std::string> testChannels;
 
 
-	void onCollisionIntersected(RigidbodyComponent& other, const CollisionResponse& collisionResponse);
-	void onCollision(const CollisionResponse& collisionResponse);
-};
 
+// ----------------------------------------------------------
+//  Update Physics functions for the Physics Manager
+// ----------------------------------------------------------
+private:
+	friend class PhysicsManager;
+
+	/**
+	* Update the physics of this Rigidbody before the collision computation.
+	* @param	dt		Delta time of the current frame.
+	*/
+	void updatePhysicsPreCollision(float dt);
+
+	/**
+	* Update the physics of this Rigidbody after the collision computation.
+	* @param	dt		Delta time of the current frame.
+	*/
+	void updatePhysicsPostCollision(float dt);
+
+	/**
+	* Apply the physics-computed movement of this Rigidbody for the current frame.
+	* @param	computedMovement	The movement computed with physics of this Rigidbody.
+	*/
+	void applyComputedMovement(const Vector3& computedMovement);
+
+	/**
+	* Apply the physics-computed gravity movement of this Rigidbody for the current frame.
+	* @param	computedGravityMovement		The gravity movement computed with physics of this Rigidbody.
+	*/
+	void applyComputedGravityMovement(const Vector3& computedGravityMovement);
+};
