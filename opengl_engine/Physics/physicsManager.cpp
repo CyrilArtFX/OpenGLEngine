@@ -25,42 +25,37 @@ void PhysicsManager::UnregisterCollision(CollisionComponent* colComp)
 	auto iter = std::find(collisionsComponents.begin(), collisionsComponents.end(), colComp);
 	if (iter == collisionsComponents.end())
 	{
-		Locator::getLog().LogMessage_Category("Physics: Failed to unregister a collision.", LogCategory::Error);
+		Locator::getLog().LogMessage_Category("Physics: Failed to unregister a collision component.", LogCategory::Error);
 		return;
 	}
 
 	std::iter_swap(iter, collisionsComponents.end() - 1);
 	collisionsComponents.pop_back();
 
-	if (enableInfoLogs) Locator::getLog().LogMessage_Category("Physics: Successfully unregistered a collision.", LogCategory::Info);
+	if (enableInfoLogs) Locator::getLog().LogMessage_Category("Physics: Successfully unregistered a collision component.", LogCategory::Info);
 }
 
 
-RigidbodyComponent& PhysicsManager::CreateRigidbodyComponent(RigidbodyComponent* rigidbodyComp)
+void PhysicsManager::RegisterRigidbody(RigidbodyComponent* rigidbodyComp)
 {
-	if (enableInfoLogs) Locator::getLog().LogMessage_Category("Physics: Create a rigidbody.", LogCategory::Info);
 	rigidbodiesComponents.push_back(rigidbodyComp);
 
-	RigidbodyComponent& rigidbody = *(rigidbodiesComponents.back());
-	rigidbody.registered = true;
-	return rigidbody;
+	if (enableInfoLogs) Locator::getLog().LogMessage_Category("Physics: Registered a rigidbody component.", LogCategory::Info);
 }
 
-void PhysicsManager::RemoveRigidbody(RigidbodyComponent* rigidbodyComp)
+void PhysicsManager::UnregisterRigidbody(RigidbodyComponent* rigidbodyComp)
 {
 	auto iter = std::find(rigidbodiesComponents.begin(), rigidbodiesComponents.end(), rigidbodyComp);
 	if (iter == rigidbodiesComponents.end())
 	{
-		Locator::getLog().LogMessage_Category("Physics: Failed to remove a rigidbody", LogCategory::Error);
+		Locator::getLog().LogMessage_Category("Physics: Failed to unregister a rigidbody component.", LogCategory::Error);
 		return;
 	}
 
 	std::iter_swap(iter, rigidbodiesComponents.end() - 1);
-	RigidbodyComponent& rigidbody = *(rigidbodiesComponents.back());
-	rigidbody.registered = false;
 	rigidbodiesComponents.pop_back();
 
-	if (enableInfoLogs) Locator::getLog().LogMessage_Category("Physics: Successfully removed a rigidbody.", LogCategory::Info);
+	if (enableInfoLogs) Locator::getLog().LogMessage_Category("Physics: Successfully removed a rigidbody component.", LogCategory::Info);
 }
 
 
@@ -317,7 +312,7 @@ void PhysicsManager::UpdatePhysics(float dt)
 	}
 	for (auto& rigidbody : rigidbodiesComponents)
 	{
-		rigidbody->resetIntersected();
+		rigidbody->getAssociatedCollision().setDebugIntersected(false);
 		rigidbody->updatePhysicsPreCollision(dt); //  compute the anticipated movements for physics activated rigidbodies, and apply the movement for non-physics activated ones
 	}
 

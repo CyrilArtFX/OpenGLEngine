@@ -32,15 +32,14 @@ public:
 	/**
 	* Register a Rigidbody Component in the physics engine.
 	* @param	rigidbodyComp	Rigidbody Component to register.
-	* @return					A reference to the registered Rigidbody Component.
 	*/
-	virtual RigidbodyComponent& CreateRigidbodyComponent(RigidbodyComponent* rigidbodyComp) = 0;
+	virtual void RegisterRigidbody(RigidbodyComponent* rigidbodyComp) = 0;
 
 	/**
 	* Unregister a Rigidbody Component from the physics engine.
 	* @param	rigidbodyComp	Rigidbody Component to unregister.
 	*/
-	virtual void RemoveRigidbody(RigidbodyComponent* rigidbodyComp) = 0;
+	virtual void UnregisterRigidbody(RigidbodyComponent* rigidbodyComp) = 0;
 
 
 

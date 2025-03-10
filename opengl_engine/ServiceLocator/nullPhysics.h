@@ -10,8 +10,8 @@ public:
 	void RegisterCollision(CollisionComponent* colComp) override {}
 	void UnregisterCollision(CollisionComponent* colComp) override {}
 
-	RigidbodyComponent& CreateRigidbodyComponent(RigidbodyComponent* rigidbodyComp) override { return *rigidbodyComp; }
-	void RemoveRigidbody(RigidbodyComponent* rigidbodyComp) override {}
+	void RegisterRigidbody(RigidbodyComponent* rigidbodyComp) override {}
+	void UnregisterRigidbody(RigidbodyComponent* rigidbodyComp) override {}
 
 	bool LineRaycast(const Vector3& start, const Vector3& end, const std::vector<std::string> testChannels = {}, RaycastHitInfos& outHitInfos = RaycastHitInfos::defaultInfos, float drawDebugTime = 5.0f, bool createOnScene = true) override { return false; }
 	bool AABBRaycast(const Vector3& location, const Box& aabbBox, const std::vector<std::string> testChannels = {}, float drawDebugTime = 5.0f, bool createOnScene = true) override { return false; }

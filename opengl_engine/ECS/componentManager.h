@@ -186,7 +186,7 @@ public:
 	/** Update all components of the list of this class of components. */
 	void updateComponents() override
 	{
-		for (const std::shared_ptr<Component>& component : componentShared)
+		for (const std::shared_ptr<Component>& component : componentsShared)
 		{
 			// TODO: call the function update on the component
 		}

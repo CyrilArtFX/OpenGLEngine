@@ -1,6 +1,8 @@
 #include "rigidbodyComponent.h"
 #include "ObjectChannels/collisionChannels.h"
 
+#include <ECS/entity.h>
+
 #include <ServiceLocator/locator.h>
 
 
@@ -76,8 +78,160 @@ float RigidbodyComponent::getStepHeight() const
 }
 
 
+// ----------------------------------------------------------
+//  Velocity
+// ----------------------------------------------------------
+void RigidbodyComponent::setVelocity(const Vector3& value)
+{
+	velocity = value;
+}
+
+void RigidbodyComponent::addVelocity(const Vector3& value)
+{
+	velocity += value;
+}
+
+void RigidbodyComponent::addVelocityOneFrame(const Vector3& value)
+{
+	velocityOneFrame += value;
+}
+
+Vector3 RigidbodyComponent::getVelocity() const
+{
+	return velocity;
+}
+
+Vector3 RigidbodyComponent::getAnticipatedMovement() const
+{
+	return movement;
+}
 
 
+// ----------------------------------------------------------
+//  Gravity Velocity
+// ----------------------------------------------------------
+void RigidbodyComponent::setGravityVelocity(const Vector3& value)
+{
+	gravityVelocity = value;
+}
+
+void RigidbodyComponent::addGravityVelocity(const Vector3& value)
+{
+	gravityVelocity += value;
+}
+
+Vector3 RigidbodyComponent::getGravityVelocity() const
+{
+	return gravityVelocity;
+}
+
+Vector3 RigidbodyComponent::getAnticipatedGravityMovement() const
+{
+	return gravityMovement;
+}
+
+
+// ----------------------------------------------------------
+//  Other Rigidbody functions
+// ----------------------------------------------------------
+bool RigidbodyComponent::checkStepMechanic(const CollisionComponent& collidedComp, const Vector3 aimedDestination, const Vector3 hitNormal, float& stepMovement) const
+{
+	if (stepHeight <= 0.0f)
+		return false; //  continue only if this rigidbody use step mechanic
+
+	if (!(Maths::abs(Vector3::dot(Vector3::unitY, hitNormal)) < 0.5f))
+		return false; //  continue only if collided with a wall
+
+	Box body_box = associatedCollision->getEncapsulatingBox();
+	body_box.setCenterPoint(aimedDestination);
+	if (!collidedComp.resolveAABBRaycast(body_box, getTestChannels()))
+		return false; //  continue only if body intersect with collided at aimed destination
+
+	Box collided_box = collidedComp.getEncapsulatingBox();
+	stepMovement = collided_box.getMaxPoint().y - body_box.getMinPoint().y + Rigidbody::SECURITY_DIST; //  compute needed step movement
+
+	if (stepMovement > stepHeight)
+		return false; //  continue only if needed step movement is lower than this rigidbody step height
+
+	body_box.setCenterPoint(aimedDestination + Vector3{ 0.0f, stepMovement, 0.0f });
+	if (Locator::getPhysics().AABBRaycast(Vector3::zero, body_box, getTestChannels(), 0.0f, true))
+		return false; //  continue only if step destination is free
+
+	return true;
+}
+
+bool RigidbodyComponent::isOnGround() const
+{
+	return useGravity && onGround;
+}
+
+
+//  Observer functions
+// -------------------------
+void RigidbodyComponent::onCollisionIntersected(RigidbodyComponent& other, const CollisionResponse& collisionResponse)
+{
+	if (isPhysicsActivated() || !other.isPhysicsActivated()) return;
+	//  continue only if this rigidbody isn't physics activated and the other is physic activated
+
+	float col_top = Vector3::dot(Vector3::unitY, collisionResponse.impactNormal);
+	if (col_top < 0.5f) return;
+	//  continue only if the other body is on top of this body
+
+	other.addVelocityOneFrame(getVelocity());
+}
+
+void RigidbodyComponent::onCollision(const CollisionResponse& collisionResponse)
+{
+	if (collisionResponse.impactNormal == Vector3::unitY)
+	{
+		onGround = true;
+		gravityVelocity = Vector3::zero;
+	}
+	//  might change that later to allow onGround even on non perfectly flat surfaces using dot product
+	//  not necessary now since there is only AABB currently implemented in this engine
+}
+
+
+// ----------------------------------------------------------
+//  Rigibody Test Channels
+// ----------------------------------------------------------
+void RigidbodyComponent::setTestChannels(std::vector<std::string> newTestChannels)
+{
+	testChannels = newTestChannels;
+}
+
+void RigidbodyComponent::addTestChannel(std::string newTestChannel)
+{
+	testChannels.push_back(newTestChannel);
+}
+
+std::vector<std::string> RigidbodyComponent::getTestChannels() const
+{
+	if (testChannels.empty()) return CollisionChannels::GetRegisteredTestChannel("TestEverything");
+
+	return testChannels;
+}
+
+
+
+// ----------------------------------------------------------
+//  Component registering functions
+// ----------------------------------------------------------
+void RigidbodyComponent::registerComponent()
+{
+	Locator::getPhysics().RegisterRigidbody(this);
+}
+
+void RigidbodyComponent::unregisterComponent()
+{
+	Locator::getPhysics().UnregisterRigidbody(this);
+}
+
+
+
+// ----------------------------------------------------------
+//  Update Physics functions for the Physics Manager
+// ----------------------------------------------------------
 void RigidbodyComponent::updatePhysicsPreCollision(float dt)
 {
 	if (firstFrame) return;
@@ -99,7 +253,7 @@ void RigidbodyComponent::updatePhysicsPreCollision(float dt)
 	if (velocityOneFrame.y != 0.0f)
 	{
 		//  y velocity one frame will make the rigidbody start the test inside the collision that gave it
-		associatedCollision->addPosition(Vector3{ 0.0f, velocityOneFrame.y, 0.0f } *dt);
+		associatedCollision->getOwner()->addPosition(Vector3{0.0f, velocityOneFrame.y, 0.0f} *dt);
 		velocityOneFrame.y = 0.0f;
 	}
 
@@ -110,8 +264,8 @@ void RigidbodyComponent::updatePhysicsPreCollision(float dt)
 	//  if rigidbody has no physic activated, it moves but without checking for collisions to repulse its movement
 	if (!isPhysicsActivated())
 	{
-		associatedCollision->addPosition(movement);
-		associatedCollision->addPosition(gravityMovement);
+		associatedCollision->getOwner()->addPosition(movement);
+		associatedCollision->getOwner()->addPosition(gravityMovement);
 		movement = Vector3::zero;
 		gravityMovement = Vector3::zero;
 	}
@@ -146,8 +300,8 @@ void RigidbodyComponent::updatePhysicsPostCollision(float dt)
 
 
 	//  apply real movement (anticipated movement modified by the collisions during physics step)
-	associatedCollision->addPosition(movement);
-	associatedCollision->addPosition(gravityMovement);
+	associatedCollision->getOwner()->addPosition(movement);
+	associatedCollision->getOwner()->addPosition(gravityMovement);
 	movement = Vector3::zero;
 	gravityMovement = Vector3::zero;
 }
@@ -165,110 +319,4 @@ void RigidbodyComponent::applyComputedGravityMovement(const Vector3& computedGra
 	if (!isPhysicsActivated()) return;
 
 	gravityMovement = computedGravityMovement;
-}
-
-bool RigidbodyComponent::checkStepMechanic(const CollisionComponent& collidedComp, const Vector3 aimedDestination, const Vector3 hitNormal, float& stepMovement) const
-{
-	if (stepHeight <= 0.0f)
-		return false; //  continue only if this rigidbody use step mechanic
-
-	if (!(Maths::abs(Vector3::dot(Vector3::unitY, hitNormal)) < 0.5f))
-		return false; //  continue only if collided with a wall
-
-	Box body_box = associatedCollision->getEncapsulatingBox();
-	body_box.setCenterPoint(aimedDestination);
-	if (!collidedComp.resolveAABBRaycast(body_box, getTestChannels()))
-		return false; //  continue only if body intersect with collided at aimed destination
-
-	Box collided_box = collidedComp.getEncapsulatingBox();
-	stepMovement = collided_box.getMaxPoint().y - body_box.getMinPoint().y + Rigidbody::SECURITY_DIST; //  compute needed step movement
-
-	if (stepMovement > stepHeight)
-		return false; //  continue only if needed step movement is lower than this rigidbody step height
-
-	body_box.setCenterPoint(aimedDestination + Vector3{ 0.0f, stepMovement, 0.0f });
-	if (Locator::getPhysics().AABBRaycast(Vector3::zero, body_box, getTestChannels(), 0.0f, true))
-		return false; //  continue only if step destination is free
-
-	return true;
-}
-
-void RigidbodyComponent::setVelocity(const Vector3& value)
-{
-	velocity = value;
-}
-
-void RigidbodyComponent::addVelocity(const Vector3& value)
-{
-	velocity += value;
-}
-
-Vector3 RigidbodyComponent::getVelocity() const
-{
-	return velocity;
-}
-
-void RigidbodyComponent::setGravityVelocity(const Vector3& value)
-{
-	gravityVelocity = value;
-}
-
-void RigidbodyComponent::addGravityVelocity(const Vector3& value)
-{
-	gravityVelocity += value;
-}
-
-Vector3 RigidbodyComponent::getGravityVelocity() const
-{
-	return gravityVelocity;
-}
-
-void RigidbodyComponent::addVelocityOneFrame(const Vector3& value)
-{
-	velocityOneFrame += value;
-}
-
-void RigidbodyComponent::setTestChannels(std::vector<std::string> newTestChannels)
-{
-	testChannels = newTestChannels;
-}
-
-void RigidbodyComponent::addTestChannel(std::string newTestChannel)
-{
-	testChannels.push_back(newTestChannel);
-}
-
-std::vector<std::string> RigidbodyComponent::getTestChannels() const
-{
-	if (testChannels.empty()) return CollisionChannels::GetRegisteredTestChannel("TestEverything");
-
-	return testChannels;
-}
-
-void RigidbodyComponent::resetIntersected()
-{
-	associatedCollision->resetIntersected();
-}
-
-void RigidbodyComponent::onCollisionIntersected(RigidbodyComponent& other, const CollisionResponse& collisionResponse)
-{
-	if (isPhysicsActivated() || !other.isPhysicsActivated()) return;
-	//  continue only if this rigidbody isn't physics activated and the other is physic activated
-
-	float col_top = Vector3::dot(Vector3::unitY, collisionResponse.impactNormal);
-	if (col_top < 0.5f) return;
-	//  continue only if the other body is on top of this body
-	
-	other.addVelocityOneFrame(getVelocity());
-}
-
-void RigidbodyComponent::onCollision(const CollisionResponse& collisionResponse)
-{
-	if (collisionResponse.impactNormal == Vector3::unitY)
-	{
-		onGround = true;
-		gravityVelocity = Vector3::zero;
-	}
-	//  might change that later to allow onGround even on non perfectly flat surfaces using dot product
-	//  not necessary now since there is only AABB currently implemented in this engine
 }
