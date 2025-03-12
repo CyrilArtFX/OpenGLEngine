@@ -9,8 +9,7 @@
 	- Rework la camera et faire marcher ça en component - fait
 	- Intégrer le hud (sprite & texte) proprement dans la logique de component - fait
 	- Intégrer l'audio proprement dans la logique de component - fait
-	- Intégrer la physique proprement dans la logique de component - en cours
-		Note: penser à enlever complètement l'interface PhysicsEntity (elle est plus utile)
+	- Intégrer la physique proprement dans la logique de component - fait
 	- Faire marcher tout ça bien toujours avec le projet sandbox
 	- Permettre la création de component "behavior" custom
 	- Modifier le code du doomlike pour utiliser ces components
@@ -21,6 +20,7 @@
 	Situation un peu spéciale, besoin de rework le management de Components au milieu du boulot pour que la gestion de la mémoire soit mieux
 	- Comprendre comment faire une implémentation de components pour qu'ils soient contigus en mémoire (voir avec Grégory ?) - fait
 	- Implémenter un Component Manager qui permet de créer des components contigus en mémoire - fait
+	- Tester et fixer si besoin cette base de Component Manager
 	- Améliorer le Component Manager pour les systèmes plus avancés
 	- Remplacer l'ancien système pour utiliser le Component Manager
 	- Update les components qui ont déjà été faits (si besoin) pour que ça marche bien

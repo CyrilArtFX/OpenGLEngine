@@ -102,4 +102,7 @@ private:
 
 	friend class RendererOpenGL;
 	virtual void DrawCollisionsDebug(Material& debugMaterial) = 0;
+
+	friend class Scene;
+	virtual void ClearRaycastOnSceneUnload(bool exitGame) = 0;
 };

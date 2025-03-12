@@ -12,6 +12,8 @@ void Scene::unload(bool exitGame)
 {
 	unloadScene();
 
+	Locator::getPhysics().ClearRaycastOnSceneUnload(exitGame);
+
 	clearEntities();
 }
 

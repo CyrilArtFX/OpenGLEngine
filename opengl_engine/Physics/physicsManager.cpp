@@ -429,6 +429,28 @@ void PhysicsManager::DrawCollisionsDebug(Material& debugMaterial)
 	}
 }
 
+void PhysicsManager::ClearRaycastOnSceneUnload(bool exitGame)
+{
+	size_t raycasts_num = raycasts.size();
+	for (int i = 0; i < raycasts_num; i++)
+	{
+		if (!raycasts[i]->isLoadedPersistent() || exitGame)
+		{
+			delete raycasts[i];
+
+			if (exitGame) continue;
+
+			std::iter_swap(raycasts.begin() + i, raycasts.end() - 1);
+			raycasts.pop_back();
+
+			i--;
+			raycasts_num--;
+		}
+	}
+
+	if (exitGame) raycasts.clear();
+}
+
 
 
 

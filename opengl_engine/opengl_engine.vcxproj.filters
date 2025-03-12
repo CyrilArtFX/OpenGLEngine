@@ -350,9 +350,6 @@
     <ClInclude Include="Physics\rigidbodyComponent.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Physics\physicEntity.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="Physics\raycastLine.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>

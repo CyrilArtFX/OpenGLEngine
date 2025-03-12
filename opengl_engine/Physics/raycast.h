@@ -1,5 +1,4 @@
 #pragma once
-#include "physicEntity.h"
 
 #include <Maths/vector3.h>
 #include <limits>
@@ -39,7 +38,7 @@ struct RaycastHitInfos
 /** Raycast
 * Raycast class contains common functionnalities to all raycasts types, such as timer and draw.
 */
-class Raycast : public PhysicEntity
+class Raycast 
 {
 public:
 	Raycast(float drawDebugTime, bool loadPersistent = false);
@@ -52,6 +51,7 @@ public:
 	void updateDrawDebugTimer(float dt);
 
 	inline bool drawDebugTimerFinished() const { return drawDebugTimer == 0.0f; }
+	inline bool isLoadedPersistent() const { return loadedPersistent; }
 
 	inline RaycastType getRaycastType() const { return type; }
 
@@ -62,5 +62,6 @@ protected:
 
 private:
 	float drawDebugTimer;
+	bool loadedPersistent;
 };
 

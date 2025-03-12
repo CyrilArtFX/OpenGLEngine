@@ -34,6 +34,7 @@ private:
 	void InitialisePhysics() override;
 	void UpdatePhysics(float dt) override;
 	void DrawCollisionsDebug(Material& debugMaterial) override;
+	void ClearRaycastOnSceneUnload(bool exitGame) override;
 
 	bool enableInfoLogs{ false };
 

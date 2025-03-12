@@ -1,7 +1,7 @@
 #include "raycastAABBSweep.h"
 
 RaycastAABBSweep::RaycastAABBSweep(const Vector3& startPoint, const Vector3& endPoint, const Box& boxInfos, float drawDebugTime, bool loadPersistent) :
-	Raycast(drawDebugTime, loadedPersistent),
+	Raycast(drawDebugTime, loadPersistent),
 	drawDebugLineOne(), drawDebugLineTwo(), drawDebugCubeOne(), drawDebugCubeTwo(), box(boxInfos)
 {
 	type = RaycastType::RaycastTypeAABBSweep;

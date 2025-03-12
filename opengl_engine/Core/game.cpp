@@ -34,8 +34,8 @@ bool Game::hasActiveScene()
 
 void Game::lateUpdate()
 {
-	updateEntities();
 	if (activeScene) activeScene->lateUpdate();
+	updateEntities();
 }
 
 void Game::loadScene(Scene* scene)
