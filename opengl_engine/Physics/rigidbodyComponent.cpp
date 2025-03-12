@@ -10,7 +10,7 @@
 // ----------------------------------------------------------
 //  Associated Collision
 // ----------------------------------------------------------
-void RigidbodyComponent::associateCollision(std::weak_ptr<CollisionComponent> collisionToAssociate)
+void RigidbodyComponent::associateCollision(CollisionComponent* collisionToAssociate)
 {
 	//  remove the owning rigidbody of a potential previous managed collision
 	if (isAssociatedCollisionValid())
@@ -19,7 +19,7 @@ void RigidbodyComponent::associateCollision(std::weak_ptr<CollisionComponent> co
 		associatedCollision->setOwningRigidbody(nullptr);
 	}
 
-	associatedCollision = collisionToAssociate.lock();
+	associatedCollision = collisionToAssociate;
 	if (associatedCollision)
 	{
 		//  initialize the collision as a managed collision
@@ -30,7 +30,7 @@ void RigidbodyComponent::associateCollision(std::weak_ptr<CollisionComponent> co
 
 bool RigidbodyComponent::isAssociatedCollisionValid() const
 {
-	return associatedCollision.operator bool();
+	return associatedCollision != nullptr;
 }
 
 const CollisionComponent& RigidbodyComponent::getAssociatedCollision() const
@@ -236,6 +236,8 @@ void RigidbodyComponent::updatePhysicsPreCollision(float dt)
 {
 	if (firstFrame) return;
 
+	if (!isAssociatedCollisionValid()) return;
+	
 	//  compute gravity in velocity
 	if (useGravity)
 	{
@@ -278,6 +280,8 @@ void RigidbodyComponent::updatePhysicsPostCollision(float dt)
 		firstFrame = false;
 		return;
 	}
+
+	if (!isAssociatedCollisionValid()) return;
 
 	if (!isPhysicsActivated()) return;
 

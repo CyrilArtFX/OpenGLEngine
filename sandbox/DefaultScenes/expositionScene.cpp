@@ -6,6 +6,10 @@
 #include <Rendering/Lights/pointLightComponent.h>
 #include <Rendering/Lights/spotLightComponent.h>
 
+#include <Physics/AABB/boxAABBColComp.h>
+#include <Physics/rigidbodyComponent.h>
+#include <Physics/ObjectChannels/collisionChannels.h>
+
 #include <Inputs/input.h>
 
 
@@ -48,6 +52,11 @@ void ExpositionScene::loadScene()
 	flashlight = createEntity();
 	flashlight->addComponentByClass<SpotLightComponent>();
 
+	Entity* collision_cube = createEntity();
+	collision_cube->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("container"));
+	physicsCube = createEntity();
+	physicsCube->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("container"));
+
 	cube_1->setPosition(Vector3{ 0.0f, 0.0f, 0.0f });
 	cube_1->setRotation(Quaternion{ Vector3::unitY, Maths::toRadians(45.0f) });
 	cube_2->setPosition(Vector3{ 2.0f, 1.5f, 2.0f });
@@ -59,6 +68,11 @@ void ExpositionScene::loadScene()
 	light_cube_1->setScale(0.2f);
 	light_cube_2->setPosition(Vector3{ 1.5f, 1.0f, -0.5f });
 	light_cube_2->setScale(0.2f);
+
+	collision_cube->setPosition(Vector3{ -5.0f, 0.0f, 0.0f });
+	collision_cube->setScale(Vector3{ 2.0f, 0.2f, 2.0f });
+	physicsCube->setPosition(Vector3{ -5.0f, 5.0f, 0.0f });
+	physicsCube->setScale(0.3f);
 
 
 	//  audio
@@ -74,6 +88,12 @@ void ExpositionScene::loadScene()
 	Physics& physics = Locator::getPhysics();
 	//BoxAABBColComp& sound_wall = static_cast<BoxAABBColComp&>(physics.CreateCollisionComponent(new BoxAABBColComp(Box::one, &soundWall, false, "nothing")));
 	//sound_wall.setupAudioCollision(AssetManager::GetAudioCollisionType("default_audio_collision"));
+	collision_cube->addComponentByClass<BoxAABBColComp>()->setBox(Box::one);
+	physicsCube->addComponentByClass<BoxAABBColComp>()->setBox(Box::one);
+	RigidbodyComponent* rigidbody = physicsCube->addComponentByClass<RigidbodyComponent>();
+	rigidbody->associateCollision(physicsCube->getComponentByClass<BoxAABBColComp>());
+	rigidbody->setPhysicsActivated(true);
+	rigidbody->setUseGravity(true);
 
 
 	//  hud (text & sprite)
@@ -152,5 +172,10 @@ void ExpositionScene::updateScene(float dt)
 	{
 		SpotLightComponent* spotlight = flashlight->getComponentByClass<SpotLightComponent>();
 		spotlight->setActive(!spotlight->isActive());
+	}
+
+	if (Input::IsKeyPressed(GLFW_KEY_Q))
+	{
+		physicsCube->setPosition(Vector3{ -5.0f, 5.0f, 0.0f });
 	}
 }

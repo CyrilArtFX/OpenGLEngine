@@ -312,7 +312,6 @@ void PhysicsManager::UpdatePhysics(float dt)
 	}
 	for (auto& rigidbody : rigidbodiesComponents)
 	{
-		rigidbody->getAssociatedCollision().setDebugIntersected(false);
 		rigidbody->updatePhysicsPreCollision(dt); //  compute the anticipated movements for physics activated rigidbodies, and apply the movement for non-physics activated ones
 	}
 
@@ -416,11 +415,6 @@ void PhysicsManager::DrawCollisionsDebug(Material& debugMaterial)
 	for (auto& col : collisionsComponents)
 	{
 		col->drawDebug(debugMaterial);
-	}
-
-	for (auto& rigidbody : rigidbodiesComponents)
-	{
-		rigidbody->getAssociatedCollisionNonConst().drawDebug(debugMaterial);
 	}
 
 	for (auto& raycast : raycasts)

@@ -85,6 +85,13 @@ protected:
 	void drawDebugMesh(Material& debugMaterial) const override;
 
 
+// ----------------------------------------------------------
+//  Initialize function (called at component creation)
+// ----------------------------------------------------------
+protected:
+	void init() override;
+
+
 
 // ----------------------------------------------------------
 //  Private properties (Box)

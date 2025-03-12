@@ -161,3 +161,12 @@ void BoxAABBColComp::drawDebugMesh(Material& debugMaterial) const
 		debugMesh->draw(true);
 	}
 }
+
+
+// ----------------------------------------------------------
+//  Initialize function (called at component creation)
+// ----------------------------------------------------------
+void BoxAABBColComp::init()
+{
+	debugMesh = &AssetManager::GetSingleMesh("debug_cube");
+}

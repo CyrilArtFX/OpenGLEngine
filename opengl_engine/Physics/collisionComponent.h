@@ -39,7 +39,7 @@ enum class CollisionType : uint8_t
 * Base class for every collision components.
 * Abstract Component - do not add it to an Entity.
 */
-class CollisionComponent : public Component, public std::enable_shared_from_this<CollisionComponent>
+class CollisionComponent : public Component
 {
 // ----------------------------------------------------------
 //  Raycast Tests

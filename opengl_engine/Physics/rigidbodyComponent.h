@@ -32,7 +32,7 @@ struct CollisionResponse
 * If physics is not activated, it will act as a static collision and won't test other collisions but will still be able to move with velocity.
 * Repulsion between two physics activated Rigidbodies is not implemented for the moment, but the collision detection (trigger) will still happen.
 */
-class RigidbodyComponent : public Component, public Observer, public std::enable_shared_from_this<RigidbodyComponent>
+class RigidbodyComponent : public Component, public Observer
 {
 // ----------------------------------------------------------
 //  Associated Collision
@@ -42,7 +42,7 @@ public:
 	* Set the associated collision of this rigidbody.
 	* @param	collisionToAssociate	The collision that this rigidbody must manage.
 	*/
-	void associateCollision(std::weak_ptr<CollisionComponent> collisionToAssociate);
+	void associateCollision(CollisionComponent* collisionToAssociate);
 
 	/**
 	* Know if the collision managed by this rigidbody is valid, ie. if this rigidbody is valid.
@@ -218,7 +218,7 @@ protected:
 //  Rigidbody properties
 // ----------------------------------------------------------
 private:
-	std::shared_ptr<CollisionComponent> associatedCollision{ nullptr };
+	CollisionComponent* associatedCollision{ nullptr };
 
 	bool physicsActivated{ false };
 	bool useGravity{ false };

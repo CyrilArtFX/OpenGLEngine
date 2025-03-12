@@ -28,6 +28,7 @@ private:
 
 	Entity* movingCube{ nullptr };
 	Entity* flashlight{ nullptr };
+	Entity* physicsCube{ nullptr };
 
 	AudioSourceComponent* musicAudioSource{ nullptr };
 	TextRendererComponent* sandboxText{ nullptr };
