@@ -10,8 +10,7 @@
 	- Intégrer le hud (sprite & texte) proprement dans la logique de component - fait
 	- Intégrer l'audio proprement dans la logique de component - fait
 	- Intégrer la physique proprement dans la logique de component - fait
-	- Faire marcher tout ça bien toujours avec le projet sandbox - en cours
-		Fix les soucis du au fait que les rigidbody se collident avec leur propre collision
+	- Faire marcher tout ça bien toujours avec le projet sandbox - fait
 	- Permettre la création de component "behavior" custom
 	- Modifier le code du doomlike pour utiliser ces components
 	- Faire marcher le doomlike avec toute la nouvelle logique
@@ -85,6 +84,8 @@
 == REFLEXIONS / PROBLEMES CONNUS ==
 
 ~ Trouver une solution pour les problèmes de rotations avec la caméra qui fait qu'on ne peut pas lui forcer une rotation sans casser le système de pitch et de yaw intégré - le nouveau camera component devrait régler le pb, à voir quand le doomlike sera fonctionnel à nouveau
+
+~ Pb avec les rigidbodies, ils se collident avec eux même et partent en Y si ils ont un test channel qui les fait collide leur collision, besoin de faire un truc avec le raycast pour les empêcher de se collide eux-même, peut être avoir une autre fonction de raycast AABB uniquement pour ça qui a un fonctionnement un peu différent de celle de base ?
 
 ~ Le look at rotation des ennemis du doomlike bug un petit peu ?
 

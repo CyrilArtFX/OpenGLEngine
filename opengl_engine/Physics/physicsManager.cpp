@@ -88,12 +88,6 @@ bool PhysicsManager::LineRaycast(const Vector3& start, const Vector3& end, const
 			bool col_hit = col->resolveLineRaycast(ray, outHitInfos, test_channels);
 			hit = hit || col_hit;
 		}
-		for (auto& body : rigidbodiesComponents)
-		{
-			const CollisionComponent& col = body->getAssociatedCollision();
-			bool col_hit = col.resolveLineRaycast(ray, outHitInfos, test_channels);
-			hit = hit || col_hit;
-		}
 
 		if (outHitInfos.hitCollision)
 		{
@@ -114,12 +108,6 @@ bool PhysicsManager::LineRaycast(const Vector3& start, const Vector3& end, const
 		for (auto& col : collisionsComponents)
 		{
 			bool col_hit = col->resolveLineRaycast(ray, outHitInfos, test_channels);
-			hit = hit || col_hit;
-		}
-		for (auto& body : rigidbodiesComponents)
-		{
-			const CollisionComponent& col = body->getAssociatedCollision();
-			bool col_hit = col.resolveLineRaycast(ray, outHitInfos, test_channels);
 			hit = hit || col_hit;
 		}
 
@@ -163,15 +151,6 @@ bool PhysicsManager::AABBRaycast(const Vector3& location, const Box& aabbBox, co
 				intersected_cols.push_back(col);
 			}
 		}
-		for (auto body : rigidbodiesComponents)
-		{
-			const CollisionComponent& col = body->getAssociatedCollision();
-			if (col.resolveAABBRaycast(box, testChannels))
-			{
-				hit = true;
-				intersected_cols.push_back(&col);
-			}
-		}
 
 		for (auto col : intersected_cols)
 		{
@@ -194,15 +173,6 @@ bool PhysicsManager::AABBRaycast(const Vector3& location, const Box& aabbBox, co
 			{
 				hit = true;
 				intersected_cols.push_back(col);
-			}
-		}
-		for (auto body : rigidbodiesComponents)
-		{
-			const CollisionComponent& col = body->getAssociatedCollision();
-			if (col.resolveAABBRaycast(box, testChannels))
-			{
-				hit = true;
-				intersected_cols.push_back(&col);
 			}
 		}
 
@@ -244,12 +214,6 @@ bool PhysicsManager::AABBSweepRaycast(const Vector3& start, const Vector3& end, 
 			bool col_hit = col->resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels, forCollisionTest);
 			hit = hit || col_hit;
 		}
-		for (auto& body : rigidbodiesComponents)
-		{
-			const CollisionComponent& col = body->getAssociatedCollision();
-			bool col_hit = col.resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels, forCollisionTest);
-			hit = hit || col_hit;
-		}
 
 		if (outHitInfos.hitCollision)
 		{
@@ -270,12 +234,6 @@ bool PhysicsManager::AABBSweepRaycast(const Vector3& start, const Vector3& end, 
 		for (auto& col : collisionsComponents)
 		{
 			bool col_hit = col->resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels, forCollisionTest);
-			hit = hit || col_hit;
-		}
-		for (auto& body : rigidbodiesComponents)
-		{
-			const CollisionComponent& col = body->getAssociatedCollision();
-			bool col_hit = col.resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels, forCollisionTest);
 			hit = hit || col_hit;
 		}
 

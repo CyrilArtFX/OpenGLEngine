@@ -88,12 +88,13 @@ void ExpositionScene::loadScene()
 	Physics& physics = Locator::getPhysics();
 	//BoxAABBColComp& sound_wall = static_cast<BoxAABBColComp&>(physics.CreateCollisionComponent(new BoxAABBColComp(Box::one, &soundWall, false, "nothing")));
 	//sound_wall.setupAudioCollision(AssetManager::GetAudioCollisionType("default_audio_collision"));
-	collision_cube->addComponentByClass<BoxAABBColComp>()->setBox(Box::one);
+	collision_cube->addComponentByClass<BoxAABBColComp>()->setCollisionChannel("test_ground");
 	physicsCube->addComponentByClass<BoxAABBColComp>()->setBox(Box::one);
 	RigidbodyComponent* rigidbody = physicsCube->addComponentByClass<RigidbodyComponent>();
 	rigidbody->associateCollision(physicsCube->getComponentByClass<BoxAABBColComp>());
 	rigidbody->setPhysicsActivated(true);
 	rigidbody->setUseGravity(true);
+	rigidbody->setTestChannels({ "test_ground" });
 
 
 	//  hud (text & sprite)

@@ -97,5 +97,5 @@ protected:
 //  Private properties (Box)
 // ----------------------------------------------------------
 private:
-	Box box{ Box::zero };
+	Box box{ Box::one };
 };
