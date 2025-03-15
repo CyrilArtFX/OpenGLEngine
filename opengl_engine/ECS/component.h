@@ -19,8 +19,8 @@ protected:
 	friend class ComponentList;
 	friend class ComponentManager;
 
-	virtual void registerComponent() = 0;
-	virtual void unregisterComponent() = 0;
+	virtual void registerComponent() {}
+	virtual void unregisterComponent() {}
 
 	/** Called after the component has been created, but before it is registered. */
 	virtual void init() {};

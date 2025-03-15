@@ -17,9 +17,8 @@ class Entity;
 class ComponentList
 {
 public:
-	ComponentList(size_t numComponentsPerSublist_)
+	ComponentList(size_t numComponentsPerSublist_) : numComponentsPerSublist(numComponentsPerSublist_)
 	{
-		numComponentsPerSublist = numComponentsPerSublist_;
 	}
 
 
@@ -57,25 +56,26 @@ protected:
 * Specialized component list class that manage every components of its defined class.
 */
 template<class T>
-class ComponentListByClass : ComponentList
+class ComponentListByClass : public ComponentList
 {
 private:
 	struct ComponentSubList
 	{
 		std::unique_ptr<T[]> components;
-		std::unique_ptr<bool[]> memoryAllocated;
+		std::vector<bool> memoryAllocated;
 		size_t freeSlots = 0;
 	};
-	std::vector<ComponentSubList> componentSubLists;
+	std::vector<std::unique_ptr<ComponentSubList>> componentSubLists;
 
 
 public:
 	ComponentListByClass(size_t numComponentsPerSublist_) : ComponentList(numComponentsPerSublist_)
 	{
-		ComponentSubList& sublist = componentSubLists.emplace_back();
-		sublist.components = std::make_unique<T[]>(numComponentsPerSublist);
-		sublist.memoryAllocated = std::make_unique<bool[]>(numComponentsPerSublist);
-		sublist.freeSlots = numComponentsPerSublist;
+		std::unique_ptr<ComponentSubList> sublist = std::make_unique<ComponentSubList>();
+		sublist->components = std::make_unique<T[]>(numComponentsPerSublist);
+		sublist->memoryAllocated.resize(numComponentsPerSublist);
+		sublist->freeSlots = numComponentsPerSublist;
+		componentSubLists.push_back(std::move(sublist));
 	}
 
 	/** Create a component and store it continuously with the other components of this class in the memory. */
@@ -90,7 +90,7 @@ public:
 		{
 			if (componentSubLists[sublists_iter]->freeSlots > 0)
 			{
-				sublist_index = sublists_iter;
+				sublist_index = (int)sublists_iter;
 				break;
 			}
 		}
@@ -99,14 +99,15 @@ public:
 		//  ----------------------------------------------
 		if (sublist_index == -1)
 		{
-			ComponentSubList& sublist = componentSubLists.emplace_back();
-			sublist.components = std::make_unique<T[]>(numComponentsPerSublist);
-			sublist.memoryAllocated = std::make_unique<bool[]>(numComponentsPerSublist);
-			sublist.freeSlots = numComponentsPerSublist;
-			sublist_index = num_sublists; //  index of the new sublist will be the total number of sublists before its creation
+			std::unique_ptr<ComponentSubList> sublist = std::make_unique<ComponentSubList>();
+			sublist->components = std::make_unique<T[]>(numComponentsPerSublist);
+			sublist->memoryAllocated.reserve(numComponentsPerSublist);
+			sublist->freeSlots = numComponentsPerSublist;
+			componentSubLists.push_back(std::move(sublist));
+			sublist_index = (int)num_sublists; //  index of the new sublist will be the total number of sublists before its creation
 		}
 
-		ComponentSubList& sublist_creating_in = componentSubLists[sublist_index];
+		ComponentSubList& sublist_creating_in = *componentSubLists[sublist_index];
 
 
 		//  step 2: create the component in the sublist
@@ -119,13 +120,13 @@ public:
 			sublist_creating_in.memoryAllocated[slots_iter] = true;
 			new (&sublist_creating_in.components[slots_iter]) T(); //  here we effectively create the component
 			sublist_creating_in.freeSlots--;
-			created_component_slot = slots_iter;
+			created_component_slot = (int)slots_iter;
 			break;
 		}
 
 		if (created_component_slot == -1)
 		{
-			Locator::getLog().LogMessage_Category("Component Manager: Failed to find a free memory slot to create a component");
+			Locator::getLog().LogMessage_Category("Component Manager: Failed to find a free memory slot to create a component", LogCategory::Error);
 			return std::make_shared<Component>();
 		}
 

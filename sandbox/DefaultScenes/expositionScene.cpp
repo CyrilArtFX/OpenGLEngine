@@ -12,6 +12,8 @@
 
 #include <Inputs/input.h>
 
+#include <ECS/componentManager.h>
+
 
 ExpositionScene::ExpositionScene()
 {
@@ -23,6 +25,20 @@ void ExpositionScene::loadScene()
 	Renderer& renderer = Locator::getRenderer();
 
 	renderer.SetClearColor(Color{ 50, 75, 75, 255 });
+
+	Entity* test_entity_1 = createEntity();
+	Entity* test_entity_2 = createEntity();
+	Entity* test_entity_3 = createEntity();
+	Entity* test_entity_4 = createEntity();
+	Entity* test_entity_5 = createEntity();
+
+	ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_1);
+	ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_2);
+	ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_3);
+	ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_4);
+	ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_5);
+
+	return;
 
 
 	//  player
@@ -115,6 +131,8 @@ void ExpositionScene::unloadScene()
 
 void ExpositionScene::updateScene(float dt)
 {
+	return;
+
 	//  move camera
 	if (Input::IsKeyDown(GLFW_KEY_W))
 		player->addPosition(camera->getCamForward() * playerCamSpeed * dt);
