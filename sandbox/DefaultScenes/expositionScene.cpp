@@ -13,6 +13,7 @@
 #include <Inputs/input.h>
 
 #include <ECS/componentManager.h>
+#include <iostream>
 
 
 ExpositionScene::ExpositionScene()
@@ -32,11 +33,14 @@ void ExpositionScene::loadScene()
 	Entity* test_entity_4 = createEntity();
 	Entity* test_entity_5 = createEntity();
 
-	ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_1);
-	ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_2);
-	ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_3);
-	ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_4);
-	ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_5);
+	//ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_1)->setModel(&AssetManager::GetModel("container"));
+
+	std::cout << "Creating 120 model renderer components...\n";
+	for (int i = 0; i < 120; i++)
+	{
+		ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_1);
+		std::cout << "Created model renderer component n°" << i + 1 << std::endl;
+	}
 
 	return;
 

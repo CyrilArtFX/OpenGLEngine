@@ -62,7 +62,7 @@ private:
 	struct ComponentSubList
 	{
 		std::unique_ptr<T[]> components;
-		std::vector<bool> memoryAllocated;
+		std::vector<bool> componentUsedBySlot;
 		size_t freeSlots = 0;
 	};
 	std::vector<std::unique_ptr<ComponentSubList>> componentSubLists;
@@ -73,7 +73,7 @@ public:
 	{
 		std::unique_ptr<ComponentSubList> sublist = std::make_unique<ComponentSubList>();
 		sublist->components = std::make_unique<T[]>(numComponentsPerSublist);
-		sublist->memoryAllocated.resize(numComponentsPerSublist);
+		sublist->componentUsedBySlot.resize(numComponentsPerSublist);
 		sublist->freeSlots = numComponentsPerSublist;
 		componentSubLists.push_back(std::move(sublist));
 	}
@@ -101,7 +101,7 @@ public:
 		{
 			std::unique_ptr<ComponentSubList> sublist = std::make_unique<ComponentSubList>();
 			sublist->components = std::make_unique<T[]>(numComponentsPerSublist);
-			sublist->memoryAllocated.reserve(numComponentsPerSublist);
+			sublist->componentUsedBySlot.resize(numComponentsPerSublist);
 			sublist->freeSlots = numComponentsPerSublist;
 			componentSubLists.push_back(std::move(sublist));
 			sublist_index = (int)num_sublists; //  index of the new sublist will be the total number of sublists before its creation
@@ -110,15 +110,17 @@ public:
 		ComponentSubList& sublist_creating_in = *componentSubLists[sublist_index];
 
 
-		//  step 2: create the component in the sublist
-		//  -------------------------------------------
+		//  step 2: "create" the component in the sublist
+		//  ---------------------------------------------
 		int created_component_slot = -1;
 		for (size_t slots_iter = 0; slots_iter < numComponentsPerSublist; slots_iter++)
 		{
-			if (sublist_creating_in.memoryAllocated[slots_iter]) continue;
+			if (sublist_creating_in.componentUsedBySlot[slots_iter]) continue;
 
-			sublist_creating_in.memoryAllocated[slots_iter] = true;
-			new (&sublist_creating_in.components[slots_iter]) T(); //  here we effectively create the component
+			//  note: we don't actually create the component (with new) cause it has been done when the sublist was created
+			//  instead, we will get a component of the sublist that is unused for now (works like a memory pool)
+
+			sublist_creating_in.componentUsedBySlot[slots_iter] = true;
 			sublist_creating_in.freeSlots--;
 			created_component_slot = (int)slots_iter;
 			break;
@@ -141,12 +143,10 @@ public:
 				//  note: the shared_ptr destructor will be called when its last shared reference will disappear
 				//  we use this to free the memory of the component only when we're sure that nobody uses it anymore
 
-				component->~T(); //  call the destructor of the deleted component
-				
 				if (componentSubLists.empty()) return; //  security to avoid errors when the game is closing for exemple
 
-				//  we don't actually free the memory since it would mean erasing the entire sublist, but we authorize a new component to replace this one in the sublist
-				sublist_ptr->memoryAllocated[created_component_slot] = false;
+				//  we don't actually free the memory since it would mean erasing the entire sublist, but we authorize a new component to replace this one in the sublist (memory pool)
+				sublist_ptr->componentUsedBySlot[created_component_slot] = false;
 				sublist_ptr->freeSlots++;
 
 				// TODO: delete the component sublist if this was the last component in the sublist
@@ -176,10 +176,10 @@ public:
 				componentsShared.erase(componentsShared.begin() + iter_shared_comps);
 				break;
 
-				//  note: we don't free the memory of the component in this function cause we don't want
-				//  to create errors if other objects still have a reference to this component.
-				//  the memory will be freed when the last shared reference of the shared pointer will disappear
-				//  we defined a custom destructor for the shared pointer when creating it (see the createComponent function)
+				//  note: we don't free the memory of the component here for 2 reasons:
+				//  1. we don't want to cause errors if other objects still use the component, so we wait for the shared pointer to lose its last reference to continue
+				//  2. the sublist system works like a memory pool, so the component will not be deleted, but will be free to be reused
+				//  (the memory is freed at the end of the game, or if a sublist reach 0 used components, leading to the suppression of the sublist)
 			}
 		}
 	}

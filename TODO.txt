@@ -20,7 +20,7 @@
 	Situation un peu spéciale, besoin de rework le management de Components au milieu du boulot pour que la gestion de la mémoire soit mieux
 	- Comprendre comment faire une implémentation de components pour qu'ils soient contigus en mémoire (voir avec Grégory ?) - fait
 	- Implémenter un Component Manager qui permet de créer des components contigus en mémoire - fait
-	- Tester et fixer si besoin cette base de Component Manager - en cours
+	- Tester et fixer si besoin cette base de Component Manager - fait
 	- Améliorer le Component Manager pour les systèmes plus avancés
 	- Remplacer l'ancien système pour utiliser le Component Manager
 	- Update les components qui ont déjà été faits (si besoin) pour que ça marche bien
