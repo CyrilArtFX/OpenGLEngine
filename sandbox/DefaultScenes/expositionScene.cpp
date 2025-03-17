@@ -35,12 +35,34 @@ void ExpositionScene::loadScene()
 
 	//ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_1)->setModel(&AssetManager::GetModel("container"));
 
-	std::cout << "Creating 120 model renderer components...\n";
-	for (int i = 0; i < 120; i++)
+	
+
+	{
+		std::cout << "Creating 2 other model renderer components to create a new sublist, and keep their shared ptr.\n";
+		std::shared_ptr<ModelRendererComponent> test_component_1 = ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_2);
+		std::shared_ptr<ModelRendererComponent> test_component_2 = ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_2);
+		std::cout << "Creating 2 other model renderer components is done.\n\n";
+
+		std::cout << "Removing the 2 model renderer components on the 2nd sublist.\n";
+		ComponentManager::DeleteComponent<Component>(test_component_1);
+		ComponentManager::DeleteComponent<Component>(test_component_2);
+		std::cout << "Removing is done, we are still in the context where the shared ptr has been created.\n";
+
+		//std::cout << "Clearing the list of model renderer components.\n";
+		//ComponentManager::ClearAllComponents();
+	}
+	std::cout << "We leaved the context where the shared ptr has been created.\n\n";
+
+	std::cout << "Creating 87 model renderer components.\n";
+	for (int i = 0; i < 87; i++)
 	{
 		ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_1);
 		std::cout << "Created model renderer component n°" << i + 1 << std::endl;
 	}
+	std::cout << "Creating 87 model renderer components is done.\n\n";
+
+
+
 
 	return;
 

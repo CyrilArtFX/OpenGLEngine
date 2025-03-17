@@ -31,12 +31,16 @@ public:
 	/** Update all components of the list of this class of components. */
 	virtual void updateComponents() = 0;
 
+	/** Clear the entire component list. Warning: This instantly free the memory of all components, so use this with caution. */
+	virtual void clearList() = 0;
+
 
 	/** Get the maximum number of components of this class that can be stored in a single list. */
 	size_t getNumComponentsPerList() { return numComponentsPerSublist; }
 
 	/** Get every components of this class. */
 	const std::vector<std::shared_ptr<Component>>& getAllComponents() const { return componentsShared; }
+
 
 protected:
 	/** Initializing a component require to be a friend class of Component, and ComponentListByClass isn't so we do it in the parent class. */
@@ -149,8 +153,25 @@ public:
 				sublist_ptr->componentUsedBySlot[created_component_slot] = false;
 				sublist_ptr->freeSlots++;
 
-				// TODO: delete the component sublist if this was the last component in the sublist
-				// TODO: delete the component list if this was the last sublist in the list
+
+				//  checking if we can't delete the sublist
+				if (sublist_ptr->freeSlots == numComponentsPerSublist)
+				{
+					//  the sublist has reached 0 used components, we can delete it
+					for (size_t sublists_iter = 0; sublists_iter < numComponentsPerSublist; sublists_iter++)
+					{
+						//  searching in all sublists the one that reached 0 used components
+						if (componentSubLists[sublists_iter].get() == sublist_ptr)
+						{
+							componentSubLists.erase(componentSubLists.begin() + sublists_iter);
+							break;
+						}
+					}
+				}
+
+				//  note: we don't delete the list if it goes empty cause an empty component list cause it's not a bad issue,
+				//  except if the game create class of components that are used only once and does this thousands times
+				//  all component lists are still destroyed when the game closes
 			});
 
 		const std::shared_ptr<Component> shared_component = std::dynamic_pointer_cast<Component>(shared_component_as_t);
@@ -191,6 +212,12 @@ public:
 		{
 			// TODO: call the function update on the component
 		}
+	}
+
+	/** Clear the entire component list. Warning: This instantly free the memory of all components, so use this with caution. */
+	virtual void clearList() override
+	{
+		componentSubLists.clear();
 	}
 };
 
@@ -249,10 +276,28 @@ public:
 		}
 	}
 
-	/** Clear all components and all component lists. */
+
+	/** Clear the component list of the given class. Warning: This instantly free the memory of the components of the given class, so use with caution. */
+	template<typename T>
+	static void ClearAllComponentsOfClass()
+	{
+		const size_t component_class_id = typeid(T).hash_code(); //  get the "unique id" of the given component class
+		if (componentLists.find(component_class_id) != componentLists.end())
+		{
+			//  if there is no existing list for this component class, there is nothing to clear
+			componentLists[component_class_id]->clearList();
+			componentLists.erase(component_class_id);
+		}
+	}
+
+	/** Clear all components and all component lists. Warning: This instantly free the memory of every component of the game, so use with caution. */
 	static void ClearAllComponents()
 	{
-		// TODO: create the function
+		for (auto& component_list : componentLists)
+		{
+			component_list.second->clearList();
+		}
+		componentLists.clear();
 	}
 
 
