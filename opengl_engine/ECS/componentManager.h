@@ -28,9 +28,6 @@ public:
 	/** Remove a component from the list of this class of components. */
 	virtual void deleteComponent(const std::shared_ptr<Component>& component) = 0;
 
-	/** Update all components of the list of this class of components. */
-	virtual void updateComponents() = 0;
-
 	/** Clear the entire component list. Warning: This instantly free the memory of all components, so use this with caution. */
 	virtual void clearList() = 0;
 
@@ -205,15 +202,6 @@ public:
 		}
 	}
 
-	/** Update all components of the list of this class of components. */
-	void updateComponents() override
-	{
-		for (const std::shared_ptr<Component>& component : componentsShared)
-		{
-			// TODO: call the function update on the component
-		}
-	}
-
 	/** Clear the entire component list. Warning: This instantly free the memory of all components, so use this with caution. */
 	virtual void clearList() override
 	{
@@ -262,17 +250,6 @@ public:
 		{
 			//  if there is no existing list for this component class, it is impossible to delete the given component
 			componentLists[component_class_id]->deleteComponent(component);
-		}
-	}
-
-
-	/** Update all active components. */
-	static void UpdateComponents()
-	{
-		// TODO: create a way to fully disable the update of some component class and don't call their list
-		for (auto& component_list_pair : componentLists)
-		{
-			component_list_pair.second->updateComponents();
 		}
 	}
 

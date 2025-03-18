@@ -23,7 +23,7 @@
 	- Tester et fixer si besoin cette base de Component Manager - fait
 	- Améliorer le Component Manager pour les systèmes plus avancés - en cours
 		Reste à faire le nombre custom de components par liste en fonction de la classe de component
-		& remove l'update dans le manager global vu que les components avec une update vont se register qqpart
+		Je vois pas trop d'autres solutions pour le faire à part appeller une fonction statique sur le component manager pour "register" les classes de component avec leur nombre custom, voir si c'est faisable d'avoir ça aussi faisable dans l'init du game avant que le premier component soit créé (même les components de debug de l'engine)
 	- Remplacer l'ancien système pour utiliser le Component Manager
 	- Update les components qui ont déjà été faits (si besoin) pour que ça marche bien
 
