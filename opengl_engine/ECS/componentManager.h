@@ -64,7 +64,13 @@ private:
 	{
 		std::unique_ptr<T[]> components;
 		std::vector<bool> componentUsedBySlot;
-		size_t freeSlots = 0;
+		size_t freeSlots;
+
+		ComponentSubList(size_t sublistSize) : freeSlots(sublistSize)
+		{
+			components = std::make_unique<T[]>(sublistSize);
+			componentUsedBySlot.resize(sublistSize);
+		}
 	};
 	std::vector<std::unique_ptr<ComponentSubList>> componentSubLists;
 
@@ -72,10 +78,7 @@ private:
 public:
 	ComponentListByClass(size_t numComponentsPerSublist_) : ComponentList(numComponentsPerSublist_)
 	{
-		std::unique_ptr<ComponentSubList> sublist = std::make_unique<ComponentSubList>();
-		sublist->components = std::make_unique<T[]>(numComponentsPerSublist);
-		sublist->componentUsedBySlot.resize(numComponentsPerSublist);
-		sublist->freeSlots = numComponentsPerSublist;
+		std::unique_ptr<ComponentSubList> sublist = std::make_unique<ComponentSubList>(numComponentsPerSublist);
 		componentSubLists.push_back(std::move(sublist));
 	}
 
@@ -100,10 +103,7 @@ public:
 		//  ----------------------------------------------
 		if (sublist_index == -1)
 		{
-			std::unique_ptr<ComponentSubList> sublist = std::make_unique<ComponentSubList>();
-			sublist->components = std::make_unique<T[]>(numComponentsPerSublist);
-			sublist->componentUsedBySlot.resize(numComponentsPerSublist);
-			sublist->freeSlots = numComponentsPerSublist;
+			std::unique_ptr<ComponentSubList> sublist = std::make_unique<ComponentSubList>(numComponentsPerSublist);
 			componentSubLists.push_back(std::move(sublist));
 			sublist_index = (int)num_sublists; //  index of the new sublist will be the total number of sublists before its creation
 		}
