@@ -35,7 +35,7 @@ void ExpositionScene::loadScene()
 
 	//ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_1)->setModel(&AssetManager::GetModel("container"));
 
-	ComponentManager::RegisterComponentDataByClass<ModelRendererComponent>(ComponentClassData{ false, 100 });
+	ComponentManager::RegisterComponentDataByClass<ModelRendererComponent>(ComponentClassData{ false, 20 });
 
 	{
 		std::cout << "Creating 2 other model renderer components to create a new sublist, and keep their shared ptr.\n";
@@ -54,15 +54,15 @@ void ExpositionScene::loadScene()
 	}
 	std::cout << "We leaved the context where the shared ptr has been created.\n\n";
 
-	std::cout << "Creating 87 model renderer components.\n";
-	for (int i = 0; i < 87; i++)
+	std::cout << "Creating 17 model renderer components.\n";
+	for (int i = 0; i < 17; i++)
 	{
 		ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_1);
 		std::cout << "Created model renderer component n°" << i + 1 << std::endl;
 	}
-	std::cout << "Creating 87 model renderer components is done.\n\n";
+	std::cout << "Creating 17 model renderer components is done.\n\n";
 
-	std::vector<std::shared_ptr<ModelRendererComponent>> list = ComponentManager::GetAllComponentsOfClass<ModelRendererComponent>();
+	ComponentListByClass<ModelRendererComponent>& test = ComponentManager::GetComponentListByClass<ModelRendererComponent>();
 
 	return;
 

@@ -22,10 +22,11 @@
 	- Implémenter un Component Manager qui permet de créer des components contigus en mémoire - fait
 	- Tester et fixer si besoin cette base de Component Manager - fait
 	- Améliorer le Component Manager pour les systèmes plus avancés - en cours
-		Reste à faire le nombre custom de components par liste en fonction de la classe de component
-		Je vois pas trop d'autres solutions pour le faire à part appeller une fonction statique sur le component manager pour "register" les classes de component avec leur nombre custom, voir si c'est faisable d'avoir ça aussi faisable dans l'init du game avant que le premier component soit créé (même les components de debug de l'engine)
+		# Faire le système d'update et créer une fonction appelée au remove du component (echo au init)
 	- Remplacer l'ancien système pour utiliser le Component Manager
-	- Update les components qui ont déjà été faits (si besoin) pour que ça marche bien
+		# Modifier l'initialisation de l'engine pour permettre de register les component class data avant la création du premier component
+		# Modifier les fonctions de Entity pour utiliser celles du Component Manager
+	- Tester les components qui ont déjà été faits (et update si besoin) jusqu'à ce que ça marche bien
 
 
 == MOYEN TERME ==

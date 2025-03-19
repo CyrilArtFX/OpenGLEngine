@@ -75,8 +75,6 @@ private:
 	};
 	std::vector<std::unique_ptr<ComponentSubList>> componentSubLists;
 
-	std::vector<std::shared_ptr<T>> componentsSharedByClass;
-
 
 public:
 	ComponentListByClass(size_t numComponentsPerSublist_, bool updateActivated_) : ComponentList(numComponentsPerSublist_, updateActivated_)
@@ -174,7 +172,6 @@ public:
 				//  all component lists are still destroyed when the game closes
 			});
 
-		componentsSharedByClass.push_back(shared_component_as_t);
 		const std::shared_ptr<Component> shared_component = std::dynamic_pointer_cast<Component>(shared_component_as_t);
 		componentsShared.push_back(shared_component);
 
@@ -204,11 +201,6 @@ public:
 				//  (the memory is freed at the end of the game, or if a sublist reach 0 used components, leading to the suppression of the sublist)
 			}
 		}
-	}
-
-	const std::vector<std::shared_ptr<T>>& getComponentsByClass() const
-	{
-		return componentsSharedByClass;
 	}
 
 	/** Clear the entire component list. Warning: This instantly free the memory of all components, so use this with caution. */
@@ -277,16 +269,12 @@ public:
 		}
 	}
 
+	/** Get a reference to the component list of the given class. */
 	template<typename T>
-	static std::vector<std::shared_ptr<T>>& GetAllComponentsOfClass()
+	static ComponentListByClass<T>& GetComponentListByClass()
 	{
-		//  this doesn't work for multiple reasons:
-		//  1. the cast doesn't work (don't really know why but yeah)
-		//  2. the compiler cannot see that T of this function is T of the component list by class that return the component list and fail to implicitly cast
-
 		const size_t component_class_id = typeid(T).hash_code(); //  get the "unique id" of the given component class
-		ComponentListByClass<T>* component_list_class = dynamic_cast<ComponentListByClass<T>>(componentLists[component_class_id].get());
-		return component_list_class->getComponentsByClass();
+		return *static_cast<ComponentListByClass<T>*>(componentLists[component_class_id].get());
 	}
 
 
