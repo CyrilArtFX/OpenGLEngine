@@ -17,7 +17,7 @@ class Entity;
 class ComponentList
 {
 public:
-	ComponentList(size_t numComponentsPerSublist_) : numComponentsPerSublist(numComponentsPerSublist_)
+	ComponentList(size_t numComponentsPerSublist_, bool updateActivated_) : numComponentsPerSublist(numComponentsPerSublist_), updateActivated(updateActivated_)
 	{
 	}
 
@@ -48,6 +48,7 @@ protected:
 
 	std::vector<std::shared_ptr<Component>> componentsShared;
 	size_t numComponentsPerSublist;
+	bool updateActivated;
 };
 
 
@@ -74,9 +75,11 @@ private:
 	};
 	std::vector<std::unique_ptr<ComponentSubList>> componentSubLists;
 
+	std::vector<std::shared_ptr<T>> componentsSharedByClass;
+
 
 public:
-	ComponentListByClass(size_t numComponentsPerSublist_) : ComponentList(numComponentsPerSublist_)
+	ComponentListByClass(size_t numComponentsPerSublist_, bool updateActivated_) : ComponentList(numComponentsPerSublist_, updateActivated_)
 	{
 		std::unique_ptr<ComponentSubList> sublist = std::make_unique<ComponentSubList>(numComponentsPerSublist);
 		componentSubLists.push_back(std::move(sublist));
@@ -171,6 +174,7 @@ public:
 				//  all component lists are still destroyed when the game closes
 			});
 
+		componentsSharedByClass.push_back(shared_component_as_t);
 		const std::shared_ptr<Component> shared_component = std::dynamic_pointer_cast<Component>(shared_component_as_t);
 		componentsShared.push_back(shared_component);
 
@@ -202,13 +206,32 @@ public:
 		}
 	}
 
+	const std::vector<std::shared_ptr<T>>& getComponentsByClass() const
+	{
+		return componentsSharedByClass;
+	}
+
 	/** Clear the entire component list. Warning: This instantly free the memory of all components, so use this with caution. */
-	virtual void clearList() override
+	void clearList() override
 	{
 		componentSubLists.clear();
 	}
 };
 
+
+
+/**
+* Component Class Data
+* Data associated to a component class to give information of wether or not this class should have an update, and the number of components of this class in a sublist.
+*/
+struct ComponentClassData
+{
+	bool updateActivated;
+	int numComponentsPerSublist;
+
+	ComponentClassData() : updateActivated(true), numComponentsPerSublist(50) {}
+	ComponentClassData(bool updateActivated_, int numComponentsPerSublist_) : updateActivated(updateActivated_), numComponentsPerSublist(numComponentsPerSublist_) {}
+};
 
 
 /**
@@ -222,8 +245,9 @@ public:
 	template<typename T>
 	static void AddComponentList(size_t classId)
 	{
-		componentLists[classId] = std::make_unique<ComponentListByClass<T>>(100);
-		// TODO: create a way to get the desired sublist size depending of the component class
+		ComponentClassData component_class_data = GetComponentClassData(classId);
+
+		componentLists[classId] = std::make_unique<ComponentListByClass<T>>(component_class_data.numComponentsPerSublist, component_class_data.updateActivated);
 	}
 
 	/** Create a component and return a shared pointer to it. */
@@ -253,6 +277,18 @@ public:
 		}
 	}
 
+	template<typename T>
+	static std::vector<std::shared_ptr<T>>& GetAllComponentsOfClass()
+	{
+		//  this doesn't work for multiple reasons:
+		//  1. the cast doesn't work (don't really know why but yeah)
+		//  2. the compiler cannot see that T of this function is T of the component list by class that return the component list and fail to implicitly cast
+
+		const size_t component_class_id = typeid(T).hash_code(); //  get the "unique id" of the given component class
+		ComponentListByClass<T>* component_list_class = dynamic_cast<ComponentListByClass<T>>(componentLists[component_class_id].get());
+		return component_list_class->getComponentsByClass();
+	}
+
 
 	/** Clear the component list of the given class. Warning: This instantly free the memory of the components of the given class, so use with caution. */
 	template<typename T>
@@ -277,8 +313,20 @@ public:
 		componentLists.clear();
 	}
 
+	/** Register class datas for the given component class. Note that those datas will have effect if there are registered before the first component of this class is created. */
+	template<typename T>
+	static void RegisterComponentDataByClass(const ComponentClassData& datas)
+	{
+		const size_t component_class_id = typeid(T).hash_code(); //  get the "unique id" of the given component class
+		componentClassDatas[component_class_id] = datas;
+	}
+
+	/** Get the registered class datas for a specific component class, or default class datas if there is none. */
+	static ComponentClassData GetComponentClassData(size_t classId);
+
 
 private:
 	static std::unordered_map<size_t, std::unique_ptr<ComponentList>> componentLists;
+	static std::unordered_map<size_t, ComponentClassData> componentClassDatas;
 };
 
