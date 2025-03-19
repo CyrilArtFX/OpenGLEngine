@@ -63,6 +63,10 @@ void ExpositionScene::loadScene()
 	std::cout << "Creating 17 model renderer components is done.\n\n";
 
 	ComponentListByClass<ModelRendererComponent>& test = ComponentManager::GetComponentListByClass<ModelRendererComponent>();
+	std::vector<std::weak_ptr<ModelRendererComponent>> list = test.getAllComponentsTemplated();
+
+	std::vector<std::weak_ptr<ModelRendererComponent>> list2 = ComponentManager::GetAllComponentOfClass<ModelRendererComponent>();
+	std::vector<std::shared_ptr<Component>> list_all = ComponentManager::GetAllComponents();
 
 	return;
 

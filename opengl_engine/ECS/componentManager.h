@@ -75,6 +75,8 @@ private:
 	};
 	std::vector<std::unique_ptr<ComponentSubList>> componentSubLists;
 
+	std::vector<std::weak_ptr<T>> componentsSharedTemplated;
+
 
 public:
 	ComponentListByClass(size_t numComponentsPerSublist_, bool updateActivated_) : ComponentList(numComponentsPerSublist_, updateActivated_)
@@ -172,6 +174,7 @@ public:
 				//  all component lists are still destroyed when the game closes
 			});
 
+		componentsSharedTemplated.push_back(shared_component_as_t);
 		const std::shared_ptr<Component> shared_component = std::dynamic_pointer_cast<Component>(shared_component_as_t);
 		componentsShared.push_back(shared_component);
 
@@ -194,13 +197,29 @@ public:
 				unregisterComponent(component);
 				componentsShared.erase(componentsShared.begin() + iter_shared_comps);
 				break;
-
-				//  note: we don't free the memory of the component here for 2 reasons:
-				//  1. we don't want to cause errors if other objects still use the component, so we wait for the shared pointer to lose its last reference to continue
-				//  2. the sublist system works like a memory pool, so the component will not be deleted, but will be free to be reused
-				//  (the memory is freed at the end of the game, or if a sublist reach 0 used components, leading to the suppression of the sublist)
 			}
 		}
+
+		std::shared_ptr<T> component_as_t = std::dynamic_pointer_cast<T>(component);
+		for (size_t iter_shared_comps = 0; iter_shared_comps < num_shared_comps; iter_shared_comps++)
+		{
+			if (componentsSharedTemplated[iter_shared_comps].lock() == component_as_t)
+			{
+				componentsSharedTemplated.erase(componentsSharedTemplated.begin() + iter_shared_comps);
+				break;
+			}
+		}
+
+		//  note: we don't free the memory of the component here for 2 reasons:
+		//  1. we don't want to cause errors if other objects still use the component, so we wait for the shared pointer to lose its last reference to continue
+		//  2. the sublist system works like a memory pool, so the component will not be deleted, but will be free to be reused
+		//  (the memory is freed at the end of the game, or if a sublist reach 0 used components, leading to the suppression of the sublist)
+	}
+
+	/** Get all active components in a list of weak ptr to their true class. */
+	std::vector<std::weak_ptr<T>>& getAllComponentsTemplated()
+	{
+		return componentsSharedTemplated;
 	}
 
 	/** Clear the entire component list. Warning: This instantly free the memory of all components, so use this with caution. */
@@ -275,6 +294,25 @@ public:
 	{
 		const size_t component_class_id = typeid(T).hash_code(); //  get the "unique id" of the given component class
 		return *static_cast<ComponentListByClass<T>*>(componentLists[component_class_id].get());
+	}
+
+	/** Get all active components of the given class via a list of weak ptr of their real class. */
+	template<typename T>
+	static std::vector<std::weak_ptr<T>>& GetAllComponentOfClass()
+	{
+		return GetComponentListByClass<T>().getAllComponentsTemplated();
+	}
+
+	/** Get all active components via a list of shared ptr. */
+	static std::vector<std::shared_ptr<Component>> GetAllComponents()
+	{
+		std::vector<std::shared_ptr<Component>> all_components;
+		for (auto& component_list : componentLists)
+		{
+			const std::vector<std::shared_ptr<Component>>& components = component_list.second->getAllComponents();
+			all_components.insert(all_components.end(), components.begin(), components.end());
+		}
+		return all_components;
 	}
 
 
