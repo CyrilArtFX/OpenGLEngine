@@ -253,7 +253,7 @@ struct ComponentClassData
 	bool updateActivated;
 	int numComponentsPerSublist;
 
-	ComponentClassData() : updateActivated(true), numComponentsPerSublist(50) {}
+	ComponentClassData() : updateActivated(true), numComponentsPerSublist(20) {}
 	ComponentClassData(bool updateActivated_, int numComponentsPerSublist_) : updateActivated(updateActivated_), numComponentsPerSublist(numComponentsPerSublist_) {}
 };
 

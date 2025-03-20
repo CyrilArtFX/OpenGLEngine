@@ -6,6 +6,7 @@
 #include <ServiceLocator/locator.h>
 #include <Physics/physicsManager.h>
 #include <GameplayStatics/gameplayStatics.h>
+#include <ECS/EngineComponents/engineComponents.h>
 #include <iostream>
 
 
@@ -90,6 +91,10 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	Locator::provideLog(log);
 	log->initialize();
 	std::cout << " Done.\n";
+
+
+	//  register engine components
+	EngineComponents::RegisterEngineComponents();
 
 
 	//  create renderer and default camera

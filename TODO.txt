@@ -22,8 +22,7 @@
 	- Implémenter un Component Manager qui permet de créer des components contigus en mémoire - fait
 	- Tester et fixer si besoin cette base de Component Manager - fait
 	- Améliorer le Component Manager pour les systèmes plus avancés - fait
-	- Remplacer l'ancien système pour utiliser le Component Manager
-		# Modifier l'initialisation de l'engine pour permettre de register les component class data avant la création du premier component
+	- Remplacer l'ancien système pour utiliser le Component Manager - en cours
 		# Modifier les fonctions de Entity pour utiliser celles du Component Manager
 		# Tester si c'est worth de remplacer le register par un GetAllComponentsOfClass pour l'update de rendering et de physique
 	- Tester les components qui ont déjà été faits (et update si besoin) jusqu'à ce que ça marche bien

@@ -35,8 +35,6 @@ void ExpositionScene::loadScene()
 
 	//ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_1)->setModel(&AssetManager::GetModel("container"));
 
-	ComponentManager::RegisterComponentDataByClass<ModelRendererComponent>(ComponentClassData{ true, 20 });
-
 	{
 		std::cout << "Creating 2 other model renderer components to create a new sublist, and keep their shared ptr.\n";
 		std::shared_ptr<ModelRendererComponent> test_component_1 = ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_2);
