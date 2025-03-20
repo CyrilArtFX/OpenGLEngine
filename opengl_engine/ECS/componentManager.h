@@ -28,12 +28,25 @@ public:
 	/** Remove a component from the list of this class of components. */
 	virtual void deleteComponent(const std::shared_ptr<Component>& component) = 0;
 
+	/** Update the active components of the list. */
+	void updateComponents(float deltaTime)
+	{
+		for (auto& component : componentsShared)
+		{
+			if (!component->getUdpateActivated()) continue;
+			component->update(deltaTime);
+		}
+	}
+
 	/** Clear the entire component list. Warning: This instantly free the memory of all components, so use this with caution. */
 	virtual void clearList() = 0;
 
 
 	/** Get the maximum number of components of this class that can be stored in a single list. */
-	size_t getNumComponentsPerList() { return numComponentsPerSublist; }
+	size_t getNumComponentsPerList() const { return numComponentsPerSublist; }
+
+	/** Get the update activated value for the component class of this component list. */
+	bool getUpdateActivated() const { return updateActivated; }
 
 	/** Get every components of this class. */
 	const std::vector<std::shared_ptr<Component>>& getAllComponents() const { return componentsShared; }
@@ -41,10 +54,10 @@ public:
 
 protected:
 	/** Initializing a component require to be a friend class of Component, and ComponentListByClass isn't so we do it in the parent class. */
-	void initializeComponent(const std::shared_ptr<Component>& component, Entity* componentOwner);
+	void initComponent(const std::shared_ptr<Component>& component, Entity* componentOwner);
 	
-	/** Unregistering a component require to be a friend class of Component, and ComponentListByClass isn't so we do it in the parent class. */
-	void unregisterComponent(const std::shared_ptr<Component>& component);
+	/** Exiting a component require to be a friend class of Component, and ComponentListByClass isn't so we do it in the parent class. */
+	void exitComponent(const std::shared_ptr<Component>& component);
 
 	std::vector<std::shared_ptr<Component>> componentsShared;
 	size_t numComponentsPerSublist;
@@ -181,7 +194,7 @@ public:
 
 		//  step 4: initialize the created component
 		//  ----------------------------------------
-		initializeComponent(shared_component, owner);
+		initComponent(shared_component, owner);
 
 		return shared_component;
 	}
@@ -194,7 +207,7 @@ public:
 		{
 			if (componentsShared[iter_shared_comps] == component)
 			{
-				unregisterComponent(component);
+				exitComponent(component);
 				componentsShared.erase(componentsShared.begin() + iter_shared_comps);
 				break;
 			}
@@ -287,6 +300,18 @@ public:
 			componentLists[component_class_id]->deleteComponent(component);
 		}
 	}
+
+	/** Update all components. Note: won't update components of a class that has been registered with disabled update. */
+	static void UpdateComponents(float deltaTime)
+	{
+		for (auto& component_list : componentLists)
+		{
+			if (!component_list.second->getUpdateActivated()) continue;
+
+			component_list.second->updateComponents(deltaTime);
+		}
+	}
+
 
 	/** Get a reference to the component list of the given class. */
 	template<typename T>

@@ -6,16 +6,17 @@ std::unordered_map<size_t, std::unique_ptr<ComponentList>> ComponentManager::com
 std::unordered_map<size_t, ComponentClassData> ComponentManager::componentClassDatas;
 
 
-void ComponentList::initializeComponent(const std::shared_ptr<Component>& component, Entity* componentOwner)
+void ComponentList::initComponent(const std::shared_ptr<Component>& component, Entity* componentOwner)
 {
 	component->setOwner(componentOwner);
 	component->init();
 	component->registerComponent();
 }
 
-void ComponentList::unregisterComponent(const std::shared_ptr<Component>& component)
+void ComponentList::exitComponent(const std::shared_ptr<Component>& component)
 {
 	component->unregisterComponent();
+	component->exit();
 }
 
 

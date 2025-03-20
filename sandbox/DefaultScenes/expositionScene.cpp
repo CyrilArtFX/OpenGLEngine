@@ -35,7 +35,7 @@ void ExpositionScene::loadScene()
 
 	//ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_1)->setModel(&AssetManager::GetModel("container"));
 
-	ComponentManager::RegisterComponentDataByClass<ModelRendererComponent>(ComponentClassData{ false, 20 });
+	ComponentManager::RegisterComponentDataByClass<ModelRendererComponent>(ComponentClassData{ true, 20 });
 
 	{
 		std::cout << "Creating 2 other model renderer components to create a new sublist, and keep their shared ptr.\n";
@@ -67,6 +67,8 @@ void ExpositionScene::loadScene()
 
 	std::vector<std::weak_ptr<ModelRendererComponent>> list2 = ComponentManager::GetAllComponentOfClass<ModelRendererComponent>();
 	std::vector<std::shared_ptr<Component>> list_all = ComponentManager::GetAllComponents();
+
+	ComponentManager::UpdateComponents(0.4f);
 
 	return;
 

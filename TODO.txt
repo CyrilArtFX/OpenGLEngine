@@ -21,8 +21,7 @@
 	- Comprendre comment faire une implémentation de components pour qu'ils soient contigus en mémoire (voir avec Grégory ?) - fait
 	- Implémenter un Component Manager qui permet de créer des components contigus en mémoire - fait
 	- Tester et fixer si besoin cette base de Component Manager - fait
-	- Améliorer le Component Manager pour les systèmes plus avancés - en cours
-		# Faire le système d'update et créer une fonction appelée au remove du component (echo au init)
+	- Améliorer le Component Manager pour les systèmes plus avancés - fait
 	- Remplacer l'ancien système pour utiliser le Component Manager
 		# Modifier l'initialisation de l'engine pour permettre de register les component class data avant la création du premier component
 		# Modifier les fonctions de Entity pour utiliser celles du Component Manager
