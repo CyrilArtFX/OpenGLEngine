@@ -9,12 +9,12 @@
 #include <Maths/vector3.h>
 #include <Utils/color.h>
 
+#include <memory>
+
 
 class ExpositionScene : public Scene
 {
 public:
-	ExpositionScene();
-
 	void updateScene(float dt) override;
 
 protected:
@@ -24,15 +24,15 @@ protected:
 
 private:
 	Entity* player{ nullptr };
-	CameraComponent* camera{ nullptr };
+	std::shared_ptr<CameraComponent> camera;
 
 	Entity* movingCube{ nullptr };
 	Entity* flashlight{ nullptr };
 	Entity* physicsCube{ nullptr };
 
-	AudioSourceComponent* musicAudioSource{ nullptr };
-	TextRendererComponent* sandboxText{ nullptr };
-	SpriteRendererComponent* sandboxSprite{ nullptr };
+	std::shared_ptr<AudioSourceComponent> musicAudioSource;
+	std::shared_ptr<TextRendererComponent> sandboxText;
+	std::shared_ptr<SpriteRendererComponent> sandboxSprite;
 
 	float playerCamSpeed{ 4.0f };
 	float playerCamSensitivity{ 0.1f };

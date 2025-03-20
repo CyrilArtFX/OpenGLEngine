@@ -18,6 +18,8 @@
 #include <Maths/vector3.h>
 
 #include <string>
+#include <memory>
+
 
 class Engine : private EntityContainer
 {
@@ -56,12 +58,12 @@ private:
 
 	//  cameras
 	Entity* debugCamEntity{ nullptr };
-	CameraComponent* debugCamera{ nullptr };
+	std::shared_ptr<CameraComponent> debugCamera{ nullptr };
 	float debugCameraSpeed{ 4.0f };
 	float debugCameraMouseSensitivity{ 0.1f };
 
 	//  debug text
-	TextRendererComponent* fpsText{ nullptr };
+	std::shared_ptr<TextRendererComponent> fpsText{ nullptr };
 	int frameCounter = 0;
 	float frameTimeCounter = 0.0f;
 

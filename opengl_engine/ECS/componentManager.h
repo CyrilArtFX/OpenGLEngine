@@ -290,8 +290,7 @@ public:
 	}
 
 	/** Delete a component. */
-	template<typename T>
-	static void DeleteComponent(const std::shared_ptr<T>& component)
+	static void DeleteComponent(const std::shared_ptr<Component>& component)
 	{
 		const size_t component_class_id = typeid(*component.get()).hash_code(); //  get the "unique id" of the class of the component to remove (can't get the id from 'T' cause it will just be the 'Component' class)
 		if (componentLists.find(component_class_id) != componentLists.end())

@@ -103,7 +103,7 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	default_cam_entity->addComponentByClass<CameraComponent>();
 	renderer = new RendererOpenGL();
 	Locator::provideRenderer(renderer);
-	renderer->initializeRenderer(Color::black, Vector2Int{ window.getWidth(), window.getHeigth() }, default_cam_entity->getComponentByClass<CameraComponent>());
+	renderer->initializeRenderer(Color::black, Vector2Int{ window.getWidth(), window.getHeigth() }, default_cam_entity->getComponentByClass<CameraComponent>().get());
 	std::cout << " Done.\n";
 
 
@@ -155,7 +155,7 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	//  initialize debug camera
 	debugCamEntity = createEntity();
 	debugCamera = debugCamEntity->addComponentByClass<CameraComponent>();
-	renderer->setDebugCamera(debugCamera);
+	renderer->setDebugCamera(debugCamera.get());
 
 
 	//  configure global OpenGL properties

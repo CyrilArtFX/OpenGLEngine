@@ -17,13 +17,14 @@ void Entity::destroyEntity()
 	containerRef.addPendingEntity(this);
 }
 
-void Entity::removeComponent(Component* component)
+void Entity::removeComponent(std::weak_ptr<Component> component)
 {
-	auto iter = std::find(components.begin(), components.end(), component);
+	std::shared_ptr<Component> component_shared = component.lock();
+
+	auto iter = std::find(components.begin(), components.end(), component_shared);
 	if (iter != components.end())
 	{
-		(*iter)->unregisterComponent();
-		delete *iter;
+		ComponentManager::DeleteComponent(component_shared);
 		components.erase(iter);
 	}
 }
@@ -32,8 +33,7 @@ void Entity::clearComponents()
 {
 	for (auto& component : components)
 	{
-		component->unregisterComponent();
-		delete component;
+		ComponentManager::DeleteComponent(component);
 	}
 	components.clear();
 }

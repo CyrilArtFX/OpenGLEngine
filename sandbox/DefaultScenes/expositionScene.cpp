@@ -12,63 +12,12 @@
 
 #include <Inputs/input.h>
 
-#include <ECS/componentManager.h>
-#include <iostream>
-
-
-ExpositionScene::ExpositionScene()
-{
-}
-
 
 void ExpositionScene::loadScene()
 {
 	Renderer& renderer = Locator::getRenderer();
 
 	renderer.SetClearColor(Color{ 50, 75, 75, 255 });
-
-	Entity* test_entity_1 = createEntity();
-	Entity* test_entity_2 = createEntity();
-	Entity* test_entity_3 = createEntity();
-	Entity* test_entity_4 = createEntity();
-	Entity* test_entity_5 = createEntity();
-
-	//ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_1)->setModel(&AssetManager::GetModel("container"));
-
-	{
-		std::cout << "Creating 2 other model renderer components to create a new sublist, and keep their shared ptr.\n";
-		std::shared_ptr<ModelRendererComponent> test_component_1 = ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_2);
-		std::shared_ptr<ModelRendererComponent> test_component_2 = ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_2);
-		std::cout << "Creating 2 other model renderer components is done.\n\n";
-
-
-		std::cout << "Removing the 2 model renderer components on the 2nd sublist.\n";
-		ComponentManager::DeleteComponent<Component>(test_component_1);
-		ComponentManager::DeleteComponent<Component>(test_component_2);
-		std::cout << "Removing is done, we are still in the context where the shared ptr has been created.\n";
-
-		//std::cout << "Clearing the list of model renderer components.\n";
-		//ComponentManager::ClearAllComponents();
-	}
-	std::cout << "We leaved the context where the shared ptr has been created.\n\n";
-
-	std::cout << "Creating 17 model renderer components.\n";
-	for (int i = 0; i < 17; i++)
-	{
-		ComponentManager::CreateComponent<ModelRendererComponent>(test_entity_1);
-		std::cout << "Created model renderer component n°" << i + 1 << std::endl;
-	}
-	std::cout << "Creating 17 model renderer components is done.\n\n";
-
-	ComponentListByClass<ModelRendererComponent>& test = ComponentManager::GetComponentListByClass<ModelRendererComponent>();
-	std::vector<std::weak_ptr<ModelRendererComponent>> list = test.getAllComponentsTemplated();
-
-	std::vector<std::weak_ptr<ModelRendererComponent>> list2 = ComponentManager::GetAllComponentOfClass<ModelRendererComponent>();
-	std::vector<std::shared_ptr<Component>> list_all = ComponentManager::GetAllComponents();
-
-	ComponentManager::UpdateComponents(0.4f);
-
-	return;
 
 
 	//  player
@@ -136,8 +85,8 @@ void ExpositionScene::loadScene()
 	//sound_wall.setupAudioCollision(AssetManager::GetAudioCollisionType("default_audio_collision"));
 	collision_cube->addComponentByClass<BoxAABBColComp>()->setCollisionChannel("test_ground");
 	physicsCube->addComponentByClass<BoxAABBColComp>()->setBox(Box::one);
-	RigidbodyComponent* rigidbody = physicsCube->addComponentByClass<RigidbodyComponent>();
-	rigidbody->associateCollision(physicsCube->getComponentByClass<BoxAABBColComp>());
+	std::shared_ptr<RigidbodyComponent> rigidbody = physicsCube->addComponentByClass<RigidbodyComponent>();
+	rigidbody->associateCollision(physicsCube->getComponentByClass<BoxAABBColComp>().get());
 	rigidbody->setPhysicsActivated(true);
 	rigidbody->setUseGravity(true);
 	rigidbody->setTestChannels({ "test_ground" });
@@ -161,8 +110,6 @@ void ExpositionScene::unloadScene()
 
 void ExpositionScene::updateScene(float dt)
 {
-	return;
-
 	//  move camera
 	if (Input::IsKeyDown(GLFW_KEY_W))
 		player->addPosition(camera->getCamForward() * playerCamSpeed * dt);
@@ -219,7 +166,7 @@ void ExpositionScene::updateScene(float dt)
 
 	if (Input::IsKeyPressed(GLFW_MOUSE_BUTTON_LEFT))
 	{
-		SpotLightComponent* spotlight = flashlight->getComponentByClass<SpotLightComponent>();
+		std::shared_ptr<SpotLightComponent> spotlight = flashlight->getComponentByClass<SpotLightComponent>();
 		spotlight->setActive(!spotlight->isActive());
 	}
 

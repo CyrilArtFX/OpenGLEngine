@@ -1,10 +1,14 @@
 #pragma once
 #include <Objects/transform.h>
 #include <ECS/component.h>
+#include <ECS/componentManager.h>
 #include <ServiceLocator/locator.h>
+
+#include <memory>
 #include <vector>
 
 class EntityContainer;
+
 
 class Entity : public Transform
 {
@@ -27,15 +31,12 @@ public:
 	* @return	The created component.
 	*/
 	template<class T>
-	std::enable_if_t<std::is_base_of<Component, T>::value, T*>
+	std::enable_if_t<std::is_base_of<Component, T>::value, std::shared_ptr<T>>
 		addComponentByClass()
 	{
-		components.emplace_back(new T());
-		components.back()->setOwner(this);
-		components.back()->init();
-		components.back()->registerComponent();
-
-		return static_cast<T*>(components.back());
+		std::shared_ptr<T> component_created = ComponentManager::CreateComponent<T>(this);
+		components.push_back(component_created);
+		return component_created;
 	}
 
 
@@ -44,12 +45,12 @@ public:
 	* @return	The first component of given class found, nullptr if no component of given class has been found.
 	*/
 	template<class T>
-	std::enable_if_t<std::is_base_of<Component, T>::value, T*>
+	std::enable_if_t<std::is_base_of<Component, T>::value, std::shared_ptr<T>>
 		getComponentByClass()
 	{
-		for (Component* component : components)
+		for (std::shared_ptr<Component>& component : components)
 		{
-			T* component_as_t = dynamic_cast<T*>(component);
+			std::shared_ptr<T> component_as_t = std::dynamic_pointer_cast<T>(component);
 			if (component_as_t)
 			{
 				return component_as_t;
@@ -65,14 +66,14 @@ public:
 	* @return	A list of all components of given class found.
 	*/
 	template<class T>
-	std::enable_if_t <std::is_base_of<Component, T>::value, std::vector<T*>>
+	std::enable_if_t <std::is_base_of<Component, T>::value, std::vector<std::shared_ptr<T>>>
 		getComponentsByClass()
 	{
-		std::vector<T*> return_list;
+		std::vector<std::shared_ptr<T>> return_list;
 
-		for (Component* component : components)
+		for (std::shared_ptr<Component>& component : components)
 		{
-			T* component_as_t = dynamic_cast<T*>(component);
+			std::shared_ptr<T> component_as_t = std::dynamic_pointer_cast<T>(component);
 			if (component_as_t)
 			{
 				return_list.push_back(component_as_t);
@@ -86,7 +87,7 @@ public:
 	* Get all components of this entity.
 	* @return	A list of all components this entity has.
 	*/
-	std::vector<Component*> getAllComponents()
+	std::vector<std::shared_ptr<Component>> getAllComponents()
 	{
 		return components;
 	}
@@ -95,10 +96,10 @@ public:
 	* Remove a component of this entity.
 	* @param	component	The component to remove.
 	*/
-	void removeComponent(Component* component);
+	void removeComponent(std::weak_ptr<Component> component);
 
 private:
-	std::vector<Component*> components;
+	std::vector<std::shared_ptr<Component>> components;
 
 	EntityContainer& containerRef;
 
