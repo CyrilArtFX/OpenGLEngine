@@ -9,8 +9,8 @@
 class NullRenderer : public Renderer
 {
 public:
-	void SetCamera(CameraComponent* camera) override {}
-	const CameraComponent* GetCamera() const override { return new CameraComponent(); } //  pretty sure this is very sus but theorically this function is never called so... alright I guess ?
+	void SetCamera(std::weak_ptr<CameraComponent> camera) override {}
+	const std::shared_ptr<CameraComponent> GetCamera() const override { return std::make_shared<CameraComponent>(); } //  pretty sure this is very sus but theorically this function is never called so... alright I guess ?
 
 	void SetClearColor(Color clearColor) override {}
 	const Color GetClearColor() const override { return Color::black; }

@@ -16,6 +16,7 @@
 
 #include <vector>
 #include <unordered_map>
+#include <memory>
 
 
 //  would be cool if I find a better way to do this but it works for now
@@ -35,8 +36,8 @@ const int TEXT_CHARS_LIMIT{ 200 };
 class RendererOpenGL : public Renderer
 {
 public:
-	void SetCamera(CameraComponent* camera) override;
-	const CameraComponent* GetCamera() const override;
+	void SetCamera(std::weak_ptr<CameraComponent> camera) override;
+	const std::shared_ptr<CameraComponent> GetCamera() const override;
 
 	void SetClearColor(Color clearColor_) override;
 	const Color GetClearColor() const override;
@@ -60,7 +61,8 @@ public:
 
 
 private:
-	CameraComponent* selectCurrentCam();
+	CameraComponent& selectCurrentCam();
+	bool isCurrentCamValid();
 
 	std::unordered_map<LightType, std::vector<LightComponent*>> lights;
 	std::unordered_map<Shader*, std::vector<Material*>> materials;
@@ -70,9 +72,9 @@ private:
 
 	Color clearColor{ Color::black };
 
-	CameraComponent* activeCamera{ nullptr };
-	CameraComponent* defaultCamera{ nullptr };
-	CameraComponent* debugCamera{ nullptr };
+	std::shared_ptr<CameraComponent> activeCamera;
+	std::shared_ptr<CameraComponent> defaultCamera;
+	std::shared_ptr<CameraComponent> debugCamera;
 
 	Vector2Int windowSize;
 
@@ -85,9 +87,9 @@ private:
 
 //  exclusive to engine which is the only class to access the full renderer
 public:
-	void initializeRenderer(Color clearColor_, Vector2Int windowSize_, CameraComponent* defaultCamera_);
+	void initializeRenderer(Color clearColor_, Vector2Int windowSize_, std::weak_ptr<CameraComponent> defaultCamera_);
 
-	void setDebugCamera(CameraComponent* debugCamera_);
+	void setDebugCamera(std::weak_ptr<CameraComponent> debugCamera_);
 	void setDebugActivated(bool debugActivated_);
 
 	void draw();

@@ -12,15 +12,15 @@ void RendererOpenGL::draw()
 	glEnable(GL_DEPTH_TEST);
 
 	
-	CameraComponent* current_camera = selectCurrentCam();
-	if (!current_camera) return;
+	if (!isCurrentCamValid()) return;
+	CameraComponent& current_camera = selectCurrentCam();
 
 	//  RENDERING 3D
 	// ===================
 
 
-	Matrix4 view = current_camera->getViewMatrix();
-	Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(current_camera->getFov()), static_cast<float>(windowSize.x), static_cast<float>(windowSize.y), 0.1f, 100.0f);
+	Matrix4 view = current_camera.getViewMatrix();
+	Matrix4 projection = Matrix4::createPerspectiveFOV(Maths::toRadians(current_camera.getFov()), static_cast<float>(windowSize.x), static_cast<float>(windowSize.y), 0.1f, 100.0f);
 
 	//  loop through all shaders
 	for (auto& materials_by_shaders : materials)
@@ -69,7 +69,7 @@ void RendererOpenGL::draw()
 				}
 			}
 
-			shader->setVec3("viewPos", current_camera->getCamPosition());
+			shader->setVec3("viewPos", current_camera.getCamPosition());
 
 			break;
 
@@ -266,21 +266,22 @@ void RendererOpenGL::draw()
 
 
 
-void RendererOpenGL::SetCamera(CameraComponent* camera)
+void RendererOpenGL::SetCamera(std::weak_ptr<CameraComponent> camera)
 {
-	activeCamera->setActiveValue(false);
+	if(activeCamera) activeCamera->setActiveValue(false);
 
-	if (camera == nullptr)
+	activeCamera = camera.lock();
+
+	if (!activeCamera)
 	{
 		activeCamera = defaultCamera;
 		return;
 	}
 
-	activeCamera = camera;
 	activeCamera->setActiveValue(true);
 }
 
-const CameraComponent* RendererOpenGL::GetCamera() const
+const std::shared_ptr<CameraComponent> RendererOpenGL::GetCamera() const
 {
 	return activeCamera;
 }
@@ -395,24 +396,29 @@ void RendererOpenGL::RemoveSprite(SpriteRendererComponent* sprite)
 	sprites.pop_back();
 }
 
-CameraComponent* RendererOpenGL::selectCurrentCam()
+CameraComponent& RendererOpenGL::selectCurrentCam()
 {
-	return debugActivated ? debugCamera : activeCamera;
+	return debugActivated ? *debugCamera : *activeCamera;
+}
+
+bool RendererOpenGL::isCurrentCamValid()
+{
+	return debugActivated ? debugCamera.operator bool() : activeCamera.operator bool();
 }
 
 
 
-void RendererOpenGL::initializeRenderer(Color clearColor_, Vector2Int windowSize_, CameraComponent* defaultCamera_)
+void RendererOpenGL::initializeRenderer(Color clearColor_, Vector2Int windowSize_, std::weak_ptr<CameraComponent> defaultCamera_)
 {
 	clearColor = clearColor_;
 	windowSize = windowSize_;
-	defaultCamera = defaultCamera_;
+	defaultCamera = defaultCamera_.lock();
 	activeCamera = defaultCamera;
 }
 
-void RendererOpenGL::setDebugCamera(CameraComponent* debugCamera_)
+void RendererOpenGL::setDebugCamera(std::weak_ptr<CameraComponent> debugCamera_)
 {
-	debugCamera = debugCamera_;
+	debugCamera = debugCamera_.lock();
 }
 
 void RendererOpenGL::setDebugActivated(bool debugActivated_)

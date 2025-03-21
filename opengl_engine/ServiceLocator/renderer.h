@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 
 class CameraComponent;
 struct Color;
@@ -22,13 +23,13 @@ public:
 	* Set the new camera that will be used.
 	* @param	camera		The new camera to use.
 	*/
-	virtual void SetCamera(CameraComponent* camera) = 0;
+	virtual void SetCamera(std::weak_ptr<CameraComponent> camera) = 0;
 
 	/**
 	* Retrieve the currently used camera.
 	* @return			The currently used camera.
 	*/
-	virtual const CameraComponent* GetCamera() const = 0;
+	virtual const std::shared_ptr<CameraComponent> GetCamera() const = 0;
 
 
 	/**

@@ -3,11 +3,12 @@
 #include <Events/observer.h>
 #include <Maths/Vector3.h>
 #include <Maths/Matrix4.h>
+#include <memory>
 
 /** Camera Component
 * Component for the camera.
 */
-class CameraComponent : public Component, public Observer
+class CameraComponent : public Component, public Observer, public std::enable_shared_from_this<CameraComponent>
 {
 public:
 	/**

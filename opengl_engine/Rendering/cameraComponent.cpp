@@ -30,7 +30,7 @@ Vector3 CameraComponent::getCamRight() const
 
 void CameraComponent::setAsActiveCamera()
 {
-	Locator::getRenderer().SetCamera(this);
+	Locator::getRenderer().SetCamera(shared_from_this());
 }
 
 void CameraComponent::setActiveValue(bool activeValue)
@@ -129,7 +129,7 @@ void CameraComponent::unregisterComponent()
 
 	if (active)
 	{
-		Locator::getRenderer().SetCamera(nullptr);
+		Locator::getRenderer().SetCamera(std::shared_ptr<CameraComponent>(nullptr));
 	}
 }
 

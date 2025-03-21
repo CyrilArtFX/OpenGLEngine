@@ -103,7 +103,7 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	default_cam_entity->addComponentByClass<CameraComponent>();
 	renderer = new RendererOpenGL();
 	Locator::provideRenderer(renderer);
-	renderer->initializeRenderer(Color::black, Vector2Int{ window.getWidth(), window.getHeigth() }, default_cam_entity->getComponentByClass<CameraComponent>().get());
+	renderer->initializeRenderer(Color::black, Vector2Int{ window.getWidth(), window.getHeigth() }, default_cam_entity->getComponentByClass<CameraComponent>());
 	std::cout << " Done.\n";
 
 
@@ -155,7 +155,7 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 	//  initialize debug camera
 	debugCamEntity = createEntity();
 	debugCamera = debugCamEntity->addComponentByClass<CameraComponent>();
-	renderer->setDebugCamera(debugCamera.get());
+	renderer->setDebugCamera(debugCamera);
 
 
 	//  configure global OpenGL properties
@@ -214,8 +214,8 @@ void Engine::run()
 
 		//  audio part
 		// ------------
-		const CameraComponent* active_cam = renderer->GetCamera();
-		audio->UpdateListener(active_cam->getCamPosition(), active_cam->getCamUp(), active_cam->getCamForward());
+		const CameraComponent& active_cam = *renderer->GetCamera();
+		audio->UpdateListener(active_cam.getCamPosition(), active_cam.getCamUp(), active_cam.getCamForward());
 		audio->Update();
 
 		
