@@ -9,6 +9,8 @@
 #include <ECS/EngineComponents/engineComponents.h>
 #include <iostream>
 
+#include <chrono>
+
 
 Engine::Engine()
 {
@@ -209,7 +211,14 @@ void Engine::run()
 
 		//  rendering part
 		// ----------------
+		auto rendering_start_time = std::chrono::high_resolution_clock::now();
+
 		renderer->draw();
+
+		auto rendering_end_time = std::chrono::high_resolution_clock::now();
+		long long rendering_duration = std::chrono::duration_cast<std::chrono::microseconds>(rendering_end_time - rendering_start_time).count();
+		std::cout << "Rendering loop duration: " << rendering_duration << " microseconds.\n";
+
 
 
 		//  audio part

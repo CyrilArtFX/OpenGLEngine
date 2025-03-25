@@ -5,6 +5,7 @@
 #include <Rendering/modelRendererComponent.h>
 #include <Rendering/Lights/pointLightComponent.h>
 #include <Rendering/Lights/spotLightComponent.h>
+#include <Rendering/Lights/directionalLightComponent.h>
 
 #include <Physics/AABB/boxAABBColComp.h>
 #include <Physics/rigidbodyComponent.h>
@@ -26,6 +27,31 @@ void ExpositionScene::loadScene()
 	camera->setAsActiveCamera();
 	player->setPosition(Vector3{ 0.0f, 0.0f, -3.0f });
 	camera->setYaw(-90.0f);
+
+
+	//  directional light
+	Entity* dir_light = createEntity();
+	dir_light->addComponentByClass<DirectionalLightComponent>()->setDirection(Vector3{ 0.7f, -0.2f, 0.55f });
+
+
+
+	//  rendering profiling (10*10*10 = 1000 model renderer components)
+	for (int x = 0; x < 10; x++)
+	{
+		for (int y = 0; y < 10; y++)
+		{
+			for (int z = 0; z < 10; z++)
+			{
+				Entity* entity = createEntity();
+				entity->setPosition(Vector3{ x - 5.0f, y - 5.0f, z - 5.0f });
+				entity->setScale(0.1f);
+				entity->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("container"));
+			}
+		}
+	}
+
+	return;
+
 
 
 	//  entities
@@ -134,6 +160,8 @@ void ExpositionScene::updateScene(float dt)
 	camera->addYaw(-mouse_delta.x);
 	camera->setPitch(Maths::clamp(camera->getPitch() + mouse_delta.y, -89.0f, 89.0f));
 
+
+	return;  //  disabled for the rendering profiling loop
 
 
 	flashlight->setPosition(camera->getCamPosition());
