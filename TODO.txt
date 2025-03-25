@@ -23,7 +23,6 @@
 	- Tester et fixer si besoin cette base de Component Manager - fait
 	- Améliorer le Component Manager pour les systèmes plus avancés - fait
 	- Remplacer l'ancien système pour utiliser le Component Manager - en cours
-		# Potentiellement utiliser un peu plus de shared ptr genre sur le ptr au collision component sur le rigidbody
 		# Tester si c'est worth de remplacer le register par un GetAllComponentsOfClass pour l'update de rendering et de physique
 	- Tester les components qui ont déjà été faits (et update si besoin) jusqu'à ce que ça marche bien
 		# Modifier certains components qui utilisent les fonctions register & unregister pour utiliser init & exit si c'est plus approprié

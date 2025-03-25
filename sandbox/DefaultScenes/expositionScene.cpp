@@ -86,7 +86,7 @@ void ExpositionScene::loadScene()
 	collision_cube->addComponentByClass<BoxAABBColComp>()->setCollisionChannel("test_ground");
 	physicsCube->addComponentByClass<BoxAABBColComp>()->setBox(Box::one);
 	std::shared_ptr<RigidbodyComponent> rigidbody = physicsCube->addComponentByClass<RigidbodyComponent>();
-	rigidbody->associateCollision(physicsCube->getComponentByClass<BoxAABBColComp>().get());
+	rigidbody->associateCollision(physicsCube->getComponentByClass<BoxAABBColComp>());
 	rigidbody->setPhysicsActivated(true);
 	rigidbody->setUseGravity(true);
 	rigidbody->setTestChannels({ "test_ground" });

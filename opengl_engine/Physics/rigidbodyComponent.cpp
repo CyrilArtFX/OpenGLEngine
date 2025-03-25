@@ -10,7 +10,7 @@
 // ----------------------------------------------------------
 //  Associated Collision
 // ----------------------------------------------------------
-void RigidbodyComponent::associateCollision(CollisionComponent* collisionToAssociate)
+void RigidbodyComponent::associateCollision(std::weak_ptr<CollisionComponent> collisionToAssociate)
 {
 	//  remove the owning rigidbody of a potential previous managed collision
 	if (isAssociatedCollisionValid())
@@ -19,7 +19,7 @@ void RigidbodyComponent::associateCollision(CollisionComponent* collisionToAssoc
 		associatedCollision->setOwningRigidbody(nullptr);
 	}
 
-	associatedCollision = collisionToAssociate;
+	associatedCollision = collisionToAssociate.lock();
 	if (associatedCollision)
 	{
 		//  initialize the collision as a managed collision
@@ -30,7 +30,7 @@ void RigidbodyComponent::associateCollision(CollisionComponent* collisionToAssoc
 
 bool RigidbodyComponent::isAssociatedCollisionValid() const
 {
-	return associatedCollision != nullptr;
+	return associatedCollision.operator bool();
 }
 
 const CollisionComponent& RigidbodyComponent::getAssociatedCollision() const

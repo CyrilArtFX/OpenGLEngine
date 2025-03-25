@@ -42,7 +42,7 @@ public:
 	* Set the associated collision of this rigidbody.
 	* @param	collisionToAssociate	The collision that this rigidbody must manage.
 	*/
-	void associateCollision(CollisionComponent* collisionToAssociate);
+	void associateCollision(std::weak_ptr<CollisionComponent> collisionToAssociate);
 
 	/**
 	* Know if the collision managed by this rigidbody is valid, ie. if this rigidbody is valid.
@@ -218,7 +218,7 @@ protected:
 //  Rigidbody properties
 // ----------------------------------------------------------
 private:
-	CollisionComponent* associatedCollision{ nullptr };
+	std::shared_ptr<CollisionComponent> associatedCollision{ nullptr };
 
 	bool physicsActivated{ false };
 	bool useGravity{ false };
