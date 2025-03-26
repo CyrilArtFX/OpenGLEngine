@@ -22,9 +22,8 @@
 	- Implémenter un Component Manager qui permet de créer des components contigus en mémoire - fait
 	- Tester et fixer si besoin cette base de Component Manager - fait
 	- Améliorer le Component Manager pour les systèmes plus avancés - fait
-	- Remplacer l'ancien système pour utiliser le Component Manager - en cours
-		# Tester si c'est worth de remplacer le register par un GetAllComponentsOfClass pour l'update de rendering et de physique
-	- Tester les components qui ont déjà été faits (et update si besoin) jusqu'à ce que ça marche bien
+	- Remplacer l'ancien système pour utiliser le Component Manager - fait
+	- Tester les components qui ont déjà été faits (et update si besoin) jusqu'à ce que ça marche bien - en cours
 		# Modifier certains components qui utilisent les fonctions register & unregister pour utiliser init & exit si c'est plus approprié
 
 
@@ -81,6 +80,12 @@
 ~ Mettre un text renderer component 3D
 
 ~ Etudier la question de la physique en fixed timestep (https://gafferongames.com/post/fix_your_timestep)
+
+~ Intégrer des cullings pour le rendering (au moins le frustum culling)
+
+~ Intégrer l'oct-tree pour les collisions
+
+~ Améliorer les draw call: remplacer la liste de model renderer component, la liste de text renderer component, etc. par une liste de draw call avec toutes les infos nécessaires, ce qui permettrait au moins de les trier par shader et par material, ce qui serait beaucoup mieux que maintenant
 
 
 == REFLEXIONS / PROBLEMES CONNUS ==

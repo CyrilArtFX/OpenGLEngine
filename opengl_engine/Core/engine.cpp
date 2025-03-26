@@ -211,13 +211,7 @@ void Engine::run()
 
 		//  rendering part
 		// ----------------
-		auto rendering_start_time = std::chrono::high_resolution_clock::now();
-
 		renderer->draw();
-
-		auto rendering_end_time = std::chrono::high_resolution_clock::now();
-		long long rendering_duration = std::chrono::duration_cast<std::chrono::microseconds>(rendering_end_time - rendering_start_time).count();
-		log->LogMessageToScreen("Rendering loop duration for this frame: " + std::to_string(rendering_duration) + " microseconds.", Color::cyan, 5.0f, 5616232);
 
 
 

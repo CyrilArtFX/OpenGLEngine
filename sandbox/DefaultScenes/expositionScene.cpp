@@ -29,31 +29,6 @@ void ExpositionScene::loadScene()
 	camera->setYaw(-90.0f);
 
 
-	//  directional light
-	Entity* dir_light = createEntity();
-	dir_light->addComponentByClass<DirectionalLightComponent>()->setDirection(Vector3{ 0.7f, -0.2f, 0.55f });
-
-
-
-	//  rendering profiling (20*20*20 = 8000 model renderer components)
-	for (int x = 0; x < 20; x++)
-	{
-		for (int y = 0; y < 20; y++)
-		{
-			for (int z = 0; z < 20; z++)
-			{
-				Entity* entity = createEntity();
-				entity->setPosition(Vector3{ (x - 10.0f) / 2.0f, (y - 10.0f) / 2.0f, (z - 10.0f) / 2.0f });
-				entity->setScale(0.1f);
-				entity->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("container"));
-			}
-		}
-	}
-
-	return;
-
-
-
 	//  entities
 	Entity* cube_1 = createEntity();
 	cube_1->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("container"));
@@ -159,9 +134,6 @@ void ExpositionScene::updateScene(float dt)
 	//player->incrementRotation(Quaternion{ Vector3::unitY, -mouse_delta.x * 0.01f }); //  it works, keeping it here for later
 	camera->addYaw(-mouse_delta.x);
 	camera->setPitch(Maths::clamp(camera->getPitch() + mouse_delta.y, -89.0f, 89.0f));
-
-
-	return;  //  disabled for the rendering profiling loop
 
 
 	flashlight->setPosition(camera->getCamPosition());
