@@ -89,7 +89,7 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 
 	//  create log manager
 	std::cout << "Initializing log...";
-	log = new LogManager();
+	log = new LogManager(createEntity());
 	Locator::provideLog(log);
 	log->initialize();
 	std::cout << " Done.\n";
@@ -217,7 +217,7 @@ void Engine::run()
 
 		auto rendering_end_time = std::chrono::high_resolution_clock::now();
 		long long rendering_duration = std::chrono::duration_cast<std::chrono::microseconds>(rendering_end_time - rendering_start_time).count();
-		std::cout << "Rendering loop duration: " << rendering_duration << " microseconds.\n";
+		log->LogMessageToScreen("Rendering loop duration for this frame: " + std::to_string(rendering_duration) + " microseconds.", Color::cyan, 5.0f, 5616232);
 
 
 

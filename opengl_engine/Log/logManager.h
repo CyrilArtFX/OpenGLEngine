@@ -6,11 +6,14 @@
 #include <Maths/Vector2.h>
 #include <unordered_map>
 #include <vector>
+#include <memory>
+
+class Entity;
 
 struct LogMessageScreen
 {
 	std::uint32_t index;
-	TextRendererComponent* text;
+	std::shared_ptr<TextRendererComponent> text;
 	float timer;
 	float yOffset;
 
@@ -36,6 +39,7 @@ const float SCREEN_NEW_LOG_OFFSET{ 10.0f };
 class LogManager : public Log
 {
 public:
+	LogManager(Entity* screenLogOwner_);
 	~LogManager();
 
 	void LogMessageToScreen(const std::string& logText, const Color& logColor, const float logDuration, const std::uint32_t logIndex = 0) override;
@@ -65,4 +69,5 @@ private:
 	std::vector<LogMessageScreen> logMessagesOnScreen;
 
 	LogFile logFileWriter;
+	Entity* screenLogsOwner;
 };

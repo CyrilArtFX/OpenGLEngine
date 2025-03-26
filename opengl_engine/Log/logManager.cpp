@@ -1,8 +1,13 @@
 #include "logManager.h"
 #include <ServiceLocator/locator.h>
 #include <Assets/assetManager.h>
+#include <ECS/entity.h>
 #include <iostream>
 #include <algorithm>
+
+LogManager::LogManager(Entity* screenLogOwner_) : screenLogsOwner(screenLogOwner_)
+{
+}
 
 LogManager::~LogManager()
 {
@@ -57,7 +62,7 @@ void LogManager::updateScreenLogs(float dt)
 
 	for (auto& expired_log : expired_logs)
 	{
-		delete expired_log.text;
+		screenLogsOwner->removeComponent(expired_log.text);
 		auto iter = std::find(logMessagesOnScreen.begin(), logMessagesOnScreen.end(), expired_log);
 		logMessagesOnScreen.erase(iter);
 	}
@@ -107,7 +112,7 @@ void LogManager::displayLogToScreen(const std::string& logText, LogCategory logC
 	logMessagesOnScreen.emplace_back(LogMessageScreen
 		{
 			logIndex,
-			new TextRendererComponent(),
+			screenLogsOwner->addComponentByClass<TextRendererComponent>(),
 			logDuration,
 			y_offset
 		}
