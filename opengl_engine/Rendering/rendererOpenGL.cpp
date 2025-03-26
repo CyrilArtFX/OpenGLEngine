@@ -1,6 +1,7 @@
 #include "rendererOpenGL.h"
 #include <Assets/assetManager.h>
 #include <ServiceLocator/locator.h>
+#include <ECS/componentManager.h>
 #include <algorithm>
 
 
@@ -17,6 +18,8 @@ void RendererOpenGL::draw()
 
 	//  RENDERING 3D
 	// ===================
+
+	std::vector<std::weak_ptr<ModelRendererComponent>> model_renderers = ComponentManager::GetAllComponentOfClass<ModelRendererComponent>();
 
 
 	Matrix4 view = current_camera.getViewMatrix();
@@ -86,8 +89,14 @@ void RendererOpenGL::draw()
 			material->use();
 
 			//  loop through all model renderer components to draw all meshes that uses the material
-			for (auto& model_renderer : modelRenderers)
+			/*for (auto& model_renderer : modelRenderers)
 			{
+				if (model_renderer->useMaterial(*material)) model_renderer->draw(*material);
+			}*/
+
+			for (auto& model_renderer_weak : model_renderers)
+			{
+				std::shared_ptr<ModelRendererComponent> model_renderer = model_renderer_weak.lock();
 				if (model_renderer->useMaterial(*material)) model_renderer->draw(*material);
 			}
 		}

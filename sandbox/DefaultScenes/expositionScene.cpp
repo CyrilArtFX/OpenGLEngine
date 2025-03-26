@@ -35,15 +35,15 @@ void ExpositionScene::loadScene()
 
 
 
-	//  rendering profiling (10*10*10 = 1000 model renderer components)
-	for (int x = 0; x < 10; x++)
+	//  rendering profiling (20*20*20 = 8000 model renderer components)
+	for (int x = 0; x < 20; x++)
 	{
-		for (int y = 0; y < 10; y++)
+		for (int y = 0; y < 20; y++)
 		{
-			for (int z = 0; z < 10; z++)
+			for (int z = 0; z < 20; z++)
 			{
 				Entity* entity = createEntity();
-				entity->setPosition(Vector3{ x - 5.0f, y - 5.0f, z - 5.0f });
+				entity->setPosition(Vector3{ (x - 10.0f) / 2.0f, (y - 10.0f) / 2.0f, (z - 10.0f) / 2.0f });
 				entity->setScale(0.1f);
 				entity->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("container"));
 			}
