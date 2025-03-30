@@ -63,7 +63,7 @@ float PositionBasedLight::getQuadratic() const
 }
 
 
-void PositionBasedLight::onLightUnregistered()
+void PositionBasedLight::exit()
 {
 	getOwner()->onTransformUpdated.unregisterObserver(this);
 }

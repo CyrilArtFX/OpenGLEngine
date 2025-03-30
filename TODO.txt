@@ -23,8 +23,7 @@
 	- Tester et fixer si besoin cette base de Component Manager - fait
 	- Améliorer le Component Manager pour les systèmes plus avancés - fait
 	- Remplacer l'ancien système pour utiliser le Component Manager - fait
-	- Tester les components qui ont déjà été faits (et update si besoin) jusqu'à ce que ça marche bien - en cours
-		# Modifier certains components qui utilisent les fonctions register & unregister pour utiliser init & exit si c'est plus approprié
+	- Tester les components qui ont déjà été faits (et update si besoin) jusqu'à ce que ça marche bien - fait
 
 
 == MOYEN TERME ==

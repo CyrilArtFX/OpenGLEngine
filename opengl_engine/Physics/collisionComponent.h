@@ -173,11 +173,13 @@ public:
 
 
 // ----------------------------------------------------------
-//  Component registering functions
+//  Component registering and exit functions
 // ----------------------------------------------------------
 protected:
 	virtual void registerComponent() override;
 	virtual void unregisterComponent() override;
+
+	void exit() override;
 
 
 // ----------------------------------------------------------

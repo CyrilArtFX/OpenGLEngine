@@ -29,6 +29,7 @@ protected:
 	virtual void unregisterComponent() override;
 
 	void init() override;
+	void exit() override;
 
 	bool needToComputeMatrix() const override;
 

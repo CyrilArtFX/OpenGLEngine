@@ -57,6 +57,5 @@ void LightComponent::registerComponent()
 
 void LightComponent::unregisterComponent()
 {
-	onLightUnregistered();
 	Locator::getRenderer().RemoveLight(this);
 }

@@ -55,20 +55,23 @@ Vector2 TextRendererComponent::getSize() const
 void TextRendererComponent::registerComponent()
 {
 	Locator::getRenderer().AddText(this);
-
-	bindScreenResize();
 }
 
 void TextRendererComponent::unregisterComponent()
 {
 	Locator::getRenderer().RemoveText(this);
-
-	unbindScreenResize();
 }
 
 void TextRendererComponent::init()
 {
+	bindScreenResize();
+
 	textFont = &AssetManager::GetFont("arial_64");
+}
+
+void TextRendererComponent::exit()
+{
+	unbindScreenResize();
 }
 
 bool TextRendererComponent::needToComputeMatrix() const

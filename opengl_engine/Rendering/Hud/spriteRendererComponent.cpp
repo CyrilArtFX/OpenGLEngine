@@ -38,14 +38,20 @@ bool SpriteRendererComponent::canDraw() const
 void SpriteRendererComponent::registerComponent()
 {
 	Locator::getRenderer().AddSprite(this);
-
-	bindScreenResize();
 }
 
 void SpriteRendererComponent::unregisterComponent()
 {
 	Locator::getRenderer().RemoveSprite(this);
+}
 
+void SpriteRendererComponent::init()
+{
+	bindScreenResize();
+}
+
+void SpriteRendererComponent::exit()
+{
 	unbindScreenResize();
 }
 

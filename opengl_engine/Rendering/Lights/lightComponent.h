@@ -52,8 +52,6 @@ protected:
 	virtual void registerComponent() override;
 	virtual void unregisterComponent() override;
 
-	virtual void onLightUnregistered() {}
-
 	LightType lightType{ EUndefinedLight };
 
 	bool active{ true };

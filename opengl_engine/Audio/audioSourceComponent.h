@@ -87,6 +87,7 @@ private:
 	virtual void unregisterComponent() override;
 
 	void init() override;
+	void exit() override;
 
 	void onEntityMoved();
 

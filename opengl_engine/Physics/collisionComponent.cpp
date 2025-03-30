@@ -159,7 +159,10 @@ void CollisionComponent::registerComponent()
 void CollisionComponent::unregisterComponent()
 {
 	Locator::getPhysics().UnregisterCollision(this);
+}
 
+void CollisionComponent::exit()
+{
 	if (isAudioCollision)
 	{
 		Locator::getAudio().ReleaseCollision(audioCollisionIndex);

@@ -70,21 +70,25 @@ Vector3 AudioSourceComponent::getOffset() const
 
 void AudioSourceComponent::registerComponent()
 {
-	getOwner()->onTransformUpdated.registerObserver(this, Bind_0(&AudioSourceComponent::onEntityMoved));
-
+	//  note: init() is called before registerComponent() so audioManagerRef is initialized when this is called
 	channelIndex = audioManagerRef->CreateAudioSourceGroup(ChannelSpatialization::Channel3D);
 }
 
 void AudioSourceComponent::unregisterComponent()
 {
-	getOwner()->onTransformUpdated.unregisterObserver(this);
-
 	audioManagerRef->ReleaseAudioSourceGroup(channelIndex);
 }
 
 void AudioSourceComponent::init()
 {
 	audioManagerRef= &Locator::getAudio();
+
+	getOwner()->onTransformUpdated.registerObserver(this, Bind_0(&AudioSourceComponent::onEntityMoved));
+}
+
+void AudioSourceComponent::exit()
+{
+	getOwner()->onTransformUpdated.unregisterObserver(this);
 }
 
 //  Auto-update pos

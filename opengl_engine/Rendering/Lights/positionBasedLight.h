@@ -31,7 +31,7 @@ public:
 	float getQuadratic() const;
 
 protected:
-	void onLightUnregistered() override;
+	void exit() override;
 	void onEntityMoved();
 	void recomputePosition();
 
