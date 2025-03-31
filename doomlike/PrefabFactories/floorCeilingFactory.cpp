@@ -1,0 +1,94 @@
+#include "floorCeilingFactory.h"
+#include <Assets/assetManager.h>
+#include <ECS/entityContainer.h>
+#include <Rendering/modelRendererComponent.h>
+#include <Physics/AABB/boxAABBColComp.h>
+
+Entity* FloorCeilingFactory::CreateFloor(EntityContainer* entityContainer, const Vector3& position, const Vector2& scale, bool isWood, bool createCollision)
+{
+	Entity* floor_entity = entityContainer->createEntity();
+
+	floor_entity->setPosition(position);
+	floor_entity->setScale(scale.x, 1.0f, scale.y);
+
+	floor_entity->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel(isWood ? "floor_wood" : "floor"));
+
+	if (createCollision)
+	{
+		std::shared_ptr<BoxAABBColComp> floor_col_comp = floor_entity->addComponentByClass<BoxAABBColComp>();
+		floor_col_comp->setBox(Box{ Vector3{0.0f, -0.1f, 0.0f}, Vector3{0.5f, 0.1f, 0.5f} });
+		floor_col_comp->setCollisionChannel("solid");
+	}
+
+	return floor_entity;
+}
+
+Entity* FloorCeilingFactory::CreateCeiling(EntityContainer* entityContainer, const Vector3& position, const Vector2& scale, bool createCollision)
+{
+	Entity* ceiling_entity = entityContainer->createEntity();
+
+	ceiling_entity->setPosition(position);
+	ceiling_entity->setScale(scale.x, 1.0f, scale.y);
+	ceiling_entity->setRotation(Quaternion::fromEuler(0.0f, Maths::toRadians(180.0f), 0.0f));
+
+	ceiling_entity->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("ceiling"));
+
+	if (createCollision)
+	{
+		std::shared_ptr<BoxAABBColComp> ceiling_col_comp = ceiling_entity->addComponentByClass<BoxAABBColComp>();
+		ceiling_col_comp->setBox(Box{ Vector3{0.0f, 0.2f, 0.0f}, Vector3{0.5f, 0.2f, 0.5f} });
+		ceiling_col_comp->setCollisionChannel("solid");
+	}
+
+	return ceiling_entity;
+}
+
+
+
+void FloorCeilingFactory::SetupFloorCeilingAssets()
+{
+	AssetManager::LoadTexture("floor_diffuse", "pavement.jpg", false);
+
+	AssetManager::LoadTexture("ceiling_diffuse", "doomlike/tex_woodceiling/woodceiling_basecolor.jpg", false);
+	//AssetManager::LoadTexture("ceiling_specular", "doomlike/tex_woodceiling/woodceiling_roughness.jpg", false);
+
+	AssetManager::LoadTexture("floor_wood_diffuse", "doomlike/tex_woodfloor/woodfloor_basecolor.jpg", false);
+	AssetManager::LoadTexture("floor_wood_specular", "doomlike/tex_woodfloor/woodfloor_specular.jpg", false);
+
+	Material& floor_mat = AssetManager::CreateMaterial("floor", AssetManager::GetShader("lit_object"));
+	floor_mat.addTexture(&AssetManager::GetTexture("floor_diffuse"), TextureType::Diffuse);
+	floor_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Specular);
+	floor_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
+	floor_mat.addParameter("material.shininess", 32.0f);
+	floor_mat.addParameter("beta_prevent_tex_scaling", true);
+
+	Material& floor_wood_mat = AssetManager::CreateMaterial("floor_wood", AssetManager::GetShader("lit_object"));
+	floor_wood_mat.addTexture(&AssetManager::GetTexture("floor_wood_diffuse"), TextureType::Diffuse);
+	floor_wood_mat.addTexture(&AssetManager::GetTexture("floor_wood_specular"), TextureType::Specular);
+	floor_wood_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
+	floor_wood_mat.addParameter("material.shininess", 32.0f);
+	floor_wood_mat.addParameter("beta_prevent_tex_scaling", true);
+
+	Material& ceiling_mat = AssetManager::CreateMaterial("ceiling", AssetManager::GetShader("lit_object"));
+	ceiling_mat.addTexture(&AssetManager::GetTexture("ceiling_diffuse"), TextureType::Diffuse);
+	ceiling_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Specular);
+	ceiling_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
+	ceiling_mat.addParameter("material.shininess", 32.0f);
+	ceiling_mat.addParameter("beta_prevent_tex_scaling", true);
+
+	AssetManager::CreateModel("floor");
+	AssetManager::GetModel("floor").addMesh(AssetManager::GetSingleMesh("default_plane"), AssetManager::GetMaterial("floor"));
+
+	AssetManager::CreateModel("floor_wood");
+	AssetManager::GetModel("floor_wood").addMesh(AssetManager::GetSingleMesh("default_plane"), AssetManager::GetMaterial("floor_wood"));
+
+	AssetManager::CreateModel("ceiling");
+	AssetManager::GetModel("ceiling").addMesh(AssetManager::GetSingleMesh("default_plane"), AssetManager::GetMaterial("ceiling"));
+}
+
+void FloorCeilingFactory::ReleaseFloorCeilingAssets()
+{
+	AssetManager::DeleteMaterial("floor");
+	AssetManager::DeleteMaterial("floor_wood");
+	AssetManager::DeleteMaterial("ceiling");
+}

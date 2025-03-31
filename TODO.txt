@@ -12,7 +12,7 @@
 	- Intégrer la physique proprement dans la logique de component - fait
 	- Faire marcher tout ça bien toujours avec le projet sandbox - fait
 	- Permettre la création de component "behavior" custom - fait
-	- Modifier le code du doomlike pour utiliser ces components
+	- Modifier le code du doomlike pour utiliser ces components - en cours
 	- Faire marcher le doomlike avec toute la nouvelle logique
 	- Clean le moteur des classes obsolètes (Object, Lights, Camera, etc.) 
 		(+ sans doute bouger la classe Transform et virer le dossier Objects)
