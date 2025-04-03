@@ -163,6 +163,7 @@
     <ClCompile Include="LevelUtilities\triggerZone.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PrefabFactories\floorCeilingFactory.cpp" />
+    <ClCompile Include="PrefabFactories\stairFactory.cpp" />
     <ClCompile Include="PrefabFactories\wallFactory.cpp" />
     <ClCompile Include="Scenes\doomlikeLevelAdvanced.cpp" />
     <ClCompile Include="Scenes\doomlikeLevelDebug.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="LevelUtilities\enemyCount.h" />
     <ClInclude Include="LevelUtilities\triggerZone.h" />
     <ClInclude Include="PrefabFactories\floorCeilingFactory.h" />
+    <ClInclude Include="PrefabFactories\stairFactory.h" />
     <ClInclude Include="PrefabFactories\wallFactory.h" />
     <ClInclude Include="Scenes\doomlikeLevelAdvanced.h" />
     <ClInclude Include="Scenes\doomlikeLevelDebug.h" />

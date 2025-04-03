@@ -72,6 +72,9 @@
     <ClCompile Include="PrefabFactories\floorCeilingFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PrefabFactories\stairFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actors\bullet.h">
@@ -129,6 +132,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PrefabFactories\floorCeilingFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PrefabFactories\stairFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
