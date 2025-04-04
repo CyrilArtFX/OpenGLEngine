@@ -63,6 +63,8 @@ Entity* StairFactory::CreateStair(EntityContainer* entityContainer, StairFacingD
 		break;
 	}
 
+	stair_entity->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("stairs"));
+
 	for (int i = 0; i < 7; i++)
 	{
 		std::shared_ptr<BoxAABBColComp> stair_step_col_comp = stair_entity->addComponentByClass<BoxAABBColComp>();

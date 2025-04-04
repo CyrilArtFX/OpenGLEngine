@@ -56,6 +56,8 @@
 
 == AUTRES ==
 
+~ Donner la possibilité d'avoir un offset sur les model renderer component (assez ez faudra juste rajouter l'offset à la matrice de l'entity au draw)
+
 ~ Compute la direction des Spot Light en fonction de la rotation de l'Entity (avoir une rotation offset ? avoir un vecteur de direction offset ?)
 
 ~ Améliorer les textes debug (réduire la taille du texte fps, ajouter la durée de la frame en ms, ajouter textes quand pause & freecam)
