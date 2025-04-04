@@ -45,19 +45,7 @@
     <ClCompile Include="Scenes\doomlikeLevelStart.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Decor\wall.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Decor\floorceiling.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Decor\stairs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LevelUtilities\enemyCount.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Decor\lamps.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LevelUtilities\triggerZone.cpp">
@@ -73,6 +61,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PrefabFactories\stairFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponents\lampComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PrefabFactories\lampFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -107,19 +101,7 @@
     <ClInclude Include="Scenes\doomlikeLevelStart.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Decor\wall.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Decor\floorceiling.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Decor\stairs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LevelUtilities\enemyCount.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Decor\lamps.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LevelUtilities\triggerZone.h">
@@ -135,6 +117,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PrefabFactories\stairFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponents\lampComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PrefabFactories\lampFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
