@@ -9,8 +9,6 @@
 #include <Maths/vector3.h>
 #include <Utils/color.h>
 
-#include <memory>
-
 
 class ExpositionScene : public Scene
 {

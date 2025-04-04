@@ -7,10 +7,11 @@ class EntityContainer;
 
 namespace FloorCeilingFactory
 {
-	static Entity* CreateFloor(EntityContainer* entityContainer, const Vector3& position, const Vector2& scale, bool isWood, bool createCollision = true);
-	static Entity* CreateCeiling(EntityContainer* entityContainer, const Vector3& position, const Vector2& scale, bool createCollision = true);
+	Entity* CreateFloor(EntityContainer* entityContainer, const Vector3& position, const Vector2& scale, bool isWood, bool createCollision = true);
+	Entity* CreateCeiling(EntityContainer* entityContainer, const Vector3& position, const Vector2& scale, bool createCollision = true);
 
-	static void SetupFloorCeilingAssets();
-	static void ReleaseFloorCeilingAssets();
+	void SetupFloorCeilingAssets();
+	void ReleaseFloorCeilingAssets();
 };
 
+// TODO: the definition in a .cpp of static function declared in a .h seems to not work, see if it is possible to avoid having everything 

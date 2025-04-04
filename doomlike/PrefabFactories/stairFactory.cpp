@@ -13,6 +13,7 @@ Entity* StairFactory::CreateStair(EntityContainer* entityContainer, StairFacingD
 	stair_entity->setPosition(position);
 	stair_entity->setScale(0.0044f); //  this allows to have the stairs fitting in a 2*2*2 box
 
+	Vector3 stairs_center; //  must be declared before the switch
 	std::vector<Box> collisions_boxes;
 	collisions_boxes.resize(7);
 
@@ -21,7 +22,7 @@ Entity* StairFactory::CreateStair(EntityContainer* entityContainer, StairFacingD
 	case StairFacingDirection::StairFacingPositiveX:
 		//  no need to rotate the stair entity
 		
-		Vector3 stairs_center = Vector3{ 1.03f, 1.11f, -0.93f };
+		stairs_center = Vector3{ 1.03f, 1.11f, -0.93f };
 		for (int i = 0; i < 7; i++)
 		{
 			float num = float(i + 1);
@@ -32,7 +33,7 @@ Entity* StairFactory::CreateStair(EntityContainer* entityContainer, StairFacingD
 	case StairFacingDirection::StairFacingNegativeX:
 		stair_entity->setRotation(Quaternion::fromEuler(Maths::toRadians(180.0f), 0.0f, 0.0f));
 
-		Vector3 stairs_center = Vector3{ -1.03f, 1.11f, 0.93f };
+		stairs_center = Vector3{ -1.03f, 1.11f, 0.93f };
 		for (int i = 0; i < 7; i++)
 		{
 			float num = float(i + 1);
@@ -43,7 +44,7 @@ Entity* StairFactory::CreateStair(EntityContainer* entityContainer, StairFacingD
 	case StairFacingDirection::StairFacingPositiveZ:
 		stair_entity->setRotation(Quaternion::fromEuler(Maths::toRadians(270.0f), 0.0f, 0.0f));
 
-		Vector3 stairs_center = Vector3{ 0.93f, 1.11f, 1.03f };
+		stairs_center = Vector3{ 0.93f, 1.11f, 1.03f };
 		for (int i = 0; i < 7; i++)
 		{
 			float num = float(i + 1);
@@ -54,7 +55,7 @@ Entity* StairFactory::CreateStair(EntityContainer* entityContainer, StairFacingD
 	case StairFacingDirection::StairFacingNegativeZ:
 		stair_entity->setRotation(Quaternion::fromEuler(Maths::toRadians(90.0f), 0.0f, 0.0f));
 
-		Vector3 stairs_center = Vector3{ -0.93f, 1.11f, -1.03f };
+		stairs_center = Vector3{ -0.93f, 1.11f, -1.03f };
 		for (int i = 0; i < 7; i++)
 		{
 			float num = float(i + 1);

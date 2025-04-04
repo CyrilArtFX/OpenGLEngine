@@ -16,8 +16,8 @@ void LampComponent::setup(std::weak_ptr<PointLightComponent> lightComp, std::wea
 	isChandelier = setupChandelier;
 	baseLightIntensity = isChandelier ? 0.4f : 0.22f;
 
-	srand(time(NULL));
-	timer = rand() % 1;
+	srand(static_cast<unsigned int>(time(NULL)));
+	timer = float(rand() % 100) / 100.0f;
 
 	light->setDiffuseStrength(baseLightIntensity + (Maths::sin(timer) / 11.0f));
 

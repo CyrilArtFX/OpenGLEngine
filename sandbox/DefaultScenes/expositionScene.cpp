@@ -17,7 +17,6 @@
 void ExpositionScene::loadScene()
 {
 	Renderer& renderer = Locator::getRenderer();
-
 	renderer.SetClearColor(Color{ 50, 75, 75, 255 });
 
 

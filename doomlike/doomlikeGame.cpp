@@ -6,17 +6,13 @@
 #include <Inputs/Input.h>
 #include <GameplayStatics/gameplayStatics.h>
 
-#include <Decor/wall.h>
-#include <Decor/floorceiling.h>
-#include <Decor/stairs.h>
-#include <Decor/lamps.h>
+#include <PrefabFactories/wallFactory.h>
+#include <PrefabFactories/floorCeilingFactory.h>
+#include <PrefabFactories/stairFactory.h>
+#include <PrefabFactories/lampFactory.h>
 
 #include <GLFW/glfw3.h>
 
-
-DoomlikeGame::DoomlikeGame()
-{
-}
 
 void DoomlikeGame::loadGameAssets()
 {
@@ -121,12 +117,12 @@ void DoomlikeGame::loadGameAssets()
 
 
 	//  decor setups
-	WallSetup::SetupWalls();
-	FloorCeilingSetup::SetupFloorCeilings();
-	StairsSetup::SetupStairs();
-	LampsSetup::SetupLamps();
+	WallFactory::SetupWallAssets();
+	FloorCeilingFactory::SetupFloorCeilingAssets();
+	StairFactory::SetupStairAssets();
+	LampFactory::SetupLampAssets();
 
-	log.LogMessage_Category("Doomlike: Setup decors time: " + std::to_string(glfwGetTime() - load_time), LogCategory::Info);
+	log.LogMessage_Category("Doomlike: Setup prefabs assets time: " + std::to_string(glfwGetTime() - load_time), LogCategory::Info);
 	load_time = glfwGetTime();
 
 
@@ -154,10 +150,10 @@ void DoomlikeGame::loadGameAssets()
 
 void DoomlikeGame::loadGame()
 {
-	player.setup(1.5f, 7.0f, 7.0f, 0.3f);
-	Locator::getRenderer().SetCamera(&player.getCamera());
+	//player.setup(1.5f, 7.0f, 7.0f, 0.3f);
+	//Locator::getRenderer().SetCamera(&player.getCamera());
 
-	loadLevel(2);
+	loadLevel(0);
 }
 
 
@@ -169,7 +165,7 @@ void DoomlikeGame::updateGame(float dt)
 		mustRestartLevel = false;
 	}
 
-	player.update(dt);
+	//player.update(dt);
 
 	if (Input::IsKeyPressed(GLFW_KEY_KP_0))
 	{
@@ -216,32 +212,27 @@ void DoomlikeGame::loadLevel(int index)
 	{
 	case 0:
 		loadScene(&testScene);
-		player.respawn(testScene);
+		//player.respawn(testScene);
 		break;
 	case 1:
 		loadScene(&levelDebugScene);
-		player.respawn(levelDebugScene);
+		//player.respawn(levelDebugScene);
 		break;
 	case 2:
 		loadScene(&levelStartScene);
-		player.respawn(levelStartScene);
+		//player.respawn(levelStartScene);
 		break;
 	case 3:
-		loadScene(&levelAdvancedScene);
-		player.respawn(levelAdvancedScene);
+		//loadScene(&levelAdvancedScene);
+		//player.respawn(levelAdvancedScene);
 		break;
 	}
-}
-
-Camera& DoomlikeGame::getActiveCamera()
-{
-	return player.getCamera();
 }
 
 
 void DoomlikeGame::unloadGame()
 {
-	player.unload();
+	//player.unload();
 
 	Renderer& renderer = Locator::getRenderer();
 
@@ -250,10 +241,9 @@ void DoomlikeGame::unloadGame()
 	AssetManager::DeleteMaterial("gun");
 	AssetManager::DeleteMaterial("enemy");
 	AssetManager::DeleteMaterial("bullet");
-	AssetManager::DeleteMaterial("gun");
 
-	WallSetup::ReleaseWalls();
-	FloorCeilingSetup::ReleaseFloorCeilings();
-	StairsSetup::ReleaseStairs();
-	LampsSetup::ReleaseLamps();
+	WallFactory::ReleaseWallAssets();
+	FloorCeilingFactory::ReleaseFloorCeilingAssets();
+	StairFactory::ReleaseStairAssets();
+	LampFactory::ReleaseLampAssets();
 }

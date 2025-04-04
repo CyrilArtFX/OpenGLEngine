@@ -14,8 +14,8 @@ namespace StairFactory
 		StairFacingNegativeZ = 3
 	};
 
-	static Entity* CreateStair(EntityContainer* entityContainer, StairFacingDirection facingDirection, const Vector3& position);
+	Entity* CreateStair(EntityContainer* entityContainer, StairFacingDirection facingDirection, const Vector3& position);
 
-	static void SetupStairAssets();
-	static void ReleaseStairAssets();
+	void SetupStairAssets();
+	void ReleaseStairAssets();
 }

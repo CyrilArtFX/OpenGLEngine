@@ -17,7 +17,7 @@ protected:
 	// -----------------------------------------------
 	virtual void loadScene() = 0;
 	virtual void unloadScene() = 0;
-	virtual void updateScene(float dt) = 0;
+	virtual void updateScene(float dt) {}
 
 private:
 	bool firstFrame{ true };

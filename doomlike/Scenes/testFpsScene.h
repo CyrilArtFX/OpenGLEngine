@@ -1,44 +1,10 @@
 #pragma once
 #include <Core/scene.h>
-#include <GameLogic/playerSpawnPoint.h>
-
-#include <Assets/assetManager.h>
-#include <Objects/object.h>
-
-#include <Actors/target.h>
-
-#include <Maths/vector3.h>
-#include <Utils/color.h>
-
-#include <Objects/Lights/directionalLight.h>
-#include <Objects/Lights/pointLight.h>
-#include <Objects/Lights/spotLight.h>
 
 
-class TestFpsScene : public Scene, public PlayerSpawnPoint
+class TestFpsScene : public Scene
 {
-public:
-	TestFpsScene();
-
-	void updateScene(float dt) override;
-
-
 protected:
 	void loadScene() override;
-
 	void unloadScene() override;
-
-
-private:
-	//  scene objects
-	Object crate1;
-	Object crate2;
-	Object crate3;
-	Object ground;
-	Object testMesh;
-
-	Target target1;
-
-	DirectionalLight dirLight;
 };
-
