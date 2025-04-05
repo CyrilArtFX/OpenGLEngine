@@ -87,6 +87,8 @@ void Transform::pasteTransform(const Transform& transform)
 	scale = transform.getScale();
 	modelMatrix = transform.getModelMatrix();
 	normalMatrix = transform.getNormalMatrix();
+
+	onTransformUpdated.broadcast();
 }
 
 

@@ -34,12 +34,10 @@ private:
 	float moveSpeed{ 0.0f };
 	float jumpForce{ 0.0f };
 
-	float camSensitivity{ 0.08f };
-	float camSpeed{ 8.8f };
-	float camMaxDist{ 0.7f };
-
 	float feetSoundTimer{ 0.0f };
 	bool feetSoundAlternance{ false };
 	bool onGroundLastFrame{ true };
+
+	const float camSensitivity{ 0.08f };
 };
 

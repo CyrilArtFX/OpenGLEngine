@@ -73,6 +73,7 @@ void DoomlikeLevelAdvanced::loadScene()
 	//  player spawn point
 	spawnPoint = createEntity();
 	spawnPoint->setPosition(Vector3{ 9.0f, 0.0f, 0.0f });
+	spawnPoint->setRotation(Quaternion::fromEuler(Maths::toRadians(180.0f), 0.0f, 0.0f));
 }
 
 void DoomlikeLevelAdvanced::unloadScene()

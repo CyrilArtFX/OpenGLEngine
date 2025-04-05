@@ -113,7 +113,6 @@ void PlayerComponent::update(float deltaTime)
 	//  jump
 	if (Input::IsKeyPressed(GLFW_KEY_SPACE) && rigidbody->isOnGround())
 	{
-		// TODO: understand why it doesn't work
 		rigidbody->addGravityVelocity(Vector3::unitY * jumpForce);
 	}
 
@@ -148,7 +147,9 @@ void PlayerComponent::update(float deltaTime)
 
 
 	//  camera lag
-	// TODO: implement camera lag
+	// TODO: camera lag can't be done anymore since the camera component works with an offset from its entity position
+	// and what's bothering us is the player movement that is to violent.
+	// We need to create an override of the camera component for lag, or change the current one with a boolean, idk
 
 
 	//  death by void
