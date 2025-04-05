@@ -214,6 +214,7 @@ protected:
 	virtual void unregisterComponent() override;
 
 	virtual void init() override;
+	virtual void exit() override;
 
 
 // ----------------------------------------------------------

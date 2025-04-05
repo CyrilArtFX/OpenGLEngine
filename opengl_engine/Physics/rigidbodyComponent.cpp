@@ -243,6 +243,19 @@ void RigidbodyComponent::init()
 	groundedLastFrame = false;
 	firstFrame = true;
 	testChannels.clear();
+
+	onCollisionRepulsed.registerObserver(this, Bind_1(&RigidbodyComponent::onCollision));
+}
+
+void RigidbodyComponent::exit()
+{
+	onCollisionRepulsed.unregisterObserver(this);
+
+	if (isAssociatedCollisionValid())
+	{
+		associatedCollision->onCollisionIntersect.unregisterObserver(this);
+		associatedCollision->setOwningRigidbody(nullptr);
+	}
 }
 
 
