@@ -1,56 +1,39 @@
 #pragma once
-#include <Events/observer.h>
 #include <Core/scene.h>
-#include <GameLogic/playerSpawnPoint.h>
+#include <Events/observer.h>
 
-#include <Objects/object.h>
-#include <Objects/Lights/directionalLight.h>
-
-#include <Decor/wall.h>
-#include <Decor/floorceiling.h>
-#include <Decor/stairs.h>
-#include <Decor/lamps.h>
-#include <Actors/movingPlatform.h>
-#include <Actors/enemy.h>
-
-#include <LevelUtilities/triggerZone.h>
+//#include <Actors/movingPlatform.h>
+//#include <LevelUtilities/triggerZone.h>
 
 
-class DoomlikeLevelAdvanced : public Scene, public Observer, public PlayerSpawnPoint
+class DoomlikeLevelAdvanced : public Scene, public Observer
 {
 public:
-	DoomlikeLevelAdvanced();
-
 	void updateScene(float dt) override;
 
 
 protected:
 	void loadScene() override;
-
 	void unloadScene() override;
 
 
 private:
-	//  static lights
-	DirectionalLight globalLight;
-
 	//  dynamic lights
-	Lamp* ceilLamp1;
-	Lamp* ceilLamp2;
-	Lamp* ceilLamp3;
-	Lamp* ceilLamp4;
-	Lamp* ceilLamp5;
-	Lamp* ceilLamp6;
-	Lamp* ceilLamp7;
-	Lamp* ceilLamp8;
-	Lamp* floorLamp;
+	Entity* ceilLamp1;
+	Entity* ceilLamp2;
+	Entity* ceilLamp3;
+	Entity* ceilLamp4;
+	Entity* ceilLamp5;
+	Entity* ceilLamp6;
+	Entity* ceilLamp7;
+	Entity* ceilLamp8;
+	Entity* floorLamp;
 
 	//  level utilities
-	TriggerZone elevatorUpZone;
-	TriggerZone enemySpawnZone;
+	//TriggerZone elevatorUpZone;
+	//TriggerZone enemySpawnZone;
 
-	//  objects
-	MovingPlatform elevator;
+	//MovingPlatform elevator;
 	float elevatorTimer{ 0.0f };
 
 	void onPlayerEnterElevatorUpZone();

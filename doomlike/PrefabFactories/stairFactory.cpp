@@ -64,6 +64,8 @@ Entity* StairFactory::CreateStair(EntityContainer* entityContainer, StairFacingD
 		break;
 	}
 
+	stair_entity->addPositionRotated(Vector3{ 0.93f, -0.11f, -1.03f }); //  this allows to have the stairs otrigin at the center bottom
+
 	stair_entity->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("stairs"));
 
 	for (int i = 0; i < 7; i++)

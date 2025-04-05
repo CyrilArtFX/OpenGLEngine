@@ -45,6 +45,9 @@
     <ClCompile Include="PrefabFactories\lampFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Scenes\doomlikeLevelAdvanced.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scenes\testFpsScene.h">
@@ -72,6 +75,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PrefabFactories\lampFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\doomlikeLevelAdvanced.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

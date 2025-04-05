@@ -22,7 +22,7 @@ void DoomlikeLevelDebug::loadScene()
 	//  prefabs
 	FloorCeilingFactory::CreateFloor(this, Vector3{  0.0f, 0.0f,  0.0f }, Vector2{ 10.0f, 10.0f }, false);
 	FloorCeilingFactory::CreateFloor(this, Vector3{  0.0f, 0.0f, 10.0f }, Vector2{ 10.0f, 10.0f }, false);
-	FloorCeilingFactory::CreateFloor(this, Vector3{ 10.0f, 0.0f,  0.0f }, Vector2{ 10.0f, 10.0f }, false);
+	FloorCeilingFactory::CreateFloor(this, Vector3{ 10.0f, 0.0f, 10.0f }, Vector2{ 10.0f, 10.0f }, false);
 	StairFactory::CreateStair(this, StairFactory::StairFacingDirection::StairFacingNegativeX, Vector3{ 4.0f, 0.0f, 2.5f });
 
 	//  entities
@@ -36,7 +36,7 @@ void DoomlikeLevelDebug::loadScene()
 	//Entity* movingPlatform1 = createEntity();
 	//Entity* movingPlatform2 = createEntity();
 	//Entity* movingPlatform3 = createEntity();
-	Entity* triggerZone = createEntity();
+	Entity* trigger_zone = createEntity();
 	Entity* dir_light = createEntity();
 	Entity* point_light = createEntity();
 
@@ -51,7 +51,7 @@ void DoomlikeLevelDebug::loadScene()
 	lowcrate1->setScale(Vector3{ 1.0f, 0.2f, 1.0f });
 	lowcrate2->setPosition(Vector3{ 9.0f, 0.3f, 15.5f });
 	lowcrate2->setScale(Vector3{ 1.0f, 0.2f, 1.0f });
-	triggerZone->setPosition(Vector3{ 12.0f, 1.0f, 12.0f });
+	trigger_zone->setPosition(Vector3{ 12.0f, 1.0f, 12.0f });
 
 	//  components
 	crate1->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("crate"));
@@ -72,6 +72,10 @@ void DoomlikeLevelDebug::loadScene()
 	crate5->addComponentByClass<BoxAABBColComp>()->setCollisionChannel("solid");
 	lowcrate1->addComponentByClass<BoxAABBColComp>()->setCollisionChannel("solid");
 	lowcrate2->addComponentByClass<BoxAABBColComp>()->setCollisionChannel("solid");
+	std::shared_ptr<BoxAABBColComp> trigger_zone_col = trigger_zone->addComponentByClass<BoxAABBColComp>();
+	trigger_zone_col->setCollisionChannel("trigger_zone");
+	trigger_zone_col->setCollisionType(CollisionType::Trigger);
+
 
 	//movingPlatform1.setup(Vector3{ 6.0f, 1.9f, 2.5f }, Vector3{ 9.0f, 3.0f, 11.5f }, 3.0f, 2.0f);
 	//movingPlatform1.pause();

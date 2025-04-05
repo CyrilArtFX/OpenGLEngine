@@ -151,7 +151,6 @@ void DoomlikeGame::loadGameAssets()
 void DoomlikeGame::loadGame()
 {
 	//player.setup(1.5f, 7.0f, 7.0f, 0.3f);
-	//Locator::getRenderer().SetCamera(&player.getCamera());
 
 	loadLevel(0);
 }
@@ -223,7 +222,7 @@ void DoomlikeGame::loadLevel(int index)
 		//player.respawn(levelStartScene);
 		break;
 	case 3:
-		//loadScene(&levelAdvancedScene);
+		loadScene(&levelAdvancedScene);
 		//player.respawn(levelAdvancedScene);
 		break;
 	}

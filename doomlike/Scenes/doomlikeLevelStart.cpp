@@ -11,8 +11,8 @@
 #include <PrefabFactories/stairFactory.h>
 #include <PrefabFactories/lampFactory.h>
 
-//#include <LevelUtilities/triggerZone.h>
 //#include <LevelUtilities/enemyCount.h>
+//#include <LevelUtilities/triggerZone.h>
 
 using WallFactory::WallFacingDirection;
 
@@ -58,7 +58,7 @@ void DoomlikeLevelStart::loadScene()
 	LampFactory::CreateLamp(this, Vector3{  6.5f, 2.0f, 21.5f }, false);
 	LampFactory::CreateLamp(this, Vector3{ -3.0f, 5.0f, 16.5f }, true);
 
-	//  light
+	//  directional light
 	Entity* light = createEntity();
 	std::shared_ptr<DirectionalLightComponent> dir_light_comp = light->addComponentByClass<DirectionalLightComponent>();
 	dir_light_comp->setColor(Color{ 255, 238, 209, 255 });

@@ -3,7 +3,7 @@
 #include <Scenes/testFpsScene.h>
 #include <Scenes/doomlikeLevelDebug.h>
 #include <Scenes/doomlikeLevelStart.h>
-//#include <Scenes/doomlikeLevelAdvanced.h>
+#include <Scenes/doomlikeLevelAdvanced.h>
 
 //#include <Actors/player.h>
 
@@ -29,7 +29,7 @@ private:
 	TestFpsScene testScene;
 	DoomlikeLevelDebug levelDebugScene;
 	DoomlikeLevelStart levelStartScene;
-	//DoomlikeLevelAdvanced levelAdvancedScene;
+	DoomlikeLevelAdvanced levelAdvancedScene;
 	int currentLevel = 0;
 	bool mustRestartLevel{ false };
 

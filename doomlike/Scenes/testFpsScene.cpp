@@ -34,7 +34,6 @@ void TestFpsScene::loadScene()
 	target->setScale(Vector3{ 1.0f, 1.0f, 0.1f });
 	taxi->setPosition(Vector3{ -7.0f, 1.0f, 0.0f });
 	taxi->setScale(0.01f);
-	taxi->setRotation(Quaternion{ Vector3::unitX, Maths::toRadians(-90.0f) });
 
 	//  components
 	crate1->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("crate"));
