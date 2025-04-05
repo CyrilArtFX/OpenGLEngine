@@ -2,6 +2,7 @@
 #include <Assets/defaultAssets.h>
 #include <Assets/assetManager.h>
 #include <ServiceLocator/locator.h>
+#include <ECS/componentManager.h>
 #include <Physics/ObjectChannels/collisionChannels.h>
 #include <Inputs/Input.h>
 #include <GameplayStatics/gameplayStatics.h>
@@ -10,8 +11,7 @@
 #include <PrefabFactories/floorCeilingFactory.h>
 #include <PrefabFactories/stairFactory.h>
 #include <PrefabFactories/lampFactory.h>
-
-#include <GLFW/glfw3.h>
+#include <GameComponents/playerComponent.h>
 
 
 void DoomlikeGame::loadGameAssets()
@@ -23,7 +23,7 @@ void DoomlikeGame::loadGameAssets()
 	double load_time = glfwGetTime();
 	double full_load_time = load_time;
 
-	Renderer& renderer = Locator::getRenderer();
+	ComponentManager::RegisterComponentDataByClass<PlayerComponent>(ComponentClassData{ true, 1 });
 
 	DefaultAssets::LoadDefaultAssets();
 
@@ -150,7 +150,8 @@ void DoomlikeGame::loadGameAssets()
 
 void DoomlikeGame::loadGame()
 {
-	//player.setup(1.5f, 7.0f, 7.0f, 0.3f);
+	player = createEntity()->addComponentByClass<PlayerComponent>();
+	player->setupPlayer(1.5f, 7.0f, 7.0f, 0.3f);
 
 	loadLevel(0);
 }
@@ -163,8 +164,6 @@ void DoomlikeGame::updateGame(float dt)
 		loadLevel(currentLevel);
 		mustRestartLevel = false;
 	}
-
-	//player.update(dt);
 
 	if (Input::IsKeyPressed(GLFW_KEY_KP_0))
 	{
@@ -211,19 +210,19 @@ void DoomlikeGame::loadLevel(int index)
 	{
 	case 0:
 		loadScene(&testScene);
-		//player.respawn(testScene);
+		player->respawn(testScene.getSpawnPoint());
 		break;
 	case 1:
 		loadScene(&levelDebugScene);
-		//player.respawn(levelDebugScene);
+		player->respawn(levelDebugScene.getSpawnPoint());
 		break;
 	case 2:
 		loadScene(&levelStartScene);
-		//player.respawn(levelStartScene);
+		player->respawn(levelStartScene.getSpawnPoint());
 		break;
 	case 3:
 		loadScene(&levelAdvancedScene);
-		//player.respawn(levelAdvancedScene);
+		player->respawn(levelAdvancedScene.getSpawnPoint());
 		break;
 	}
 }
@@ -231,10 +230,6 @@ void DoomlikeGame::loadLevel(int index)
 
 void DoomlikeGame::unloadGame()
 {
-	//player.unload();
-
-	Renderer& renderer = Locator::getRenderer();
-
 	AssetManager::DeleteMaterial("crate");
 	AssetManager::DeleteMaterial("taxi");
 	AssetManager::DeleteMaterial("gun");

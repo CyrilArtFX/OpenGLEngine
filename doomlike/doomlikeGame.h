@@ -5,13 +5,13 @@
 #include <Scenes/doomlikeLevelStart.h>
 #include <Scenes/doomlikeLevelAdvanced.h>
 
-//#include <Actors/player.h>
+class PlayerComponent;
 
 
 class DoomlikeGame : public Game
 {
 public:
-	//Player* getPlayer() { return &player; }
+	std::weak_ptr<PlayerComponent> getPlayer() { return player; }
 
 	void restartLevel();
 	void changeLevel(int levelIndex);
@@ -34,6 +34,6 @@ private:
 	bool mustRestartLevel{ false };
 
 	//  player
-	//Player player;
+	std::shared_ptr<PlayerComponent> player;
 };
 

@@ -1,12 +1,13 @@
 #pragma once
 #include <Core/scene.h>
 #include <Events/observer.h>
+#include <GameLogic/playerSpawnPoint.h>
 
 //#include <Actors/movingPlatform.h>
 //#include <LevelUtilities/triggerZone.h>
 
 
-class DoomlikeLevelAdvanced : public Scene, public Observer
+class DoomlikeLevelAdvanced : public Scene, public Observer, public PlayerSpawnPoint
 {
 public:
 	void updateScene(float dt) override;

@@ -1,14 +1,11 @@
 #pragma once
-
-#include <Maths/vector3.h>
-#include <Maths/quaternion.h>
+#include <Objects/transform.h>
 
 class PlayerSpawnPoint
 {
 public:
-	virtual ~PlayerSpawnPoint() {}
+	const Transform& getSpawnPoint() { return *spawnPoint; }
 
-	Vector3 spawnPosition{ Vector3::zero };
-	Quaternion spawnRotation{ Quaternion::identity };
+	Transform* spawnPoint{ nullptr };
 };
 

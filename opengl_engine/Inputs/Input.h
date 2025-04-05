@@ -1,5 +1,6 @@
 #pragma once
 #include <Maths/vector2.h>
+#include <glad/glad.h>
 #include <glfw/glfw3.h>
 #include <unordered_map>
 #include <vector>

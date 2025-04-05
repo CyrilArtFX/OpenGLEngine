@@ -70,8 +70,9 @@ void DoomlikeLevelAdvanced::loadScene()
 	//enemySpawnZone.onPlayerEnter.registerObserver(this, Bind_0(&DoomlikeLevelAdvanced::onPlayerEnterEnemySpawnZone));
 
 
-	//  spawn point
-	//spawnPosition = Vector3{ 9.0f, 0.0f, 0.0f };
+	//  player spawn point
+	spawnPoint = createEntity();
+	spawnPoint->setPosition(Vector3{ 9.0f, 0.0f, 0.0f });
 }
 
 void DoomlikeLevelAdvanced::unloadScene()

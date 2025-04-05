@@ -1,8 +1,9 @@
 #pragma once
 #include <Core/scene.h>
+#include <GameLogic/playerSpawnPoint.h>
 
 
-class TestFpsScene : public Scene
+class TestFpsScene : public Scene, public PlayerSpawnPoint
 {
 protected:
 	void loadScene() override;

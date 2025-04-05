@@ -59,6 +59,11 @@ void TestFpsScene::loadScene()
 	physics.LineRaycast(Vector3{ -1.0f, 3.5f, 3.0f }, Vector3{ -1.0f, -1.5f, 3.0f }, CollisionChannels::GetRegisteredTestChannel("TestEverything"), out_raycast);
 	physics.LineRaycast(Vector3{ -4.5f, 0.5f, -3.0f }, Vector3{ 0.0f, 0.5f, 5.0f }, CollisionChannels::GetRegisteredTestChannel("TestEverything"), out_raycast, -1.0f);
 	physics.AABBRaycast(Vector3{ 4.2f, 0.3f, -2.0f }, Box::one);
+
+
+	//  player spawn point
+	spawnPoint = createEntity();
+	spawnPoint->setPosition(Vector3::zero);
 }
 
 void TestFpsScene::unloadScene()

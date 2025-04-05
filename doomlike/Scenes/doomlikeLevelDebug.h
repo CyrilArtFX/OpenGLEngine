@@ -1,8 +1,9 @@
 #pragma once
 #include <Core/scene.h>
+#include <GameLogic/playerSpawnPoint.h>
 
 
-class DoomlikeLevelDebug : public Scene
+class DoomlikeLevelDebug : public Scene, public PlayerSpawnPoint
 {
 public:
 	void updateScene(float dt) override;

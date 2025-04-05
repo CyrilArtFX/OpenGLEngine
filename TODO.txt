@@ -1,5 +1,7 @@
 == COURT TERME ==
 
+~ Bugfix important: Faire en sorte que les components récupèrent bien les valeurs par défaut de leurs variables dans leur init, sinon le memory pool du component manager va faire qu'ils vont garder les valeurs de leur précédente utilisation
+
 ~ Intégrer l'ECS (la logique de base de l'ECS qui fait que les entités ne sont plus que des objets qui ont la référence de leurs components, mais les components ont une logique interne, donc pas un système aussi poussé que celui de FLECS, plus à la Unity)
 	- Faire la structure de base des classes Entity & Component - fait
 	- Modifier Game & Scene pour qu'ils puissent accueuillir des Entity - fait
@@ -82,8 +84,6 @@
 
 
 == REFLEXIONS / PROBLEMES CONNUS ==
-
-~ Trouver une solution pour les problèmes de rotations avec la caméra qui fait qu'on ne peut pas lui forcer une rotation sans casser le système de pitch et de yaw intégré - le nouveau camera component devrait régler le pb, à voir quand le doomlike sera fonctionnel à nouveau
 
 ~ Pb avec les rigidbodies, ils se collident avec eux même et partent en Y si ils ont un test channel qui les fait collide leur collision, besoin de faire un truc avec le raycast pour les empêcher de se collide eux-même, peut être avoir une autre fonction de raycast AABB uniquement pour ça qui a un fonctionnement un peu différent de celle de base ?
 

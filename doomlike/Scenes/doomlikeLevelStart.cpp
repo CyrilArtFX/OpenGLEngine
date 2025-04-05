@@ -81,6 +81,11 @@ void DoomlikeLevelStart::loadScene()
 	//  trigger zone
 	//endLevelZone.setup(Vector3{ -15.0f, 3.5f, 19.75f }, Vector3{ 4.0f, 2.5f, 4.8f });
 	//endLevelZone.onPlayerEnter.registerObserver(this, Bind_0(&DoomlikeLevelStart::onPlayerEnterEndLevelZone));
+
+
+	//  player spawn point
+	spawnPoint = createEntity();
+	spawnPoint->setPosition(Vector3::zero);
 }
 
 void DoomlikeLevelStart::unloadScene()

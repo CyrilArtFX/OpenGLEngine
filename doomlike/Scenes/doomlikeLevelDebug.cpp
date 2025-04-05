@@ -93,9 +93,10 @@ void DoomlikeLevelDebug::loadScene()
 	point_light_comp->setOffset(Vector3{ 8.0f, 1.0f, 9.0f });
 
 
-	//  spawn point
-	//spawnPosition = Vector3{ 8.0f, 0.0f, 9.0f };
-	//spawnRotation = Quaternion::fromEuler(Maths::toRadians(135.0f), 0.0f, 0.0f); //  need to test it later with the new camera component
+	//  player spawn point
+	spawnPoint = createEntity();
+	spawnPoint->setPosition(Vector3{ 8.0f, 0.0f, 9.0f });
+	spawnPoint->setRotation(Quaternion::fromEuler(Maths::toRadians(135.0f), 0.0f, 0.0f));
 }
 
 void DoomlikeLevelDebug::unloadScene()
