@@ -1,5 +1,6 @@
 #pragma once
 #include <Objects/transform.h>
+#include <Core/Gameplay/gameplayTag.h>
 #include <ECS/component.h>
 #include <ECS/componentManager.h>
 #include <ServiceLocator/locator.h>
@@ -10,7 +11,7 @@
 class EntityContainer;
 
 
-class Entity : public Transform
+class Entity : public Transform, public GameplayTag
 {
 public:
 	Entity(EntityContainer& containerRef_);
