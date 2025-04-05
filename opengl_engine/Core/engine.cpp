@@ -6,6 +6,7 @@
 #include <ServiceLocator/locator.h>
 #include <Physics/physicsManager.h>
 #include <GameplayStatics/gameplayStatics.h>
+#include <ECS/componentManager.h>
 #include <ECS/EngineComponents/engineComponents.h>
 #include <iostream>
 
@@ -196,12 +197,11 @@ void Engine::run()
 		// -------------
 		engineUpdate(window.getGLFWwindow());
 
-
 		if (!gamePaused || (gamePaused && oneFrame))
 		{
 			if (game) game->update(deltaTime);
 
-			// TODO: Update custom components here
+			ComponentManager::UpdateComponents(deltaTime);
 
 			Locator::getPhysics().UpdatePhysics(deltaTime);
 
