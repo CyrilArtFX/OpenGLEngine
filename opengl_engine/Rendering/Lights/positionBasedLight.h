@@ -34,6 +34,7 @@ protected:
 	void exit() override;
 	void onEntityMoved();
 	void recomputePosition();
+	void resetValues();
 
 	Vector3 offset{ Vector3::zero };
 	Vector3 position{ Vector3::zero };

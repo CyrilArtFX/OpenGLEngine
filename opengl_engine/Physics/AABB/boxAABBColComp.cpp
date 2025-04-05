@@ -168,5 +168,13 @@ void BoxAABBColComp::drawDebugMesh(Material& debugMaterial) const
 // ----------------------------------------------------------
 void BoxAABBColComp::init()
 {
+	//  reset the values in case this component was used before (the component manager is a memory pool)
+	resetValues();
+	useOwnerScaleForBoxSize = true;
+	useOwnerScaleForBoxCenter = true;
+	box = Box::one;
+
+
+	collisionShape = CollisionShape::BoxAABB;
 	debugMesh = &AssetManager::GetSingleMesh("debug_cube");
 }

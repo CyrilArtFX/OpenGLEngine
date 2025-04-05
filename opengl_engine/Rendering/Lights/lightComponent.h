@@ -19,6 +19,9 @@ enum LightType : uint8_t
 class LightComponent : public Component
 {
 public:
+	virtual ~LightComponent() {}
+
+
 	/**
 	* Apply the light to the lit shader.
 	* This function must be overriden by every light type that inherit this component.

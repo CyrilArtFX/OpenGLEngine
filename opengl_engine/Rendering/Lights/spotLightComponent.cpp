@@ -23,6 +23,14 @@ void SpotLightComponent::useLight(Shader& litShader, int lightIndex)
 
 void SpotLightComponent::init()
 {
+	//  reset the values in case this component was used before (the component manager is a memory pool)
+	resetValues();
+	useColorToSpecular = false;
+	direction = Vector3::unitX;
+	cutOff = 0.0f;
+	outerCutOff = 0.0f;
+
+
 	lightType = LightType::ESpotLight;
 
 	initializePosition();

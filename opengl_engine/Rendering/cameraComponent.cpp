@@ -133,6 +133,22 @@ void CameraComponent::unregisterComponent()
 	}
 }
 
+void CameraComponent::init()
+{
+	//  reset the values in case this component was used before (the component manager is a memory pool)
+	active = false;
+	posOffset = Vector3::zero;
+	rotOffset = Quaternion::identity;
+	yawOffset = 0.0f;
+	pitchOffset = 0.0f;
+	rollOffset = 0.0f;
+	fov = 45.0f;
+	computedPos = Vector3::zero;
+	computedForward = Vector3::unitX;
+	computedUp = Vector3::unitY;
+	computedRight = Vector3::unitZ;
+}
+
 void CameraComponent::onEntityMoved()
 {
 	computeCameraVectors(true, true);

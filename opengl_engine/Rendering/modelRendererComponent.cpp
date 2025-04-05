@@ -47,3 +47,9 @@ void ModelRendererComponent::unregisterComponent()
 {
 	Locator::getRenderer().RemoveModelRenderer(this);
 }
+
+void ModelRendererComponent::init()
+{
+	//  reset the values in case this component was used before (the component manager is a memory pool)
+	model = nullptr;
+}

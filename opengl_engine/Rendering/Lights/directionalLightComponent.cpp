@@ -13,6 +13,14 @@ void DirectionalLightComponent::useLight(Shader& litShader, int lightIndex)
 
 void DirectionalLightComponent::init()
 {
+	//  reset the values in case this component was used before (the component manager is a memory pool)
+	active = true;
+	lightColor = Color::white;
+	ambientStrength = 0.01f;
+	diffuseStrength = 0.7f;
+	direction = Vector3::unitX;
+
+
 	lightType = LightType::EDirectionalLight;
 }
 

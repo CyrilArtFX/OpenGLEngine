@@ -213,6 +213,8 @@ protected:
 	virtual void registerComponent() override;
 	virtual void unregisterComponent() override;
 
+	virtual void init() override;
+
 
 // ----------------------------------------------------------
 //  Rigidbody properties

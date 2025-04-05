@@ -41,6 +41,10 @@ enum class CollisionType : uint8_t
 */
 class CollisionComponent : public Component
 {
+public:
+	virtual ~CollisionComponent() {}
+
+
 // ----------------------------------------------------------
 //  Raycast Tests
 // ----------------------------------------------------------
@@ -180,6 +184,8 @@ protected:
 	virtual void unregisterComponent() override;
 
 	void exit() override;
+
+	void resetValues();
 
 
 // ----------------------------------------------------------

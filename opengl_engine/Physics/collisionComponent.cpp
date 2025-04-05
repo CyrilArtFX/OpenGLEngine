@@ -170,3 +170,15 @@ void CollisionComponent::exit()
 
 	onCollisionDelete.broadcast();
 }
+
+void CollisionComponent::resetValues()
+{
+	//  reset the values in case this component was used before (the component manager is a memory pool) | called in init on derived classes
+	//  note: no need to reset collision shape and debug mesh, they are set in the init of the derived classes
+	collisionType = CollisionType::Solid;
+	isAudioCollision = false;
+	audioCollisionIndex = 0;
+	collisionChannel = "";
+	debugIntersectedLastFrame = false;
+	owningRigidbody = nullptr;
+}

@@ -78,3 +78,17 @@ void PositionBasedLight::recomputePosition()
 	Matrix4 light_pos_matrix = Matrix4::createTranslation(offset) * getOwner()->getModelMatrix();
 	position = light_pos_matrix.getTranslation();
 }
+
+void PositionBasedLight::resetValues()
+{
+	//  reset the values in case this component was used before (the component manager is a memory pool) | called by the init function of derived class
+	active = true;
+	lightColor = Color::white;
+	ambientStrength = 0.01f;
+	diffuseStrength = 0.7f;
+	offset = Vector3::zero;
+	position = Vector3::zero;
+	constant = 1.0f;
+	linear = 0.09f;
+	quadratic = 0.032f;
+}

@@ -14,6 +14,8 @@
 class HudComponent : public Component, public Observer
 {
 public:
+	virtual ~HudComponent() {} //  hud component has a pure virtual function, therefore it's an interface
+
 	void setEnabled(const bool enabled_);
 	bool getEnabled() const;
 
@@ -42,6 +44,8 @@ protected:
 
 	void bindScreenResize();
 	void unbindScreenResize();
+
+	void resetValues();
 
 private:
 	bool enabled{ true };

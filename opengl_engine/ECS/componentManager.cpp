@@ -9,6 +9,7 @@ std::unordered_map<size_t, ComponentClassData> ComponentManager::componentClassD
 void ComponentList::initComponent(const std::shared_ptr<Component>& component, Entity* componentOwner)
 {
 	component->setOwner(componentOwner);
+	component->setUpdateActivated(true); //  since the component manager is a memory pool, reset this value to default
 	component->init();
 	component->registerComponent();
 }

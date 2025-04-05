@@ -19,6 +19,11 @@ void PointLightComponent::useLight(Shader& litShader, int lightIndex)
 
 void PointLightComponent::init()
 {
+	//  reset the values in case this component was used before (the component manager is a memory pool)
+	resetValues();
+	useColorToSpecular = false;
+
+
 	lightType = LightType::EPointLight;
 
 	initializePosition();

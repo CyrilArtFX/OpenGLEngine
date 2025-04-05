@@ -227,6 +227,24 @@ void RigidbodyComponent::unregisterComponent()
 	Locator::getPhysics().UnregisterRigidbody(this);
 }
 
+void RigidbodyComponent::init()
+{
+	//  reset the values in case this component was used before (the component manager is a memory pool)
+	associatedCollision = nullptr;
+	physicsActivated = false;
+	useGravity = false;
+	stepHeight = 0.0f;
+	velocity = Vector3::zero;
+	velocityOneFrame = Vector3::zero;
+	movement = Vector3::zero;
+	gravityVelocity = Vector3::zero;
+	gravityMovement = Vector3::zero;
+	onGround = false;
+	groundedLastFrame = false;
+	firstFrame = true;
+	testChannels.clear();
+}
+
 
 
 // ----------------------------------------------------------

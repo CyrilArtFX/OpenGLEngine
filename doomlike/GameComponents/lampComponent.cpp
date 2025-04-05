@@ -58,3 +58,15 @@ void LampComponent::update(float deltaTime)
 
 	light->setDiffuseStrength(baseLightIntensity + (Maths::sin(timer) / 11.0f));
 }
+
+void LampComponent::init()
+{
+	//  reset the values in case this component was used before (the component manager is a memory pool)
+	light = NULL;
+	modelRenderer = NULL;
+	isChandelier = false;
+	compValid = false;
+	timer = 0.0f;
+	reverse = false;
+	baseLightIntensity = 0.0f;
+}

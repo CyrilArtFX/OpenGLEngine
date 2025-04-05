@@ -69,6 +69,8 @@ protected:
 	virtual void registerComponent() override;
 	virtual void unregisterComponent() override;
 
+	virtual void init() override;
+
 	void onEntityMoved();
 	void computeRotOffset();
 	void computeCameraVectors(bool computePos, bool computeForwardUp);

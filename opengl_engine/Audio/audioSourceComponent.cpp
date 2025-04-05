@@ -70,7 +70,7 @@ Vector3 AudioSourceComponent::getOffset() const
 
 void AudioSourceComponent::registerComponent()
 {
-	//  note: init() is called before registerComponent() so audioManagerRef is initialized when this is called
+	//  note: init is called before registerComponent so audioManagerRef is initialized when this is called
 	channelIndex = audioManagerRef->CreateAudioSourceGroup(ChannelSpatialization::Channel3D);
 }
 
@@ -81,6 +81,12 @@ void AudioSourceComponent::unregisterComponent()
 
 void AudioSourceComponent::init()
 {
+	//  reset the values in case this component was used before (the component manager is a memory pool)
+	//  note: no need to reset channel index since register component will be called just after init
+	sourceSpatialization = ChannelSpatialization::Channel3D;
+	posOffset = Vector3::zero;
+
+
 	audioManagerRef= &Locator::getAudio();
 
 	getOwner()->onTransformUpdated.registerObserver(this, Bind_0(&AudioSourceComponent::onEntityMoved));

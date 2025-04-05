@@ -47,6 +47,11 @@ void SpriteRendererComponent::unregisterComponent()
 
 void SpriteRendererComponent::init()
 {
+	//  reset the values in case this component was used before (the component manager is a memory pool)
+	resetValues();
+	spriteTexture = nullptr;
+
+
 	bindScreenResize();
 }
 

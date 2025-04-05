@@ -113,6 +113,7 @@ void PlayerComponent::update(float deltaTime)
 	//  jump
 	if (Input::IsKeyPressed(GLFW_KEY_SPACE) && rigidbody->isOnGround())
 	{
+		// TODO: understand why it doesn't work
 		rigidbody->addGravityVelocity(Vector3::unitY * jumpForce);
 	}
 
@@ -147,7 +148,7 @@ void PlayerComponent::update(float deltaTime)
 
 
 	//  camera lag
-	// implementation
+	// TODO: implement camera lag
 
 
 	//  death by void

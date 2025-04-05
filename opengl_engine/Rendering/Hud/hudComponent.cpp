@@ -111,6 +111,20 @@ void HudComponent::unbindScreenResize()
 	GameplayStatics::OnScrenResize.unregisterObserver(this);
 }
 
+void HudComponent::resetValues()
+{
+	//  reset the values in case this component was used before (the component manager is a memory pool) | called from init in derived classes
+	enabled = true;
+	screenAnchor = Vector2::halfUnit;
+	pivot = Vector2::halfUnit;
+	pos = Vector2::zero;
+	scale = Vector2::one;
+	rotAngle = 0.0f;
+	tintColor = Color::white;
+	screenPos = Vector2::zero;
+	hudTransform = Matrix4::identity;
+}
+
 
 
 
