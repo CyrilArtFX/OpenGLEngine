@@ -3,7 +3,6 @@
 #include <Events/observer.h>
 #include <GameLogic/playerSpawnPoint.h>
 
-//#include <Actors/movingPlatform.h>
 //#include <LevelUtilities/triggerZone.h>
 
 
@@ -34,7 +33,7 @@ private:
 	//TriggerZone elevatorUpZone;
 	//TriggerZone enemySpawnZone;
 
-	//MovingPlatform elevator;
+	Entity* elevator;
 	float elevatorTimer{ 0.0f };
 
 	void onPlayerEnterElevatorUpZone();

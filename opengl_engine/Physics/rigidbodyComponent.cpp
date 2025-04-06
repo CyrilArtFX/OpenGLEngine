@@ -230,7 +230,6 @@ void RigidbodyComponent::unregisterComponent()
 void RigidbodyComponent::init()
 {
 	//  reset the values in case this component was used before (the component manager is a memory pool)
-	associatedCollision = nullptr;
 	physicsActivated = false;
 	useGravity = false;
 	stepHeight = 0.0f;
@@ -256,6 +255,10 @@ void RigidbodyComponent::exit()
 		associatedCollision->onCollisionIntersect.unregisterObserver(this);
 		associatedCollision->setOwningRigidbody(nullptr);
 	}
+
+
+	//  released shared pointer
+	associatedCollision = nullptr;
 }
 
 

@@ -13,7 +13,6 @@
 	- Faire marcher tout ça bien toujours avec le projet sandbox - fait
 	- Permettre la création de component "behavior" custom - fait
 	- Modifier le code du doomlike pour utiliser ces components - en cours
-		# Faire un component moving platform (il créé la collision & le rigidbody ?)
 		# Faire un component pour la target (tout simple, il créé même pas la collision)
 		# Remplacer les trigger zone par l'event de la collision directement ?
 		# Faire le gun en un component à ajouter au joueur

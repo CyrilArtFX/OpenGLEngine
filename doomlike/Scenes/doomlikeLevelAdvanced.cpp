@@ -3,13 +3,14 @@
 #include <Assets/assetManager.h>
 
 #include <Rendering/Lights/directionalLightComponent.h>
+#include <Rendering/modelRendererComponent.h>
 #include <GameComponents/lampComponent.h>
+#include <GameComponents/movingPlatformComponent.h>
 
 #include <PrefabFactories/wallFactory.h>
 #include <PrefabFactories/floorCeilingFactory.h>
 #include <PrefabFactories/lampFactory.h>
 
-//#include <Actors/movingPlatform.h>
 //#include <LevelUtilities/triggerZone.h>
 
 using WallFactory::WallFacingDirection;
@@ -57,10 +58,13 @@ void DoomlikeLevelAdvanced::loadScene()
 
 
 	//  elevator
-	//elevator.addModel(&AssetManager::GetModel("crate"));
-	//registerObject(&elevator);
-	//elevator.setup(Vector3{ 2.5f, 0.1f, 0.0f }, Vector3{ 2.5f, 6.9f, 0.0f }, 4.0f, 2.0f);
-	//elevator.pause();
+	elevator = createEntity();
+	elevator->setPosition(Vector3{ 2.5f, 0.1f, 0.0f });
+	elevator->setScale(Vector3{ 2.0f, 0.2f, 2.0f });
+	elevator->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("crate"));
+	std::shared_ptr<MovingPlatformComponent> elevator_comp = elevator->addComponentByClass<MovingPlatformComponent>();
+	elevator_comp->setupMovingPlatform(Vector3{ 2.5f, 0.1f, 0.0f }, Vector3{ 2.5f, 6.9f, 0.0f }, 2.5f, 2.0f);
+	elevator_comp->pauseMovement();
 
 
 	//  trigger zones
@@ -82,19 +86,19 @@ void DoomlikeLevelAdvanced::unloadScene()
 
 void DoomlikeLevelAdvanced::updateScene(float dt)
 {
-	/*if (elevatorTimer <= 0.0f) return;
+	if (elevatorTimer <= 0.0f) return;
 	elevatorTimer -= dt;
 	if (elevatorTimer <= 0.0f)
 	{
-		elevator.resume();
-	}*/
+		elevator->getComponentByClass<MovingPlatformComponent>()->resumeMovement();
+	}
 }
 
 void DoomlikeLevelAdvanced::onPlayerEnterElevatorUpZone()
 {
 	/*elevatorUpZone.onPlayerEnter.unregisterObserver(this);
-	elevatorUpZone.disableZone();
-	elevatorTimer = 0.1f;*/
+	elevatorUpZone.disableZone();*/
+	elevatorTimer = 0.1f;
 }
 
 void DoomlikeLevelAdvanced::onPlayerEnterEnemySpawnZone()

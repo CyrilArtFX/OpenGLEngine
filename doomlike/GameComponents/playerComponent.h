@@ -21,6 +21,7 @@ public:
 
 protected:
 	void init() override;
+	void exit() override;
 	void update(float deltaTime) override;
 
 private:

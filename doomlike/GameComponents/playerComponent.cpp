@@ -82,6 +82,15 @@ void PlayerComponent::init()
 	setUpdateActivated(false); //  it will be activated once setupPlayer has been called
 }
 
+void PlayerComponent::exit()
+{
+	//  release shared pointers
+	camera = nullptr;
+	collision = nullptr;
+	rigidbody = nullptr;
+	feetSoundSource = nullptr;
+}
+
 void PlayerComponent::update(float deltaTime)
 {
 	//  move player

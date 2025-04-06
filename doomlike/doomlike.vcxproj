@@ -152,6 +152,7 @@
     <ClCompile Include="doomlikeGame.cpp" />
     <ClCompile Include="GameComponents\cameraLagComponent.cpp" />
     <ClCompile Include="GameComponents\lampComponent.cpp" />
+    <ClCompile Include="GameComponents\movingPlatformComponent.cpp" />
     <ClCompile Include="GameComponents\playerComponent.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PrefabFactories\floorCeilingFactory.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="doomlikeGame.h" />
     <ClInclude Include="GameComponents\cameraLagComponent.h" />
     <ClInclude Include="GameComponents\lampComponent.h" />
+    <ClInclude Include="GameComponents\movingPlatformComponent.h" />
     <ClInclude Include="GameComponents\playerComponent.h" />
     <ClInclude Include="GameLogic\playerSpawnPoint.h" />
     <ClInclude Include="PrefabFactories\floorCeilingFactory.h" />

@@ -62,11 +62,16 @@ void LampComponent::update(float deltaTime)
 void LampComponent::init()
 {
 	//  reset the values in case this component was used before (the component manager is a memory pool)
-	light = NULL;
-	modelRenderer = NULL;
 	isChandelier = false;
 	compValid = false;
 	timer = 0.0f;
 	reverse = false;
 	baseLightIntensity = 0.0f;
+}
+
+void LampComponent::exit()
+{
+	//  release shared pointers
+	light = nullptr;
+	modelRenderer = nullptr;
 }

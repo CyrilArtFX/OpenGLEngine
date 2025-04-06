@@ -76,6 +76,7 @@ void AudioSourceComponent::registerComponent()
 
 void AudioSourceComponent::unregisterComponent()
 {
+	stopSound(); //  security (note: it need to be done before the audio manager release the audio group, so it can't be done in the exit function)
 	audioManagerRef->ReleaseAudioSourceGroup(channelIndex);
 }
 

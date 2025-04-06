@@ -14,6 +14,7 @@ public:
 protected:
 	void update(float deltaTime) override;
 	void init() override;
+	void exit() override;
 
 private:
 	std::shared_ptr<PointLightComponent> light;

@@ -6,6 +6,7 @@
 #include <Rendering/Lights/pointLightComponent.h>
 #include <Rendering/modelRendererComponent.h>
 #include <Physics/AABB/boxAABBColComp.h>
+#include <GameComponents/movingPlatformComponent.h>
 
 #include <PrefabFactories/floorCeilingFactory.h>
 #include <PrefabFactories/stairFactory.h>
@@ -33,9 +34,9 @@ void DoomlikeLevelDebug::loadScene()
 	Entity* crate5 = createEntity();
 	Entity* lowcrate1 = createEntity();
 	Entity* lowcrate2 = createEntity();
-	//Entity* movingPlatform1 = createEntity();
-	//Entity* movingPlatform2 = createEntity();
-	//Entity* movingPlatform3 = createEntity();
+	Entity* movingPlatform1 = createEntity();
+	Entity* movingPlatform2 = createEntity();
+	Entity* movingPlatform3 = createEntity();
 	Entity* trigger_zone = createEntity();
 	Entity* dir_light = createEntity();
 	Entity* point_light = createEntity();
@@ -51,6 +52,12 @@ void DoomlikeLevelDebug::loadScene()
 	lowcrate1->setScale(Vector3{ 1.0f, 0.2f, 1.0f });
 	lowcrate2->setPosition(Vector3{ 9.0f, 0.3f, 15.5f });
 	lowcrate2->setScale(Vector3{ 1.0f, 0.2f, 1.0f });
+	movingPlatform1->setPosition(Vector3{ 6.0f, 1.9f, 2.5f });
+	movingPlatform1->setScale(Vector3{ 2.0f, 0.2f, 2.0f });
+	movingPlatform2->setPosition(Vector3{ -7.0f, 0.0f, -7.0f });
+	movingPlatform2->setScale(Vector3{ 2.0f, 0.2f, 2.0f });
+	movingPlatform3->setPosition(Vector3{ 10.0f, -3.0f, 3.0f });
+	movingPlatform3->setScale(Vector3{ 2.0f, 0.2f, 2.0f });
 	trigger_zone->setPosition(Vector3{ 12.0f, 1.0f, 12.0f });
 
 	//  components
@@ -61,9 +68,9 @@ void DoomlikeLevelDebug::loadScene()
 	crate5->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("crate"));
 	lowcrate1->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("crate"));
 	lowcrate2->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("crate"));
-	//movingPlatform1->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("crate"));
-	//movingPlatform2->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("crate"));
-	//movingPlatform3->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("crate"));
+	movingPlatform1->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("crate"));
+	movingPlatform2->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("crate"));
+	movingPlatform3->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("crate"));
 
 	crate1->addComponentByClass<BoxAABBColComp>()->setCollisionChannel("solid");
 	crate2->addComponentByClass<BoxAABBColComp>()->setCollisionChannel("solid");
@@ -76,11 +83,9 @@ void DoomlikeLevelDebug::loadScene()
 	trigger_zone_col->setCollisionChannel("trigger_zone");
 	trigger_zone_col->setCollisionType(CollisionType::Trigger);
 
-
-	//movingPlatform1.setup(Vector3{ 6.0f, 1.9f, 2.5f }, Vector3{ 9.0f, 3.0f, 11.5f }, 3.0f, 2.0f);
-	//movingPlatform1.pause();
-	//movingPlatform2.setup(Vector3{ -7.0f, 0.0f, -7.0f }, Vector3{ -7.0f, 0.0f, 7.0f }, 7.0f);
-	//movingPlatform3.setup(Vector3{10.0f, -3.0f, 3.0f}, Vector3{10.0f, 5.0f, 3.0f}, 5.0f);
+	movingPlatform1->addComponentByClass<MovingPlatformComponent>()->setupMovingPlatform(Vector3{ 6.0f, 1.9f, 2.5f }, Vector3{ 9.0f, 3.0f, 11.5f }, 3.0f, 2.0f);
+	movingPlatform2->addComponentByClass<MovingPlatformComponent>()->setupMovingPlatform(Vector3{ -7.0f, 0.0f, -7.0f }, Vector3{ -7.0f, 0.0f, 7.0f }, 3.0f);
+	movingPlatform3->addComponentByClass<MovingPlatformComponent>()->setupMovingPlatform(Vector3{ 10.0f, -3.0f, 3.0f }, Vector3{ 10.0f, 5.0f, 3.0f }, 3.0f);
 
 	std::shared_ptr<DirectionalLightComponent> dir_light_comp = dir_light->addComponentByClass<DirectionalLightComponent>();
 	dir_light_comp->setColor(Color::white);
@@ -105,8 +110,4 @@ void DoomlikeLevelDebug::unloadScene()
 
 void DoomlikeLevelDebug::updateScene(float dt)
 {
-	if (Input::IsKeyPressed(GLFW_KEY_H))
-	{
-		//movingPlatform1.resume();
-	}
 }

@@ -11,8 +11,10 @@
 #include <PrefabFactories/floorCeilingFactory.h>
 #include <PrefabFactories/stairFactory.h>
 #include <PrefabFactories/lampFactory.h>
+
 #include <GameComponents/playerComponent.h>
 #include <GameComponents/cameraLagComponent.h>
+#include <GameComponents/movingPlatformComponent.h>
 
 
 void DoomlikeGame::loadGameAssets()
@@ -26,6 +28,7 @@ void DoomlikeGame::loadGameAssets()
 
 	ComponentManager::RegisterComponentDataByClass<PlayerComponent>(ComponentClassData{ true, 1 });
 	ComponentManager::RegisterComponentDataByClass<CameraLagComponent>(ComponentClassData{ true, 1 });
+	ComponentManager::RegisterComponentDataByClass<MovingPlatformComponent>(ComponentClassData{ true, 10 });
 
 	DefaultAssets::LoadDefaultAssets();
 
@@ -155,7 +158,7 @@ void DoomlikeGame::loadGame()
 	player = createEntity()->addComponentByClass<PlayerComponent>();
 	player->setupPlayer(1.5f, 7.0f, 7.0f, 0.3f);
 
-	loadLevel(0);
+	loadLevel(1);
 }
 
 
