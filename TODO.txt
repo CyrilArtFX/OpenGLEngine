@@ -13,8 +13,6 @@
 	- Faire marcher tout ça bien toujours avec le projet sandbox - fait
 	- Permettre la création de component "behavior" custom - fait
 	- Modifier le code du doomlike pour utiliser ces components - en cours
-		# Faire un component pour la target (tout simple, il créé même pas la collision)
-		# Remplacer les trigger zone par l'event de la collision directement ?
 		# Faire le gun en un component à ajouter au joueur
 		# Faire les ennemis (le component s'occupe de créer le reste ?)
 		# Faire le component enemy count
@@ -91,7 +89,9 @@
 
 ~ Le look at rotation des ennemis du doomlike bug un petit peu ?
 
-~ Problème avec la physique, si on touche par le bas une collision qui bouge, on est tp au dessus
+~ Y'a toujours des bugs bizarre avec les plateformes mouvantes qui monte (l'ascenseur) quand elle est immobile et qu'on est en train de bouger quand elle commence à grimper (voir si ça a un lien avec le step mechanic)
+
+~ Problème avec la physique, si on touche par le bas une collision qui bouge, on est tp au dessus (j'ai l'impression que ça le fait seulement quand la collision qui bouge est en train de descendre)
 
 ~ Réfléchir au fonctionnement du load asset des scenes, est-ce qu'il faudrait faire gaffe à l'utilisation de ram et unload genre les textures qui ne sont plus nécessaires ?
 

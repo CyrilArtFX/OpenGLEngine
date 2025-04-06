@@ -4,14 +4,14 @@
 
 #include <Rendering/Lights/directionalLightComponent.h>
 #include <Rendering/modelRendererComponent.h>
+#include <Physics/AABB/boxAABBColComp.h>
+#include <Physics/rigidbodyComponent.h>
 #include <GameComponents/lampComponent.h>
 #include <GameComponents/movingPlatformComponent.h>
 
 #include <PrefabFactories/wallFactory.h>
 #include <PrefabFactories/floorCeilingFactory.h>
 #include <PrefabFactories/lampFactory.h>
-
-//#include <LevelUtilities/triggerZone.h>
 
 using WallFactory::WallFacingDirection;
 
@@ -68,10 +68,23 @@ void DoomlikeLevelAdvanced::loadScene()
 
 
 	//  trigger zones
-	//elevatorUpZone.setup(Vector3{ 2.5f, 1.0f, 0.0f }, Vector3{ 0.3f, 0.3f, 0.3f });
-	//elevatorUpZone.onPlayerEnter.registerObserver(this, Bind_0(&DoomlikeLevelAdvanced::onPlayerEnterElevatorUpZone));
-	//enemySpawnZone.setup(Vector3{ 0.0f, 7.5f, 0.0f }, Vector3{ 0.2f, 0.2f, 0.2f });
-	//enemySpawnZone.onPlayerEnter.registerObserver(this, Bind_0(&DoomlikeLevelAdvanced::onPlayerEnterEnemySpawnZone));
+	elevatorUpZone = createEntity();
+	elevatorUpZone->setPosition(Vector3{ 2.5f, 1.0f, 0.0f });
+	elevatorUpZone->setScale(Vector3{ 0.3f, 0.3f, 0.3f });
+	std::shared_ptr<BoxAABBColComp> elevator_trigger_comp = elevatorUpZone->addComponentByClass<BoxAABBColComp>();
+	elevator_trigger_comp->setBox(Box::one);
+	elevator_trigger_comp->setCollisionChannel("trigger_zone");
+	elevator_trigger_comp->setCollisionType(CollisionType::Trigger);
+	elevator_trigger_comp->onTriggerEnter.registerObserver(this, Bind_1(&DoomlikeLevelAdvanced::onEnterElevatorUpZone));
+
+	enemySpawnZone = createEntity();
+	enemySpawnZone->setPosition(Vector3{ 0.0f, 7.5f, 0.0f });
+	enemySpawnZone->setScale(Vector3{ 0.2f, 0.2f, 0.2f });
+	std::shared_ptr<BoxAABBColComp> enemy_trigger_comp = enemySpawnZone->addComponentByClass<BoxAABBColComp>();
+	enemy_trigger_comp->setBox(Box::one);
+	enemy_trigger_comp->setCollisionChannel("trigger_zone");
+	enemy_trigger_comp->setCollisionType(CollisionType::Trigger);
+	enemy_trigger_comp->onTriggerEnter.registerObserver(this, Bind_1(&DoomlikeLevelAdvanced::onEnterEnemySpawnZone));
 
 
 	//  player spawn point
@@ -94,17 +107,18 @@ void DoomlikeLevelAdvanced::updateScene(float dt)
 	}
 }
 
-void DoomlikeLevelAdvanced::onPlayerEnterElevatorUpZone()
+void DoomlikeLevelAdvanced::onEnterElevatorUpZone(RigidbodyComponent& other)
 {
-	/*elevatorUpZone.onPlayerEnter.unregisterObserver(this);
-	elevatorUpZone.disableZone();*/
-	elevatorTimer = 0.1f;
+	if (!other.getOwner()->hasGameplayTag("Player")) return;
+
+	elevatorTimer = 0.3f;
+
+	elevatorUpZone->getComponentByClass<BoxAABBColComp>()->onTriggerEnter.unregisterObserver(this);
 }
 
-void DoomlikeLevelAdvanced::onPlayerEnterEnemySpawnZone()
+void DoomlikeLevelAdvanced::onEnterEnemySpawnZone(RigidbodyComponent& other)
 {
-	/*enemySpawnZone.onPlayerEnter.unregisterObserver(this);
-	enemySpawnZone.disableZone();*/
+	if (!other.getOwner()->hasGameplayTag("Player")) return;
 
 	ceilLamp1->getComponentByClass<LampComponent>()->changeStatus(true);
 	ceilLamp2->getComponentByClass<LampComponent>()->changeStatus(true);
@@ -120,4 +134,6 @@ void DoomlikeLevelAdvanced::onPlayerEnterEnemySpawnZone()
 	registerObject(new Enemy()).setPosition(Vector3{ -5.0f, 7.5f,  5.0f });
 	registerObject(new Enemy()).setPosition(Vector3{  5.0f, 7.5f, -5.0f });
 	registerObject(new Enemy()).setPosition(Vector3{  5.0f, 7.5f,  5.0f });*/
+
+	enemySpawnZone->getComponentByClass<BoxAABBColComp>()->onTriggerEnter.unregisterObserver(this);
 }

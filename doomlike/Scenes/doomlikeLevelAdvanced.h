@@ -3,8 +3,6 @@
 #include <Events/observer.h>
 #include <GameLogic/playerSpawnPoint.h>
 
-//#include <LevelUtilities/triggerZone.h>
-
 
 class DoomlikeLevelAdvanced : public Scene, public Observer, public PlayerSpawnPoint
 {
@@ -30,13 +28,13 @@ private:
 	Entity* floorLamp;
 
 	//  level utilities
-	//TriggerZone elevatorUpZone;
-	//TriggerZone enemySpawnZone;
+	Entity* elevatorUpZone;
+	Entity* enemySpawnZone;
 
 	Entity* elevator;
 	float elevatorTimer{ 0.0f };
 
-	void onPlayerEnterElevatorUpZone();
-	void onPlayerEnterEnemySpawnZone();
+	void onEnterElevatorUpZone(class RigidbodyComponent& other);
+	void onEnterEnemySpawnZone(class RigidbodyComponent& other);
 };
 

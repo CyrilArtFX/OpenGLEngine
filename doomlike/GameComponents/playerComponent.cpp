@@ -39,6 +39,8 @@ void PlayerComponent::setupPlayer(float camHeight_, float moveSpeed_, float jump
 
 	rigidbody->onCollisionRepulsed.registerObserver(this, Bind_1(&PlayerComponent::onCollision));
 
+	entity->addGameplayTag("Player");
+
 	setUpdateActivated(true);
 }
 

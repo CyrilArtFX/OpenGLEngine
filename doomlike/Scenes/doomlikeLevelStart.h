@@ -4,7 +4,6 @@
 #include <GameLogic/playerSpawnPoint.h>
 
 //#include <LevelUtilities/enemyCount.h>
-//#include <LevelUtilities/triggerZone.h>
 
 
 class DoomlikeLevelStart : public Scene, public Observer, public PlayerSpawnPoint
@@ -21,11 +20,11 @@ protected:
 private:
 	//  level utilities
 	//EnemyCount enemyCount;
-	//TriggerZone endLevelZone;
 
 	Entity* endLevelWall;
+	Entity* endLevelZone;
 
 	void onEnemiesDead();
-	void onPlayerEnterEndLevelZone();
+	void onEnterEndLevelZone(class RigidbodyComponent& other);
 };
 

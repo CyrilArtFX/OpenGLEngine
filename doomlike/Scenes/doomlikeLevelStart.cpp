@@ -5,6 +5,8 @@
 #include <doomlikeGame.h>
 
 #include <Rendering/Lights/directionalLightComponent.h>
+#include <Physics/AABB/boxAABBColComp.h>
+#include <Physics/rigidbodyComponent.h>
 
 #include <PrefabFactories/wallFactory.h>
 #include <PrefabFactories/floorCeilingFactory.h>
@@ -12,7 +14,6 @@
 #include <PrefabFactories/lampFactory.h>
 
 //#include <LevelUtilities/enemyCount.h>
-//#include <LevelUtilities/triggerZone.h>
 
 using WallFactory::WallFacingDirection;
 
@@ -79,8 +80,14 @@ void DoomlikeLevelStart::loadScene()
 
 
 	//  trigger zone
-	//endLevelZone.setup(Vector3{ -15.0f, 3.5f, 19.75f }, Vector3{ 4.0f, 2.5f, 4.8f });
-	//endLevelZone.onPlayerEnter.registerObserver(this, Bind_0(&DoomlikeLevelStart::onPlayerEnterEndLevelZone));
+	endLevelZone = createEntity();
+	endLevelZone->setPosition(Vector3{ -15.0f, 3.5f, 19.75f });
+	endLevelZone->setScale(Vector3{ 4.0f, 2.5f, 4.8f });
+	std::shared_ptr<BoxAABBColComp> trigger_comp = endLevelZone->addComponentByClass<BoxAABBColComp>();
+	trigger_comp->setBox(Box::one);
+	trigger_comp->setCollisionChannel("trigger_zone");
+	trigger_comp->setCollisionType(CollisionType::Trigger);
+	trigger_comp->onTriggerEnter.registerObserver(this, Bind_1(&DoomlikeLevelStart::onEnterEndLevelZone));
 
 
 	//  player spawn point
@@ -104,9 +111,12 @@ void DoomlikeLevelStart::onEnemiesDead()
 	endLevelWall->setPosition(Vector3{ -17.5f, 3.5f, 19.75f });
 }
 
-void DoomlikeLevelStart::onPlayerEnterEndLevelZone()
+void DoomlikeLevelStart::onEnterEndLevelZone(RigidbodyComponent& other)
 {
+	if (!other.getOwner()->hasGameplayTag("Player")) return;
+
 	Locator::getLog().LogMessageToScreen("Doomlike Intro Level: Player exit intro level.", Color::white, 5.0f);
 	static_cast<DoomlikeGame*>(GameplayStatics::GetGame())->changeLevel(3);
-	//endLevelZone.onPlayerEnter.unregisterObserver(this);
+
+	endLevelZone->getComponentByClass<BoxAABBColComp>()->onTriggerEnter.unregisterObserver(this);
 }
