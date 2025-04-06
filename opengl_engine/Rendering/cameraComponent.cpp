@@ -160,7 +160,7 @@ void CameraComponent::computeRotOffset()
 	computeCameraVectors(false, true);
 }
 
-void CameraComponent::computeCameraVectors(bool computePos, bool computeForwardUp)
+void CameraComponent::computeCameraVectors(bool computePos, bool computeDirections)
 {
 	if (computePos)
 	{
@@ -168,7 +168,7 @@ void CameraComponent::computeCameraVectors(bool computePos, bool computeForwardU
 		computedPos = cam_pos_matrix.getTranslation();
 	}
 
-	if (computeForwardUp)
+	if (computeDirections)
 	{
 		Quaternion cam_rot = Quaternion::concatenate(rotOffset, getOwner()->getRotation());
 		computedForward = Vector3::transform(Vector3::unitX, cam_rot);

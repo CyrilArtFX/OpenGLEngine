@@ -8,7 +8,7 @@
 #include <GameplayStatics/gameplayStatics.h>
 #include <doomlikeGame.h>
 
-#include <Rendering/cameraComponent.h>
+#include <GameComponents/cameraLagComponent.h>
 #include <Physics/AABB/boxAABBColComp.h>
 #include <Physics/rigidbodyComponent.h>
 #include <Audio/audioSourceComponent.h>
@@ -21,6 +21,7 @@ void PlayerComponent::setupPlayer(float camHeight_, float moveSpeed_, float jump
 	jumpForce = jumpForce_;
 
 	camera->setOffset(Vector3{ 0.0f, camHeight, 0.0f });
+	camera->setupLag(camLagSpeed, camLagMaxDist);
 	camera->setAsActiveCamera();
 
 	collision->setBox(Box{ Vector3{0.0f, (camHeight / 2.0f) + 0.1f, 0.0f}, Vector3{0.3f, (camHeight / 2.0f) + 0.1f, 0.3f} });
@@ -49,6 +50,7 @@ void PlayerComponent::respawn(const Transform& respawnTransform)
 	entity->pasteTransform(respawnTransform);
 
 	camera->setPitch(0.0f);
+	camera->teleport();
 }
 
 Vector3 PlayerComponent::getCamPosition() const
@@ -69,7 +71,7 @@ void PlayerComponent::init()
 {
 	entity = getOwner();
 
-	camera = entity->addComponentByClass<CameraComponent>();
+	camera = entity->addComponentByClass<CameraLagComponent>();
 	
 	collision = entity->addComponentByClass<BoxAABBColComp>();
 	rigidbody = entity->addComponentByClass<RigidbodyComponent>();
@@ -145,11 +147,7 @@ void PlayerComponent::update(float deltaTime)
 		}
 	}
 
-
-	//  camera lag
-	// TODO: camera lag can't be done anymore since the camera component works with an offset from its entity position
-	// and what's bothering us is the player movement that is to violent.
-	// We need to create an override of the camera component for lag, or change the current one with a boolean, idk
+	onGroundLastFrame = rigidbody->isOnGround();
 
 
 	//  death by void
@@ -158,7 +156,4 @@ void PlayerComponent::update(float deltaTime)
 		Locator::getLog().LogMessageToScreen("Doomlike: Player die by falling.", Color::white, 5.0f);
 		static_cast<DoomlikeGame*>(GameplayStatics::GetGame())->restartLevel();
 	}
-
-
-	onGroundLastFrame = rigidbody->isOnGround();
 }

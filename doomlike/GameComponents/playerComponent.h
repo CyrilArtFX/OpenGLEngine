@@ -25,7 +25,7 @@ protected:
 
 private:
 	Entity* entity{ nullptr };
-	std::shared_ptr<class CameraComponent> camera;
+	std::shared_ptr<class CameraLagComponent> camera;
 	std::shared_ptr<class BoxAABBColComp> collision;
 	std::shared_ptr<class RigidbodyComponent> rigidbody;
 	std::shared_ptr<class AudioSourceComponent> feetSoundSource;
@@ -39,5 +39,7 @@ private:
 	bool onGroundLastFrame{ true };
 
 	const float camSensitivity{ 0.08f };
+	const float camLagSpeed{ 8.8f };
+	const float camLagMaxDist{ 0.7f };
 };
 

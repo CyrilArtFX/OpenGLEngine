@@ -12,6 +12,7 @@
 #include <PrefabFactories/stairFactory.h>
 #include <PrefabFactories/lampFactory.h>
 #include <GameComponents/playerComponent.h>
+#include <GameComponents/cameraLagComponent.h>
 
 
 void DoomlikeGame::loadGameAssets()
@@ -24,6 +25,7 @@ void DoomlikeGame::loadGameAssets()
 	double full_load_time = load_time;
 
 	ComponentManager::RegisterComponentDataByClass<PlayerComponent>(ComponentClassData{ true, 1 });
+	ComponentManager::RegisterComponentDataByClass<CameraLagComponent>(ComponentClassData{ true, 1 });
 
 	DefaultAssets::LoadDefaultAssets();
 

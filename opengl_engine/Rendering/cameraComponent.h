@@ -3,7 +3,7 @@
 #include <Events/observer.h>
 #include <Maths/Vector3.h>
 #include <Maths/Matrix4.h>
-#include <memory>
+
 
 /** Camera Component
 * Component for the camera.
@@ -73,7 +73,7 @@ protected:
 
 	void onEntityMoved();
 	void computeRotOffset();
-	void computeCameraVectors(bool computePos, bool computeForwardUp);
+	virtual void computeCameraVectors(bool computePos, bool computeDirections);
 
 	bool active{ false };
 
