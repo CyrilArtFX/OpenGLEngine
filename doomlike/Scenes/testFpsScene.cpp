@@ -6,6 +6,7 @@
 #include <Rendering/modelRendererComponent.h>
 #include <Physics/AABB/boxAABBColComp.h>
 #include <Physics/ObjectChannels/collisionChannels.h>
+#include <GameComponents/targetComponent.h>
 
 #include <PrefabFactories/floorCeilingFactory.h>
 
@@ -46,6 +47,8 @@ void TestFpsScene::loadScene()
 	crate2->addComponentByClass<BoxAABBColComp>()->setCollisionChannel("solid");
 	crate3->addComponentByClass<BoxAABBColComp>()->setCollisionChannel("solid");
 	target->addComponentByClass<BoxAABBColComp>()->setCollisionChannel("solid");
+
+	target->addComponentByClass<TargetComponent>();
 
 	std::shared_ptr<DirectionalLightComponent> dir_light_comp = light->addComponentByClass<DirectionalLightComponent>();
 	dir_light_comp->setColor(Color::white);

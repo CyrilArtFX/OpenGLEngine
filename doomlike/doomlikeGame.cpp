@@ -15,6 +15,7 @@
 #include <GameComponents/playerComponent.h>
 #include <GameComponents/cameraLagComponent.h>
 #include <GameComponents/movingPlatformComponent.h>
+#include <GameComponents/targetComponent.h>
 
 
 void DoomlikeGame::loadGameAssets()
@@ -29,6 +30,7 @@ void DoomlikeGame::loadGameAssets()
 	ComponentManager::RegisterComponentDataByClass<PlayerComponent>(ComponentClassData{ true, 1 });
 	ComponentManager::RegisterComponentDataByClass<CameraLagComponent>(ComponentClassData{ true, 1 });
 	ComponentManager::RegisterComponentDataByClass<MovingPlatformComponent>(ComponentClassData{ true, 10 });
+	ComponentManager::RegisterComponentDataByClass<TargetComponent>(ComponentClassData{ false, 20 });
 
 	DefaultAssets::LoadDefaultAssets();
 
