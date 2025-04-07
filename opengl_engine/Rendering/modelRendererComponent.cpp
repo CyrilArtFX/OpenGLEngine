@@ -34,39 +34,6 @@ bool ModelRendererComponent::useMaterial(Material& material)
 	return model->useMaterial(material);
 }
 
-void ModelRendererComponent::setPosOffset(const Vector3& newPosOffset)
-{
-	offset.setPosition(newPosOffset);
-	computeMatrix();
-}
-
-Vector3 ModelRendererComponent::getPosOffset() const
-{
-	return offset.getPosition();
-}
-
-void ModelRendererComponent::setRotOffset(const Quaternion& newRotOffset)
-{
-	offset.setRotation(newRotOffset);
-	computeMatrix();
-}
-
-Quaternion ModelRendererComponent::getRotOffset() const
-{
-	return offset.getRotation();
-}
-
-void ModelRendererComponent::setScaleOffset(const Vector3& newScaleOffset)
-{
-	offset.setScale(newScaleOffset);
-	computeMatrix();
-}
-
-Vector3 ModelRendererComponent::getScaleOffset() const
-{
-	return offset.getScale();
-}
-
 void ModelRendererComponent::registerComponent()
 {
 	Locator::getRenderer().AddModelRenderer(this);
@@ -88,15 +55,22 @@ void ModelRendererComponent::init()
 
 
 	getOwner()->onTransformUpdated.registerObserver(this, Bind_0(&ModelRendererComponent::onEntityMoved));
+	offset.onTransformUpdated.registerObserver(this, Bind_0(&ModelRendererComponent::onOffsetUpdated));
 	computeMatrix();
 }
 
 void ModelRendererComponent::exit()
 {
 	getOwner()->onTransformUpdated.unregisterObserver(this);
+	offset.onTransformUpdated.unregisterObserver(this);
 }
 
 void ModelRendererComponent::onEntityMoved()
+{
+	computeMatrix();
+}
+
+void ModelRendererComponent::onOffsetUpdated()
 {
 	computeMatrix();
 }

@@ -63,6 +63,7 @@ public:
 	float getYaw() const { return yawOffset; }
 	float getPitch() const { return pitchOffset; }
 	float getRoll() const { return rollOffset; }
+	Quaternion getRotOffset() const { return rotOffset; }
 	float getFov() const { return fov; }
 
 protected:

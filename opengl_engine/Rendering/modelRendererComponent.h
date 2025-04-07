@@ -38,24 +38,8 @@ public:
 	*/
 	bool useMaterial(Material& material);
 
-
-	/** Set the position offset from the owner entity of this Model Renderer Component. */
-	void setPosOffset(const Vector3& newPosOffset);
-
-	/** Get the position offset from the owner entity of this Model Renderer Component. */
-	Vector3 getPosOffset() const;
-
-	/** Set the rotation offset from the owner entity of this Model Renderer Component. */
-	void setRotOffset(const Quaternion& newRotOffset);
-
-	/** Get the rotation offset from the owner entity of this Model Renderer Component. */
-	Quaternion getRotOffset() const;
-
-	/** Set the scale offset from the owner entity of this Model Renderer Component. */
-	void setScaleOffset(const Vector3& newScaleOffset);
-
-	/** Get the scale offset from the owner entity of this Model Renderer Component. */
-	Vector3 getScaleOffset() const;
+	/** The transform offset of this Model Renderer Component. */
+	Transform offset;
 
 
 protected:
@@ -66,6 +50,7 @@ protected:
 	virtual void exit() override;
 
 	void onEntityMoved();
+	void onOffsetUpdated();
 	virtual void computeMatrix();
 
 	Model* model{ nullptr };
@@ -73,7 +58,5 @@ protected:
 	Matrix4 modelMatrix{ Matrix4::identity };
 	Matrix4 normalMatrix{ Matrix4::identity };
 	Vector3 scale{ Vector3::one };
-
-	Transform offset;
 };
 
