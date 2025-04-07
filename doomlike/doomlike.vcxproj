@@ -150,6 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="doomlikeGame.cpp" />
+    <ClCompile Include="GameComponents\bulletComponent.cpp" />
     <ClCompile Include="GameComponents\OverrideComponents\cameraLagComponent.cpp" />
     <ClCompile Include="GameComponents\gunComponent.cpp" />
     <ClCompile Include="GameComponents\lampComponent.cpp" />
@@ -173,6 +174,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="doomlikeGame.h" />
+    <ClInclude Include="GameComponents\bulletComponent.h" />
     <ClInclude Include="GameComponents\OverrideComponents\cameraLagComponent.h" />
     <ClInclude Include="GameComponents\gunComponent.h" />
     <ClInclude Include="GameComponents\lampComponent.h" />

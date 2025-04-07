@@ -1,6 +1,7 @@
 #pragma once
 #include <ECS/component.h>
 #include <Events/observer.h>
+#include <vector>
 
 
 /**
@@ -24,6 +25,8 @@ private:
 	std::shared_ptr<class ModelRendererComponent> gunModel;
 	std::shared_ptr<class TextRendererComponent> ammoText;
 	std::shared_ptr<class SpriteRendererComponent> crosshairSprite;
+
+	std::vector<std::shared_ptr<class BulletComponent>> activeBullets;
 
 	bool gunValid{ false };
 	int ammoCount{ 0 };

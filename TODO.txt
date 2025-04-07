@@ -13,7 +13,6 @@
 	- Faire marcher tout ça bien toujours avec le projet sandbox - fait
 	- Permettre la création de component "behavior" custom - fait
 	- Modifier le code du doomlike pour utiliser ces components - en cours
-		# Faire le gun en un component à ajouter au joueur - en cours
 		# Faire les ennemis (le component s'occupe de créer le reste ?)
 		# Faire le component enemy count
 	- Clean le moteur des classes obsolètes (Object, Lights, Camera, etc.) 

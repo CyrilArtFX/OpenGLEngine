@@ -1,6 +1,8 @@
 #include "gunComponent.h"
 #include <ECS/entity.h>
 #include <ServiceLocator/locator.h>
+#include <Physics/ObjectChannels/collisionChannels.h>
+#include <GameplayStatics/gameplayStatics.h>
 #include <Inputs/Input.h>
 #include <Assets/assetManager.h>
 
@@ -9,13 +11,18 @@
 #include <Rendering/modelRendererComponent.h>
 #include <Rendering/Text/textRendererComponent.h>
 #include <Rendering/Hud/spriteRendererComponent.h>
+#include <GameComponents/bulletComponent.h>
 
 
 void GunComponent::reset()
 {
 	if (!gunValid) return;
 
-	// TODO: clear all active bullets
+	for (auto& active_bullet : activeBullets)
+	{
+		active_bullet->deleteBullet();
+	}
+	activeBullets.clear();
 
 	reloadTimer = 0.0f;
 	ammoCount = ammoMax;
@@ -53,6 +60,12 @@ void GunComponent::exit()
 {
 	entity->onTransformUpdated.unregisterObserver(this);
 
+	for (auto& active_bullet : activeBullets)
+	{
+		if(active_bullet) active_bullet->deleteBullet();
+	}
+	activeBullets.clear();
+
 	//  release shared pointers
 	player = nullptr;
 	gunModel = nullptr;
@@ -67,8 +80,28 @@ void GunComponent::update(float deltaTime)
 	// shoot
 	if (Input::IsKeyPressed(GLFW_MOUSE_BUTTON_LEFT) && ammoCount > 0 && reloadTimer == 0.0f)
 	{
-		// TODO: shoot bullet
-		Locator::getLog().LogMessageToScreen("Gun component: Shoot!", Color::cyan, 5.0f);
+		//  shoot a raycast towards the camera direction to shoot the bullet towards the center of the screen even if it starts from the bottom right
+		Physics& physics = Locator::getPhysics();
+		RaycastHitInfos raycast_out;
+		CameraLagComponent& player_camera = *player->camera;
+		bool raycast_hit = physics.LineRaycast(player_camera.getCamPosition(), player_camera.getCamPosition() + player_camera.getCamForward() * 1000.0f, CollisionChannels::GetRegisteredTestChannel("PlayerEntity"), raycast_out);
+
+		Quaternion bullet_rotation;
+		Vector3 bullet_direction;
+		if (!raycast_hit)
+		{
+			bullet_rotation = Quaternion::concatenate(player_camera.getRotOffset(), entity->getRotation());
+			bullet_direction = player_camera.getCamForward();
+		}
+		else
+		{
+			bullet_rotation = Quaternion::createLookAt(gunModel->offset.getPosition(), raycast_out.hitLocation, Vector3::unitY);
+			bullet_direction = Vector3::normalize(raycast_out.hitLocation - gunModel->offset.getPosition());
+		}
+
+		Entity* bullet_entity = GameplayStatics::GetGame()->createEntity();
+		activeBullets.push_back(bullet_entity->addComponentByClass<BulletComponent>());
+		activeBullets.back()->setupBullet(gunModel->offset.getPosition(), bullet_rotation, bullet_direction, shootVelocity, bulletLifetime);
 
 		//  play shoot sound
 		Locator::getAudio().InstantPlaySound2D(AssetManager::GetSound("shoot"), 0.15f);
@@ -93,6 +126,20 @@ void GunComponent::update(float deltaTime)
 			ammoCount = ammoMax;
 			writeAmmoText();
 		}
+	}
+
+
+	//  delete expired bullets
+	for (int i = 0; i < activeBullets.size(); i++)
+	{
+		if (!activeBullets[i]->isLifetimeOver()) continue;
+
+		activeBullets[i]->deleteBullet();
+
+		std::iter_swap(activeBullets.begin() + i, activeBullets.end() - 1);
+		activeBullets.pop_back();
+
+		break; //  assume that we can't create 2 bullets on the same frame so 2 bullets cannot be destroyed by time out on the same frame
 	}
 }
 
