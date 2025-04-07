@@ -8,10 +8,11 @@
 #include <GameplayStatics/gameplayStatics.h>
 #include <doomlikeGame.h>
 
-#include <GameComponents/cameraLagComponent.h>
+#include <GameComponents/OverrideComponents/cameraLagComponent.h>
 #include <Physics/AABB/boxAABBColComp.h>
 #include <Physics/rigidbodyComponent.h>
 #include <Audio/audioSourceComponent.h>
+#include <GameComponents/gunComponent.h>
 
 
 void PlayerComponent::setupPlayer(float camHeight_, float moveSpeed_, float jumpForce_, float stepHeight_)
@@ -53,6 +54,9 @@ void PlayerComponent::respawn(const Transform& respawnTransform)
 
 	camera->setPitch(0.0f);
 	camera->teleport();
+
+	std::shared_ptr<GunComponent> gun = entity->getComponentByClass<GunComponent>();
+	if (gun) gun->reset();
 }
 
 Vector3 PlayerComponent::getCamPosition() const

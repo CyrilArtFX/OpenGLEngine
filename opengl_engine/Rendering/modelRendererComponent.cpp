@@ -34,6 +34,13 @@ bool ModelRendererComponent::useMaterial(Material& material)
 	return model->useMaterial(material);
 }
 
+void ModelRendererComponent::setIgnoreOwnerTransform(bool value)
+{
+	ignoreOwnerTransform = value;
+
+	computeMatrix();
+}
+
 void ModelRendererComponent::registerComponent()
 {
 	Locator::getRenderer().AddModelRenderer(this);
@@ -77,11 +84,18 @@ void ModelRendererComponent::onOffsetUpdated()
 
 void ModelRendererComponent::computeMatrix()
 {
-	modelMatrix = offset.getModelMatrix() * getOwner()->getModelMatrix();
+	if (ignoreOwnerTransform)
+	{
+		modelMatrix = offset.getModelMatrix();
+		scale = offset.getScale();
+	}
+	else
+	{
+		modelMatrix = offset.getModelMatrix() * getOwner()->getModelMatrix();
+		scale = offset.getScale() * getOwner()->getScale();
+	}
 
 	normalMatrix = modelMatrix;
 	normalMatrix.invert();
 	normalMatrix.transpose();
-
-	scale = offset.getScale() * getOwner()->getScale();
 }

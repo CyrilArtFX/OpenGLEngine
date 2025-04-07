@@ -51,13 +51,16 @@
     <ClCompile Include="GameComponents\playerComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameComponents\cameraLagComponent.cpp">
+    <ClCompile Include="GameComponents\OverrideComponents\cameraLagComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameComponents\movingPlatformComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameComponents\targetComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponents\gunComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -98,13 +101,16 @@
     <ClInclude Include="GameLogic\playerSpawnPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameComponents\cameraLagComponent.h">
+    <ClInclude Include="GameComponents\OverrideComponents\cameraLagComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameComponents\movingPlatformComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameComponents\targetComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponents\gunComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

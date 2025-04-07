@@ -12,8 +12,9 @@
 #include <PrefabFactories/stairFactory.h>
 #include <PrefabFactories/lampFactory.h>
 
+#include <GameComponents/OverrideComponents/cameraLagComponent.h>
 #include <GameComponents/playerComponent.h>
-#include <GameComponents/cameraLagComponent.h>
+#include <GameComponents/gunComponent.h>
 #include <GameComponents/movingPlatformComponent.h>
 #include <GameComponents/targetComponent.h>
 
@@ -27,8 +28,9 @@ void DoomlikeGame::loadGameAssets()
 	double load_time = glfwGetTime();
 	double full_load_time = load_time;
 
-	ComponentManager::RegisterComponentDataByClass<PlayerComponent>(ComponentClassData{ true, 1 });
 	ComponentManager::RegisterComponentDataByClass<CameraLagComponent>(ComponentClassData{ true, 1 });
+	ComponentManager::RegisterComponentDataByClass<PlayerComponent>(ComponentClassData{ true, 1 });
+	ComponentManager::RegisterComponentDataByClass<GunComponent>(ComponentClassData{ true, 1 });
 	ComponentManager::RegisterComponentDataByClass<MovingPlatformComponent>(ComponentClassData{ true, 10 });
 	ComponentManager::RegisterComponentDataByClass<TargetComponent>(ComponentClassData{ false, 20 });
 
@@ -158,6 +160,7 @@ void DoomlikeGame::loadGameAssets()
 void DoomlikeGame::loadGame()
 {
 	player = createEntity()->addComponentByClass<PlayerComponent>();
+	player->getOwner()->addComponentByClass<GunComponent>();
 	player->setupPlayer(1.5f, 7.0f, 7.0f, 0.3f);
 
 	loadLevel(1);

@@ -25,6 +25,8 @@ protected:
 	void update(float deltaTime) override;
 
 private:
+	friend class GunComponent;
+
 	Entity* entity{ nullptr };
 	std::shared_ptr<class CameraLagComponent> camera;
 	std::shared_ptr<class BoxAABBColComp> collision;
