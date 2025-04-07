@@ -8,11 +8,10 @@ void ModelRendererComponent::draw(Material& materialInUsage)
 	//  we don't check useMaterial() cause the renderer should've done it already
 
 	Shader& shader_used = materialInUsage.getShader();
-	Transform* owner_transform = getOwner();
 
 	shader_used.setMatrix4("model", modelMatrix.getAsFloatPtr());
 	shader_used.setMatrix4("normalMatrix", normalMatrix.getAsFloatPtr());
-	shader_used.setVec3("scale", owner_transform->getScale());
+	shader_used.setVec3("scale", scale);
 
 	model->draw(materialInUsage);
 }
@@ -35,15 +34,37 @@ bool ModelRendererComponent::useMaterial(Material& material)
 	return model->useMaterial(material);
 }
 
-void ModelRendererComponent::setOffset(const Vector3& newOffset)
+void ModelRendererComponent::setPosOffset(const Vector3& newPosOffset)
 {
-	offset = newOffset;
+	offset.setPosition(newPosOffset);
 	computeMatrix();
 }
 
-Vector3 ModelRendererComponent::getOffset() const
+Vector3 ModelRendererComponent::getPosOffset() const
 {
-	return offset;
+	return offset.getPosition();
+}
+
+void ModelRendererComponent::setRotOffset(const Quaternion& newRotOffset)
+{
+	offset.setRotation(newRotOffset);
+	computeMatrix();
+}
+
+Quaternion ModelRendererComponent::getRotOffset() const
+{
+	return offset.getRotation();
+}
+
+void ModelRendererComponent::setScaleOffset(const Vector3& newScaleOffset)
+{
+	offset.setScale(newScaleOffset);
+	computeMatrix();
+}
+
+Vector3 ModelRendererComponent::getScaleOffset() const
+{
+	return offset.getScale();
 }
 
 void ModelRendererComponent::registerComponent()
@@ -60,6 +81,10 @@ void ModelRendererComponent::init()
 {
 	//  reset the values in case this component was used before (the component manager is a memory pool)
 	model = nullptr;
+	modelMatrix = Matrix4::identity;
+	normalMatrix = Matrix4::identity;
+	scale = Vector3::one;
+	offset.clearTranform();
 
 
 	getOwner()->onTransformUpdated.registerObserver(this, Bind_0(&ModelRendererComponent::onEntityMoved));
@@ -78,9 +103,11 @@ void ModelRendererComponent::onEntityMoved()
 
 void ModelRendererComponent::computeMatrix()
 {
-	modelMatrix = Matrix4::createTranslation(offset) * getOwner()->getModelMatrix();
+	modelMatrix = offset.getModelMatrix() * getOwner()->getModelMatrix();
 
 	normalMatrix = modelMatrix;
 	normalMatrix.invert();
 	normalMatrix.transpose();
+
+	scale = offset.getScale() * getOwner()->getScale();
 }

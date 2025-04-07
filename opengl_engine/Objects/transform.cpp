@@ -90,6 +90,14 @@ void Transform::pasteTransform(const Transform& transform)
 	onTransformUpdated.broadcast();
 }
 
+void Transform::clearTranform()
+{
+	position = Vector3::zero;
+	rotation = Quaternion::identity;
+	scale = Vector3::one;
+	modelMatrix = Matrix4::identity;
+}
+
 
 const Matrix4 Transform::getModelMatrix() const
 { 

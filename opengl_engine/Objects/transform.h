@@ -26,8 +26,8 @@ public:
 	void incrementRotation(Quaternion increment);
 	void rotateTowards(Vector3 posTowards);
 
-
 	void pasteTransform(const Transform& transform);
+	void clearTranform();
 
 
 	const Vector3 getPosition() const { return position; }
