@@ -1,11 +1,14 @@
 #pragma once
 #include <ECS/component.h>
+#include <Events/observer.h>
 #include <Rendering/Model/model.h>
+#include <Maths/Matrix4.h>
+
 
 /** Model Renderer Component
 * A component that will render a Model.
 */
-class ModelRendererComponent : public Component
+class ModelRendererComponent : public Component, public Observer
 {
 public:
 	/**
@@ -35,12 +38,29 @@ public:
 	*/
 	bool useMaterial(Material& material);
 
+
+	/** Set the position offset from the owner entity of this Model Renderer Component. */
+	void setOffset(const Vector3& newOffset);
+
+	/** Get the position offset from the owner entity of this Model Renderer Component. */
+	Vector3 getOffset() const;
+
+
 protected:
 	virtual void registerComponent() override;
 	virtual void unregisterComponent() override;
 
 	virtual void init() override;
+	virtual void exit() override;
+
+	void onEntityMoved();
+	virtual void computeMatrix();
 
 	Model* model{ nullptr };
+
+	Matrix4 modelMatrix{ Matrix4::identity };
+	Matrix4 normalMatrix{ Matrix4::identity };
+
+	Vector3 offset{ Vector3::zero };
 };
 

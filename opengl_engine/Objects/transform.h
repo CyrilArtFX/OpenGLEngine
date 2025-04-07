@@ -35,7 +35,6 @@ public:
 	const Quaternion getRotation() const { return rotation; }
 
 	const Matrix4 getModelMatrix() const; 
-	const Matrix4 getNormalMatrix() const;
 
 	const Vector3 getForward() const;
 	const Vector3 getUp() const;
@@ -52,5 +51,4 @@ private:
 	Quaternion rotation{ Quaternion::identity };
 
 	Matrix4 modelMatrix{ Matrix4::identity };
-	Matrix4 normalMatrix{ Matrix4::identity };
 };

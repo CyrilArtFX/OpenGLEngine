@@ -10,8 +10,8 @@ void ModelRendererComponent::draw(Material& materialInUsage)
 	Shader& shader_used = materialInUsage.getShader();
 	Transform* owner_transform = getOwner();
 
-	shader_used.setMatrix4("model", owner_transform->getModelMatrix().getAsFloatPtr());
-	shader_used.setMatrix4("normalMatrix", owner_transform->getNormalMatrix().getAsFloatPtr());
+	shader_used.setMatrix4("model", modelMatrix.getAsFloatPtr());
+	shader_used.setMatrix4("normalMatrix", normalMatrix.getAsFloatPtr());
 	shader_used.setVec3("scale", owner_transform->getScale());
 
 	model->draw(materialInUsage);
@@ -35,8 +35,16 @@ bool ModelRendererComponent::useMaterial(Material& material)
 	return model->useMaterial(material);
 }
 
+void ModelRendererComponent::setOffset(const Vector3& newOffset)
+{
+	offset = newOffset;
+	computeMatrix();
+}
 
-
+Vector3 ModelRendererComponent::getOffset() const
+{
+	return offset;
+}
 
 void ModelRendererComponent::registerComponent()
 {
@@ -52,4 +60,27 @@ void ModelRendererComponent::init()
 {
 	//  reset the values in case this component was used before (the component manager is a memory pool)
 	model = nullptr;
+
+
+	getOwner()->onTransformUpdated.registerObserver(this, Bind_0(&ModelRendererComponent::onEntityMoved));
+	computeMatrix();
+}
+
+void ModelRendererComponent::exit()
+{
+	getOwner()->onTransformUpdated.unregisterObserver(this);
+}
+
+void ModelRendererComponent::onEntityMoved()
+{
+	computeMatrix();
+}
+
+void ModelRendererComponent::computeMatrix()
+{
+	modelMatrix = Matrix4::createTranslation(offset) * getOwner()->getModelMatrix();
+
+	normalMatrix = modelMatrix;
+	normalMatrix.invert();
+	normalMatrix.transpose();
 }

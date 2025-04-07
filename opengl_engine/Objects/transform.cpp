@@ -86,7 +86,6 @@ void Transform::pasteTransform(const Transform& transform)
 	rotation = transform.getRotation();
 	scale = transform.getScale();
 	modelMatrix = transform.getModelMatrix();
-	normalMatrix = transform.getNormalMatrix();
 
 	onTransformUpdated.broadcast();
 }
@@ -95,11 +94,6 @@ void Transform::pasteTransform(const Transform& transform)
 const Matrix4 Transform::getModelMatrix() const
 { 
 	return modelMatrix;
-}
-
-const Matrix4 Transform::getNormalMatrix() const
-{
-	return normalMatrix;
 }
 
 const Vector3 Transform::getForward() const
@@ -124,10 +118,6 @@ void Transform::computeMatrix()
 		Matrix4::createScale(scale) *
 		Matrix4::createFromQuaternion(rotation) *
 		Matrix4::createTranslation(position);
-
-	normalMatrix = modelMatrix;
-	normalMatrix.invert();
-	normalMatrix.transpose();
 
 	onTransformUpdated.broadcast();
 }

@@ -58,7 +58,9 @@
 
 == AUTRES ==
 
-~ Donner la possibilité d'avoir un offset sur les model renderer component (assez ez faudra juste rajouter l'offset à la matrice de l'entity au draw)
+~ Regarder si ça marche bien l'appel à une fonction parent avec ClasseParent::fonction(), et si oui l'utiliser partout lol
+
+~ Changer le nom de la "model matrix" du transform, vu que c'est plus vraiment la matrice du modele, c'est la matrice de l'entity...
 
 ~ Compute la direction des Spot Light en fonction de la rotation de l'Entity (avoir une rotation offset ? avoir un vecteur de direction offset ?)
 
