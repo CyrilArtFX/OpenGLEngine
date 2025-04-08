@@ -84,13 +84,14 @@ void GunComponent::update(float deltaTime)
 		Physics& physics = Locator::getPhysics();
 		RaycastHitInfos raycast_out;
 		CameraLagComponent& player_camera = *player->camera;
-		bool raycast_hit = physics.LineRaycast(player_camera.getCamPosition(), player_camera.getCamPosition() + player_camera.getCamForward() * 1000.0f, CollisionChannels::GetRegisteredTestChannel("PlayerEntity"), raycast_out);
+		const Vector3 raycast_target = player_camera.getCamPosition() + player_camera.getCamForward() * 1000.0f;
+		bool raycast_hit = physics.LineRaycast(player_camera.getCamPosition(), raycast_target, CollisionChannels::GetRegisteredTestChannel("PlayerEntity"), raycast_out, 1.0f);
 
 		Quaternion bullet_rotation;
 		Vector3 bullet_direction;
 		if (!raycast_hit)
 		{
-			bullet_rotation = Quaternion::concatenate(player_camera.getRotOffset(), entity->getRotation());
+			bullet_rotation = Quaternion::createLookAt(gunModel->offset.getPosition(), raycast_target, Vector3::unitY);
 			bullet_direction = player_camera.getCamForward();
 		}
 		else

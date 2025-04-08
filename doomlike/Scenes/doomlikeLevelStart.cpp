@@ -7,6 +7,7 @@
 #include <Rendering/Lights/directionalLightComponent.h>
 #include <Physics/AABB/boxAABBColComp.h>
 #include <Physics/rigidbodyComponent.h>
+#include <GameComponents/enemyComponent.h>
 
 #include <PrefabFactories/wallFactory.h>
 #include <PrefabFactories/floorCeilingFactory.h>
@@ -69,11 +70,12 @@ void DoomlikeLevelStart::loadScene()
 
 
 	//  enemies
-	//Enemy& enemy_1 = static_cast<Enemy&>(registerObject(new Enemy()));
-	//Enemy& enemy_2 = static_cast<Enemy&>(registerObject(new Enemy()));
-
-	//enemy_1.setPosition(Vector3{ 3.5f, 1.2f,  11.5f });
-	//enemy_2.setPosition(Vector3{ -3.0f, 3.2f, 20.0f });
+	Entity* enemy_1 = createEntity();
+	Entity* enemy_2 = createEntity();
+	enemy_1->setPosition(Vector3{ 3.5f, 1.2f,  11.5f });
+	enemy_2->setPosition(Vector3{ -3.0f, 3.2f, 20.0f });
+	enemy_1->addComponentByClass<EnemyComponent>();
+	enemy_2->addComponentByClass<EnemyComponent>();
 
 	//enemyCount.addEnemies({ &enemy_1, &enemy_2 });
 	//enemyCount.onAllEnemiesDead.registerObserver(this, Bind_0(&DoomlikeLevelStart::onEnemiesDead));

@@ -29,7 +29,9 @@ void BulletComponent::setupBullet(const Vector3& spawnPos, const Quaternion& spa
 	rigidbody->setVelocity(bulletDirection * bulletVelocity);
 
 	rigidbody->onCollisionRepulsed.registerObserver(this, Bind_1(&BulletComponent::onBulletCollisionHit));
-	rigidbody->getAssociatedCollisionNonConst().onCollisionIntersect.registerObserver(this, Bind_1(&BulletComponent::onBulletEntityHit));
+	collision->onCollisionIntersect.registerObserver(this, Bind_1(&BulletComponent::onBulletEntityHit));
+
+	getOwner()->addGameplayTag("Bullet");
 
 	setUpdateActivated(true);
 }
@@ -37,7 +39,7 @@ void BulletComponent::setupBullet(const Vector3& spawnPos, const Quaternion& spa
 void BulletComponent::deleteBullet()
 {
 	rigidbody->onCollisionRepulsed.unregisterObserver(this);
-	rigidbody->getAssociatedCollisionNonConst().onCollisionIntersect.unregisterObserver(this);
+	collision->onCollisionIntersect.unregisterObserver(this);
 
 	getOwner()->destroyEntity();
 }
@@ -57,7 +59,10 @@ void BulletComponent::onBulletCollisionHit(const CollisionResponse& hitResponse)
 
 void BulletComponent::onBulletEntityHit(RigidbodyComponent& hitBody)
 {
-	// TODO: Check if the hit entity is an enemy
+	if (hitBody.getOwner()->hasGameplayTag("Enemy"))
+	{
+		lifetime = 0.0f; //  allow the gun component to properly delete the bullet
+	}
 }
 
 void BulletComponent::init()
@@ -76,6 +81,9 @@ void BulletComponent::init()
 
 void BulletComponent::exit()
 {
+	rigidbody->onCollisionRepulsed.unregisterObserver(this);
+	collision->onCollisionIntersect.unregisterObserver(this);
+
 	//  release shared pointers
 	bulletModel = nullptr;
 	collision = nullptr;

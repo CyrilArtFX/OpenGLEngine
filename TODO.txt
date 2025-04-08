@@ -13,10 +13,10 @@
 	- Faire marcher tout ça bien toujours avec le projet sandbox - fait
 	- Permettre la création de component "behavior" custom - fait
 	- Modifier le code du doomlike pour utiliser ces components - en cours
-		# Faire les ennemis (le component s'occupe de créer le reste ?)
 		# Faire le component enemy count
 	- Clean le moteur des classes obsolètes (Object, Lights, Camera, etc.) 
 		(+ sans doute bouger la classe Transform et virer le dossier Objects)
+	- Remplacer l'array par un vector pour les sublist du Component Manager (pas grave d'autoriser le copy constructor en vrai)
 
 
 == MOYEN TERME ==
@@ -87,8 +87,6 @@
 == REFLEXIONS / PROBLEMES CONNUS ==
 
 ~ Pb avec les rigidbodies, ils se collident avec eux même et partent en Y si ils ont un test channel qui les fait collide leur collision, besoin de faire un truc avec le raycast pour les empêcher de se collide eux-même, peut être avoir une autre fonction de raycast AABB uniquement pour ça qui a un fonctionnement un peu différent de celle de base ?
-
-~ Le look at rotation des ennemis du doomlike bug un petit peu ?
 
 ~ Y'a toujours des bugs bizarre avec les plateformes mouvantes qui monte (l'ascenseur) quand elle est immobile et qu'on est en train de bouger quand elle commence à grimper (voir si ça a un lien avec le step mechanic)
 

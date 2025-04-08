@@ -8,6 +8,7 @@
 #include <Physics/rigidbodyComponent.h>
 #include <GameComponents/lampComponent.h>
 #include <GameComponents/movingPlatformComponent.h>
+#include <GameComponents/enemyComponent.h>
 
 #include <PrefabFactories/wallFactory.h>
 #include <PrefabFactories/floorCeilingFactory.h>
@@ -120,6 +121,7 @@ void DoomlikeLevelAdvanced::onEnterEnemySpawnZone(RigidbodyComponent& other)
 {
 	if (!other.getOwner()->hasGameplayTag("Player")) return;
 
+	//  change lights
 	ceilLamp1->getComponentByClass<LampComponent>()->changeStatus(true);
 	ceilLamp2->getComponentByClass<LampComponent>()->changeStatus(true);
 	ceilLamp3->getComponentByClass<LampComponent>()->changeStatus(true);
@@ -130,10 +132,19 @@ void DoomlikeLevelAdvanced::onEnterEnemySpawnZone(RigidbodyComponent& other)
 	ceilLamp8->getComponentByClass<LampComponent>()->changeStatus(true);
 	floorLamp->getComponentByClass<LampComponent>()->changeStatus(false);
 
-	/*registerObject(new Enemy()).setPosition(Vector3{ -5.0f, 7.5f, -5.0f });
-	registerObject(new Enemy()).setPosition(Vector3{ -5.0f, 7.5f,  5.0f });
-	registerObject(new Enemy()).setPosition(Vector3{  5.0f, 7.5f, -5.0f });
-	registerObject(new Enemy()).setPosition(Vector3{  5.0f, 7.5f,  5.0f });*/
+	//  spawn enemies
+	Entity* enemy_1 = createEntity();
+	Entity* enemy_2 = createEntity();
+	Entity* enemy_3 = createEntity();
+	Entity* enemy_4 = createEntity();
+	enemy_1->setPosition(Vector3{ -5.0f, 7.5f, -5.0f });
+	enemy_2->setPosition(Vector3{ -5.0f, 7.5f,  5.0f });
+	enemy_3->setPosition(Vector3{  5.0f, 7.5f, -5.0f });
+	enemy_4->setPosition(Vector3{  5.0f, 7.5f,  5.0f });
+	enemy_1->addComponentByClass<EnemyComponent>();
+	enemy_2->addComponentByClass<EnemyComponent>();
+	enemy_3->addComponentByClass<EnemyComponent>();
+	enemy_4->addComponentByClass<EnemyComponent>();
 
 	enemySpawnZone->getComponentByClass<BoxAABBColComp>()->onTriggerEnter.unregisterObserver(this);
 }

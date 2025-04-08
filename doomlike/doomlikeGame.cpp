@@ -18,6 +18,7 @@
 #include <GameComponents/bulletComponent.h>
 #include <GameComponents/movingPlatformComponent.h>
 #include <GameComponents/targetComponent.h>
+#include <GameComponents/enemyComponent.h>
 
 
 void DoomlikeGame::loadGameAssets()
@@ -35,6 +36,7 @@ void DoomlikeGame::loadGameAssets()
 	ComponentManager::RegisterComponentDataByClass<MovingPlatformComponent>(ComponentClassData{ true, 10 });
 	ComponentManager::RegisterComponentDataByClass<TargetComponent>(ComponentClassData{ false, 20 });
 	ComponentManager::RegisterComponentDataByClass<BulletComponent>(ComponentClassData{ true, 20 });
+	ComponentManager::RegisterComponentDataByClass<EnemyComponent>(ComponentClassData{ true, 10 });
 
 	DefaultAssets::LoadDefaultAssets();
 
@@ -166,7 +168,7 @@ void DoomlikeGame::loadGame()
 	player_entity->addComponentByClass<GunComponent>();
 	player->setupPlayer(1.5f, 7.0f, 7.0f, 0.3f);
 
-	loadLevel(1);
+	loadLevel(2);
 }
 
 
