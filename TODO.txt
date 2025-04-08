@@ -14,7 +14,7 @@
 	- Permettre la création de component "behavior" custom - fait
 	- Modifier le code du doomlike pour utiliser ces components - fait
 	- Clean le moteur des classes obsolètes (Object, Lights, Camera, etc.) - fait
-	- Remplacer l'array par un vector pour les sublist du Component Manager (pas grave d'autoriser le copy constructor en vrai)
+	- Remplacer l'array par un vector pour les sublist du Component Manager (pas grave d'autoriser le copy constructor en vrai) - fait
 
 
 == MOYEN TERME ==

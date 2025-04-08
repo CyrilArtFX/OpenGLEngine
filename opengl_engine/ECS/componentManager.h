@@ -76,13 +76,13 @@ class ComponentListByClass : public ComponentList
 private:
 	struct ComponentSubList
 	{
-		std::unique_ptr<T[]> components;
+		std::vector<T> components;
 		std::vector<bool> componentUsedBySlot;
 		size_t freeSlots;
 
 		ComponentSubList(size_t sublistSize) : freeSlots(sublistSize)
 		{
-			components = std::make_unique<T[]>(sublistSize);
+			components.resize(sublistSize);
 			componentUsedBySlot.resize(sublistSize);
 		}
 	};

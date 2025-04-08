@@ -8,8 +8,8 @@ class Component
 public:
 	Component();
 	~Component();
+	Component(const Component& other); //  we need the copy constructor for the vector
 
-	Component(const Component&) = delete;
 	Component& operator=(const Component&) = delete;
 
 	/** Get the Entity that owns this component. */

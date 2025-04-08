@@ -9,6 +9,10 @@ Component::~Component()
 {
 }
 
+Component::Component(const Component& other) : owner(other.owner), updateActivated(other.updateActivated)
+{
+}
+
 Entity* Component::getOwner() const
 {
 	return owner;
