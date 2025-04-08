@@ -14,8 +14,6 @@
 #include <PrefabFactories/stairFactory.h>
 #include <PrefabFactories/lampFactory.h>
 
-//#include <LevelUtilities/enemyCount.h>
-
 using WallFactory::WallFacingDirection;
 
 
@@ -77,8 +75,8 @@ void DoomlikeLevelStart::loadScene()
 	enemy_1->addComponentByClass<EnemyComponent>();
 	enemy_2->addComponentByClass<EnemyComponent>();
 
-	//enemyCount.addEnemies({ &enemy_1, &enemy_2 });
-	//enemyCount.onAllEnemiesDead.registerObserver(this, Bind_0(&DoomlikeLevelStart::onEnemiesDead));
+	enemyCount.addEnemies({ enemy_1, enemy_2 });
+	enemyCount.onAllEnemiesDead.registerObserver(this, Bind_0(&DoomlikeLevelStart::onEnemiesDead));
 
 
 	//  trigger zone
@@ -100,7 +98,7 @@ void DoomlikeLevelStart::loadScene()
 
 void DoomlikeLevelStart::unloadScene()
 {
-	//enemyCount.clearEnemies(true);
+	enemyCount.clearEnemyCount(true);
 }
 
 void DoomlikeLevelStart::updateScene(float dt)

@@ -2,8 +2,7 @@
 #include <Core/scene.h>
 #include <Events/observer.h>
 #include <GameLogic/playerSpawnPoint.h>
-
-//#include <LevelUtilities/enemyCount.h>
+#include <GameLogic/enemyCount.h>
 
 
 class DoomlikeLevelStart : public Scene, public Observer, public PlayerSpawnPoint
@@ -19,7 +18,7 @@ protected:
 
 private:
 	//  level utilities
-	//EnemyCount enemyCount;
+	EnemyCount enemyCount;
 
 	Entity* endLevelWall;
 	Entity* endLevelZone;

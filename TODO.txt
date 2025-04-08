@@ -12,8 +12,7 @@
 	- Intégrer la physique proprement dans la logique de component - fait
 	- Faire marcher tout ça bien toujours avec le projet sandbox - fait
 	- Permettre la création de component "behavior" custom - fait
-	- Modifier le code du doomlike pour utiliser ces components - en cours
-		# Faire le component enemy count
+	- Modifier le code du doomlike pour utiliser ces components - fait
 	- Clean le moteur des classes obsolètes (Object, Lights, Camera, etc.) 
 		(+ sans doute bouger la classe Transform et virer le dossier Objects)
 	- Remplacer l'array par un vector pour les sublist du Component Manager (pas grave d'autoriser le copy constructor en vrai)
