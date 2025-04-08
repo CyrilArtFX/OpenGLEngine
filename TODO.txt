@@ -1,23 +1,25 @@
-== COURT TERME ==
+== COURT TERME == (pour la demoreel)
 
-~ Intégrer l'ECS (la logique de base de l'ECS qui fait que les entités ne sont plus que des objets qui ont la référence de leurs components, mais les components ont une logique interne, donc pas un système aussi poussé que celui de FLECS, plus à la Unity)
-	- Faire la structure de base des classes Entity & Component - fait
-	- Modifier Game & Scene pour qu'ils puissent accueuillir des Entity - fait
-	- Placer le rendering de mesh dans un component - fait
-	- Placer les lumières dans des components - fait
-	- Faire marcher cette base là (désactiver collision, audio & hud) avec le projet sandbox - fait
-	- Rework la camera et faire marcher ça en component - fait
-	- Intégrer le hud (sprite & texte) proprement dans la logique de component - fait
-	- Intégrer l'audio proprement dans la logique de component - fait
-	- Intégrer la physique proprement dans la logique de component - fait
-	- Faire marcher tout ça bien toujours avec le projet sandbox - fait
-	- Permettre la création de component "behavior" custom - fait
-	- Modifier le code du doomlike pour utiliser ces components - fait
-	- Clean le moteur des classes obsolètes (Object, Lights, Camera, etc.) - fait
-	- Remplacer l'array par un vector pour les sublist du Component Manager (pas grave d'autoriser le copy constructor en vrai) - fait
+~ Partie graphismes:
+	- Trouver des meilleures textures pour sol/murs/plafonds du doomlike
+	- Trouver un meilleur mesh pour l'escalier du doomlike
+	- Regarder pour améliorer les autres mesh du doomlike
+	- Trouver des mesh sympa pour la partie présentation de l'ECS de la demoreel
+
+~ Partie dev pour la demoreel:
+	- Faire le truc sympa pour montrer le son avec le bouton et le tooltip
+	- Faire la scène de présentation du moteur avec des assets et de la lumière pas trop moches
+	- Faire la scène de présentation de l'ECS avec la caméra qui tourne et les assets qui s'ajoutent
+	- Faire la scène de présentation de la physique avec les différents systèmes qui existent
+
+~ Partie bugfixes:
+	- Corriger les rigidbody qui se collident eux-mêmes (voir en bas)
+	- Corriger le fait de se tp à travers les plateformes mouvantes (voir en bas)
+	- Corriger l'ascenseur qui nous fait partir en couilles si on bouge quand il commence à monter (voir en bas)
+	- Corriger les plateformes mouvantes du level debug qui niquent leurs positions une fois sur deux
 
 
-== MOYEN TERME ==
+== MOYEN TERME == (après artfx)
 
 ~ Faire un éditeur d'assets (utiliser ImGUI pour l'interface)
 
