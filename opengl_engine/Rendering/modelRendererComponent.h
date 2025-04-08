@@ -2,7 +2,7 @@
 #include <ECS/component.h>
 #include <Events/observer.h>
 #include <Rendering/Model/model.h>
-#include <Objects/transform.h>
+#include <Core/transform.h>
 
 
 /** Model Renderer Component

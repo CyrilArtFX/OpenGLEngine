@@ -13,8 +13,7 @@
 	- Faire marcher tout ça bien toujours avec le projet sandbox - fait
 	- Permettre la création de component "behavior" custom - fait
 	- Modifier le code du doomlike pour utiliser ces components - fait
-	- Clean le moteur des classes obsolètes (Object, Lights, Camera, etc.) 
-		(+ sans doute bouger la classe Transform et virer le dossier Objects)
+	- Clean le moteur des classes obsolètes (Object, Lights, Camera, etc.) - fait
 	- Remplacer l'array par un vector pour les sublist du Component Manager (pas grave d'autoriser le copy constructor en vrai)
 
 

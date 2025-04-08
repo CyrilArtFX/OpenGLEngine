@@ -1,5 +1,5 @@
 #pragma once
-#include <Objects/transform.h>
+#include <Core/transform.h>
 #include <Core/Gameplay/gameplayTag.h>
 #include <ECS/component.h>
 #include <ECS/componentManager.h>
