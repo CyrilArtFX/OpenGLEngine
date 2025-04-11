@@ -21,6 +21,8 @@ public:
 	{
 	}
 
+	virtual ~ComponentList() {}
+
 
 	/** Create a component and store it continuously with the other components of this class in the memory. */
 	virtual std::shared_ptr<Component> createComponent(Entity* owner) = 0;

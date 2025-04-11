@@ -57,11 +57,19 @@
 
 == AUTRES ==
 
+~ Pour l'update du component manager, utiliser la liste de T au lieu de la liste de shared_ptr, plus rapide pour la mise en cache (dans le doute, profiler ça), comme le compiler va générer la classe template avec les différents types, possiblité d'appeler une fonction de component même sans cast
+
+~ Regarder si y'a moyen d'utiliser la liste de T à la place de la liste de weak_ptr aussi
+
+~ tester d'avoir typeid(T) en static pour que ça le compile qu'une fois ?
+
 ~ Regarder si ça marche bien l'appel à une fonction parent avec ClasseParent::fonction(), et si oui l'utiliser partout lol
 
 ~ Changer le nom de la "model matrix" du transform, vu que c'est plus vraiment la matrice du modele, c'est la matrice de l'entity...
 
 ~ Compute la direction des Spot Light en fonction de la rotation de l'Entity (avoir une rotation offset ? avoir un vecteur de direction offset ?)
+
+~ Refactor le "load game asset" du doomlike pour utiliser plus de fonctions et moins de copier coller
 
 ~ Améliorer les textes debug (réduire la taille du texte fps, ajouter la durée de la frame en ms, ajouter textes quand pause & freecam)
 
@@ -70,6 +78,8 @@
 ~ Opti le rendering de texte pour utiliser moins de matrices, générer une matrice transform pour tout le texte et passer les position et scale des char via un vec4 au shader qui se charge de la fin des calculs ?
 
 ~ Débloquer la limite de FPS
+
+~ Utiliser une state machine pour la logique de la classe game
 
 ~ Réussir à intégrer les collisions des sons de FMod
 
