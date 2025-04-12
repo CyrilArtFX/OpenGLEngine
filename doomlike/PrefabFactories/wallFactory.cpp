@@ -5,7 +5,7 @@
 #include <Physics/AABB/boxAABBColComp.h>
 
 
-Entity* WallFactory::CreateWall(EntityContainer* entityContainer, WallFacingDirection facingDirection, const Vector3& position, const Vector2& scale, bool createCollision)
+Entity* WallFactory::CreateWall(EntityContainer* entityContainer, WallFacingDirection facingDirection, const Vector3& position, const Vector2& scale, bool isAltTex, bool createCollision)
 {
 	Entity* wall_entity = entityContainer->createEntity();
 
@@ -41,7 +41,7 @@ Entity* WallFactory::CreateWall(EntityContainer* entityContainer, WallFacingDire
 		break;
 	}
 
-	wall_entity->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("wall"));
+	wall_entity->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel(isAltTex ? "wall_alt" : "wall"));
 
 	if (createCollision)
 	{
@@ -59,21 +59,35 @@ Entity* WallFactory::CreateWall(EntityContainer* entityContainer, WallFacingDire
 
 void WallFactory::SetupWallAssets()
 {
-	AssetManager::LoadTexture("wall_diffuse", "doomlike/tex_stonewall/stonewall_basecolor.jpg", false);
-	AssetManager::LoadTexture("wall_specular", "doomlike/tex_stonewall/stonewall_specular.jpg", false);
+	AssetManager::LoadTexture("wall_diffuse", "doomlike/textures/stone_wall_basecolor.jpg", false);
+	AssetManager::LoadTexture("wall_specular", "doomlike/textures/stone_wall_specular.jpg", false);
+
+	AssetManager::LoadTexture("wall_alt_diffuse", "doomlike/textures/concrete_wall_basecolor.jpg", false);
+	AssetManager::LoadTexture("wall_alt_specular", "doomlike/textures/concrete_wall_specular.jpg", false);
 
 	Material& wall_mat = AssetManager::CreateMaterial("wall", AssetManager::GetShader("lit_object"));
 	wall_mat.addTexture(&AssetManager::GetTexture("wall_diffuse"), TextureType::Diffuse);
 	wall_mat.addTexture(&AssetManager::GetTexture("wall_specular"), TextureType::Specular);
 	wall_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
-	wall_mat.addParameter("material.shininess", 32.0f);
+	wall_mat.addParameter("material.shininess", 10.0f);
 	wall_mat.addParameter("beta_prevent_tex_scaling", true);
+
+	Material& wall_alt_mat = AssetManager::CreateMaterial("wall_alt", AssetManager::GetShader("lit_object"));
+	wall_alt_mat.addTexture(&AssetManager::GetTexture("wall_alt_diffuse"), TextureType::Diffuse);
+	wall_alt_mat.addTexture(&AssetManager::GetTexture("wall_alt_specular"), TextureType::Specular);
+	wall_alt_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
+	wall_alt_mat.addParameter("material.shininess", 10.0f);
+	wall_alt_mat.addParameter("beta_prevent_tex_scaling", true);
 
 	AssetManager::CreateModel("wall");
 	AssetManager::GetModel("wall").addMesh(AssetManager::GetSingleMesh("default_plane"), AssetManager::GetMaterial("wall"));
+
+	AssetManager::CreateModel("wall_alt");
+	AssetManager::GetModel("wall_alt").addMesh(AssetManager::GetSingleMesh("default_plane"), AssetManager::GetMaterial("wall_alt"));
 }
 
 void WallFactory::ReleaseWallAssets()
 {
 	AssetManager::DeleteMaterial("wall");
+	AssetManager::DeleteMaterial("wall_alt");
 }

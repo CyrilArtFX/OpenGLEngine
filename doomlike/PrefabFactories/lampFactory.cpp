@@ -7,7 +7,7 @@
 #include <Physics/AABB/boxAABBColComp.h>
 
 
-Entity* LampFactory::CreateLamp(EntityContainer* entityContainer, const Vector3& position, bool isCeiling, bool startOff)
+Entity* LampFactory::CreateLamp(EntityContainer* entityContainer, const Vector3& position, float intensityMultiplier, bool isCeiling, bool startOff)
 {
 	Entity* lamp_entity = entityContainer->createEntity();
 
@@ -50,7 +50,7 @@ Entity* LampFactory::CreateLamp(EntityContainer* entityContainer, const Vector3&
 	light_comp->setColor(Color{ 227, 141, 2, 225 });
 	light_comp->setOffset(light_comp_offset);
 	light_comp->setAmbientStrength(0.01f);
-	light_comp->setDiffuseStrength(light_comp_diffuse);
+	light_comp->setDiffuseStrength(light_comp_diffuse * intensityMultiplier);
 	light_comp->setUseDiffColorToSpecColor(true);
 
 	std::shared_ptr<BoxAABBColComp> col_comp = lamp_entity->addComponentByClass<BoxAABBColComp>();

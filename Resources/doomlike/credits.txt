@@ -1,3 +1,5 @@
 "space maintenance robot" (https://skfb.ly/PVHY) by (Andy An)norbyscook is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
 "Bullet 9 mm" (https://skfb.ly/oPtyx) by MaybePush is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
 "Sci-fi Gun" (https://skfb.ly/6zsPN) by Jakob K. is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+textures: megascan

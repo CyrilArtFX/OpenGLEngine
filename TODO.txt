@@ -1,8 +1,8 @@
 == COURT TERME == (pour la demoreel)
 
 ~ Partie graphismes:
-	- Trouver des meilleures textures pour sol/murs/plafonds du doomlike
-	- Trouver un meilleur mesh pour l'escalier du doomlike
+	- Trouver des meilleures textures pour sol/murs/plafonds du doomlike - fait
+	- Trouver un meilleur mesh pour l'escalier du doomlike - bof
 	- Regarder pour améliorer les autres mesh du doomlike
 	- Trouver des mesh sympa pour la partie présentation de l'ECS de la demoreel
 

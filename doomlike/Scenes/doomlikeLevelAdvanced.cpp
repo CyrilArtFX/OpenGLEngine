@@ -28,26 +28,26 @@ void DoomlikeLevelAdvanced::loadScene()
 	FloorCeilingFactory::CreateFloor(this, Vector3{ 0.0f, 7.0f, 0.0f }, Vector2{  2.5f,  2.5f }, true);
 	FloorCeilingFactory::CreateCeiling(this, Vector3{ 0.0f, 10.0f, 0.0f }, Vector2{ 20.0f, 20.0f });
 
-	WallFactory::CreateWall(this, WallFacingDirection::WallFacingNegativeZ, Vector3{   0.0f, 3.5f, -1.25f }, Vector2{ 2.5f, 7.0f });
-	WallFactory::CreateWall(this, WallFacingDirection::WallFacingPositiveX, Vector3{  1.25f, 3.5f,   0.0f }, Vector2{ 2.5f, 7.0f });
-	WallFactory::CreateWall(this, WallFacingDirection::WallFacingNegativeX, Vector3{ -1.25f, 3.5f,   0.0f }, Vector2{ 2.5f, 7.0f });
-	WallFactory::CreateWall(this, WallFacingDirection::WallFacingPositiveZ, Vector3{   0.0f, 3.5f,  1.25f }, Vector2{ 2.5f, 7.0f });
+	WallFactory::CreateWall(this, WallFacingDirection::WallFacingNegativeZ, Vector3{   0.0f, 3.5f, -1.25f }, Vector2{ 2.5f, 7.0f }, true);
+	WallFactory::CreateWall(this, WallFacingDirection::WallFacingPositiveX, Vector3{  1.25f, 3.5f,   0.0f }, Vector2{ 2.5f, 7.0f }, true);
+	WallFactory::CreateWall(this, WallFacingDirection::WallFacingNegativeX, Vector3{ -1.25f, 3.5f,   0.0f }, Vector2{ 2.5f, 7.0f }, true);
+	WallFactory::CreateWall(this, WallFacingDirection::WallFacingPositiveZ, Vector3{   0.0f, 3.5f,  1.25f }, Vector2{ 2.5f, 7.0f }, true);
 
-	WallFactory::CreateWall(this, WallFacingDirection::WallFacingNegativeZ, Vector3{   0.0f, 5.0f,  10.0f }, Vector2{ 20.0f, 10.0f });
-	WallFactory::CreateWall(this, WallFacingDirection::WallFacingPositiveX, Vector3{ -10.0f, 5.0f,   0.0f }, Vector2{ 20.0f, 10.0f });
-	WallFactory::CreateWall(this, WallFacingDirection::WallFacingNegativeX, Vector3{  10.0f, 5.0f,   0.0f }, Vector2{ 20.0f, 10.0f });
-	WallFactory::CreateWall(this, WallFacingDirection::WallFacingPositiveZ, Vector3{   0.0f, 5.0f, -10.0f }, Vector2{ 20.0f, 10.0f });
+	WallFactory::CreateWall(this, WallFacingDirection::WallFacingNegativeZ, Vector3{   0.0f, 5.0f,  10.0f }, Vector2{ 20.0f, 10.0f }, false);
+	WallFactory::CreateWall(this, WallFacingDirection::WallFacingPositiveX, Vector3{ -10.0f, 5.0f,   0.0f }, Vector2{ 20.0f, 10.0f }, false);
+	WallFactory::CreateWall(this, WallFacingDirection::WallFacingNegativeX, Vector3{  10.0f, 5.0f,   0.0f }, Vector2{ 20.0f, 10.0f }, false);
+	WallFactory::CreateWall(this, WallFacingDirection::WallFacingPositiveZ, Vector3{   0.0f, 5.0f, -10.0f }, Vector2{ 20.0f, 10.0f }, false);
 
 	//  prefabs - dynamic
-	ceilLamp1 = LampFactory::CreateLamp(this, Vector3{ -8.0f, 10.0f, -8.0f }, true, true);
-	ceilLamp2 = LampFactory::CreateLamp(this, Vector3{  8.0f, 10.0f, -8.0f }, true, true);
-	ceilLamp3 = LampFactory::CreateLamp(this, Vector3{ -8.0f, 10.0f,  8.0f }, true, true);
-	ceilLamp4 = LampFactory::CreateLamp(this, Vector3{  8.0f, 10.0f,  8.0f }, true, true);
-	ceilLamp5 = LampFactory::CreateLamp(this, Vector3{ -8.0f, 10.0f,  0.0f }, true, true);
-	ceilLamp6 = LampFactory::CreateLamp(this, Vector3{  8.0f, 10.0f,  0.0f }, true, true);
-	ceilLamp7 = LampFactory::CreateLamp(this, Vector3{  0.0f, 10.0f, -8.0f }, true, true);
-	ceilLamp8 = LampFactory::CreateLamp(this, Vector3{  0.0f, 10.0f,  8.0f }, true, true);
-	floorLamp = LampFactory::CreateLamp(this, Vector3{  6.0f,  0.0f,  0.0f }, false, false);
+	ceilLamp1 = LampFactory::CreateLamp(this, Vector3{ -8.0f, 10.0f, -8.0f }, 1.0f, true, true);
+	ceilLamp2 = LampFactory::CreateLamp(this, Vector3{  8.0f, 10.0f, -8.0f }, 1.0f, true, true);
+	ceilLamp3 = LampFactory::CreateLamp(this, Vector3{ -8.0f, 10.0f,  8.0f }, 1.0f, true, true);
+	ceilLamp4 = LampFactory::CreateLamp(this, Vector3{  8.0f, 10.0f,  8.0f }, 1.0f, true, true);
+	ceilLamp5 = LampFactory::CreateLamp(this, Vector3{ -8.0f, 10.0f,  0.0f }, 1.0f, true, true);
+	ceilLamp6 = LampFactory::CreateLamp(this, Vector3{  8.0f, 10.0f,  0.0f }, 1.0f, true, true);
+	ceilLamp7 = LampFactory::CreateLamp(this, Vector3{  0.0f, 10.0f, -8.0f }, 1.0f, true, true);
+	ceilLamp8 = LampFactory::CreateLamp(this, Vector3{  0.0f, 10.0f,  8.0f }, 1.0f, true, true);
+	floorLamp = LampFactory::CreateLamp(this, Vector3{  6.0f,  0.0f,  0.0f }, 2.0f, false, false);
 
 	//  directional light
 	Entity* light = createEntity();

@@ -15,7 +15,7 @@ namespace WallFactory
 		WallFacingNegativeZ = 3
 	};
 
-	Entity* CreateWall(EntityContainer* entityContainer, WallFacingDirection facingDirection, const Vector3& position, const Vector2& scale, bool createCollision = true);
+	Entity* CreateWall(EntityContainer* entityContainer, WallFacingDirection facingDirection, const Vector3& position, const Vector2& scale, bool isAltTex, bool createCollision = true);
 
 	void SetupWallAssets();
 	void ReleaseWallAssets();

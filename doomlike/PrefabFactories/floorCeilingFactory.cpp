@@ -47,17 +47,18 @@ Entity* FloorCeilingFactory::CreateCeiling(EntityContainer* entityContainer, con
 
 void FloorCeilingFactory::SetupFloorCeilingAssets()
 {
-	AssetManager::LoadTexture("floor_diffuse", "pavement.jpg", false);
+	AssetManager::LoadTexture("floor_stone_diffuse", "doomlike/textures/stone_floor_basecolor.jpg", false);
+	AssetManager::LoadTexture("floor_stone_specular", "doomlike/textures/stone_floor_specular.jpg", false);
 
-	AssetManager::LoadTexture("ceiling_diffuse", "doomlike/tex_woodceiling/woodceiling_basecolor.jpg", false);
-	//AssetManager::LoadTexture("ceiling_specular", "doomlike/tex_woodceiling/woodceiling_roughness.jpg", false);
+	AssetManager::LoadTexture("floor_wood_diffuse", "doomlike/textures/wood_floor_basecolor.jpg", false);
+	AssetManager::LoadTexture("floor_wood_specular", "doomlike/textures/wood_floor_specular.jpg", false);
 
-	AssetManager::LoadTexture("floor_wood_diffuse", "doomlike/tex_woodfloor/woodfloor_basecolor.jpg", false);
-	AssetManager::LoadTexture("floor_wood_specular", "doomlike/tex_woodfloor/woodfloor_specular.jpg", false);
+	AssetManager::LoadTexture("ceiling_diffuse", "doomlike/textures/wood_ceiling_basecolor.jpg", false);
+	AssetManager::LoadTexture("ceiling_specular", "doomlike/textures/wood_ceiling_specular.jpg", false);
 
 	Material& floor_mat = AssetManager::CreateMaterial("floor", AssetManager::GetShader("lit_object"));
-	floor_mat.addTexture(&AssetManager::GetTexture("floor_diffuse"), TextureType::Diffuse);
-	floor_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Specular);
+	floor_mat.addTexture(&AssetManager::GetTexture("floor_stone_diffuse"), TextureType::Diffuse);
+	floor_mat.addTexture(&AssetManager::GetTexture("floor_stone_specular"), TextureType::Specular);
 	floor_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
 	floor_mat.addParameter("material.shininess", 32.0f);
 	floor_mat.addParameter("beta_prevent_tex_scaling", true);
@@ -66,12 +67,12 @@ void FloorCeilingFactory::SetupFloorCeilingAssets()
 	floor_wood_mat.addTexture(&AssetManager::GetTexture("floor_wood_diffuse"), TextureType::Diffuse);
 	floor_wood_mat.addTexture(&AssetManager::GetTexture("floor_wood_specular"), TextureType::Specular);
 	floor_wood_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
-	floor_wood_mat.addParameter("material.shininess", 32.0f);
+	floor_wood_mat.addParameter("material.shininess", 20.0f);
 	floor_wood_mat.addParameter("beta_prevent_tex_scaling", true);
 
 	Material& ceiling_mat = AssetManager::CreateMaterial("ceiling", AssetManager::GetShader("lit_object"));
 	ceiling_mat.addTexture(&AssetManager::GetTexture("ceiling_diffuse"), TextureType::Diffuse);
-	ceiling_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Specular);
+	ceiling_mat.addTexture(&AssetManager::GetTexture("ceiling_specular"), TextureType::Specular);
 	ceiling_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
 	ceiling_mat.addParameter("material.shininess", 32.0f);
 	ceiling_mat.addParameter("beta_prevent_tex_scaling", true);
