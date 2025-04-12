@@ -83,7 +83,7 @@ void StairFactory::SetupStairAssets()
 
 	Material& stairs_mat = AssetManager::CreateMaterial("stairs", AssetManager::GetShader("lit_object"));
 	stairs_mat.addTexture(&AssetManager::GetTexture("stairs_diffuse"), TextureType::Diffuse);
-	stairs_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Specular);
+	stairs_mat.addTexture(&AssetManager::GetTexture("stairs_specular"), TextureType::Specular);
 	stairs_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
 	stairs_mat.addParameter("material.shininess", 32.0f);
 	//stairs_mat.addParameter("beta_prevent_tex_scaling", false);

@@ -32,6 +32,12 @@ void ExpositionGame::loadGameAssets()
 
 	AssetManager::LoadTexture("smileyface_sprite", "awesomeface.png", false);
 
+	AssetManager::LoadTexture("floor_stone_diffuse", "doomlike/textures/stone_floor_basecolor.jpg", false);
+	AssetManager::LoadTexture("floor_stone_specular", "doomlike/textures/stone_floor_specular.jpg", false);
+
+	AssetManager::LoadTexture("floor_wood_diffuse", "doomlike/textures/wood_floor_basecolor.jpg", false);
+	AssetManager::LoadTexture("floor_wood_specular", "doomlike/textures/wood_floor_specular.jpg", false);
+
 	Material& container_mat = AssetManager::CreateMaterial("container", AssetManager::GetShader("lit_object"));
 	container_mat.addTexture(&AssetManager::GetTexture("container_diffuse"), TextureType::Diffuse);
 	container_mat.addTexture(&AssetManager::GetTexture("container_specular"), TextureType::Specular);
@@ -43,6 +49,20 @@ void ExpositionGame::loadGameAssets()
 	backpack_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Specular);
 	backpack_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
 	backpack_mat.addParameter("material.shininess", 32.0f);
+
+	Material& floor_mat = AssetManager::CreateMaterial("floor_stone", AssetManager::GetShader("lit_object"));
+	floor_mat.addTexture(&AssetManager::GetTexture("floor_stone_diffuse"), TextureType::Diffuse);
+	floor_mat.addTexture(&AssetManager::GetTexture("floor_stone_specular"), TextureType::Specular);
+	floor_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
+	floor_mat.addParameter("material.shininess", 32.0f);
+	floor_mat.addParameter("beta_prevent_tex_scaling", true);
+
+	Material& floor_wood_mat = AssetManager::CreateMaterial("floor_wood", AssetManager::GetShader("lit_object"));
+	floor_wood_mat.addTexture(&AssetManager::GetTexture("floor_wood_diffuse"), TextureType::Diffuse);
+	floor_wood_mat.addTexture(&AssetManager::GetTexture("floor_wood_specular"), TextureType::Specular);
+	floor_wood_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
+	floor_wood_mat.addParameter("material.shininess", 20.0f);
+	floor_wood_mat.addParameter("beta_prevent_tex_scaling", true);
 
 	Material& light_source_mat_white = AssetManager::CreateMaterial("light_source_white", AssetManager::GetShader("flat_emissive"));
 	light_source_mat_white.addParameter("emissive", Color::white.toVector());
@@ -60,18 +80,37 @@ void ExpositionGame::loadGameAssets()
 	AssetManager::LoadMeshCollection("backpack", "backpack/backpack.fbx");
 	AssetManager::CreateModel("backpack").addMeshes(AssetManager::GetMeshCollection("backpack"), AssetManager::GetMaterial("backpack"));
 
+	AssetManager::CreateModel("floor_stone");
+	AssetManager::GetModel("floor_stone").addMesh(AssetManager::GetSingleMesh("default_plane"), AssetManager::GetMaterial("floor_stone"));
+
+	AssetManager::CreateModel("floor_wood");
+	AssetManager::GetModel("floor_wood").addMesh(AssetManager::GetSingleMesh("default_plane"), AssetManager::GetMaterial("floor_wood"));
+
+
+	//  props
+	loadProps("cannontrailer");
+	loadProps("romanstatue");
+	loadProps("woodenbarrel");
+	loadProps("woodenbeehive");
+	loadProps("woodenlamp", true);
+	loadProps("woodenwheelbarrow");
+
 
 	//  audio
 	AssetManager::CreateSound("sound", "fartreverb.mp3", ACTIVATE_LOOP);
 	AudioSound& music = AssetManager::CreateSound("music", "TestMusic.mp3", ACTIVATE_3D | ACTIVATE_STREAM);
 	music.setMinMaxDistance(50.0f, 100.0f);
+
+
+	//  font
+	AssetManager::LoadFont("octosquares_128", "octosquares_font/octosquares.ttf", 128, CharacterLoading::ASCII_128);
 }
 
 void ExpositionGame::loadGame()
 {
 	test_game_entity = createEntity();
 
-	loadScene(&expositionScene);
+	loadScene(&demoreelSceneOne);
 }
 
 
@@ -83,4 +122,23 @@ void ExpositionGame::unloadGame()
 	AssetManager::DeleteMaterial("light_source_white");
 	AssetManager::DeleteMaterial("light_source_cyan");
 	AssetManager::DeleteMaterial("backpack");
+}
+
+
+void ExpositionGame::loadProps(const std::string& propsName, bool emissive)
+{
+	const std::string props_path = "props/" + propsName;
+	AssetManager::LoadTexture(propsName + "_diffuse", props_path + "_basecolor.jpg");
+	AssetManager::LoadTexture(propsName + "_specular", props_path + "_specular.jpg");
+	if(emissive) AssetManager::LoadTexture(propsName + "_emissive", props_path + "_emissive.jpg");
+
+	Material& props_mat = AssetManager::CreateMaterial(propsName, AssetManager::GetShader("lit_object"));
+	props_mat.addTexture(&AssetManager::GetTexture(propsName + "_diffuse"), TextureType::Diffuse);
+	props_mat.addTexture(&AssetManager::GetTexture(propsName + "_specular"), TextureType::Specular);
+	props_mat.addTexture(&AssetManager::GetTexture(emissive ? (propsName + "_emissive") : "default_black"), TextureType::Emissive);
+	props_mat.addParameter("material.shininess", 32.0f);
+
+	AssetManager::LoadMeshCollection(propsName, props_path + ".fbx");
+
+	AssetManager::CreateModel(propsName).addMeshes(AssetManager::GetMeshCollection(propsName), AssetManager::GetMaterial(propsName));
 }
