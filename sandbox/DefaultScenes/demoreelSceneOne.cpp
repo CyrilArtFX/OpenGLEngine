@@ -13,13 +13,13 @@
 void DemoreelSceneOne::loadScene()
 {
 	Renderer& renderer = Locator::getRenderer();
-	renderer.SetClearColor(Color{ 50, 75, 75, 255 });
+	renderer.SetClearColor(Color{ 0, 5, 20, 255 });
 
 
 	//  camera
 	camera = createEntity();
 	camera->addComponentByClass<CameraComponent>()->setAsActiveCamera();
-	camera->setPosition(Vector3{ 7.0f, 2.0f, 0.0f });
+	camera->setPosition(Vector3{ 7.0f, 2.5f, 0.0f });
 
 
 	//  directionnal light
@@ -88,8 +88,9 @@ void DemoreelSceneOne::loadScene()
 	wooden_lamp_1->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("woodenlamp"));
 	std::shared_ptr<PointLightComponent> wooden_light_1 = wooden_lamp_1->addComponentByClass<PointLightComponent>();
 	wooden_light_1->setColor(Color{ 238, 205, 120, 255 });
-	wooden_light_1->setAmbientStrength(0.3f);
-	wooden_light_1->setDiffuseStrength(1.2f);
+	wooden_light_1->setOffset(Vector3{ 0.0f, 300.0f, 0.0f });
+	wooden_light_1->setAmbientStrength(0.2f);
+	wooden_light_1->setDiffuseStrength(2.0f);
 	wooden_light_1->setUseDiffColorToSpecColor(true);
 
 	Entity* wooden_lamp_2 = createEntity();
@@ -99,8 +100,9 @@ void DemoreelSceneOne::loadScene()
 	wooden_lamp_2->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("woodenlamp"));
 	std::shared_ptr<PointLightComponent> wooden_light_2 = wooden_lamp_2->addComponentByClass<PointLightComponent>();
 	wooden_light_2->setColor(Color{ 238, 205, 120, 255 });
-	wooden_light_2->setAmbientStrength(0.3f);
-	wooden_light_2->setDiffuseStrength(1.2f);
+	wooden_light_2->setOffset(Vector3{ 0.0f, 300.0f, 0.0f });
+	wooden_light_2->setAmbientStrength(0.2f);
+	wooden_light_2->setDiffuseStrength(2.0f);
 	wooden_light_2->setUseDiffColorToSpecColor(true);
 
 	Entity* text = createEntity();
@@ -116,11 +118,11 @@ void DemoreelSceneOne::updateScene(float dt)
 	if (Input::IsKeyPressed(GLFW_KEY_SPACE))
 	{
 		cameraMoving = !cameraMoving;
-		if(cameraMoving) camera->setPosition(Vector3{ 7.0f, 2.0f, 0.0f });
+		if(cameraMoving) camera->setPosition(Vector3{ 7.0f, 2.5f, 0.0f });
 	}
 
 	if (cameraMoving)
 	{
-		camera->addPosition(Vector3{ 4.0f * dt, 0.0f, 0.0f });
+		camera->addPosition(Vector3{ 2.0f * dt, 0.0f, 0.0f });
 	}
 }

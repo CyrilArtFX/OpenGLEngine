@@ -62,6 +62,7 @@ void FloorCeilingFactory::SetupFloorCeilingAssets()
 	floor_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
 	floor_mat.addParameter("material.shininess", 32.0f);
 	floor_mat.addParameter("beta_prevent_tex_scaling", true);
+	floor_mat.addParameter("beta_tex_scaling_factor", 2.0f);
 
 	Material& floor_wood_mat = AssetManager::CreateMaterial("floor_wood", AssetManager::GetShader("lit_object"));
 	floor_wood_mat.addTexture(&AssetManager::GetTexture("floor_wood_diffuse"), TextureType::Diffuse);
@@ -69,6 +70,7 @@ void FloorCeilingFactory::SetupFloorCeilingAssets()
 	floor_wood_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
 	floor_wood_mat.addParameter("material.shininess", 20.0f);
 	floor_wood_mat.addParameter("beta_prevent_tex_scaling", true);
+	floor_wood_mat.addParameter("beta_tex_scaling_factor", 2.0f);
 
 	Material& ceiling_mat = AssetManager::CreateMaterial("ceiling", AssetManager::GetShader("lit_object"));
 	ceiling_mat.addTexture(&AssetManager::GetTexture("ceiling_diffuse"), TextureType::Diffuse);
@@ -76,6 +78,7 @@ void FloorCeilingFactory::SetupFloorCeilingAssets()
 	ceiling_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
 	ceiling_mat.addParameter("material.shininess", 32.0f);
 	ceiling_mat.addParameter("beta_prevent_tex_scaling", true);
+	ceiling_mat.addParameter("beta_tex_scaling_factor", 2.0f);
 
 	AssetManager::CreateModel("floor");
 	AssetManager::GetModel("floor").addMesh(AssetManager::GetSingleMesh("default_plane"), AssetManager::GetMaterial("floor"));

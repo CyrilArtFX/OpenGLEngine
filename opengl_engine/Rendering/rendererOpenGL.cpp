@@ -81,6 +81,7 @@ void RendererOpenGL::draw()
 		for (auto& material : materials_by_shaders.second)
 		{
 			shader->setBool("beta_prevent_tex_scaling", false); //  should do a better thing for all beta parameters
+			shader->setFloat("beta_tex_scaling_factor", 1.0f); //  should do a better thing for all beta parameters
 
 			material->use();
 

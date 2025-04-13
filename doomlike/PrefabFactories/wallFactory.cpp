@@ -71,6 +71,7 @@ void WallFactory::SetupWallAssets()
 	wall_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
 	wall_mat.addParameter("material.shininess", 10.0f);
 	wall_mat.addParameter("beta_prevent_tex_scaling", true);
+	wall_mat.addParameter("beta_tex_scaling_factor", 2.0f);
 
 	Material& wall_alt_mat = AssetManager::CreateMaterial("wall_alt", AssetManager::GetShader("lit_object"));
 	wall_alt_mat.addTexture(&AssetManager::GetTexture("wall_alt_diffuse"), TextureType::Diffuse);
@@ -78,6 +79,7 @@ void WallFactory::SetupWallAssets()
 	wall_alt_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
 	wall_alt_mat.addParameter("material.shininess", 10.0f);
 	wall_alt_mat.addParameter("beta_prevent_tex_scaling", true);
+	wall_alt_mat.addParameter("beta_tex_scaling_factor", 2.0f);
 
 	AssetManager::CreateModel("wall");
 	AssetManager::GetModel("wall").addMesh(AssetManager::GetSingleMesh("default_plane"), AssetManager::GetMaterial("wall"));

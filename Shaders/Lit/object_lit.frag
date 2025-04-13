@@ -58,6 +58,7 @@ uniform Material material;
 uniform vec3 viewPos;
 
 uniform bool beta_prevent_tex_scaling = false;
+uniform float beta_tex_scaling_factor = 1;
 
 
 uniform DirectionalLight dirLight;
@@ -86,8 +87,8 @@ void main()
 
 	if(beta_prevent_tex_scaling == true) //  yeah this is extremly bad I know
 	{
-		texCoord.x *= tObjScale.x;
-		texCoord.y *= tObjScale.z;
+		texCoord.x *= tObjScale.x / beta_tex_scaling_factor;
+		texCoord.y *= tObjScale.z / beta_tex_scaling_factor;
 	}
 
 	//  compute lights

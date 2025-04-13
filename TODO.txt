@@ -1,15 +1,15 @@
-== COURT TERME == (pour la demoreel)
+== COURT TERME == (pour la fin d'artfx)
 
 ~ Partie graphismes:
 	- Trouver des meilleures textures pour sol/murs/plafonds du doomlike - fait
 	- Trouver un meilleur mesh pour l'escalier du doomlike - bof
 	- Regarder pour améliorer les autres mesh du doomlike
-	- Trouver des mesh sympa pour la partie présentation de l'ECS de la demoreel - en cours
+	- Trouver des mesh sympa pour la partie présentation de l'ECS de la demoreel - fait
 
 ~ Partie dev pour la demoreel:
 	- Faire le truc sympa pour montrer le son avec le bouton et le tooltip
 	- Faire la scène de présentation du moteur avec des assets et de la lumière pas trop moches - fait
-	- Faire la scène de présentation de l'ECS avec la caméra qui tourne et les assets qui s'ajoutent
+	- Faire la scène de présentation de l'ECS avec la caméra qui tourne et les assets qui s'ajoutent - fait
 	- Faire la scène de présentation de la physique avec les différents systèmes qui existent
 
 ~ Partie bugfixes:
@@ -75,6 +75,8 @@
 ~ Refactor le "load game asset" du doomlike pour utiliser plus de fonctions et moins de copier coller
 
 ~ Améliorer les textes debug (réduire la taille du texte fps, ajouter la durée de la frame en ms, ajouter textes quand pause & freecam)
+
+~ Rajouter un repère visuel sur la position réelle des lights en mode draw debug
 
 ~ Finir les sons dans le doomlike (mouvement ennemis, mur qui bouge, lumière qui s'allume)
 

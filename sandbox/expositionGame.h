@@ -2,6 +2,7 @@
 #include <Core/game.h>
 #include <DefaultScenes/expositionScene.h>
 #include <DefaultScenes/demoreelSceneOne.h>
+#include <DefaultScenes/demoreelSceneTwo.h>
 
 
 class ExpositionGame : public Game
@@ -21,6 +22,7 @@ protected:
 private:
 	ExpositionScene expositionScene;
 	DemoreelSceneOne demoreelSceneOne;
+	DemoreelSceneTwo demoreelSceneTwo;
 
 	Entity* test_game_entity{ nullptr };
 };

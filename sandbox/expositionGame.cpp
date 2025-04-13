@@ -2,6 +2,7 @@
 #include <ServiceLocator/locator.h>
 #include <Assets/defaultAssets.h>
 #include <Assets/assetManager.h>
+#include <Inputs/Input.h>
 
 ExpositionGame::ExpositionGame()
 {
@@ -56,6 +57,7 @@ void ExpositionGame::loadGameAssets()
 	floor_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
 	floor_mat.addParameter("material.shininess", 32.0f);
 	floor_mat.addParameter("beta_prevent_tex_scaling", true);
+	floor_mat.addParameter("beta_tex_scaling_factor", 4.0f);
 
 	Material& floor_wood_mat = AssetManager::CreateMaterial("floor_wood", AssetManager::GetShader("lit_object"));
 	floor_wood_mat.addTexture(&AssetManager::GetTexture("floor_wood_diffuse"), TextureType::Diffuse);
@@ -63,6 +65,7 @@ void ExpositionGame::loadGameAssets()
 	floor_wood_mat.addTexture(&AssetManager::GetTexture("default_black"), TextureType::Emissive);
 	floor_wood_mat.addParameter("material.shininess", 20.0f);
 	floor_wood_mat.addParameter("beta_prevent_tex_scaling", true);
+	floor_wood_mat.addParameter("beta_tex_scaling_factor", 4.0f);
 
 	Material& light_source_mat_white = AssetManager::CreateMaterial("light_source_white", AssetManager::GetShader("flat_emissive"));
 	light_source_mat_white.addParameter("emissive", Color::white.toVector());
@@ -88,12 +91,19 @@ void ExpositionGame::loadGameAssets()
 
 
 	//  props
-	loadProps("cannontrailer");
+	double start_time = glfwGetTime();
+	/*loadProps("cannontrailer");
 	loadProps("romanstatue");
 	loadProps("woodenbarrel");
 	loadProps("woodenbeehive");
 	loadProps("woodenlamp", true);
-	loadProps("woodenwheelbarrow");
+	loadProps("woodenwheelbarrow");*/
+	loadProps("floorlamp");
+	loadProps("orangebrick");
+	loadProps("woodenchair");
+	loadProps("woodenchest");
+	double end_time = glfwGetTime();
+	Locator::getLog().LogMessage_Category("Sandbox: Load props time: " + std::to_string(end_time - start_time) + " seconds.", LogCategory::Info);
 
 
 	//  audio
@@ -110,7 +120,7 @@ void ExpositionGame::loadGame()
 {
 	test_game_entity = createEntity();
 
-	loadScene(&demoreelSceneOne);
+	loadScene(&demoreelSceneTwo);
 }
 
 
