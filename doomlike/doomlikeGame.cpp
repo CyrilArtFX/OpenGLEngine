@@ -178,9 +178,9 @@ void DoomlikeGame::loadGame()
 	Entity* player_entity = createEntity();
 	player = player_entity->addComponentByClass<PlayerComponent>();
 	//player_entity->addComponentByClass<GunComponent>();
-	player->setupPlayer(1.5f, 7.0f, 7.0f, 0.3f);
+	player->setupPlayer(1.5f, 5.0f, 7.0f, 0.3f);
 
-	loadLevel(4);
+	loadLevel(5);
 }
 
 
@@ -210,6 +210,11 @@ void DoomlikeGame::updateGame(float dt)
 	if (Input::IsKeyPressed(GLFW_KEY_KP_3))
 	{
 		loadLevel(3);
+	}
+
+	if (Input::IsKeyPressed(GLFW_KEY_KP_5))
+	{
+		loadLevel(5);
 	}
 }
 
@@ -254,6 +259,10 @@ void DoomlikeGame::loadLevel(int index)
 	case 4:
 		loadScene(&levelDemoreelAudio);
 		player->respawn(levelDemoreelAudio.getSpawnPoint());
+		break;
+	case 5:
+		loadScene(&levelDemoreelPhysics);
+		player->respawn(levelDemoreelPhysics.getSpawnPoint());
 		break;
 	}
 }

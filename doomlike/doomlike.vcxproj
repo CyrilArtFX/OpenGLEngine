@@ -169,6 +169,7 @@
     <ClCompile Include="Scenes\doomlikeLevelDebug.cpp" />
     <ClCompile Include="Scenes\doomlikeLevelStart.cpp" />
     <ClCompile Include="Scenes\Others\demoreelSceneAudio.cpp" />
+    <ClCompile Include="Scenes\Others\demoreelScenePhysics.cpp" />
     <ClCompile Include="Scenes\testFpsScene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -197,6 +198,7 @@
     <ClInclude Include="Scenes\doomlikeLevelDebug.h" />
     <ClInclude Include="Scenes\doomlikeLevelStart.h" />
     <ClInclude Include="Scenes\Others\demoreelSceneAudio.h" />
+    <ClInclude Include="Scenes\Others\demoreelScenePhysics.h" />
     <ClInclude Include="Scenes\testFpsScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

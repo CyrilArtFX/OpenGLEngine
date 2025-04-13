@@ -10,10 +10,11 @@
 	- Faire le truc sympa pour montrer le son avec le bouton et le tooltip - fait
 	- Faire la scène de présentation du moteur avec des assets et de la lumière pas trop moches - fait
 	- Faire la scène de présentation de l'ECS avec la caméra qui tourne et les assets qui s'ajoutent - fait
-	- Faire la scène de présentation de la physique avec les différents systèmes qui existent
+	- Faire la scène de présentation de la physique avec les différents systèmes qui existent - fait
 
 ~ Partie bugfixes:
 	- Corriger les rigidbody qui se collident eux-mêmes (voir en bas)
+	- Corriger le fait de se tp à travers les collisions une fois sur deux (pitié j'en peux plus)
 	- Corriger le fait de se tp à travers les plateformes mouvantes (voir en bas)
 	- Corriger l'ascenseur qui nous fait partir en couilles si on bouge quand il commence à monter (voir en bas)
 	- Corriger les plateformes mouvantes du level debug qui niquent leurs positions une fois sur deux
