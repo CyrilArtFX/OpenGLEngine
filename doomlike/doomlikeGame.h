@@ -4,6 +4,7 @@
 #include <Scenes/doomlikeLevelDebug.h>
 #include <Scenes/doomlikeLevelStart.h>
 #include <Scenes/doomlikeLevelAdvanced.h>
+#include <Scenes/Others/demoreelSceneAudio.h>
 
 class PlayerComponent;
 
@@ -30,6 +31,7 @@ private:
 	DoomlikeLevelDebug levelDebugScene;
 	DoomlikeLevelStart levelStartScene;
 	DoomlikeLevelAdvanced levelAdvancedScene;
+	DemoreelSceneAudio levelDemoreelAudio;
 	int currentLevel = 0;
 	bool mustRestartLevel{ false };
 

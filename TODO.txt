@@ -7,7 +7,7 @@
 	- Trouver des mesh sympa pour la partie présentation de l'ECS de la demoreel - fait
 
 ~ Partie dev pour la demoreel:
-	- Faire le truc sympa pour montrer le son avec le bouton et le tooltip
+	- Faire le truc sympa pour montrer le son avec le bouton et le tooltip - fait
 	- Faire la scène de présentation du moteur avec des assets et de la lumière pas trop moches - fait
 	- Faire la scène de présentation de l'ECS avec la caméra qui tourne et les assets qui s'ajoutent - fait
 	- Faire la scène de présentation de la physique avec les différents systèmes qui existent
