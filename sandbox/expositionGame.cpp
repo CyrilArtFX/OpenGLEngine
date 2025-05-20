@@ -92,12 +92,12 @@ void ExpositionGame::loadGameAssets()
 
 	//  props
 	double start_time = glfwGetTime();
-	/*loadProps("cannontrailer");
+	loadProps("cannontrailer");
 	loadProps("romanstatue");
 	loadProps("woodenbarrel");
 	loadProps("woodenbeehive");
 	loadProps("woodenlamp", true);
-	loadProps("woodenwheelbarrow");*/
+	loadProps("woodenwheelbarrow");
 	loadProps("floorlamp");
 	loadProps("orangebrick");
 	loadProps("woodenchair");
@@ -120,7 +120,7 @@ void ExpositionGame::loadGame()
 {
 	test_game_entity = createEntity();
 
-	loadScene(&demoreelSceneTwo);
+	loadScene(&demoreelSceneOne);
 }
 
 
