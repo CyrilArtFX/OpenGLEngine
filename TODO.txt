@@ -1,26 +1,29 @@
-== COURT TERME == (pour la fin d'artfx)
+== COURT TERME == 
 
-~ Partie graphismes:
-	- Trouver des meilleures textures pour sol/murs/plafonds du doomlike - fait
-	- Trouver un meilleur mesh pour l'escalier du doomlike - bof
-	- Regarder pour améliorer les autres mesh du doomlike
-	- Trouver des mesh sympa pour la partie présentation de l'ECS de la demoreel - fait
+~ Mettre les includes, les .lib et les .dll dans le git principal (doit pouvoir être lancé direct après un téléchargement)
 
-~ Partie dev pour la demoreel:
-	- Faire le truc sympa pour montrer le son avec le bouton et le tooltip - fait
-	- Faire la scène de présentation du moteur avec des assets et de la lumière pas trop moches - fait
-	- Faire la scène de présentation de l'ECS avec la caméra qui tourne et les assets qui s'ajoutent - fait
-	- Faire la scène de présentation de la physique avec les différents systèmes qui existent - fait
-
-~ Partie bugfixes:
+~ Debug de la physique :
 	- Corriger les rigidbody qui se collident eux-mêmes (voir en bas)
 	- Corriger le fait de se tp à travers les collisions une fois sur deux (pitié j'en peux plus)
 	- Corriger le fait de se tp à travers les plateformes mouvantes (voir en bas)
 	- Corriger l'ascenseur qui nous fait partir en couilles si on bouge quand il commence à monter (voir en bas)
 	- Corriger les plateformes mouvantes du level debug qui niquent leurs positions une fois sur deux
 
-~ Autres:
-	- Mettre les includes, les .lib et les .dll dans le git principal (doit pouvoir être lancé direct après un téléchargement)
+~ Améliorations/optimisations de l'ECS :
+	- Pour l'update du component manager, utiliser la liste de T au lieu de la liste de shared_ptr
+[Plus rapide pour la mise en cache (dans le doute, profiler ça), comme le compiler va générer la classe template avec les différents types, possiblité d'appeler une fonction de component même sans cast]
+	- Regarder si y'a moyen d'utiliser la liste de T à la place de la liste de weak_ptr aussi
+	- Tester d'avoir typeid(T) en static pour que ça le compile qu'une fois ?
+	- Regarder si ça marche bien l'appel à une fonction parent avec ClasseParent::fonction(), et si oui l'utiliser partout lol
+
+~ Petites updates d'améliorations :
+	- Changer le nom de la "model matrix" du transform en "entity matrix" (techniquement c'est plus la matrice du modèle)
+	- Refactor le "load game asset" du doomlike pour utiliser plus de fonctions et moins de copier coller
+[Commencer à réfléchir au futur éditeur d'assets, comment il va pouvoir être utilisé pour le chargement aussi (chargement en cascade ?)]
+	- Améliorer les textes debug
+[Réduire la taille du texte fps, ajouter la durée de la frame en ms, ajouter textes quand pause & freecam]
+	- Rajouter un repère visuel sur la position réelle des lights en mode draw debug
+[Besoin de créer un bilboard renderer ?]
 
 
 == MOYEN TERME == (après artfx)
@@ -29,7 +32,7 @@
 
 ~ Etendre l'éditeur d'assets pour faire un éditeur de préfab
 
-~ Mettre de meilleurs visuels pour le doomlike en utilisant l'éditeur de prefab
+~ Améliorer le doomlike avec l'éditeur de préfab
 
 
 == LONG TERME == (voir lequel de ces trois là est le plus important pour trouver un taff)
@@ -61,23 +64,7 @@
 
 == AUTRES ==
 
-~ Pour l'update du component manager, utiliser la liste de T au lieu de la liste de shared_ptr, plus rapide pour la mise en cache (dans le doute, profiler ça), comme le compiler va générer la classe template avec les différents types, possiblité d'appeler une fonction de component même sans cast
-
-~ Regarder si y'a moyen d'utiliser la liste de T à la place de la liste de weak_ptr aussi
-
-~ tester d'avoir typeid(T) en static pour que ça le compile qu'une fois ?
-
-~ Regarder si ça marche bien l'appel à une fonction parent avec ClasseParent::fonction(), et si oui l'utiliser partout lol
-
-~ Changer le nom de la "model matrix" du transform, vu que c'est plus vraiment la matrice du modele, c'est la matrice de l'entity...
-
 ~ Compute la direction des Spot Light en fonction de la rotation de l'Entity (avoir une rotation offset ? avoir un vecteur de direction offset ?)
-
-~ Refactor le "load game asset" du doomlike pour utiliser plus de fonctions et moins de copier coller
-
-~ Améliorer les textes debug (réduire la taille du texte fps, ajouter la durée de la frame en ms, ajouter textes quand pause & freecam)
-
-~ Rajouter un repère visuel sur la position réelle des lights en mode draw debug
 
 ~ Finir les sons dans le doomlike (mouvement ennemis, mur qui bouge, lumière qui s'allume)
 
