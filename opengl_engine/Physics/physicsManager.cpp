@@ -189,7 +189,7 @@ bool PhysicsManager::AABBRaycast(const Vector3& location, const Box& aabbBox, co
 	}
 }
 
-bool PhysicsManager::AABBSweepRaycast(const Vector3& start, const Vector3& end, const Box& aabbBox, const std::vector<std::string> testChannels, RaycastHitInfos& outHitInfos, float drawDebugTime, bool createOnScene, bool forCollisionTest)
+bool PhysicsManager::AABBSweepRaycast(const Vector3& start, const Vector3& end, const Box& aabbBox, const std::vector<std::string> testChannels, RaycastHitInfos& outHitInfos, float drawDebugTime, bool createOnScene)
 {
 	outHitInfos = RaycastHitInfos();
 
@@ -211,7 +211,7 @@ bool PhysicsManager::AABBSweepRaycast(const Vector3& start, const Vector3& end, 
 
 		for (auto& col : collisionsComponents)
 		{
-			bool col_hit = col->resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels, forCollisionTest);
+			bool col_hit = col->resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels);
 			hit = hit || col_hit;
 		}
 
@@ -233,7 +233,7 @@ bool PhysicsManager::AABBSweepRaycast(const Vector3& start, const Vector3& end, 
 
 		for (auto& col : collisionsComponents)
 		{
-			bool col_hit = col->resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels, forCollisionTest);
+			bool col_hit = col->resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels);
 			hit = hit || col_hit;
 		}
 
@@ -248,6 +248,31 @@ bool PhysicsManager::AABBSweepRaycast(const Vector3& start, const Vector3& end, 
 
 		return hit;
 	}
+}
+
+bool PhysicsManager::AABBSweepPhysicTest(const Vector3& start, const Vector3& end, const Box& aabbBox, const std::vector<std::string> testChannels, const CollisionComponent* testedCol, RaycastHitInfos& outHitInfos)
+{
+	outHitInfos = RaycastHitInfos();
+
+	bool hit = false;
+
+	std::vector<std::string> test_channels = testChannels;
+	if (test_channels.empty()) test_channels = CollisionChannels::GetRegisteredTestChannel("TestEverything");
+
+	RaycastAABBSweep raycast(start, end, aabbBox, 0.0f);
+
+	const Ray& ray = raycast.getRay();
+	const Box& box = raycast.getBox();
+
+	for (auto& col : collisionsComponents)
+	{
+		if (col == testedCol) continue;
+
+		bool col_hit = col->resolveAABBSweepRaycast(ray, box, outHitInfos, test_channels, true);
+		hit = hit || col_hit;
+	}
+
+	return hit;
 }
 
 

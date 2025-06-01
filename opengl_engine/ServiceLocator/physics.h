@@ -75,11 +75,21 @@ public:
 	* @param	outHitInfos			Informations on the closest encountered collision.
 	* @param	drawDebugTime		Duration of the raycast debug draw. (0 = no draw debug, negative = infinite draw debug).
 	* @param	createOnScene		Is the raycast registered on the scene (delete if scene change) or on the game (persist when changing scene).
-	* @param	forCollisionTest	Does this function is used by the collision test algorithm?
 	* @return						True if at least one collision intersect the sweeped aabb box raycast.
 	*/
-	virtual bool AABBSweepRaycast(const Vector3& start, const Vector3& end, const Box& aabbBox, const std::vector<std::string> testChannels = {}, RaycastHitInfos& outHitInfos = RaycastHitInfos::defaultInfos, float drawDebugTime = 5.0f, bool createOnScene = true, bool forCollisionTest = false) = 0;
+	virtual bool AABBSweepRaycast(const Vector3& start, const Vector3& end, const Box& aabbBox, const std::vector<std::string> testChannels = {}, RaycastHitInfos& outHitInfos = RaycastHitInfos::defaultInfos, float drawDebugTime = 5.0f, bool createOnScene = true) = 0;
 
+	/**
+	* Sweep an AABB box-shaped raycast between two points. Variant for the physic test.
+	* @param	start				Start point of the sweep (world coordinates).
+	* @param	end					End point of the sweep (world coordinates).
+	* @param	aabbBox				Box shape of the raycast.
+	* @param	testChannels		Collision channels the raycast will test.
+	* @param	testedCol			The collision component that is currently tested for the physic.
+	* @param	outHitInfos			Informations on the closest encountered collision.
+	* @return						True if at least one collision intersect the sweeped aabb box raycast.
+	*/
+	virtual bool AABBSweepPhysicTest(const Vector3& start, const Vector3& end, const Box& aabbBox, const std::vector<std::string> testChannels, const CollisionComponent* testedCol, RaycastHitInfos& outHitInfos) = 0;
 
 	/**
 	* Retrieve the gravity strength.

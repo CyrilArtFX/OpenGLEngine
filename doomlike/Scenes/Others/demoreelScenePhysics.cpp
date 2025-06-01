@@ -47,7 +47,7 @@ void DemoreelScenePhysics::loadScene()
 	std::shared_ptr<DirectionalLightComponent> dir_light_comp = light->addComponentByClass<DirectionalLightComponent>();
 	dir_light_comp->setColor(Color::white);
 	dir_light_comp->setDirection(Vector3::normalize(Vector3{ 0.5f, -1.0f, -0.75f }));
-	dir_light_comp->setAmbientStrength(0.3f);
+	dir_light_comp->setAmbientStrength(0.4f);
 	dir_light_comp->setDiffuseStrength(0.0f);
 
 	movingPlatform->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("crate"));
@@ -69,5 +69,19 @@ void DemoreelScenePhysics::updateScene(float dt)
 	if (Input::IsKeyPressed(GLFW_MOUSE_BUTTON_LEFT))
 	{
 		movingPlatform->getComponentByClass<MovingPlatformComponent>()->resumeMovement();
+	}
+
+	if (Input::IsKeyPressed(GLFW_KEY_C))
+	{
+		Entity* test_physic_entity = createEntity();
+		test_physic_entity->setPosition(Vector3{ -7.5f, 5.0f, 3.0f });
+		test_physic_entity->setScale(0.3f);
+		test_physic_entity->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("crate"));
+		test_physic_entity->addComponentByClass<BoxAABBColComp>()->setCollisionChannel("test_physic_channel");
+		std::shared_ptr<RigidbodyComponent> test_rigidbody = test_physic_entity->addComponentByClass<RigidbodyComponent>();
+		test_rigidbody->associateCollision(test_physic_entity->getComponentByClass<BoxAABBColComp>());
+		test_rigidbody->setPhysicsActivated(true);
+		test_rigidbody->setUseGravity(true);
+		test_rigidbody->setTestChannels({ "solid", "test_physic_channel" });
 	}
 }

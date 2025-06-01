@@ -38,6 +38,7 @@ private:
 	/**
 	* Core of the Collide and Slide algorithm, recursive function that will check the shape raycast.
 	* @param	rigidbody			Rigidbody to use.
+	* @param	colComp				Collision component to use
 	* @param	boxAABB				Shape to use.
 	* @param	startPos			Start of the raycast for this iteration.
 	* @param	movement			Movement to check for this iteration.
@@ -48,6 +49,6 @@ private:
 	* @param	triggers			List of all triggers detected. [OUT/PASSTHROUGH]
 	* @return						True if this iteration's raycast encountered a collision.
 	*/
-	static bool CollideAndSlideAABB(const RigidbodyComponent& rigidbody, const Box& boxAABB, const Vector3 startPos, const Vector3 movement, const int bounces, const bool gravityPass, Vector3& computedPos, std::vector<CollisionHit>& colResponses, std::vector<const CollisionComponent*>& triggers);
+	static bool CollideAndSlideAABB(const RigidbodyComponent& rigidbody, const CollisionComponent* colComp, const Box& boxAABB, const Vector3 startPos, const Vector3 movement, const int bounces, const bool gravityPass, Vector3& computedPos, std::vector<CollisionHit>& colResponses, std::vector<const CollisionComponent*>& triggers);
 };
 
