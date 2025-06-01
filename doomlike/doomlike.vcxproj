@@ -73,14 +73,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PublicIncludeDirectories>
     </PublicIncludeDirectories>
-    <IncludePath>$(SolutionDir)\opengl_engine;$(ProjectDir);$(SolutionDir)\..\cyyiiyOpenGL\includes;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\..\cyyiiyOpenGL\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\opengl_engine;$(ProjectDir);$(SolutionDir)\OpenGLLibrary\includes;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\OpenGLLibrary\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PublicIncludeDirectories>
     </PublicIncludeDirectories>
-    <IncludePath>$(SolutionDir)\opengl_engine;$(ProjectDir);$(SolutionDir)\..\cyyiiyOpenGL\includes;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\..\cyyiiyOpenGL\lib_release;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\opengl_engine;$(ProjectDir);$(SolutionDir)\OpenGLLibrary\includes;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\OpenGLLibrary\lib_release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -124,7 +124,7 @@
       <AdditionalDependencies>glfw3.lib;opengl32.lib;assimp-vc143-mtd.lib;fmodL_vc.lib;fmodstudioL_vc.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(SolutionDir)\..\cyyiiyOpenGL\dlls\*.dll" "$(OutDir)"</Command>
+      <Command>xcopy /y /d "$(SolutionDir)\OpenGLLibrary\dlls\*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -145,7 +145,7 @@
       <AdditionalDependencies>glfw3.lib;opengl32.lib;assimp-vc143-mt.lib;fmodL_vc.lib;fmodstudioL_vc.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(SolutionDir)\..\cyyiiyOpenGL\dlls_release\*.dll" "$(OutDir)"</Command>
+      <Command>xcopy /y /d "$(SolutionDir)\OpenGLLibrary\dlls_release\*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

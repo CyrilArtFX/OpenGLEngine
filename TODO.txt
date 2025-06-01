@@ -1,7 +1,5 @@
 == COURT TERME == 
 
-~ Mettre les includes, les .lib et les .dll dans le git principal (doit pouvoir être lancé direct après un téléchargement)
-
 ~ Debug de la physique :
 	- Corriger les rigidbody qui se collident eux-mêmes (voir en bas)
 	- Corriger le fait de se tp à travers les collisions une fois sur deux (pitié j'en peux plus)
@@ -24,6 +22,7 @@
 [Réduire la taille du texte fps, ajouter la durée de la frame en ms, ajouter textes quand pause & freecam]
 	- Rajouter un repère visuel sur la position réelle des lights en mode draw debug
 [Besoin de créer un bilboard renderer ?]
+	- Regarder si c'est possible de récupérer le nom d'une classe pour les print warning de template ("unable to find component of given class")
 
 
 == MOYEN TERME == (après artfx)

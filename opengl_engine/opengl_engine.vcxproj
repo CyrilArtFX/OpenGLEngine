@@ -72,12 +72,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)\..\cyyiiyOpenGL\includes;$(SolutionDir)\opengl_engine;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\..\cyyiiyOpenGL\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\OpenGLLibrary\includes;$(SolutionDir)\opengl_engine;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\OpenGLLibrary\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)\..\cyyiiyOpenGL\includes;$(SolutionDir)\opengl_engine;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\..\cyyiiyOpenGL\lib_release;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\OpenGLLibrary\includes;$(SolutionDir)\opengl_engine;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\OpenGLLibrary\lib_release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
