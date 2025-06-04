@@ -51,7 +51,7 @@ void DemoreelScenePhysics::loadScene()
 	dir_light_comp->setDiffuseStrength(0.0f);
 
 	movingPlatform->addComponentByClass<ModelRendererComponent>()->setModel(&AssetManager::GetModel("crate"));
-	movingPlatform->addComponentByClass<MovingPlatformComponent>()->setupMovingPlatform(Vector3{ 3.5f, 2.0f, -2.5f }, Vector3{ -7.5f, 2.0f, -2.5f }, 4.0f);
+	movingPlatform->addComponentByClass<MovingPlatformComponent>()->setupMovingPlatform(Vector3{ 3.5f, 2.0f, -2.5f }, Vector3{ -7.5f, 2.0f, -2.5f }, 3.0f);
 	movingPlatform->getComponentByClass<MovingPlatformComponent>()->pauseMovement();
 
 
