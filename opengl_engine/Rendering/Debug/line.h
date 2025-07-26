@@ -1,14 +1,13 @@
 #pragma once
+#include "debugRenderBase.h"
 #include <Maths/Vector3.h>
-#include <Utils/Color.h>
 
 class VertexArray;
-class Material;
 
 /** Line
-* Creates a custom VAO that is released at the destruction of this object.
+* Transform a line vertex array to draw a line between two points
 */
-class Line
+class Line : public DebugRenderBase
 {
 public:
 	Line();
@@ -18,7 +17,7 @@ public:
 
 	void setPoints(Vector3 pointA, Vector3 pointB);
 
-	void drawLine(Material& debugMaterial, const Color& drawColor);
+	void draw(Material& debugMaterial, const Color& drawColor) override;
 
 private:
 	VertexArray& lineVA;

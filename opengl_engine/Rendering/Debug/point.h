@@ -1,8 +1,7 @@
 #pragma once
+#include "debugRenderBase.h"
 #include <Core/transform.h>
 #include <Rendering/Model/mesh.h>
-#include <Rendering/material.h>
-#include <Utils/Color.h>
 
 //  scale of the cube mesh
 const float pointSize = 0.05f;
@@ -13,14 +12,14 @@ const float pointSize = 0.05f;
 * For now, this works with a cube mesh that is not scaled with the camera distance so it may be either too big or too small depending on the situation.
 * May change that later.
 */
-class Point : private Transform
+class Point : public DebugRenderBase, private Transform
 {
 public:
 	Point();
 
 	void setPointPostition(Vector3 pointPosition);
 
-	void drawPoint(Material& debugMaterial, const Color& drawColor);
+	void draw(Material& debugMaterial, const Color& drawColor) override;
 
 private:
 	Mesh* cubeMesh{ nullptr };

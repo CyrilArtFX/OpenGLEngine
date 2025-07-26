@@ -16,16 +16,16 @@ RaycastAABBSweep::RaycastAABBSweep(const Vector3& startPoint, const Vector3& end
 
 void RaycastAABBSweep::drawDebugRaycast(Material& debugMaterial)
 {
-	drawDebugLineOne.drawLine(debugMaterial, Color::green);
-	drawDebugCubeOne.drawCube(debugMaterial, Color::green);
+	drawDebugLineOne.draw(debugMaterial, Color::green);
+	drawDebugCubeOne.draw(debugMaterial, Color::green);
 	if (!hit)
 	{
-		drawDebugCubeTwo.drawCube(debugMaterial, Color::green);
+		drawDebugCubeTwo.draw(debugMaterial, Color::green);
 		return;
 	}
 
-	drawDebugLineTwo.drawLine(debugMaterial, Color::red);
-	drawDebugCubeTwo.drawCube(debugMaterial, Color::red);
+	drawDebugLineTwo.draw(debugMaterial, Color::red);
+	drawDebugCubeTwo.draw(debugMaterial, Color::red);
 }
 
 void RaycastAABBSweep::setValues(bool raycastHit, Vector3 hitPosition)

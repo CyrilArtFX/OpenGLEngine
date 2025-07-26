@@ -148,11 +148,11 @@ void DefaultAssets::LoadEngineAssets()
 	AssetManager::LoadSingleMesh("debug_cube", cube_vertices);
 
 
-	//  collisions debug material and shader
-	AssetManager::CreateShaderProgram("collision_debug", "Unlit/collision_debug.vert", "Unlit/collision_debug.frag", ShaderType::Unlit);
+	//  draw debug material and shader
+	AssetManager::CreateShaderProgram("draw_debug", "Unlit/draw_debug.vert", "Unlit/draw_debug.frag", ShaderType::Unlit);
 
-	Material& collision_debug_mat = AssetManager::CreateMaterial("debug_collisions", AssetManager::GetShader("collision_debug"));
-	collision_debug_mat.addParameter("color", Color::green);
+	Material& draw_debug_mat = AssetManager::CreateMaterial("debug_draws", AssetManager::GetShader("draw_debug"));
+	draw_debug_mat.addParameter("color", Color::green);
 
 
 	//  engine shaders (text and sprite render)

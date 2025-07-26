@@ -212,6 +212,7 @@ void Engine::run()
 		//  rendering part
 		// ----------------
 		renderer->draw();
+		renderer->updateDebugDraws(gamePaused ? 0.0f : deltaTime); //  debug draws don't expire if engine is paused
 
 
 
@@ -386,7 +387,7 @@ void Engine::enableFreecam()
 	if (!gamePaused) pauseGame();
 	log->LogMessage_Category("Debug: Freecam mode enabled", LogCategory::Info);
 	debugCamera->copyCamera(*renderer->GetCamera(), true);
-	renderer->setDebugActivated(true);
+	renderer->setDebugCamActivated(true);
 	debugCameraSpeed = 4.0f;
 }
 
@@ -394,14 +395,14 @@ void Engine::disableFreecam()
 {
 	freecamMode = false;
 	log->LogMessage_Category("Debug: Freecam mode disabled", LogCategory::Info);
-	renderer->setDebugActivated(false);
+	renderer->setDebugCamActivated(false);
 }
 
 void Engine::enableDebugView()
 {
 	debugViewMode = true;
 	log->LogMessage_Category("Debug: Debug mode view enabled", LogCategory::Info);
-	renderer->drawDebugMode = true;
+	renderer->physicsDebugMode = true;
 	fpsText->setEnabled(true);
 }
 
@@ -409,7 +410,7 @@ void Engine::disableDebugView()
 {
 	debugViewMode = false;
 	log->LogMessage_Category("Debug: Debug mode view disabled", LogCategory::Info);
-	renderer->drawDebugMode = false;
+	renderer->physicsDebugMode = false;
 	fpsText->setEnabled(false);
 }
 

@@ -13,7 +13,7 @@ void Point::setPointPostition(Vector3 pointPosition)
 	setPosition(pointPosition);
 }
 
-void Point::drawPoint(Material& debugMaterial, const Color& drawColor)
+void Point::draw(Material& debugMaterial, const Color& drawColor)
 {
 	debugMaterial.getShader().setMatrix4("model", getModelMatrix().getAsFloatPtr());
 	debugMaterial.getShader().setVec3("color", drawColor);

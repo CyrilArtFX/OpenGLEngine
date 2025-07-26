@@ -6,6 +6,7 @@
 #include <Maths/vector3.h>
 #include <Maths/vector2Int.h>
 #include <Maths/vector4.h>
+#include <Maths/Geometry/box.h>
 
 #include <Rendering/cameraComponent.h>
 #include <Rendering/material.h>
@@ -13,6 +14,7 @@
 #include <Rendering/modelRendererComponent.h>
 #include <Rendering/Text/textRendererComponent.h>
 #include <Rendering/Hud/spriteRendererComponent.h>
+#include <Rendering/Debug/debugRenderBase.h>
 
 #include <vector>
 #include <unordered_map>
@@ -57,6 +59,9 @@ public:
 	void AddSprite(SpriteRendererComponent* sprite) override;
 	void RemoveSprite(SpriteRendererComponent* sprite) override;
 
+	void DrawDebugPoint(const Vector3& pointPosition, const Color& color, float duration) override;
+	void DrawDebugLine(const Vector3& pointA, const Vector3& pointB, const Color& color, float duration) override;
+	void DrawDebugCube(const Box& boxInfos, const Color& color, float duration) override;
 
 
 
@@ -69,6 +74,7 @@ private:
 	std::vector<ModelRendererComponent*> modelRenderers;
 	std::vector<TextRendererComponent*> texts;
 	std::vector<SpriteRendererComponent*> sprites;
+	std::vector<DebugRenderBase*> debugDraws;
 
 	Color clearColor{ Color::black };
 
@@ -78,7 +84,7 @@ private:
 
 	Vector2Int windowSize;
 
-	bool debugActivated;
+	bool debugCamActivated;
 
 	
 
@@ -90,12 +96,13 @@ public:
 	void initializeRenderer(Color clearColor_, Vector2Int windowSize_, std::weak_ptr<CameraComponent> defaultCamera_);
 
 	void setDebugCamera(std::weak_ptr<CameraComponent> debugCamera_);
-	void setDebugActivated(bool debugActivated_);
+	void setDebugCamActivated(bool debugCamActivated_);
 
 	void draw();
+	void updateDebugDraws(float dt);
 
 	void setWindowSize(Vector2Int windowSize_);
 
-	bool drawDebugMode{ false };
+	bool physicsDebugMode{ false };
 };
 

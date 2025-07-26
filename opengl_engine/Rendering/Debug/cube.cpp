@@ -13,7 +13,7 @@ void Cube::setBox(const Box& boxInfos)
 	computeBoxModelMatrix();
 }
 
-void Cube::drawCube(Material& debugMaterial, const Color& drawColor)
+void Cube::draw(Material& debugMaterial, const Color& drawColor)
 {
 	debugMaterial.getShader().setMatrix4("model", boxModelMatrix.getAsFloatPtr());
 	debugMaterial.getShader().setVec3("color", drawColor);

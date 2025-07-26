@@ -19,8 +19,8 @@
     <None Include="Lit\object_lit.vert" />
     <None Include="Unlit\flat_emissive.vert" />
     <None Include="Unlit\flat_emissive.frag" />
-    <None Include="Unlit\collision_debug.frag" />
-    <None Include="Unlit\collision_debug.vert" />
+    <None Include="Unlit\draw_debug.frag" />
+    <None Include="Unlit\draw_debug.vert" />
     <None Include="Unlit\text_render.frag" />
     <None Include="Unlit\text_render.vert" />
     <None Include="Unlit\sprite_render.frag" />

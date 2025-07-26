@@ -14,7 +14,7 @@ RaycastAABB::RaycastAABB(const Vector3& location, const Box& boxInfos, float dra
 
 void RaycastAABB::drawDebugRaycast(Material& debugMaterial)
 {
-	drawDebugCube.drawCube(debugMaterial, hit ? Color::red : Color::green);
+	drawDebugCube.draw(debugMaterial, hit ? Color::red : Color::green);
 }
 
 void RaycastAABB::setHit()

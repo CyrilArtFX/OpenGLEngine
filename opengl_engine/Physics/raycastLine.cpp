@@ -14,12 +14,12 @@ RaycastLine::RaycastLine(const Vector3& startPoint, const Vector3& endPoint, flo
 
 void RaycastLine::drawDebugRaycast(Material& debugMaterial)
 {
-	drawDebugLineOne.drawLine(debugMaterial, Color::green);
+	drawDebugLineOne.draw(debugMaterial, Color::green);
 
 	if (!hit) return;
 
-	drawDebugLineTwo.drawLine(debugMaterial, Color::red);
-	drawDebugPointHit.drawPoint(debugMaterial, Color::green);
+	drawDebugLineTwo.draw(debugMaterial, Color::red);
+	drawDebugPointHit.draw(debugMaterial, Color::green);
 }
 
 void RaycastLine::setHitPos(Vector3 hitPosition)

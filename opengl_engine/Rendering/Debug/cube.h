@@ -1,22 +1,21 @@
 #pragma once
+#include "debugRenderBase.h"
 #include <Core/transform.h>
 #include <Maths/Geometry/box.h>
 #include <Rendering/Model/mesh.h>
-#include <Rendering/material.h>
-#include <Utils/Color.h>
 
 
 /** Cube
 * Contains a cube mesh, a box information and a transform that can be setup to be at a specific location (no rotation or scale).
 */
-class Cube : private Transform
+class Cube : public DebugRenderBase, private Transform
 {
 public:
 	Cube();
 
 	void setBox(const Box& boxInfos);
 
-	void drawCube(Material& debugMaterial, const Color& drawColor);
+	void draw(Material& debugMaterial, const Color& drawColor) override;
 
 private:
 	Box box;

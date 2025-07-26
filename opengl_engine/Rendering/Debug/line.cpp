@@ -1,6 +1,5 @@
 #include "line.h"
 #include <Maths/Matrix4.h>
-#include <Rendering/material.h>
 #include <Rendering/Model/vertexArray.h>
 #include <Assets/assetManager.h>
 
@@ -18,7 +17,7 @@ void Line::setPoints(Vector3 pointA, Vector3 pointB)
 	pointOffset = pointB - pointA;
 }
 
-void Line::drawLine(Material& debugMaterial, const Color& drawColor)
+void Line::draw(Material& debugMaterial, const Color& drawColor)
 {
 	Shader& debug_shader = debugMaterial.getShader();
 	debug_shader.setMatrix4("model", Matrix4::createTranslation(originPos).getAsFloatPtr());
