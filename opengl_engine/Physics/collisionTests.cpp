@@ -5,7 +5,6 @@
 #include <Maths/Geometry/box.h>
 
 
-
 bool CollisionTests::RigidbodyCollideAndSlideAABB(const RigidbodyComponent& rigidbody, const bool gravityPass, Vector3& computedMovement, std::vector<CollisionHit>& colResponses, std::vector<const CollisionComponent*>& triggers)
 {
 	const Vector3 body_start_movement = gravityPass ? rigidbody.getAnticipatedGravityMovement() : rigidbody.getAnticipatedMovement();
@@ -22,38 +21,17 @@ bool CollisionTests::RigidbodyCollideAndSlideAABB(const RigidbodyComponent& rigi
 
 	Vector3 computed_pos = Vector3::zero;
 
-	std::vector<RaycastHitInfos> raycasts_infos;
-	bool col_hit = CollideAndSlideAABB(rigidbody, col_comp, body_shape, body_start_pos, body_start_movement, 0, gravityPass, computed_pos, colResponses, triggers, raycasts_infos);
+	bool col_hit = CollideAndSlideAABB(rigidbody, col_comp, body_shape, body_start_pos, body_start_movement, 0, gravityPass, computed_pos, colResponses, triggers);
 	computedMovement = computed_pos - body_start_pos;
-
-	const float amplitude_treshold = 1.0f;
-	float computed_movement_amplitude = computedMovement.length();
-	if (computed_movement_amplitude > amplitude_treshold)
-	{
-		Locator::getLog().LogMessage_Category("Player computed movement amplitude bigger than " + std::to_string(amplitude_treshold) + ": " + std::to_string(computedMovement.length()), LogCategory::Warning);
-
-		Locator::getLog().LogMessage_Category("Checking raycasts info for this collision tests frame...", LogCategory::Info);
-		int iter = 0;
-		for (auto& raycast_info : raycasts_infos)
-		{
-			iter++;
-			Locator::getLog().LogMessage_Category("Raycast number " + std::to_string(iter) + ": Hit distance is " + std::to_string(raycast_info.hitDistance), LogCategory::Info);
-			//  note: I got a raycast hit distance of a max float value when I got the bug, investigate this
-		}
-	}
 
 	return col_hit;
 }
 
 
-
-
-bool CollisionTests::CollideAndSlideAABB(const RigidbodyComponent& rigidbody, const CollisionComponent* colComp, const Box& boxAABB, const Vector3 startPos, const Vector3 movement, const int bounces, const bool gravityPass, Vector3& computedPos, std::vector<CollisionHit>& colResponses, std::vector<const CollisionComponent*>& triggers, std::vector<RaycastHitInfos>& outRaycasts)
+bool CollisionTests::CollideAndSlideAABB(const RigidbodyComponent& rigidbody, const CollisionComponent* colComp, const Box& boxAABB, const Vector3 startPos, const Vector3 movement, const int bounces, const bool gravityPass, Vector3& computedPos, std::vector<CollisionHit>& colResponses, std::vector<const CollisionComponent*>& triggers)
 {
 	RaycastHitInfos out_raycast;
 	bool col_encountered = Locator::getPhysics().AABBSweepPhysicTest(startPos, startPos + movement, boxAABB, rigidbody.getTestChannels(), colComp, out_raycast);
-
-	outRaycasts.push_back(out_raycast);
 	
 	//  check for triggers
 	if (!out_raycast.triggersDetected.empty())
@@ -89,7 +67,7 @@ bool CollisionTests::CollideAndSlideAABB(const RigidbodyComponent& rigidbody, co
 
 		const Vector3 out_location_secure = out_raycast.hitLocation += -movement * Rigidbody::SECURITY_DIST;
 
-		if (bounces > Rigidbody::MAX_BOUNCES) //  except if max bounces is reached
+		if (bounces > Rigidbody::MAX_BOUNCES) //  stop recursion if max bounces is reached
 		{
 			computedPos = out_location_secure;
 			return true;
@@ -122,7 +100,7 @@ bool CollisionTests::CollideAndSlideAABB(const RigidbodyComponent& rigidbody, co
 		}
 
 
-		CollideAndSlideAABB(rigidbody, colComp, boxAABB, out_location_secure, remaining_movement, bounces + 1, gravityPass, computedPos, colResponses, triggers, outRaycasts);
+		CollideAndSlideAABB(rigidbody, colComp, boxAABB, out_location_secure, remaining_movement, bounces + 1, gravityPass, computedPos, colResponses, triggers);
 		return true;
 	}
 	else //  no collision encountered, end of the recursion

@@ -1,9 +1,9 @@
 == COURT TERME == 
 
 ~ Debug de la physique :
-	- Corriger le fait de se tp à travers les collisions une fois sur deux (pitié j'en peux plus) - en cours
-	- Corriger le fait de se tp à travers les plateformes mouvantes (voir en bas)
-	- Corriger l'ascenseur qui nous fait partir en couilles si on bouge quand il commence à monter (voir en bas)
+	- Corriger le fait de se tp à travers les collisions une fois sur deux (pitié j'en peux plus) - fait
+	- Corriger le fait de se tp à travers les plateformes mouvantes (voir en bas) - fait
+	- Corriger l'ascenseur qui nous fait partir en couilles si on bouge quand il commence à monter (voir en bas) - fait
 	- Corriger les plateformes mouvantes du level debug qui niquent leurs positions une fois sur deux
 
 ~ Améliorations/optimisations de l'ECS :
@@ -26,7 +26,7 @@
 	- Regarder si c'est possible de récupérer le nom d'une classe pour les print warning de template ("unable to find component of given class")
 
 
-== MOYEN TERME == (après artfx)
+== MOYEN TERME ==
 
 ~ Faire un éditeur d'assets (utiliser ImGUI pour l'interface)
 
@@ -35,7 +35,7 @@
 ~ Améliorer le doomlike avec l'éditeur de préfab
 
 
-== LONG TERME == (voir lequel de ces trois là est le plus important pour trouver un taff)
+== LONG TERME == (étudier lequel est le plus important)
 
 ~ Mettre des particules (avec ces vidéos ? https://www.youtube.com/watch?v=4YhQJPD7ylQ)
 
@@ -89,12 +89,4 @@
 
 == REFLEXIONS / PROBLEMES CONNUS ==
 
-~ Pb avec les rigidbodies, ils se collident avec eux même et partent en Y si ils ont un test channel qui les fait collide leur collision, besoin de faire un truc avec le raycast pour les empêcher de se collide eux-même, peut être avoir une autre fonction de raycast AABB uniquement pour ça qui a un fonctionnement un peu différent de celle de base ?
-
-~ Y'a toujours des bugs bizarre avec les plateformes mouvantes qui monte (l'ascenseur) quand elle est immobile et qu'on est en train de bouger quand elle commence à grimper (voir si ça a un lien avec le step mechanic)
-
-~ Problème avec la physique, si on touche par le bas une collision qui bouge, on est tp au dessus (j'ai l'impression que ça le fait seulement quand la collision qui bouge est en train de descendre)
-
 ~ Réfléchir au fonctionnement du load asset des scenes, est-ce qu'il faudrait faire gaffe à l'utilisation de ram et unload genre les textures qui ne sont plus nécessaires ?
-
-~ Il peut y avoir des problèmes avec la physique notamment dans les coins ou entre des collisions quand on bouge et qu'on spam le saut, genre on est téléporté à travers d'autres collisions. Raison inconnue.

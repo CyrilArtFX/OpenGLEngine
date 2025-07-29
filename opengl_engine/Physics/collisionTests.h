@@ -49,6 +49,6 @@ private:
 	* @param	triggers			List of all triggers detected. [OUT/PASSTHROUGH]
 	* @return						True if this iteration's raycast encountered a collision.
 	*/
-	static bool CollideAndSlideAABB(const RigidbodyComponent& rigidbody, const CollisionComponent* colComp, const Box& boxAABB, const Vector3 startPos, const Vector3 movement, const int bounces, const bool gravityPass, Vector3& computedPos, std::vector<CollisionHit>& colResponses, std::vector<const CollisionComponent*>& triggers, std::vector<struct RaycastHitInfos>& outRaycasts);
+	static bool CollideAndSlideAABB(const RigidbodyComponent& rigidbody, const CollisionComponent* colComp, const Box& boxAABB, const Vector3 startPos, const Vector3 movement, const int bounces, const bool gravityPass, Vector3& computedPos, std::vector<CollisionHit>& colResponses, std::vector<const CollisionComponent*>& triggers);
 };
 

@@ -120,14 +120,14 @@ bool CollisionsAABB::BoxRayIntersection(const Box& box, const Ray& ray, float& d
 		return false;
 	}
 
-	//  if tmax < 0, ray (line) is intersecting AABB, but the whole AABB is behind us
-	if (tmax < 0.0f)
+	//  if tmin > tmax, ray doesn't intersect AABB
+	if (tmin > tmax)
 	{
 		return false;
 	}
 
-	//  if tmin > tmax, ray doesn't intersect AABB
-	if (tmin > tmax)
+	//  if tmax < 0, ray (line) is intersecting AABB, but the whole AABB is behind us
+	if (tmax < 0.0f)
 	{
 		return false;
 	}
@@ -136,6 +136,16 @@ bool CollisionsAABB::BoxRayIntersection(const Box& box, const Ray& ray, float& d
 	if (tmin > ray_length)
 	{
 		return false;
+	}
+
+	//  if tmin > 0, origin of the ray is inside of AABB
+	//  when computing collisions, it shouldn't return a location on the ray direction axis, but the nearest location outside of the box 
+	if (tmin < 0.0f && computeCollision)
+	{
+		location = box.getPointOnPerimeter(ray_origin);
+		distance = Vector3::Distance(ray_origin, location);
+		
+		return true;
 	}
 
 	distance = tmin;
