@@ -180,7 +180,7 @@ void DoomlikeGame::loadGame()
 	//player_entity->addComponentByClass<GunComponent>();
 	player->setupPlayer(1.5f, 5.0f, 7.0f, 0.3f);
 
-	loadLevel(5);
+	loadLevel(1);
 }
 
 
