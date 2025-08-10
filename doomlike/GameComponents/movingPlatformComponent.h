@@ -10,7 +10,7 @@
 class MovingPlatformComponent : public Component
 {
 public:
-	void setupMovingPlatform(const Vector3& pointA_, const Vector3& pointB_, const float movementSpeed_, const float waitTime_ = 0.0f);
+	void setupMovingPlatform(const Vector3& pointA_, const Vector3& pointB_, const float movementSpeed_, const float waitTime_ = 0.0f, const bool debug_ = false);
 
 	void pauseMovement();
 	void resumeMovement();
@@ -19,6 +19,8 @@ protected:
 	void init() override;
 	void exit() override;
 	void update(float deltaTime) override;
+
+	virtual void updateDebug();
 
 private:
 	std::shared_ptr<class BoxAABBColComp> collision;
@@ -35,5 +37,7 @@ private:
 	bool reverse{ false };
 	bool waiting{ false };
 	bool paused{ false };
+
+	bool debug{ false };
 };
 

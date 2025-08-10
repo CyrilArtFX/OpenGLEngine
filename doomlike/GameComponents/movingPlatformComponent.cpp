@@ -8,7 +8,7 @@
 #include <Audio/audioSourceComponent.h>
 
 
-void MovingPlatformComponent::setupMovingPlatform(const Vector3& pointA_, const Vector3& pointB_, const float movementSpeed_, const float waitTime_)
+void MovingPlatformComponent::setupMovingPlatform(const Vector3& pointA_, const Vector3& pointB_, const float movementSpeed_, const float waitTime_, const bool debug_)
 {
 	pointA = pointA_;
 	pointB = pointB_;
@@ -17,6 +17,8 @@ void MovingPlatformComponent::setupMovingPlatform(const Vector3& pointA_, const 
 	timer = 0.0f;
 	waitTimer = 0.0f;
 	reverse = false;
+
+	debug = debug_;
 
 	getOwner()->setPosition(pointA);
 	rigidbody->setVelocity((pointB - pointA) * (1.0f / timeAtoB));
@@ -31,6 +33,11 @@ void MovingPlatformComponent::setupMovingPlatform(const Vector3& pointA_, const 
 	audioSource->playSound(AssetManager::GetSound("elevator"), -1);
 
 	setUpdateActivated(true);
+
+	if (debug)
+	{
+		Locator::getLog().LogMessageToScreen("Moving Platform Setup: {Point A: " + pointA.toString() + "}  {Point B: " + pointB.toString() + "}  {Time A to B: " + std::to_string(timeAtoB) + "}", Color::cyan, 99999999.0f, "moving_platform_debug_setup");
+	}
 }
 
 void MovingPlatformComponent::pauseMovement()
@@ -81,6 +88,11 @@ void MovingPlatformComponent::exit()
 
 void MovingPlatformComponent::update(float deltaTime)
 {
+	if (debug)
+	{
+		updateDebug();
+	}
+
 	if (paused) return;
 
 	if (waiting)
@@ -132,4 +144,39 @@ void MovingPlatformComponent::update(float deltaTime)
 			}
 		}
 	}
+}
+
+void MovingPlatformComponent::updateDebug()
+{
+	if (paused)
+	{
+		Locator::getLog().LogMessageToScreen("Moving Platform State: Paused", Color::magenta, 5.0f, "moving_platform_debug_state");
+		Locator::getLog().LogMessageToScreen("Moving Platform Position: " + getOwner()->getPosition().toString(), Color::yellow, 5.0f, "moving_platform_debug_position");
+		Locator::getLog().EraseLogIndexMessage("moving_platform_debug_timer");
+		Locator::getLog().EraseLogIndexMessage("moving_platform_debug_velocity");
+		return;
+	}
+
+	if (waiting)
+	{
+		Locator::getLog().LogMessageToScreen("Moving Platform State: Waiting", Color::magenta, 5.0f, "moving_platform_debug_state");
+		Locator::getLog().LogMessageToScreen("Moving Platform Position: " + getOwner()->getPosition().toString(), Color::yellow, 5.0f, "moving_platform_debug_position");
+		Locator::getLog().LogMessageToScreen("Moving Platform Wait Timer: " + std::to_string(waitTimer), Color::yellow, 5.0f, "moving_platform_debug_timer");
+		Locator::getLog().EraseLogIndexMessage("moving_platform_debug_velocity");
+		return;
+	}
+
+	if (reverse)
+	{
+		Locator::getLog().LogMessageToScreen("Moving Platform State: Moving reverse", Color::magenta, 5.0f, "moving_platform_debug_state");
+
+	}
+	else
+	{
+		Locator::getLog().LogMessageToScreen("Moving Platform State: Moving forward", Color::magenta, 5.0f, "moving_platform_debug_state");
+	}
+
+	Locator::getLog().LogMessageToScreen("Moving Platform Position: " + getOwner()->getPosition().toString(), Color::yellow, 5.0f, "moving_platform_debug_position");
+	Locator::getLog().LogMessageToScreen("Moving Platform Timer: " + std::to_string(timer), Color::yellow, 5.0f, "moving_platform_debug_timer");
+	Locator::getLog().LogMessageToScreen("Moving Platform Velocity: " + rigidbody->getVelocity().toString(), Color::yellow, 5.0f, "moving_platform_debug_velocity");
 }
