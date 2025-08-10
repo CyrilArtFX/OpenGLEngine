@@ -7,7 +7,8 @@
 class NullLog : public Log
 {
 public:
-	void LogMessageToScreen(const std::string& logText, const Color& logColor, const float logDuration, const std::uint32_t logIndex = 0) override {}
+	void LogMessageToScreen(const std::string& logText, const Color& logColor, const float logDuration, const std::string logIndex = "") override {}
+	void EraseLogIndexMessage(const std::string logIndex) override {}
 	void LogMessage_Category(const std::string& logText, LogCategory logCategory) override {}
 
 	void SetScreenLogDisplayRule(LogCategory logCategory) override {}

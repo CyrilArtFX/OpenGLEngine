@@ -12,19 +12,57 @@ class Entity;
 
 struct LogMessageScreen
 {
-	std::uint32_t index;
+	std::string index;
 	std::shared_ptr<TextRendererComponent> text;
 	float timer;
 	float yOffset;
 
-	bool hasSameIndex(const std::uint32_t otherIndex) const
+	LogMessageScreen()
 	{
-		return index != 0 && index == otherIndex;
+		index = "";
+		text = nullptr;
+		timer = 0.0f;
+		yOffset = 0.0f;
+	}
+
+	LogMessageScreen(const std::string& index_, const std::weak_ptr<TextRendererComponent> text_, const float timer_, const float yOffset_)
+	{
+		index = index_;
+		text = text_.lock();
+		timer = timer_;
+		yOffset = yOffset_;
+	}
+
+	LogMessageScreen(const LogMessageScreen& other)
+	{
+		index = other.index;
+		text = other.text;
+		timer = other.timer;
+		yOffset = other.yOffset;
+	}
+
+	LogMessageScreen& operator=(const LogMessageScreen& other)
+	{
+		index = other.index;
+		text = other.text;
+		timer = other.timer;
+		yOffset = other.yOffset;
+		return *this;
 	}
 
 	bool operator==(const LogMessageScreen& other) const
 	{
 		return text == other.text;
+	}
+
+	operator bool() const
+	{
+		return text.operator bool();
+	}
+
+	bool hasSameIndex(const std::string otherIndex) const
+	{
+		return index != "" && index == otherIndex;
 	}
 };
 
@@ -42,7 +80,8 @@ public:
 	LogManager(Entity* screenLogOwner_);
 	~LogManager();
 
-	void LogMessageToScreen(const std::string& logText, const Color& logColor, const float logDuration, const std::uint32_t logIndex = 0) override;
+	void LogMessageToScreen(const std::string& logText, const Color& logColor, const float logDuration, const std::string logIndex = "") override;
+	void EraseLogIndexMessage(const std::string logIndex) override;
 	void LogMessage_Category(const std::string& logText, LogCategory logCategory) override;
 
 	void SetScreenLogDisplayRule(LogCategory logCategory) override;
@@ -56,7 +95,7 @@ public:
 
 private:
 	void printLogToConsole(const std::string& logText, LogCategory logCategory);
-	void displayLogToScreen(const std::string& logText, LogCategory logCategory, const Color& logColor, const float logDuration, const std::uint32_t logIndex);
+	void displayLogToScreen(const std::string& logText, LogCategory logCategory, const Color& logColor, const float logDuration, const std::string logIndex);
 	void writeLogToFile(const std::string& logText, LogCategory logCategory);
 
 	std::unordered_map<LogDisplay, LogCategory> logCategoryDisplayRules

@@ -18,17 +18,29 @@ LogManager::~LogManager()
 }
 
 
-void LogManager::LogMessageToScreen(const std::string& logText, const Color& logColor, const float logDuration, const std::uint32_t logIndex)
+void LogManager::LogMessageToScreen(const std::string& logText, const Color& logColor, const float logDuration, const std::string logIndex)
 {
 	printLogToConsole(logText, LogCategory::Custom);
 	displayLogToScreen(logText, LogCategory::Custom, logColor, logDuration, logIndex);
 	writeLogToFile(logText, LogCategory::Custom);
 }
 
+void LogManager::EraseLogIndexMessage(const std::string logIndex)
+{
+	for (auto& screen_log : logMessagesOnScreen)
+	{
+		if (screen_log.hasSameIndex(logIndex))
+		{
+			screen_log.timer = 0.0f; //  mark for delete on next update
+			break;
+		}
+	}
+}
+
 void LogManager::LogMessage_Category(const std::string& logText, LogCategory logCategory)
 {
 	printLogToConsole(logText, logCategory);
-	displayLogToScreen(logText, logCategory, LogCategoryToColor(logCategory), 5.0f, 0);
+	displayLogToScreen(logText, logCategory, LogCategoryToColor(logCategory), 5.0f, "");
 	writeLogToFile(logText, logCategory);
 }
 
@@ -86,7 +98,7 @@ void LogManager::printLogToConsole(const std::string& logText, LogCategory logCa
 	std::cout << LogCategoryToString(logCategory) << logText << std::endl;
 }
 
-void LogManager::displayLogToScreen(const std::string& logText, LogCategory logCategory, const Color& logColor, const float logDuration, const std::uint32_t logIndex)
+void LogManager::displayLogToScreen(const std::string& logText, LogCategory logCategory, const Color& logColor, const float logDuration, const std::string logIndex)
 {
 	if (logCategory < logCategoryDisplayRules[LogDisplay::Screen]) return;
 
@@ -110,12 +122,12 @@ void LogManager::displayLogToScreen(const std::string& logText, LogCategory logC
 	}
 
 	logMessagesOnScreen.emplace_back(LogMessageScreen
-		{
+		(
 			logIndex,
 			screenLogsOwner->addComponentByClass<TextRendererComponent>(),
 			logDuration,
 			y_offset
-		}
+		)
 	);
 
 	logMessagesOnScreen.at(logMessagesOnScreen.size() - 1).text->setTextDatas(
