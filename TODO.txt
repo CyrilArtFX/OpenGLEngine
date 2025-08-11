@@ -1,11 +1,5 @@
 == COURT TERME == 
 
-~ Debug de la physique :
-	- Corriger le fait de se tp à travers les collisions une fois sur deux (pitié j'en peux plus) - fait
-	- Corriger le fait de se tp à travers les plateformes mouvantes (voir en bas) - fait
-	- Corriger l'ascenseur qui nous fait partir en couilles si on bouge quand il commence à monter (voir en bas) - fait
-	- Corriger les plateformes mouvantes du level debug qui niquent leurs positions une fois sur deux - fait
-
 ~ Améliorations/optimisations de l'ECS :
 	- Pour l'update du component manager, utiliser la liste de T au lieu de la liste de shared_ptr
 [Plus rapide pour la mise en cache (dans le doute, profiler ça), comme le compiler va générer la classe template avec les différents types, possiblité d'appeler une fonction de component même sans cast]
