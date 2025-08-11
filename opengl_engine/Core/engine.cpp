@@ -178,6 +178,8 @@ bool Engine::initialize(int wndw_width, int wndw_height, std::string wndw_name, 
 
 void Engine::run()
 {
+	lastFrame = glfwGetTime();
+
 	//  main loop
 	while (!glfwWindowShouldClose(window.getGLFWwindow()))
 	{
