@@ -83,7 +83,7 @@ void DoomlikeLevelDebug::loadScene()
 	trigger_zone_col->setCollisionChannel("trigger_zone");
 	trigger_zone_col->setCollisionType(CollisionType::Trigger);
 
-	movingPlatform1->addComponentByClass<MovingPlatformComponent>()->setupMovingPlatform(Vector3{ 6.0f, 1.9f, 2.5f }, Vector3{ 9.0f, 3.0f, 11.5f }, 3.0f, 2.0f, true);
+	movingPlatform1->addComponentByClass<MovingPlatformComponent>()->setupMovingPlatform(Vector3{ 6.0f, 1.9f, 2.5f }, Vector3{ 9.0f, 3.0f, 11.5f }, 3.0f, 2.0f);
 	movingPlatform2->addComponentByClass<MovingPlatformComponent>()->setupMovingPlatform(Vector3{ -7.0f, 0.0f, -7.0f }, Vector3{ -7.0f, 0.0f, 7.0f }, 3.0f);
 	movingPlatform3->addComponentByClass<MovingPlatformComponent>()->setupMovingPlatform(Vector3{ 10.0f, -3.0f, 3.0f }, Vector3{ 10.0f, 5.0f, 3.0f }, 3.0f);
 

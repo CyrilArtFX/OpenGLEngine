@@ -36,7 +36,9 @@ void MovingPlatformComponent::setupMovingPlatform(const Vector3& pointA_, const 
 
 	if (debug)
 	{
-		Locator::getLog().LogMessageToScreen("Moving Platform Setup: {Point A: " + pointA.toString() + "}  {Point B: " + pointB.toString() + "}  {Time A to B: " + std::to_string(timeAtoB) + "}", Color::cyan, 99999999.0f, "moving_platform_debug_setup");
+		Locator::getLog().LogMessageToScreen(
+			"Moving Platform Setup: {Point A: " + pointA.toString() + "}  {Point B: " + pointB.toString() + "}  {Time A to B: " + std::to_string(timeAtoB) + "}  {Start Position: " + getOwner()->getPosition().toString() + "}", 
+			Color::cyan, 99999999.0f, "moving_platform_debug_setup");
 	}
 }
 
@@ -90,7 +92,7 @@ void MovingPlatformComponent::update(float deltaTime)
 {
 	if (debug)
 	{
-		updateDebug();
+		updateDebug(deltaTime);
 	}
 
 	if (paused) return;
@@ -111,11 +113,13 @@ void MovingPlatformComponent::update(float deltaTime)
 	if (reverse)
 	{
 		timer -= deltaTime;
-		if (timer <= 0.0f)
+		if (timer <= 0.0f) //  reached point A
 		{
+			getOwner()->setPosition(pointA);
 			timer = 0.0f;
 			reverse = false;
 			rigidbody->setVelocity((pointB - pointA) * (1.0f / timeAtoB));
+
 			if (waitTime > 0.0f)
 			{
 				waitTimer = waitTime;
@@ -129,8 +133,9 @@ void MovingPlatformComponent::update(float deltaTime)
 	else
 	{
 		timer += deltaTime;
-		if (timer >= timeAtoB)
+		if (timer >= timeAtoB) //  reached point B
 		{
+			getOwner()->setPosition(pointB);
 			timer = timeAtoB;
 			reverse = true;
 			rigidbody->setVelocity((pointA - pointB) * (1.0f / timeAtoB));
@@ -146,8 +151,10 @@ void MovingPlatformComponent::update(float deltaTime)
 	}
 }
 
-void MovingPlatformComponent::updateDebug()
+void MovingPlatformComponent::updateDebug(float deltaTime)
 {
+	Locator::getLog().LogMessageToScreen("-- Moving Platform Debug New Frame --  {Delta Time: " + std::to_string(deltaTime) + "}", Color::white, 5.0f, "moving_platform_debug_deltatime");
+
 	if (paused)
 	{
 		Locator::getLog().LogMessageToScreen("Moving Platform State: Paused", Color::magenta, 5.0f, "moving_platform_debug_state");

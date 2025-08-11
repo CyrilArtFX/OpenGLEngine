@@ -20,7 +20,7 @@ protected:
 	void exit() override;
 	void update(float deltaTime) override;
 
-	virtual void updateDebug();
+	virtual void updateDebug(float deltaTime);
 
 private:
 	std::shared_ptr<class BoxAABBColComp> collision;
