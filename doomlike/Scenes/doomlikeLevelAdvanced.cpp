@@ -100,21 +100,14 @@ void DoomlikeLevelAdvanced::unloadScene()
 
 void DoomlikeLevelAdvanced::updateScene(float dt)
 {
-	if (elevatorTimer <= 0.0f) return;
-	elevatorTimer -= dt;
-	if (elevatorTimer <= 0.0f)
-	{
-		elevator->getComponentByClass<MovingPlatformComponent>()->resumeMovement();
-	}
 }
 
 void DoomlikeLevelAdvanced::onEnterElevatorUpZone(RigidbodyComponent& other)
 {
 	if (!other.getOwner()->hasGameplayTag("Player")) return;
 
-	elevatorTimer = 0.3f;
-
 	elevatorUpZone->getComponentByClass<BoxAABBColComp>()->onTriggerEnter.unregisterObserver(this);
+	elevator->getComponentByClass<MovingPlatformComponent>()->resumeMovement();
 }
 
 void DoomlikeLevelAdvanced::onEnterEnemySpawnZone(RigidbodyComponent& other)

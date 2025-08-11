@@ -68,7 +68,7 @@ void DoomlikeLevelStart::loadScene()
 
 
 	//  enemies
-	/*Entity* enemy_1 = createEntity();
+	Entity* enemy_1 = createEntity();
 	Entity* enemy_2 = createEntity();
 	enemy_1->setPosition(Vector3{ 3.5f, 1.2f,  11.5f });
 	enemy_2->setPosition(Vector3{ -3.5f, 3.2f, 20.0f });
@@ -76,7 +76,7 @@ void DoomlikeLevelStart::loadScene()
 	enemy_2->addComponentByClass<EnemyComponent>();
 
 	enemyCount.addEnemies({ enemy_1, enemy_2 });
-	enemyCount.onAllEnemiesDead.registerObserver(this, Bind_0(&DoomlikeLevelStart::onEnemiesDead));*/
+	enemyCount.onAllEnemiesDead.registerObserver(this, Bind_0(&DoomlikeLevelStart::onEnemiesDead));
 
 
 	//  trigger zone

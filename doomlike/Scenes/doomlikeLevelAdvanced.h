@@ -32,7 +32,6 @@ private:
 	Entity* enemySpawnZone;
 
 	Entity* elevator;
-	float elevatorTimer{ 0.0f };
 
 	void onEnterElevatorUpZone(class RigidbodyComponent& other);
 	void onEnterEnemySpawnZone(class RigidbodyComponent& other);

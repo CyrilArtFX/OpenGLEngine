@@ -177,10 +177,10 @@ void DoomlikeGame::loadGame()
 {
 	Entity* player_entity = createEntity();
 	player = player_entity->addComponentByClass<PlayerComponent>();
-	//player_entity->addComponentByClass<GunComponent>();
+	player_entity->addComponentByClass<GunComponent>();
 	player->setupPlayer(1.5f, 5.0f, 7.0f, 0.3f);
 
-	loadLevel(1);
+	loadLevel(2);
 }
 
 
